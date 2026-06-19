@@ -85,7 +85,7 @@
         <section class="reveal in">
           <h2>Good to know</h2>
           <div class="incl-grid">
-            <ul class="yes">${goodToKnow.map(f => `<li><b>${f[0]}:</b>&nbsp;${f[1]}</li>`).join('')}</ul>
+            <ul class="yes facts">${goodToKnow.map(f => `<li><span><b>${f[0]}:</b> ${f[1]}</span></li>`).join('')}</ul>
             <ul class="yes">
               <li>Local certified English-speaking guide</li>
               <li>Private transport & airport transfers</li>
