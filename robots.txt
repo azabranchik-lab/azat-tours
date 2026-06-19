@@ -1,0 +1,6 @@
+# Allow all search engines to crawl everything
+User-agent: *
+Allow: /
+
+# Point crawlers to the sitemap (update the domain once live)
+Sitemap: https://alatoo.travel/sitemap.xml

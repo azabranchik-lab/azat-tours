@@ -1,0 +1,17 @@
+{
+  "name": "alatoo-kyrgyzstan",
+  "version": "1.0.0",
+  "description": "Alatoo Kyrgyzstan tours website + Telegram admin bot",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node start.js",
+    "serve": "node server.js",
+    "bot": "node bot.js",
+    "seed": "node scripts/seed-content.js",
+    "build-tours": "node build-tours.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "grammy": "^1.44.0"
+  }
+}
