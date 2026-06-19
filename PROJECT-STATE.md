@@ -24,7 +24,7 @@
 
 ## Что это
 Продающий сайт туров по Кыргызстану (англ., для иностранцев) + **Telegram-админка** для управления контентом.
-Бренд-заглушка: **Alatoo**. Дизайн: чистый «editorial alpine», шрифты Fraunces + Hanken Grotesk,
+Бренд: **BeLocal** (ребренд из Alatoo сделан 2026-06-19 — см. раздел «Ребрендинг» ниже). Дизайн: чистый «editorial alpine», шрифты Fraunces + Hanken Grotesk,
 акцент — бирюза Иссык-Куля. Иконки — тонкие SVG (line-art), без эмодзи.
 
 ## Стек / архитектура
@@ -63,3 +63,15 @@
 
 ## Планы/прогресс
 `ROADMAP.md`, `ПЛАН-РАБОТ.md`, `ТГ-АДМИНКА-ПЛАН.md`, `НАСТРОЙКА.md`.
+
+## Ребрендинг Alatoo → BeLocal (сделано 2026-06-19, локально, НЕ задеплоено)
+- **Бэкап до изменений:** папка `C:\Users\user\kyrgyzstan-tours-BACKUP-2026-06-19` + git (репо инициализирован, baseline-коммит `f520aa7`). Откат: `git reset --hard f520aa7` или из папки-бэкапа.
+- **Что изменено (всё локально, ждёт деплоя):**
+  - About/Mission переписаны «тёплым голосом местного» (hero, story, новый блок Mission). Бренд-гайд: `BRAND.md`, маркетинг-контекст: `.agents/product-marketing-context.md`.
+  - Переименованы ТОЛЬКО видимые `Alatoo`→`BeLocal` (HTML, title/meta/og, schema, копирайт, логотип-текст, WhatsApp-тексты, видимый текст chat/builder/tour-detail/post-render, sitemap, robots).
+  - **Убраны все выдуманные соц-доказательства** (реальных отзывов нет): фейк-статистика, бейджи Tripadvisor/Google, рейтинги 4.9/«128 reviews», `aggregateRating` в schema, «2400+ travellers», «since/est. 2009». Страница `reviews.html` **скрыта** (ссылки убраны из подвалов и sitemap, файл оставлен на диске).
+  - SEO: self-canonical + og добавлены где не было; новый `favicon.svg` (горная марка) подключён во всех страницах.
+- **НЕ тронуто (внутреннее, оставить как есть):** pm2-процесс `alatoo`, `name` в package.json (`alatoo-kyrgyzstan`), `.claude/launch.json` (`alatoo`), localStorage-ключи (`alatoo_chat_*`, `alatoo_builder`), `content/*.json` + `images/` (серверный контент, через бота), `reviews-data.js` (генерится из content).
+- **Домен-заглушка:** теперь `belocal.travel` (в canonical/og/sitemap/robots/email/IG). Зарегистрировать реальный домен + IG `@belocal.kyrgyzstan` + email перед продом.
+- **Осталось:** задеплоить (tar без `node_modules`/`config.json`/`content`/`images`; **новый `favicon.svg` попадёт в архив автоматически**; можно добавить `--exclude=.git` и `--exclude` папки-бэкапа) → `pm2 restart alatoo`. Внести реальные данные клиента (отзывы появятся → вернуть reviews-страницу).
+- **Мелочь на потом:** на `tour-ala-kul.html` осталась промо-плашка «Save 10% before May 31» (выдуманная срочность) — убрать/заменить, если не актуально.
