@@ -155,7 +155,7 @@
 
   function summaryText() {
     const lines = [];
-    lines.push('— ALATOO TRIP REQUEST —');
+    lines.push('— BELOCAL TRIP REQUEST —');
     if (S.style) lines.push('Style: ' + (S.style === 'notsure' ? 'Not sure / suggest' : S.style));
     if (S.duration) lines.push('Length: ' + (DURATIONS.find(d => d[0] === S.duration) || [, S.duration])[1]);
     if (S.month) lines.push('When: ' + S.month);
