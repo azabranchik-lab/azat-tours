@@ -8,8 +8,8 @@
   const root = document.getElementById('tourRoot');
   if (!t) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Tour not found</h1><p><a href="tours.html">← Back to all tours</a></p></div>'; return; }
 
-  document.title = `${t.name} — Kyrgyzstan Tour | Alatoo`;
-  const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi Alatoo! I'm interested in the " + t.name + " tour.")}`;
+  document.title = `${t.name} — Kyrgyzstan Tour | BeLocal`;
+  const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi BeLocal! I'm interested in the " + t.name + " tour.")}`;
   const img = i => (t.images && t.images[i]) || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80';
 
   const facts = [
@@ -48,17 +48,8 @@
     ['Best time to go', t.season]
   ].filter(f => f[1]);
 
-  const R = window.REVIEWS || [];
-  const tourRevs = R.filter(r => r.placement === 'tour:' + t.slug);
-  const showRevs = (tourRevs.length ? tourRevs : R.filter(r => r.placement === 'home')).slice(0, 2);
-  const rstars = n => '★★★★★'.slice(0, Math.max(1, Math.min(5, n || 5)));
-  const reviewsHTML = showRevs.length ? `
-        <section class="reveal in">
-          <h2>What travellers say</h2>
-          <div style="display:grid;gap:18px">
-            ${showRevs.map(r => `<div class="review" style="max-width:none;flex:none"><div class="stars">${rstars(r.rating)}</div><p>"${r.text}"</p><div class="who"><img loading="lazy" src="${r.avatar}" alt="${r.name}"><div><b>${r.name}</b><span>${[r.country, r.context].filter(Boolean).join(' · ')}</span></div></div></div>`).join('')}
-          </div>
-        </section>` : '';
+  // Reviews removed until real ones exist.
+  const reviewsHTML = '';
 
   root.innerHTML = `
   <section class="tour-hero">
@@ -136,7 +127,7 @@
           <div class="from">Price</div>
           <div class="amount" style="font-size:1.9rem">On request</div>
           <div class="per">Tailored to group size, season & options</div>
-          <div class="rateline"><span class="star">★★★★★</span> <b>4.9</b> · local guides</div>
+          <div class="rateline">100% local Kyrgyz guides · no prepayment</div>
           ${facts.map(f => `<div class="row"><span>${f[0]}</span><b>${f[1]}</b></div>`).join('')}
           <a href="#book" class="btn btn-primary" style="margin-top:18px">Request this tour →</a>
           <a href="${wa}" target="_blank" rel="noopener" class="wa-line">

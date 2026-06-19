@@ -4,4 +4,4 @@
 //   Prod:   set env BOT_TOKEN, OWNER_ID, PORT — then `node start.js`
 require('./server');
 require('./bot');
-console.log('▶ Alatoo: site + API + Telegram bot started.');
+console.log('▶ BeLocal: site + API + Telegram bot started.');

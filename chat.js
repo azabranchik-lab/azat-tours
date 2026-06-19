@@ -1,7 +1,7 @@
 // On-site chat widget. Visitor messages -> /api/chat -> owner's Telegram.
 // Owner replies in Telegram -> stored -> widget polls and shows them.
 (function () {
-  const WA = "https://wa.me/996222222011?text=Hi%20Alatoo!%20I%20have%20a%20question.";
+  const WA = "https://wa.me/996222222011?text=Hi%20BeLocal!%20I%20have%20a%20question.";
   const KEY = 'alatoo_chat_sid';
   let sid = localStorage.getItem(KEY);
   if (!sid) { sid = 'c' + Math.abs(Date.now() ^ (Math.floor(performance.now() * 1000))).toString(36) + Math.floor(performance.now()).toString(36); localStorage.setItem(KEY, sid); }
@@ -20,7 +20,7 @@
   panel.innerHTML = `
     <div class="chat-head">
       <div class="av"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div>
-      <div><b>Chat with Alatoo</b><span>Local experts · usually reply in a few hours</span></div>
+      <div><b>Chat with BeLocal</b><span>Local experts · usually reply in a few hours</span></div>
       <button class="x" aria-label="Close">&times;</button>
     </div>
     <div class="chat-body" id="chatBody"></div>

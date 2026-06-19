@@ -1,4 +1,4 @@
-// Alatoo Trip Builder — 5-step, visual, data-aware.
+// BeLocal Trip Builder — 5-step, visual, data-aware.
 (function () {
   const TOURS = window.TOURS || [];
   const WEB3FORMS_KEY = "b8d4fb62-00dc-4e7f-ab17-3f8c8b5aeced";
