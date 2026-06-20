@@ -175,15 +175,15 @@ section{position:relative}
 
 /* ---------- EXPERIENCES ---------- */
 .exp{background:var(--paper-2)}
-.exp-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:18px}
+.exp-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:240px;gap:18px}
+.exp-grid .exp-card:nth-child(-n+3){grid-column:span 2}
+.exp-grid .exp-card:nth-child(n+4){grid-column:span 3}
 .exp-card{position:relative;border-radius:18px;overflow:hidden;color:#fff;display:flex;align-items:flex-end;padding:22px;isolation:isolate}
 .exp-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s ease}
 .exp-card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(10,28,24,.82) 100%)}
 .exp-card:hover img{transform:scale(1.08)}
 .exp-card h3{font-size:1.3rem}
 .exp-card span{font-size:.84rem;opacity:.85;display:block;margin-top:2px}
-.exp-card.big{grid-column:span 2;grid-row:span 2}
-.exp-card.tall{grid-row:span 2}
 
 /* ---------- WHY US ---------- */
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -315,7 +315,8 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 @media(max-width:980px){
   .tours-grid,.why-grid,.steps,.blog-grid{grid-template-columns:repeat(2,1fr)}
   .exp-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:200px}
-  .exp-card.big{grid-column:span 2}
+  .exp-grid .exp-card:nth-child(-n+3),.exp-grid .exp-card:nth-child(n+4){grid-column:auto}
+  .exp-grid .exp-card:last-child{grid-column:span 2}
   .faq-wrap,.lead-grid,.blog-feature{grid-template-columns:1fr}
   .blog-feature .img{min-height:240px}
   .foot-grid{grid-template-columns:1fr 1fr}
@@ -472,7 +473,8 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 @media(max-width:980px){
   .tours-grid,.why-grid,.steps,.blog-grid{grid-template-columns:repeat(2,1fr)}
   .exp-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:200px}
-  .exp-card.big{grid-column:span 2}
+  .exp-grid .exp-card:nth-child(-n+3),.exp-grid .exp-card:nth-child(n+4){grid-column:auto}
+  .exp-grid .exp-card:last-child{grid-column:span 2}
   .faq-wrap,.lead-grid,.blog-feature{grid-template-columns:1fr}
   .blog-feature .img{min-height:240px}
   .foot-grid{grid-template-columns:1fr 1fr}
@@ -485,7 +487,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .burger{display:flex}
   .tours-grid,.why-grid,.steps,.blog-grid{grid-template-columns:1fr}
   .exp-grid{grid-template-columns:1fr;grid-auto-rows:200px}
-  .exp-card.big,.exp-card.tall{grid-column:auto;grid-row:auto}
+  .exp-grid .exp-card:nth-child(-n+3),.exp-grid .exp-card:nth-child(n+4){grid-column:auto}
   .field-row{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr}
   .hero-inner{padding-bottom:120px}
