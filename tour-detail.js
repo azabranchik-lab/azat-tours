@@ -206,16 +206,30 @@
   // route map (Leaflet) — only if the tour has coordinates and Leaflet is loaded
   if (window.L && t.route && t.route.length && document.getElementById('tourMap')) {
     const pts = t.route.map(s => [s.lat, s.lng]);
-    const linePts = (t.route_path && t.route_path.length) ? t.route_path : pts;
     const map = L.map('tourMap', { scrollWheelZoom: false }).setView(pts[0], 7);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17, attribution: '© OpenStreetMap' }).addTo(map);
-    L.polyline(linePts, { color: '#127A6F', weight: 5, opacity: .92, lineJoin: 'round', lineCap: 'round', smoothFactor: 0.4 }).addTo(map);
+    L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17, subdomains: 'abc', attribution: '© OpenTopoMap (CC-BY-SA) · © OpenStreetMap' }).addTo(map);
+    const TEAL = '#106c61';
+    const segs = (t.route_segments && t.route_segments.length)
+      ? t.route_segments
+      : [{ road: true, pts: (t.route_path && t.route_path.length) ? t.route_path : pts }];
+    const allPts = [];
+    segs.forEach(s => { s.pts.forEach(p => allPts.push(p)); });
+    // white casing under the road (driving) segments so the line reads on terrain
+    segs.forEach(s => { if (s.road) L.polyline(s.pts, { color: '#fff', weight: 9, opacity: .85, lineJoin: 'round', lineCap: 'round', smoothFactor: .5 }).addTo(map); });
+    // route on top: solid for roads, dotted for off-road / trek legs
+    segs.forEach(s => {
+      L.polyline(s.pts, s.road
+        ? { color: TEAL, weight: 5, opacity: .95, lineJoin: 'round', lineCap: 'round', smoothFactor: .5 }
+        : { color: TEAL, weight: 4, opacity: .92, dashArray: '1,9', lineCap: 'round', smoothFactor: .5 }).addTo(map);
+    });
     const dot = L.divIcon({ className: '', html: '<div style="width:13px;height:13px;border-radius:50%;background:#D9A441;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)"></div>', iconSize: [13, 13], iconAnchor: [6.5, 6.5] });
+    const offFor = d => d === 'left' ? [-9, 0] : d === 'right' ? [9, 0] : d === 'bottom' ? [0, 9] : [0, -7];
     t.route.forEach(s => {
       if (!s.name) return;
+      const dir = s.dir || 'top';
       L.marker([s.lat, s.lng], { icon: dot }).addTo(map)
-        .bindTooltip(s.name, { permanent: true, direction: 'top', className: 'map-label', offset: [0, -4] });
+        .bindTooltip(s.name, { permanent: true, direction: dir, className: 'map-label', offset: offFor(dir) });
     });
-    map.fitBounds(linePts, { padding: [50, 70] });
+    map.fitBounds(allPts.length ? allPts : pts, { padding: [55, 75] });
   }
 })();
