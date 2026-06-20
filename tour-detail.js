@@ -72,6 +72,26 @@
   // Reviews removed until real ones exist.
   const reviewsHTML = '';
 
+  // related tours (same category preferred, else any)
+  const RARROW = '<svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const relPool = TOURS.filter(x => x.slug !== t.slug);
+  const relSame = relPool.filter(x => (x.cats || []).some(c => (t.cats || []).includes(c)));
+  const related = (relSame.length >= 3 ? relSame : relPool).slice(0, 3);
+  const relCard = rt => {
+    const rimg = rt.images && rt.images[0] ? rt.images[0] : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80';
+    const rhl = (rt.highlights && rt.highlights.length ? rt.highlights : rt.itinerary.map(d => d.title)).slice(0, 3).map(h => `<li>${h}</li>`).join('');
+    return `<a class="tour" href="tour.html?slug=${encodeURIComponent(rt.slug)}">
+      <div class="tour-img"><img loading="lazy" src="${rimg}" alt="${rt.name}"><span class="tour-badge">${rt.cats[0] || rt.category}</span>${rt.duration ? `<span class="tour-dur">${rt.duration}</span>` : ''}</div>
+      <div class="tour-body"><h3>${rt.name}</h3><ul>${rhl}</ul>
+        <div class="tour-foot"><span class="tour-tag">${rt.tour_speed || 'Small group'}</span><span class="tour-cta">View details ${RARROW}</span></div>
+      </div></a>`;
+  };
+  const relatedHTML = related.length ? `
+        <section class="reveal in related-tours" style="border-bottom:0">
+          <h2>Other tours you might like</h2>
+          <div class="tours-grid">${related.map(relCard).join('')}</div>
+        </section>` : '';
+
   root.innerHTML = `
   <section class="tour-hero">
     <div class="bg"><img src="${img(0)}" alt="${t.name}" /></div>
@@ -125,7 +145,7 @@
 
         ${reviewsHTML}
 
-        <section id="book" class="reveal in" style="border-bottom:0">
+        <section id="book" class="reveal in" style="${relatedHTML ? '' : 'border-bottom:0'}">
           <h2>Request this tour</h2>
           <p>Tell us your dates and we'll confirm availability and a tailored price within 24 hours. Free to enquire, no prepayment.</p>
           <div class="book-grid">
@@ -164,6 +184,7 @@
           </aside>
           </div>
         </section>
+        ${relatedHTML}
       </div>
     </div>
   </section>`;
@@ -187,9 +208,13 @@
     const pts = t.route.map(s => [s.lat, s.lng]);
     const map = L.map('tourMap', { scrollWheelZoom: false }).setView(pts[0], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17, attribution: '© OpenStreetMap' }).addTo(map);
-    L.polyline(pts, { color: '#127A6F', weight: 4, opacity: .9, dashArray: '2,8', lineCap: 'round' }).addTo(map);
-    const dot = L.divIcon({ className: '', html: '<div style="width:14px;height:14px;border-radius:50%;background:#D9A441;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
-    t.route.forEach(s => { if (s.name) L.marker([s.lat, s.lng], { icon: dot }).addTo(map).bindPopup('<b>' + s.name + '</b>'); });
-    map.fitBounds(pts, { padding: [30, 30] });
+    L.polyline(pts, { color: '#127A6F', weight: 5, opacity: .92, lineJoin: 'round', lineCap: 'round' }).addTo(map);
+    const dot = L.divIcon({ className: '', html: '<div style="width:13px;height:13px;border-radius:50%;background:#D9A441;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)"></div>', iconSize: [13, 13], iconAnchor: [6.5, 6.5] });
+    t.route.forEach(s => {
+      if (!s.name) return;
+      L.marker([s.lat, s.lng], { icon: dot }).addTo(map)
+        .bindTooltip(s.name, { permanent: true, direction: 'top', className: 'map-label', offset: [0, -4] });
+    });
+    map.fitBounds(pts, { padding: [50, 70] });
   }
 })();

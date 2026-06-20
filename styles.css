@@ -404,6 +404,8 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .ti span{color:var(--ink-soft);text-align:right}
 .tour-map{height:480px;border-radius:18px;overflow:hidden;border:1px solid var(--line);margin-top:6px}
 .tour-map .leaflet-container{height:100%;background:var(--paper-2)}
+.leaflet-tooltip.map-label{background:#fff;color:#1B2420;border:0;border-radius:7px;box-shadow:0 1px 6px rgba(0,0,0,.32);font:700 .72rem/1.2 "Hanken Grotesk",sans-serif;padding:3px 8px;white-space:nowrap}
+.leaflet-tooltip.map-label.leaflet-tooltip-top::before{border-top-color:#fff}
 
 /* full-width request section: form + side panel */
 .book-grid{display:grid;grid-template-columns:1fr 330px;gap:36px;align-items:start;margin-top:8px}
