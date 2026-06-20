@@ -1,4 +1,4 @@
-﻿# Alatoo — Brand & Copy Guide
+﻿# Azat Tours — Brand & Copy Guide
 
 > Источник правды для бренда и текстов. Тексты на английском (сайт для иностранцев),
 > заметки/пояснения на русском. Факты пока плейсхолдеры — где можно, избегаем
@@ -8,28 +8,28 @@
 
 ## 1. Название и суть
 
-**Alatoo** (Ала-Тоо — «пёстрые, снегом-исчёрканные горы»; национальный символ Кыргызстана).
-Не «турагентство», а **местные проводники в свои родные горы**.
+**Azat Tours.** `Azat` (азат) — по-кыргызски **«свободный / свобода»**, и это же **имя основателя**.
+Двойной смысл — ядро бренда: гость должен чувствовать себя **свободно и как дома**.
+Не «турагентство», а **фаундер-лед компания**: Azat лично водит туры с 2019 + команда местных гидов.
 
-- **One-liner positioning:** *Local Kyrgyz guides taking travellers into the mountains they were born in.*
+- **One-liner positioning:** *Founder-led Kyrgyz trips that make you feel free and at home — because azat means free.*
 - **Категория:** small-group & tailor-made adventures across Kyrgyzstan.
-- **Кому:** иностранным путешественникам, которым важны подлинность, забота и безопасность,
-  а не конвейерный пакетный туризм.
+- **Кому:** иностранным путешественникам, которым важны подлинность, свобода (свой темп, не пакетный конвейер), забота и безопасность.
 
 ---
 
-## 2. Слоган (tagline) — платформа «Be Local»
+## 2. Слоган (tagline) — платформа «свобода»
 
-**Primary brand line:** `Be Local.`
-Смысл: не будь туристом — будь местным. Это и приглашение гостю, и обещание
-(«мы и есть местные»). Стягивает всю отстройку: local team, аутентика, community.
+**Meaning hook:** `Azat means "free" in Kyrgyz.`
+**Primary slogan:** `Feel free. Feel at home.`
+
+Смысл: имя основателя = «свобода», и это обещание гостю — свой темп, без туристического пузыря,
+и при этом тепло как дома. Стягивает отстройку: фаундер-история, местная команда, аутентика.
 
 **Полные формы (по контексту):**
-- `Be Local in Kyrgyzstan.`
-- `Don't visit Kyrgyzstan. Be local.`
-- `See Kyrgyzstan like a local — because we are.`
-
-**Эмоциональный alt (для героя/соцсетей):** `Born under the eternal blue sky.`
+- `Feel free in Kyrgyzstan.`
+- `Travel free. Feel at home.`
+- `Azat means free — so will you.`
 
 **Короткий дескриптор под логотипом:** `Kyrgyzstan` (как сейчас) — оставляем.
 
@@ -37,13 +37,14 @@
 
 ## 3. Mission / Vision / Promise
 
-**Mission (полная):**
-> We open up the real Kyrgyzstan — its high passes, felt yurts and herder families —
-> to travellers from around the world, and we make sure the mountains and the people
-> we love are better off for every trip we run.
+**Mission (полная, blend свобода + забота):**
+> To help every traveller feel free in Kyrgyzstan — and completely at home: free to wander
+> at their own pace, share a herder's table, rewrite the plan when the mountains call —
+> and to leave the country we love better than we found it (fair pay for host families,
+> clean jailoo, valleys our kids will inherit).
 
 **Mission (одной строкой):**
-> Show the real Kyrgyzstan, and leave its mountains and people better than we found them.
+> Make you feel free and at home in Kyrgyzstan — and leave it better than we found it.
 
 **Vision:**
 > A Kyrgyzstan that travellers reach through the people who call it home —
@@ -101,12 +102,12 @@
 > Small-group & tailor-made tours in Kyrgyzstan, run by local guides. Free to enquire.
 
 **Short (1–2 предложения, соцсети/футер):**
-> Alatoo is a small team of Kyrgyz guides and trip-planners running small-group and
+> Azat Tours is a small team of Kyrgyz guides and trip-planners running small-group and
 > tailor-made adventures across the country — treks, horse treks and yurt stays in the
 > mountains we were born in.
 
 **Medium (абзац, About / pitch):**
-> Alatoo isn't a faceless booking site. We're a small team of Kyrgyz guides and
+> Azat Tours isn't a faceless booking site. We're a small team of Kyrgyz guides and
 > trip-planners who grew up between Issyk-Kul and the Tian Shan. We design small-group
 > and tailor-made trips across the whole country — trekking, horse treks, yurt stays
 > and culture journeys — and we run them ourselves, on the ground. The idea is simple:
@@ -123,19 +124,19 @@
 - Lead: `Hand-crafted small-group and tailor-made adventures across Kyrgyzstan — designed and led by the people who grew up in these mountains.`
 
 ### Home — Why us (заголовок секции)
-- Eyebrow: `Why travel with Alatoo`
+- Eyebrow: `Why travel with Azat Tours`
 - H2: `Born here. Trusted by travellers worldwide.`
 
 ### About — Hero
 - H1: `We were born in these mountains`
-- Sub: `Alatoo isn't a faceless booking site. We're a small team of Kyrgyz guides and trip-planners who grew up between Issyk-Kul and the Tian Shan — and we'd love to show you home.`
+- Sub: `Azat Tours isn't a faceless booking site. We're a small team of Kyrgyz guides and trip-planners who grew up between Issyk-Kul and the Tian Shan — and we'd love to show you home.`
 
 ### About — Story
 - Eyebrow: `Our story`
 - H2: `From a single horse trek to a country full of trails`
   *(вместо «to 2,400+ travellers» — убрали выдуманную цифру)*
 - Body 1:
-  > Alatoo began with one guide, a few borrowed horses, and a handful of travellers
+  > Azat Tours began with one guide, a few borrowed horses, and a handful of travellers
   > who wanted to reach Song-Kul the old way. Word spread. Today we run small-group and
   > tailor-made trips across the whole country — but the idea hasn't changed: show
   > travellers the *real* Kyrgyzstan, and make sure the mountains we love benefit from it.

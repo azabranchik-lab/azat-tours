@@ -4,8 +4,9 @@
 *Note: business facts (years, traveller counts, ratings, licenses) are PLACEHOLDER until the real operator provides them. Marked ⚠️ below.*
 
 ## Product Overview
-**One-liner:** Local Kyrgyz guides running small-group and tailor-made adventures across Kyrgyzstan.
-**What it does:** Alatoo plans and runs trekking, horse treks, yurt stays and culture trips across Kyrgyzstan for international travellers. Trips are either small-group set departures or fully tailor-made. A local team handles itinerary, guides, transport, stays and on-trip support; travellers enquire free and pay only once the plan is confirmed.
+**One-liner:** Founder-led Kyrgyz tour company (Azat = "free" in Kyrgyz) running small-group and tailor-made adventures, so travellers feel free and at home in Kyrgyzstan.
+**Founder:** Azat — has personally guided travellers across Kyrgyzstan since 2019; works with a team of local guides. Brand promise springs from his name: *azat* = free.
+**What it does:** Azat Tours plans and runs trekking, horse treks, yurt stays and culture trips across Kyrgyzstan for international travellers. Trips are either small-group set departures or fully tailor-made. A local team handles itinerary, guides, transport, stays and on-trip support; travellers enquire free and pay only once the plan is confirmed.
 **Product category:** Inbound adventure / cultural tour operator (Kyrgyzstan & Central Asia). The "shelf": *Kyrgyzstan tours*, *Kyrgyzstan trekking*, *Central Asia adventure travel*.
 **Product type:** Service (DMC / tour operator) with a lead-gen website + Telegram admin.
 **Business model:** Custom-quoted trips. Free enquiry, no prepayment to enquire; small deposit on confirmation, balance before/on arrival. Revenue = margin on trips.
@@ -78,7 +79,8 @@
 - "Felt like travelling with friends who happened to be locals."
 - "They built the whole trip around us."
 - "A real person answered every question fast."
-**Words to use:** real / local / born here / tailor-made / small-group / free to enquire / no prepayment / 24h reply / jailoo / yurt / nomad / safe.
+**Words to use:** free / azat / at home / feel free / your own pace / real / local / born here / tailor-made / small-group / free to enquire / no prepayment / 24h reply / jailoo / yurt / nomad / safe.
+**Brand meaning & slogan:** Azat = "free" in Kyrgyz (also the founder's name). Slogan: *Feel free. Feel at home.*
 **Words to avoid:** world-class, unforgettable experiences, leading provider, luxury (unless true), "book now or miss out," emojis.
 **Glossary:**
 | Term | Meaning |
