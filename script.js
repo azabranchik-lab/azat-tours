@@ -94,6 +94,58 @@ if (leadForm) {
   });
 }
 
+// ---------- gallery lightbox (generic: any .gallery) ----------
+(function () {
+  const galleries = document.querySelectorAll('.gallery');
+  if (!galleries.length) return;
+  let lb, imgEl, countEl, imgs = [], idx = 0;
+
+  function build() {
+    lb = document.createElement('div');
+    lb.className = 'lightbox';
+    lb.innerHTML = '<button class="lb-close" aria-label="Close">&times;</button>' +
+      '<button class="lb-prev" aria-label="Previous">&#8249;</button>' +
+      '<img class="lb-img" alt="">' +
+      '<button class="lb-next" aria-label="Next">&#8250;</button>' +
+      '<div class="lb-count"></div>';
+    document.body.appendChild(lb);
+    imgEl = lb.querySelector('.lb-img');
+    countEl = lb.querySelector('.lb-count');
+    lb.querySelector('.lb-close').onclick = close;
+    lb.querySelector('.lb-prev').onclick = () => show(idx - 1);
+    lb.querySelector('.lb-next').onclick = () => show(idx + 1);
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  }
+  function show(i) {
+    idx = (i + imgs.length) % imgs.length;
+    imgEl.src = imgs[idx];
+    countEl.textContent = (idx + 1) + ' / ' + imgs.length;
+  }
+  function open(list, i) {
+    if (!lb) build();
+    imgs = list;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    show(i);
+  }
+  function close() {
+    if (!lb) return;
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  galleries.forEach(g => {
+    const anchors = [...g.querySelectorAll('a')];
+    const list = anchors.map(a => a.getAttribute('href')).filter(Boolean);
+    anchors.forEach((a, i) => a.addEventListener('click', e => { e.preventDefault(); open(list, i); }));
+  });
+  document.addEventListener('keydown', e => {
+    if (!lb || !lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') show(idx + 1);
+    else if (e.key === 'ArrowLeft') show(idx - 1);
+  });
+})();
+
 // ---------- tour filters ----------
 const chips = document.querySelectorAll('.chip');
 if (chips.length) {

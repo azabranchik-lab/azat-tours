@@ -157,6 +157,15 @@
           <div class="per">Tailored to group size, season & options</div>
           <div class="rateline">100% local Kyrgyz guides · no prepayment</div>
           ${facts.map(f => `<div class="row"><span>${f[0]}</span><b>${f[1]}</b></div>`).join('')}
+          <div class="bk-sec">
+            <div class="bk-h">What's included</div>
+            <ul class="bk-incl">
+              <li>Local English-speaking guide</li>
+              <li>Private transport &amp; transfers</li>
+              <li>Small group or fully private</li>
+              <li>24/7 support team in Bishkek</li>
+            </ul>
+          </div>
           <a href="#book" class="btn btn-primary" style="margin-top:18px">Request this tour →</a>
           <a href="${wa}" target="_blank" rel="noopener" class="wa-line">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg>
