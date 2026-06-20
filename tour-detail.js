@@ -22,15 +22,36 @@
 
   const highlights = (t.highlights && t.highlights.length ? t.highlights : t.itinerary.map(d => d.title)).slice(0, 6);
 
-  const itineraryHTML = t.itinerary.map((d, i) => `
+  const carIcon = '<svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 16 1.2-6.5A2 2 0 0 1 8.2 8h7.6a2 2 0 0 1 2 1.5L19 16M4 16h16v3H4Z"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg>';
+  const tentIcon = '<svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3 20h18Z"/><path d="M12 4v16"/></svg>';
+
+  const itineraryHTML = t.itinerary.map((d, i) => {
+    const transfer = d.transfer || d.drive || '';
+    const descHTML = Array.isArray(d.desc) ? d.desc.filter(Boolean).map(p => `<p>${p}</p>`).join('') : (d.desc ? `<p>${d.desc}</p>` : '');
+    const rows = [];
+    if (transfer) rows.push(['Transfer', transfer]);
+    if (d.activity) { const p = d.activity.split(' · '); rows.push([p[0], p.slice(1).join(' · ') || p[0]]); }
+    if (d.meals) rows.push(['Meals', d.meals]);
+    if (d.overnight) rows.push(['Overnight', d.overnight]);
+    if (d.wc) rows.push(['WC', d.wc]);
+    if (d.internet) rows.push(['Internet', d.internet]);
+    const infoHTML = rows.map(([k, v]) => `<div class="ti"><b>${k}</b><span>${v}</span></div>`).join('');
+    const metaBits = [transfer && carIcon + ' ' + transfer, d.overnight && tentIcon + ' ' + d.overnight].filter(Boolean).join(' · ');
+    return `
     <div class="tl ${i === 0 ? 'open' : ''}" data-day="${d.day}">
       <button class="tl-q" type="button">
         <div><h3>${d.title}</h3>
-          <div class="meta">${[d.drive && '<svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 16 1.2-6.5A2 2 0 0 1 8.2 8h7.6a2 2 0 0 1 2 1.5L19 16M4 16h16v3H4Z"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg> ' + d.drive, d.overnight && '<svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3 20h18Z"/><path d="M12 4v16"/></svg> ' + d.overnight].filter(Boolean).join(' · ')}</div>
+          <div class="meta">${metaBits}</div>
         </div><span class="tgl">+</span>
       </button>
-      <div class="tl-a"><p>${d.desc || ''}${d.meals ? `<br/><br/><b>Meals:</b> ${d.meals}` : ''}</p></div>
-    </div>`).join('');
+      <div class="tl-a">
+        <div class="tl-body ${descHTML ? '' : 'no-desc'}">
+          ${descHTML ? `<div class="tl-desc">${descHTML}</div>` : ''}
+          ${infoHTML ? `<div class="tl-info">${infoHTML}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 
   const galleryImgs = (t.images || []).slice(1, 9);
   const galleryHTML = galleryImgs.length ? `
@@ -73,6 +94,13 @@
             ${highlights.map(h => `<div class="hl"><span class="ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.7 5.3L19 11l-5.3 1.7L12 18l-1.7-5.3L5 11l5.3-1.7Z"/></svg></span><div><b>${h}</b></div></div>`).join('')}
           </div>
         </section>
+
+        ${t.route && t.route.length ? `
+        <section class="reveal in">
+          <h2>Route map</h2>
+          <p>The full loop — start to finish, with every overnight stop.</p>
+          <div id="tourMap" class="tour-map"></div>
+        </section>` : ''}
 
         <section class="reveal in">
           <h2>Day-by-day itinerary</h2>
@@ -153,4 +181,15 @@
   });
   const first = root.querySelector('.tl.open .tl-a');
   if (first) first.style.maxHeight = first.scrollHeight + 'px';
+
+  // route map (Leaflet) — only if the tour has coordinates and Leaflet is loaded
+  if (window.L && t.route && t.route.length && document.getElementById('tourMap')) {
+    const pts = t.route.map(s => [s.lat, s.lng]);
+    const map = L.map('tourMap', { scrollWheelZoom: false }).setView(pts[0], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17, attribution: '© OpenStreetMap' }).addTo(map);
+    L.polyline(pts, { color: '#127A6F', weight: 4, opacity: .9, dashArray: '2,8', lineCap: 'round' }).addTo(map);
+    const dot = L.divIcon({ className: '', html: '<div style="width:14px;height:14px;border-radius:50%;background:#D9A441;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
+    t.route.forEach(s => { if (s.name) L.marker([s.lat, s.lng], { icon: dot }).addTo(map).bindPopup('<b>' + s.name + '</b>'); });
+    map.fitBounds(pts, { padding: [30, 30] });
+  }
 })();
