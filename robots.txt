@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Point crawlers to the sitemap (update the domain once live)
-Sitemap: https://belocal.travel/sitemap.xml
+Sitemap: https://azattours.travel/sitemap.xml

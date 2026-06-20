@@ -1,4 +1,4 @@
-// BeLocal Telegram admin bot — manage tours AND blog from your phone.
+// Azat Tours Telegram admin bot — manage tours AND blog from your phone.
 // Setup: put your token + ownerId in config.json (first /start auto-claims owner).
 // Run:  node bot.js
 const fs = require('fs');
@@ -117,7 +117,7 @@ bot.command('whoami', ctx => ctx.reply(`Your Telegram ID: ${ctx.from.id}`));
 bot.command('cancel', ctx => { sessions.delete(ctx.from.id); ctx.reply('Cancelled. ✅'); });
 bot.command('start', async ctx => {
   if (!OWNER_ID) { setOwner(ctx.from.id); await ctx.reply(`✅ You are now the admin (ID ${ctx.from.id}).`); }
-  await ctx.reply('🏔️ *BeLocal admin bot*\n\n*Tours*\n/tours · /addtour\n\n*Blog*\n/posts · /addpost\n\n*Guides & reviews*\n/guides · /addguide\n/reviews · /addreview (choose which page it shows on)\n\n*Enquiries & chat*\n/leads · /chats\nReply to any 💬 message to answer on the site\n\n/cancel — stop · /help', md);
+  await ctx.reply('🏔️ *Azat Tours admin bot*\n\n*Tours*\n/tours · /addtour\n\n*Blog*\n/posts · /addpost\n\n*Guides & reviews*\n/guides · /addguide\n/reviews · /addreview (choose which page it shows on)\n\n*Enquiries & chat*\n/leads · /chats\nReply to any 💬 message to answer on the site\n\n/cancel — stop · /help', md);
 });
 bot.command('help', ctx => ctx.reply(
   'TOURS\n/tours — list, view, edit text, manage photos, delete\n/addtour — new tour wizard\n\n' +
@@ -516,4 +516,4 @@ async function saveReviewDraft(ctx, s) {
 }
 
 bot.catch(err => console.error('Bot error:', err));
-bot.start({ onStart: info => console.log(`✅ BeLocal admin bot running as @${info.username}. Owner: ${OWNER_ID || '(unclaimed)'}`) });
+bot.start({ onStart: info => console.log(`✅ Azat Tours admin bot running as @${info.username}. Owner: ${OWNER_ID || '(unclaimed)'}`) });

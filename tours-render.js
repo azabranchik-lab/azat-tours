@@ -2,7 +2,7 @@
 // Used on tours.html (full catalog + filters) and index.html (featured grid).
 (function () {
   const TOURS = window.TOURS || [];
-  const waMsg = name => `https://wa.me/996222222011?text=${encodeURIComponent("Hi BeLocal! I'm interested in the " + name + " tour.")}`;
+  const waMsg = name => `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + name + " tour.")}`;
 
   const ARROW = '<svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   function card(t) {

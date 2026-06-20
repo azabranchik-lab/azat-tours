@@ -35,7 +35,7 @@
   const words = String(p.body).trim().split(/\s+/).length;
   const readTime = Math.max(1, Math.round(words / 200)) + ' min read';
   const dateStr = p.date ? new Date(p.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-  document.title = `${p.title} | BeLocal Kyrgyzstan`;
+  document.title = `${p.title} | Azat Tours Kyrgyzstan`;
 
   const gallery = (p.images || []).length ? `
     <figure style="margin-top:40px"><div class="gallery" style="margin:0">
@@ -75,6 +75,6 @@
 
     <div class="article-foot">
       <a href="blog.html">← All articles</a>
-      <a href="https://wa.me/996222222011?text=Hi%20BeLocal!%20I%20read%20your%20article%20and%20have%20a%20question." target="_blank" rel="noopener">Ask us on WhatsApp →</a>
+      <a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%20read%20your%20article%20and%20have%20a%20question." target="_blank" rel="noopener">Ask us on WhatsApp →</a>
     </div>`;
 })();

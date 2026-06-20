@@ -8,8 +8,8 @@
   const root = document.getElementById('tourRoot');
   if (!t) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Tour not found</h1><p><a href="tours.html">← Back to all tours</a></p></div>'; return; }
 
-  document.title = `${t.name} — Kyrgyzstan Tour | BeLocal`;
-  const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi BeLocal! I'm interested in the " + t.name + " tour.")}`;
+  document.title = `${t.name} — Kyrgyzstan Tour | Azat Tours`;
+  const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + t.name + " tour.")}`;
   const img = i => (t.images && t.images[i]) || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80';
 
   const facts = [
