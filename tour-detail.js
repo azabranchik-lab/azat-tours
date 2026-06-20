@@ -84,8 +84,18 @@
     </div>
   </section>
 
+  <div class="tour-stickybar">
+    <div class="wrap">
+      <div class="tsb-info"><b>${t.name}</b><span>${t.duration}${t.start_from ? ' · from ' + t.start_from : ''} · On request</span></div>
+      <div class="tsb-cta">
+        <a href="${wa}" target="_blank" rel="noopener" class="tsb-wa"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg> WhatsApp</a>
+        <a href="#book" class="btn btn-primary">Request this tour →</a>
+      </div>
+    </div>
+  </div>
+
   <section class="pad">
-    <div class="wrap tour-layout">
+    <div class="wrap">
       <div class="tour-main">
 
         <section class="reveal in">
@@ -128,7 +138,8 @@
         <section id="book" class="reveal in" style="border-bottom:0">
           <h2>Request this tour</h2>
           <p>Tell us your dates and we'll confirm availability and a tailored price within 24 hours. Free to enquire, no prepayment.</p>
-          <div class="form-card" style="max-width:560px;box-shadow:var(--shadow);padding:30px">
+          <div class="book-grid">
+          <div class="form-card" style="box-shadow:var(--shadow);padding:30px">
             <form id="leadForm">
               <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
               <input type="hidden" name="tour" value="${t.name}" />
@@ -147,33 +158,23 @@
               <p style="color:var(--ink-soft)">A local expert will email you within 24 hours about “${t.name}”.</p>
             </div>
           </div>
+          <aside class="book-side">
+            <div class="book-price"><span>Price</span><b>On request</b><em>Tailored to group size, season &amp; options</em></div>
+            <div class="bk-h">Why book direct with us</div>
+            <ul class="book-perks">
+              <li>Talk to a real local — not a call centre</li>
+              <li>Free to enquire · no prepayment</li>
+              <li>Tailored to your dates, pace &amp; budget</li>
+              <li>A reply within 24 hours</li>
+            </ul>
+            <div class="book-contact">
+              <a href="${wa}" target="_blank" rel="noopener" class="wa"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg> WhatsApp</a>
+              <a href="https://t.me/996222222011" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.8 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L6.8 13l-4.6-1.4c-1-.3-1-1 .2-1.5l18-7c.8-.3 1.6.2 1.3 1.2Z"/></svg> Telegram</a>
+            </div>
+          </aside>
+          </div>
         </section>
       </div>
-
-      <aside>
-        <div class="booking reveal in">
-          <div class="from">Price</div>
-          <div class="amount" style="font-size:1.9rem">On request</div>
-          <div class="per">Tailored to group size, season & options</div>
-          <div class="rateline">100% local Kyrgyz guides · no prepayment</div>
-          ${facts.map(f => `<div class="row"><span>${f[0]}</span><b>${f[1]}</b></div>`).join('')}
-          <div class="bk-sec">
-            <div class="bk-h">What's included</div>
-            <ul class="bk-incl">
-              <li>Local English-speaking guide</li>
-              <li>Private transport &amp; transfers</li>
-              <li>Small group or fully private</li>
-              <li>24/7 support team in Bishkek</li>
-            </ul>
-          </div>
-          <a href="#book" class="btn btn-primary" style="margin-top:18px">Request this tour →</a>
-          <a href="${wa}" target="_blank" rel="noopener" class="wa-line">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg>
-            Ask on WhatsApp
-          </a>
-          <p class="assurance"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg> Free to enquire · no prepayment<br/><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg> Tailor-made · flexible dates</p>
-        </div>
-      </aside>
     </div>
   </section>`;
 
