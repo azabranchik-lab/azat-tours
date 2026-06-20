@@ -206,15 +206,16 @@
   // route map (Leaflet) — only if the tour has coordinates and Leaflet is loaded
   if (window.L && t.route && t.route.length && document.getElementById('tourMap')) {
     const pts = t.route.map(s => [s.lat, s.lng]);
+    const linePts = (t.route_path && t.route_path.length) ? t.route_path : pts;
     const map = L.map('tourMap', { scrollWheelZoom: false }).setView(pts[0], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17, attribution: '© OpenStreetMap' }).addTo(map);
-    L.polyline(pts, { color: '#127A6F', weight: 5, opacity: .92, lineJoin: 'round', lineCap: 'round' }).addTo(map);
+    L.polyline(linePts, { color: '#127A6F', weight: 5, opacity: .92, lineJoin: 'round', lineCap: 'round', smoothFactor: 0.4 }).addTo(map);
     const dot = L.divIcon({ className: '', html: '<div style="width:13px;height:13px;border-radius:50%;background:#D9A441;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)"></div>', iconSize: [13, 13], iconAnchor: [6.5, 6.5] });
     t.route.forEach(s => {
       if (!s.name) return;
       L.marker([s.lat, s.lng], { icon: dot }).addTo(map)
         .bindTooltip(s.name, { permanent: true, direction: 'top', className: 'map-label', offset: [0, -4] });
     });
-    map.fitBounds(pts, { padding: [50, 70] });
+    map.fitBounds(linePts, { padding: [50, 70] });
   }
 })();
