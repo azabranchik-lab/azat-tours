@@ -599,6 +599,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 }
 @media(max-width:680px){
   .pad{padding:64px 0}
+  body[data-page="tours"] .pad{padding-top:30px}   /* tighten the dead gap between hero and catalog */
   .nav-links{display:none}
   .burger{display:flex}
   .tours-grid,.why-grid,.steps,.blog-grid{grid-template-columns:1fr}
@@ -1030,7 +1031,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .mcount{font-size:.88rem;font-weight:600;color:var(--ink-soft)}   /* live "N tours" — left of the actions */
   .mtb-actions{display:flex;align-items:center;gap:10px}
   .msort-wrap{position:relative;flex:none}
-  .msort,.mfilter-btn{display:inline-flex;align-items:center;gap:7px;border:0;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line);border-radius:999px;padding:.6em 1.15em;font:600 .9rem/1 inherit;color:var(--ink);cursor:pointer;transition:box-shadow .22s,color .22s}
+  .msort,.mfilter-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;border:0;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line);border-radius:999px;padding:.5em 1.15em;font:600 .9rem/1 inherit;color:var(--ink);cursor:pointer;transition:box-shadow .22s,color .22s}
   .mfilter-btn{margin:0}                                      /* sits right next to Sort */
   .msort-ic{width:16px;height:16px;flex:none}
   .mfilter-btn.has{box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--lake);color:var(--lake)}

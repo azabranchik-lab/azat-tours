@@ -18,7 +18,7 @@
     const meta = '<div class="tour-meta">' +
       `<span class="tm tm-cat">${t.cats[0] || t.category}</span>` +
       (t.duration ? `<span class="tm">${t.duration}</span>` : '') +
-      (t.tour_speed ? `<span class="tm">${t.tour_speed.replace(/[\s-]*paced$/i, '').trim()}</span>` : '') +
+      (t.tour_speed ? `<span class="tm">${t.tour_speed.replace(/[\s-]*paced$/i, '').replace(/^Moderately$/i, 'Moderate').trim()}</span>` : '') +
       '</div>';
     return `
       <a class="tour" href="${link}" data-cats="${t.cats.join('|')}" data-tags="${(t.tags || []).join('|')}" data-days="${t.days || 0}">
