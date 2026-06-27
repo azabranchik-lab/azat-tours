@@ -1,0 +1,100 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to Kochkor & ride to Kol-Ukok Lake",
+    "desc": [
+      "We start early from Bishkek and drive to Kochkor Village, gateway to the high lake of Kol-Ukok. Lunch waits at a local guesthouse before you meet your horse and settle into the saddle.",
+      "The trail begins gently along the Ukok River, then steepens through rugged country past lone herder houses. By evening you reach a yurt camp on the shore of Kol-Ukok, a fine first taste of nomad life in the mountains."
+    ],
+    "transfer": "200 km · 3-4 h",
+    "activity": "Horse riding · 15 km · 4 h",
+    "meals": "Lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (3000 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Ride over Kyzyl-Jar Pass to Ak-Kiya",
+    "desc": [
+      "After breakfast you climb to the Kyzyl-Jar Pass at 3600 m, the highest point of the ride, with wide alpine views in every direction. A picnic lunch at the top makes the most of it.",
+      "From the pass you drop into the Kara-Kujur Valley and ride on to the remote village of Ak-Kiya, reaching it by early evening. A quiet walk and a home-cooked dinner round off the day."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 18 km · 5-6 h",
+    "meals": "Breakfast at yurt, picnic lunch, dinner at homestay",
+    "overnight": "Homestay",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Ride toward Dolon Pass",
+    "desc": [
+      "You ride out through Ak-Kiya, past traditional homes and everyday village life, then climb into rougher hill country with rolling ridges and distant peaks. A mid-morning picnic gives the horses a rest.",
+      "The trail follows the ridges, crosses the Bishkek-Torugart highway briefly, and brings you to a yurt near the Dolon Pass. A shepherd family hosts you for the night with a hearty dinner and good company."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 18 km · 5-6 h",
+    "meals": "Breakfast at homestay, picnic lunch, dinner at yurt",
+    "overnight": "Yurt (2900 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 4,
+    "title": "Ride into Ken-Suu Valley",
+    "desc": [
+      "The morning climbs toward the Dolon Pass with views over the Ken-Suu Valley and the Kara-Unkur gorge. You pause for a relaxed picnic in a sheltered spot.",
+      "The afternoon is easier going, riding through the Ken-Suu Valley past open pastures, grazing sheep, and scattered yurts. A Kyrgyz family welcomes you for the night, with dinner by firelight under the stars."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 20 km · 4-5 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (2800 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 5,
+    "title": "Ride over Terskey-Torpu Pass toward Song-Kol",
+    "desc": [
+      "After saying goodbye to your hosts, you ride up to the Terskey-Torpu Pass, where Song-Kol suddenly appears, turquoise and ringed by mountains. A picnic at the top gives the horses time to rest.",
+      "From there you descend through open grassland toward the lake's edge, reaching the quiet Kumduu-Suu Valley by day's end. A yurt set up by local herders waits for you, just short of the lake itself."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 20 km · 5-6 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 6,
+    "title": "Ride along Song-Kol to Uzbek-Ashuu",
+    "desc": [
+      "Today you take in Song-Kol up close, riding the open northern shore on smooth ground that is made for a relaxed canter, with the lake on one side and big horizons on the other.",
+      "Around midday you stop at a lakeside yurt for a warm lunch and a rest. The ride then continues gently to the Uzbek-Ashuu pasture, where you settle into a yurt for your last night in nomad country."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 20 km · 5-6 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (2300 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 7,
+    "title": "Ride to Kyzart & drive to Bishkek",
+    "desc": [
+      "The last morning begins with breakfast and farewells, then a ride up to the Uzbek-Ashuu Pass at 3300 m for a final look back at Song-Kol before the trail descends toward Kyzart Village.",
+      "You part with your horses after seven days in the saddle and enjoy a well-earned lunch at the guesthouse. From there it is a drive back to Bishkek, the quiet nomad world slowly giving way to the city."
+    ],
+    "transfer": "280 km · 4 h",
+    "activity": "Horse riding · 16 km · 4 h",
+    "meals": "Breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

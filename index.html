@@ -4,11 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-<title>Azat Tours — Small-Group & Tailor-Made Tours in Kyrgyzstan</title>
+<title>Azat Tours, Small-Group & Tailor-Made Tours in Kyrgyzstan</title>
 <meta name="description" content="Trek the Tian Shan, sleep in yurts by Song-Kul, ride with nomads. Local Kyrgyz experts craft your custom adventure. Free quote, no prepayment to enquire." />
 <link rel="canonical" href="https://azattours.travel/" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Azat Tours — Tours in Kyrgyzstan" />
+<meta property="og:title" content="Azat Tours, Tours in Kyrgyzstan" />
 <meta property="og:description" content="Trek the Tian Shan, sleep in yurts, ride with nomads. Local experts, free quote, no prepayment." />
 <meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -17,7 +17,7 @@
   "@context": "https://schema.org",
   "@type": "TravelAgency",
   "name": "Azat Tours Kyrgyzstan",
-  "description": "Small-group and tailor-made adventure tours across Kyrgyzstan — trekking, horse treks, yurt stays and Issyk-Kul culture trips, run by local guides.",
+  "description": "Small-group and tailor-made adventure tours across Kyrgyzstan, trekking, horse treks, yurt stays and Issyk-Kul culture trips, run by local guides.",
   "url": "https://azattours.travel",
   "telephone": "+996222222011",
   "areaServed": "Kyrgyzstan",
@@ -30,47 +30,9 @@
 <link rel="stylesheet" href="styles.css" />
 <script src="theme.js"></script>
 </head>
-<body>
+<body data-page="home">
 
-<!-- ============ HEADER ============ -->
-<header id="header">
-  <div class="wrap nav">
-    <a href="index.html" class="logo">
-      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path d="M2 32 L13 12 L20 24 L26 14 L38 32 Z" fill="#19A793"/>
-        <path d="M13 12 L20 24 L16 24 Z" fill="#fff" opacity=".75"/>
-        <path d="M26 14 L31 22 L28 22 Z" fill="#fff" opacity=".55"/>
-      </svg>
-      <span>Azat Tours<small>Kyrgyzstan</small></span>
-    </a>
-    <div class="nav-links">
-      <a href="tours.html">Tours</a>
-      <a href="about.html">About</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
-      <a href="plan-trip.html">Plan your trip</a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Light / dark"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg></button>
-      <a href="builder.html" class="btn btn-primary nav-cta">Build your trip</a>
-    </div>
-    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
-
-<!-- mobile menu -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="top">
-    <span class="logo" style="color:#fff">Azat Tours</span>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Light / dark"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg></button><button class="close" id="closeMenu" aria-label="Close menu">&times;</button>
-  </div>
-  <nav>
-    <a href="tours.html" data-close>Tours</a>
-    <a href="about.html" data-close>About</a>
-    <a href="blog.html" data-close>Blog</a>
-    <a href="contact.html" data-close>Contact</a>
-    <a href="plan-trip.html" data-close>Plan your trip</a>
-  </nav>
-  <a href="builder.html" class="btn btn-primary" data-close>Build your trip</a>
-</div>
+<!-- header + mobile menu injected by nav.js -->
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
@@ -78,11 +40,10 @@
     <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80" alt="Mountain lake in the Tian Shan, Kyrgyzstan" />
   </div>
   <div class="wrap hero-inner">
-    <p class="eyebrow reveal" style="color:#fbe6c4">Azat means &ldquo;free&rdquo; · Local Kyrgyz experts</p>
     <h1 class="reveal" data-delay="1">Trek the Tian&nbsp;Shan.<br/>Sleep in <em>yurts.</em><br/>Ride with nomads.</h1>
     <p class="lead reveal" data-delay="2">Small-group and tailor-made trips across Kyrgyzstan, planned and led by people who were born in these mountains.</p>
     <div class="hero-actions reveal" data-delay="3">
-      <a href="#plan" class="btn btn-primary">Get a free quote →</a>
+      <a href="builder.html" class="btn btn-primary">Build your trip</a>
       <a href="tours.html" class="btn btn-ghost">Browse tours</a>
     </div>
     <div class="hero-trust reveal" data-delay="4">
@@ -104,7 +65,7 @@
         <p class="eyebrow reveal">Most-loved journeys</p>
         <h2 class="reveal" data-delay="1">Featured tours</h2>
       </div>
-      <a href="tours.html" class="btn btn-dark reveal" data-delay="2">See all tours →</a>
+      <a href="tours.html" class="btn btn-dark reveal" data-delay="2">See all tours</a>
     </div>
 
     <div class="tours-grid" id="featuredGrid"></div>
@@ -117,65 +78,66 @@
     <div class="sec-head reveal">
       <p class="eyebrow">However you like to travel</p>
       <h2>Choose your kind of adventure</h2>
-      <p>A single day near Bishkek, or two weeks deep in the Tian Shan. Pick a theme — we'll build the rest around you.</p>
+      <p>A single day near Bishkek, or two weeks deep in the Tian Shan. Pick a theme, we'll build the rest around you.</p>
     </div>
     <div class="exp-grid">
-      <a href="tours.html" class="exp-card reveal">
-        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Trekking" />
-        <div><h3>Trekking & Hiking</h3><span>14 routes · all levels</span></div>
+      <a href="tours.html?cat=Combined" class="exp-card reveal">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Combined adventures" />
+        <div><h3>Combined adventures</h3><span>Trek, ride &amp; road in one trip</span></div>
       </a>
-      <a href="tours.html" class="exp-card reveal" data-delay="1">
+      <a href="tours.html?cat=Road%20trip" class="exp-card reveal" data-delay="1">
+        <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80" alt="Road trips" />
+        <div><h3>Road trips</h3><span>Lakes &amp; valleys, the slow way</span></div>
+      </a>
+      <a href="tours.html?cat=Horse%20riding" class="exp-card reveal" data-delay="2">
         <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=800&q=80" alt="Horse riding" />
-        <div><h3>Horse Treks</h3><span>Ride like a nomad</span></div>
+        <div><h3>Horse treks</h3><span>Ride like a nomad</span></div>
       </a>
-      <a href="tours.html" class="exp-card reveal" data-delay="2">
-        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80" alt="Yurt stays" />
-        <div><h3>Yurt Stays</h3><span>Sleep under the stars</span></div>
+      <a href="tours.html?cat=Off-the-beaten-path" class="exp-card reveal" data-delay="1">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Off the beaten path" />
+        <div><h3>Off the beaten path</h3><span>Remote valleys, few people</span></div>
       </a>
-      <a href="tours.html" class="exp-card reveal" data-delay="1">
-        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80" alt="Issyk-Kul" />
-        <div><h3>Issyk-Kul & Lakes</h3><span>Beaches at altitude</span></div>
-      </a>
-      <a href="tours.html" class="exp-card reveal" data-delay="2">
-        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80" alt="Culture tours" />
-        <div><h3>Culture & Day Tours</h3><span>From Bishkek</span></div>
+      <a href="tours.html?cat=Winter%20tours" class="exp-card reveal" data-delay="2">
+        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80" alt="Winter tours" />
+        <div><h3>Winter tours</h3><span>Snow, skiing &amp; frozen lakes</span></div>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ============ BUILDER PROMO ============ -->
-<section class="pad how">
-  <div class="wrap" style="display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center">
-    <div class="reveal">
-      <p class="eyebrow" style="color:var(--gold)">Your trip, your way</p>
-      <h2 style="font-size:clamp(2rem,4vw,3rem);color:#fff;margin:14px 0 14px">Don't see your perfect trip? Build it.</h2>
-      <p style="color:rgba(246,242,233,.8);max-width:46ch;margin-bottom:26px">Answer 5 quick visual questions — style, dates, what you want to see — and we'll match you with tours and send a tailored plan in 24 hours. Free, no prepayment.</p>
-      <a href="builder.html" class="btn btn-primary">Start building →</a>
-    </div>
-    <div class="reveal" data-delay="1" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=500&q=70" alt="" style="border-radius:14px;aspect-ratio:1;object-fit:cover">
-      <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=500&q=70" alt="" style="border-radius:14px;aspect-ratio:1;object-fit:cover;margin-top:24px">
-      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=70" alt="" style="border-radius:14px;aspect-ratio:1;object-fit:cover">
-      <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=500&q=70" alt="" style="border-radius:14px;aspect-ratio:1;object-fit:cover;margin-top:24px">
-    </div>
-  </div>
-</section>
-
-<!-- ============ WHY US ============ -->
+<!-- ============ ABOUT / WHY US ============ -->
 <section class="pad" id="why">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow">Why travel with Azat Tours</p>
-      <h2>Born here. Trusted worldwide.</h2>
+      <p class="eyebrow">About Azat Tours</p>
+      <h2>Azat means &ldquo;free&rdquo;, run by locals since 2019.</h2>
+      <p>Azat is our founder's name and the Kyrgyz word for <em>free</em>. He has guided these valleys since 2019 with a small local team, and built Azat Tours so you feel free here, and at home. Here's what that means for your trip:</p>
     </div>
     <div class="why-grid">
-      <div class="why-card reveal"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div><h3>Real local guides</h3><p>Every trip is led by Kyrgyz guides who know the passes, the families and the safest river crossings — not a script.</p></div>
-      <div class="why-card reveal" data-delay="1"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.7 5.3L19 11l-5.3 1.7L12 18l-1.7-5.3L5 11l5.3-1.7Z"/></svg></div><h3>Tailor-made by default</h3><p>Tell us your dates, pace and budget. We design an itinerary that fits you — no rigid package tourism.</p></div>
-      <div class="why-card reveal" data-delay="2"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4 3 7.2 7 9 4-1.8 7-5 7-9V6Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Safety first</h3><p>Vetted vehicles, first-aid-trained guides, satellite comms in remote areas and 24/7 support back in Bishkek.</p></div>
-      <div class="why-card reveal"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-3 3 3 3-3 3 3h3"/><path d="M6 12v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4"/></svg></div><h3>Community tourism</h3><p>We partner with herder families and village hosts, so your money stays in the mountains it came from.</p></div>
-      <div class="why-card reveal" data-delay="1"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1Z"/></svg></div><h3>Easy from abroad</h3><p>Visa-free for 60+ nationalities. We help with logistics, airport pickup, SIM cards and everything in between.</p></div>
-      <div class="why-card reveal" data-delay="2"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 10l9 11 9-11Z"/><path d="M3 10h18M9 3 7 10M15 3l2 7"/></svg></div><h3>Fair, honest pricing</h3><p>Transparent quotes, no hidden extras, and a best-price promise. Enquire free — pay only when you're ready.</p></div>
+      <a class="why-card reveal" href="post.html?slug=real-local-guides"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div><h3>Real local guides</h3><p>Every trip is led by Kyrgyz guides who know the passes, the families and the safest river crossings, not a script.</p></a>
+      <a class="why-card reveal" data-delay="1" href="post.html?slug=tailor-made-trips"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.7 5.3L19 11l-5.3 1.7L12 18l-1.7-5.3L5 11l5.3-1.7Z"/></svg></div><h3>Tailor-made by default</h3><p>Tell us your dates, pace and budget. We design an itinerary that fits you, no rigid package tourism.</p></a>
+      <a class="why-card reveal" data-delay="2" href="post.html?slug=safety-in-the-mountains"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4 3 7.2 7 9 4-1.8 7-5 7-9V6Z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Safety first</h3><p>Vetted vehicles, first-aid-trained guides, satellite comms in remote areas and 24/7 support back in Bishkek.</p></a>
+      <a class="why-card reveal" href="post.html?slug=community-tourism"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-3 3 3 3-3 3 3h3"/><path d="M6 12v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-4"/></svg></div><h3>Community tourism</h3><p>We partner with herder families and village hosts, so your money stays in the mountains it came from.</p></a>
+      <a class="why-card reveal" data-delay="1" href="post.html?slug=easy-from-abroad"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1Z"/></svg></div><h3>Easy from abroad</h3><p>Visa-free for 60+ nationalities. We help with logistics, airport pickup, SIM cards and everything in between.</p></a>
+      <a class="why-card reveal" data-delay="2" href="post.html?slug=fair-honest-pricing"><div class="why-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 10l9 11 9-11Z"/><path d="M3 10h18M9 3 7 10M15 3l2 7"/></svg></div><h3>Fair, honest pricing</h3><p>Transparent quotes, no hidden extras, and a best-price promise. Enquire free, pay only when you're ready.</p></a>
+    </div>
+    <div class="sec-cta reveal" style="margin-top:28px"><a href="about.html" class="btn btn-dark">About us & our story</a></div>
+  </div>
+</section>
+
+<!-- ============ TOP PLACES (SIGHTS) ============ -->
+<section class="pad exp" id="places">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Where you'll go</p>
+      <h2>Kyrgyzstan's must-see places</h2>
+      <p>The lakes, valleys and Silk-Road sites our trips are built around, every tour can be tailored to include them.</p>
+    </div>
+    <div class="exp-grid">
+      <a href="tours.html" class="exp-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=800&q=80" alt="Song-Köl Lake" /><div><h3>Song-Köl Lake</h3><span>Naryn region · alpine pastures &amp; yurts</span></div></a>
+      <a href="tours.html" class="exp-card reveal" data-delay="1"><img loading="lazy" src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80" alt="Kel-Suu Lake" /><div><h3>Kel-Suu Lake</h3><span>At-Bashy · hidden canyon lake</span></div></a>
+      <a href="tours.html" class="exp-card reveal" data-delay="2"><img loading="lazy" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt="Lake Issyk-Köl" /><div><h3>Lake Issyk-Köl</h3><span>The pearl of the Tian Shan</span></div></a>
+      <a href="tours.html" class="exp-card reveal" data-delay="1"><img loading="lazy" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Tash Rabat" /><div><h3>Tash Rabat</h3><span>Naryn · Silk-Road caravanserai</span></div></a>
     </div>
   </div>
 </section>
@@ -189,10 +151,24 @@
       <p>Three easy steps between you and the mountains. No commitment until your itinerary feels perfect.</p>
     </div>
     <div class="steps">
-      <div class="step reveal"><h3>Tell us your dates</h3><p>Share when you want to travel, what excites you and roughly your budget — in a 2-minute form or a quick message.</p></div>
+      <div class="step reveal"><h3>Tell us your dates</h3><p>Share when you want to travel, what excites you and roughly your budget, in a 2-minute form or a quick message.</p></div>
       <div class="step reveal" data-delay="1"><h3>We craft your itinerary</h3><p>Within 24 hours a local expert sends a personalised plan with routes, stays and a clear price. We refine it together.</p></div>
       <div class="step reveal" data-delay="2"><h3>You travel, we handle it</h3><p>Land in Bishkek and relax. Guides, transport, yurts and surprises along the way are all taken care of.</p></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS (filled by bot; section hides itself when empty) ============ -->
+<section class="pad" id="reviews">
+  <div class="wrap">
+    <div class="head-row sec-head" style="margin-bottom:32px">
+      <div>
+        <p class="eyebrow reveal">Travellers</p>
+        <h2 class="reveal" data-delay="1">What guests say</h2>
+      </div>
+      <div class="rev-nav reveal" data-delay="2"><button id="revPrev" type="button" aria-label="Previous">&#8249;</button><button id="revNext" type="button" aria-label="Next">&#8250;</button></div>
+    </div>
+    <div class="rev-track" id="revTrack"></div>
   </div>
 </section>
 
@@ -201,7 +177,7 @@
   <div class="wrap">
     <div class="ig-head reveal">
       <div><p class="eyebrow">Follow the journey</p><h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem)">@azattours.kyrgyzstan</h2></div>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn btn-dark">Follow on Instagram →</a>
+      <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn btn-dark">Follow on Instagram</a>
     </div>
     <div class="ig-grid">
       <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></span></a>
@@ -220,12 +196,12 @@
     <div class="sec-head reveal" style="margin-bottom:0">
       <p class="eyebrow">Good to know</p>
       <h2>Questions, answered</h2>
-      <p>Everything first-time visitors ask before booking. Still unsure? Message us — we reply fast.</p>
+      <p>Everything first-time visitors ask before booking. Still unsure? Message us, we reply fast.</p>
     </div>
     <div class="reveal" data-delay="1">
       <div class="faq-item open">
         <button class="faq-q">Do I need a visa for Kyrgyzstan?<span class="ic">+</span></button>
-        <div class="faq-a"><p>Citizens of 60+ countries — including the EU, UK, USA, Canada, Australia, Japan and more — can enter visa-free for up to 60 days. We'll confirm your specific case and help with any paperwork when you enquire.</p></div>
+        <div class="faq-a"><p>Citizens of 60+ countries, including the EU, UK, USA, Canada, Australia, Japan and more, can enter visa-free for up to 60 days. We'll confirm your specific case and help with any paperwork when you enquire.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q">Is Kyrgyzstan safe for tourists?<span class="ic">+</span></button>
@@ -237,7 +213,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q">How fit do I need to be?<span class="ic">+</span></button>
-        <div class="faq-a"><p>We grade every tour from easy to hard. There are gentle day tours and lakeside trips with almost no walking, right up to high-altitude expeditions. Tell us your level and we'll match the route — or build one for you.</p></div>
+        <div class="faq-a"><p>We grade every tour from easy to hard. There are gentle day tours and lakeside trips with almost no walking, right up to high-altitude expeditions. Tell us your level and we'll match the route, or build one for you.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q">How and when do I pay?<span class="ic">+</span></button>
@@ -254,7 +230,7 @@
     <div class="lead-copy reveal">
       <p class="eyebrow" style="color:var(--gold)">Free · no prepayment</p>
       <h2>Let's build your Kyrgyzstan adventure</h2>
-      <p>Send us a few details and a local expert will reply within 24 hours with ideas and a clear price — no obligation.</p>
+      <p>Send us a few details and a local expert will reply within 24 hours with ideas and a clear price, no obligation.</p>
       <div class="lead-points">
         <div><span class="tick"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></span> Personalised itinerary in 24 hours</div>
         <div><span class="tick"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></span> Talk to a real human, not a bot</div>
@@ -264,10 +240,6 @@
         <a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I'd%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan." target="_blank" rel="noopener" class="msg-btn wa">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg>
           WhatsApp
-        </a>
-        <a href="https://t.me/+996222222011" target="_blank" rel="noopener" class="msg-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.8 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L6.8 13l-4.6-1.4c-1-.3-1-1 .2-1.5l18-7c.8-.3 1.6.2 1.3 1.2Z"/></svg>
-          Telegram
         </a>
       </div>
     </div>
@@ -289,7 +261,7 @@
           <div class="field">
             <label for="people">Travellers</label>
             <select id="people" name="people">
-              <option>1</option><option>2</option><option>3–4</option><option>5–8</option><option>9+</option>
+              <option>1</option><option>2</option><option>3-4</option><option>5-8</option><option>9+</option>
             </select>
           </div>
         </div>
@@ -314,7 +286,7 @@
           <label for="msg">Anything else?</label>
           <textarea id="msg" name="msg" placeholder="Fitness level, interests, must-sees…"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Send my request →</button>
+        <button type="submit" class="btn btn-primary">Send my request</button>
         <p class="form-note"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> We reply within 24h. Your details are never shared.</p>
       </form>
       <div class="form-success" id="formSuccess">
@@ -326,72 +298,16 @@
   </div>
 </section>
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>
-        <p class="blurb">Azat means &ldquo;free&rdquo; in Kyrgyz — and free is how we want you to feel here. Small-group and tailor-made adventures in the Kyrgyz mountains, run by locals since 2019.</p>
-        <div class="socials">
-          <a href="#" onclick="return false" aria-label="Instagram">◎</a>
-          <a href="#" onclick="return false" aria-label="Facebook">f</a>
-          <a href="#" onclick="return false" aria-label="YouTube">▶</a>
-        </div>
-      </div>
-      <div>
-        <h4>Tours</h4>
-        <ul>
-          <li><a href="tours.html">Trekking</a></li>
-          <li><a href="tours.html">Horse treks</a></li>
-          <li><a href="tours.html">Issyk-Kul & culture</a></li>
-          <li><a href="tours.html">Day tours</a></li>
-          <li><a href="#plan">Tailor-made</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Company</h4>
-        <ul>
-          <li><a href="about.html">About us</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          
-          <li><a href="plan-trip.html">Plan your trip</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Get in touch</h4>
-        <ul>
-          <li><a href="mailto:hello@azattours.travel">hello@azattours.travel</a></li>
-          <li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">+996 222 222 011</a></li>
-          <li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">WhatsApp / Telegram</a></li>
-          <li><a href="#">Bishkek, Kyrgyzstan</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 Azat Tours Travel. Demo prototype — content is placeholder.</span>
-      <span>Privacy · Terms · Cookies</span>
-    </div>
-  </div>
-</footer>
-
-<!-- floating whatsapp -->
-<a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I'd%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan." target="_blank" rel="noopener" class="float-wa" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg>
-</a>
-
-<!-- mobile sticky cta -->
-<div class="mobile-cta">
-  <a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I'd%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan." target="_blank" rel="noopener" class="btn btn-primary">WhatsApp us</a>
-  <a href="tours.html" class="btn btn-dark">Tours</a>
-</div>
+<!-- footer + floating CTAs injected by nav.js -->
 
 <script src="tours-data.js"></script>
 <script src="reviews-data.js"></script>
+<script src="site-data.js"></script>
+<script src="nav.js"></script>
 <script src="script.js"></script>
 <script src="tours-render.js"></script>
 <script src="reviews-render.js"></script>
+<script src="home-media.js"></script>
 <script src="chat.js"></script>
 </body>
 </html>

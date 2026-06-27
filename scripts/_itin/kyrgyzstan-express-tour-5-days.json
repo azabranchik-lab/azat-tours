@@ -1,0 +1,72 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to Song-Kol Lake",
+    "desc": [
+      "We begin at the Burana Tower, an old minaret standing among the scattered remains of a medieval town. From there you stop in with a Dungan family for a homemade lagman, a window into one of Kyrgyzstan's local cultures.",
+      "The road carries on through Kochkor Village and over the Kalmak-Ashuu Pass at 3400 m, the landscape opening into high alpine country. You reach Song-Kol in time for an evening walk by the lake and your first night in a yurt."
+    ],
+    "transfer": "320 km · 5-6 h",
+    "activity": "",
+    "meals": "Lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 2,
+    "title": "Ride at Song-Kol & drive to Tash-Bashat",
+    "desc": [
+      "The morning is for an easy ride around Song-Kol, passing yurts and grazing herds along the shore. If you'd like more, your hosts can take you up into the hills for a wider view of the lake.",
+      "After lunch we drive toward Tash-Bashat village, crossing the Terskey-Torpu Pass with its dramatic switchbacks and passing through Naryn town on the way. You arrive at a village hotel in the evening, with time to look around."
+    ],
+    "transfer": "170 km · 3-4 h",
+    "activity": "Horse riding · optional",
+    "meals": "Breakfast & lunch at yurt, dinner at hotel",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 3,
+    "title": "Trek to Kel-Suu Lake",
+    "desc": [
+      "An early start takes us through the villages of the At-Bashy region and over the Kyndy Pass at 3200 m into the wide Arpa Valley, rough, remote driving through some of the emptiest country in the south.",
+      "After lunch at a guesthouse in the Kok-Kiya Valley, you set off on foot along the river over gentle ground to Kel-Suu, a lake hemmed in by sheer cliffs. There's the option of a boat ride before you walk back for dinner and the night."
+    ],
+    "transfer": "180 km · 4-5 h",
+    "activity": "Trekking · 14 km · 4 h",
+    "meals": "Breakfast at hotel, lunch & dinner at guesthouse",
+    "overnight": "Guesthouse (3200 m)",
+    "wc": "Shared",
+    "internet": "Wi-Fi (paid)"
+  },
+  {
+    "day": 4,
+    "title": "Drive to Ysyk-Kol Lake",
+    "desc": [
+      "This is the longest day on the road, so we start early. The route retraces to Naryn to refuel and break for lunch, then climbs over the Dolon Pass at 3030 m and runs on through Kochkor Village.",
+      "If time allows, we stop at the Ak-Say Canyons near Ysyk-Kol to see the strange wind-carved rock. You arrive in the evening at a guesthouse in Bokonbaev Village, on the lake's southern shore."
+    ],
+    "transfer": "390 km · 7-8 h",
+    "activity": "",
+    "meals": "Breakfast & dinner at guesthouse, lunch at restaurant",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 5,
+    "title": "Return to Bishkek",
+    "desc": [
+      "The last morning brings a visit to a local eagle hunter in Bokonbaev, who shows how he works with his bird and shares the history behind the tradition. From there you explore the Fairy-Tale Canyon and its unusual rock shapes.",
+      "After a relaxed lunch we drive back to Bishkek, with an optional stop at the Osh Bazaar for souvenirs before the trip comes to a close."
+    ],
+    "transfer": "320 km · 5-6 h",
+    "activity": "",
+    "meals": "Breakfast at guesthouse, lunch at restaurant",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

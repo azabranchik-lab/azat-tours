@@ -17,14 +17,14 @@
         <div class="post-meta"><span class="tag">${esc(p.category)}</span><span>${dateStr(p.date)}</span>·<span>${rt(p.body)} read</span></div>
         <h2>${esc(p.title)}</h2>
         <p>${esc(p.excerpt)}</p>
-        <span class="btn btn-dark" style="align-self:flex-start">Read the guide →</span>
+        <span class="btn btn-dark" style="align-self:flex-start">Read the guide</span>
       </div></a>`;
   }
   function card(p) {
     return `<a href="${link(p)}" class="post reveal in" data-cat="${esc(p.category)}">
       <div class="img"><img loading="lazy" src="${p.cover}" alt="${esc(p.title)}"></div>
       <div class="body"><div class="post-meta"><span class="tag">${esc(p.category)}</span><span>${rt(p.body)}</span></div>
-      <h3>${esc(p.title)}</h3><span class="more">Read more →</span></div></a>`;
+      <h3>${esc(p.title)}</h3><span class="more">Read more</span></div></a>`;
   }
 
   if (!POSTS.length) { gridEl.innerHTML = '<p>No articles yet.</p>'; return; }

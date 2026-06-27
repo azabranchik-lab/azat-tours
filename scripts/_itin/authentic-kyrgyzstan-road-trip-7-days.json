@@ -1,0 +1,100 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to the Talas region",
+    "desc": [
+      "We follow the main Bishkek-Osh highway south, climbing to the Too-Ashuu Pass at 3600 m where the road tunnels through the ridge and the views stretch for miles. Lunch is at a shepherd's yurt in the broad Suusamyr Valley.",
+      "Crossing the Otmok Pass brings us into the Talas region and to the Manas Ordo complex, tied to the hero of Kyrgyzstan's great epic. The night is spent at a homestay in Kok-Tokoi Village."
+    ],
+    "transfer": "300 km · 5-6 h",
+    "activity": "",
+    "meals": "Lunch at yurt, dinner at homestay",
+    "overnight": "Homestay",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 2,
+    "title": "Besh-Tash Lake & on to Toktogul",
+    "desc": [
+      "This morning we drive up through a wooded gorge into the national park to reach the alpine Besh-Tash Lake, a quiet pool held high among the peaks. After taking it in we return to Talas for lunch.",
+      "The afternoon road runs over the Ala-Bel Pass and down through the Chychkan Gorge toward the Toktogul Reservoir. You spend the night at a homestay in Kara-Suu Village, the water spread out below."
+    ],
+    "transfer": "240 km · 5 h",
+    "activity": "",
+    "meals": "Breakfast and dinner at homestay, lunch at restaurant",
+    "overnight": "Homestay",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Scenic drive to Kyzyl-Oi Village",
+    "desc": [
+      "Today the route leaves the highway behind for dirt tracks winding through remote country and small traditional villages. We stop for a picnic by the Toluk River before climbing the Kyrk-Kyz Pass at 3400 m, where the mountains open out in every direction.",
+      "By evening we drop to Kyzyl-Oi, a village set between steep slopes on the banks of the Koko-Meren River. A walk through its lanes leads into dinner."
+    ],
+    "transfer": "170 km · 5-6 h",
+    "activity": "",
+    "meals": "Breakfast at homestay, picnic lunch, dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 4,
+    "title": "Ak-Kol Lake, Ming-Kush & Song-Kol",
+    "desc": [
+      "We follow the Koko-Meren River toward Song-Kol, stopping for tea and a short walk at Ak-Kol Lake. Lunch is in Ming-Kush, once a closed uranium town, where the stories of its Soviet past still linger.",
+      "The last stretch climbs the Tuz-Ashuu Pass at 3300 m and delivers you to Song-Kol, the great high-mountain lake. You settle into a yurt on the pasture for the night."
+    ],
+    "transfer": "190 km · 4 h",
+    "activity": "",
+    "meals": "Breakfast and lunch at homestay, dinner at yurt",
+    "overnight": "Yurt",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 5,
+    "title": "A day with nomads at Song-Kol",
+    "desc": [
+      "From early morning you live the day at the herders' pace. There is milking the mares, gathering dried dung for the fire, moving the sheep and milking the cows, then a hand in cooking lunch and the small chores that keep a yurt running.",
+      "There is no fixed schedule, only the rhythm of the camp. If you like, a short ride out across the pasture can fill the afternoon before another night under the stars."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · optional",
+    "meals": "Breakfast, lunch and dinner at yurt",
+    "overnight": "Yurt",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 6,
+    "title": "Drive to Tash-Bashat Village",
+    "desc": [
+      "We trace the lakeshore and then climb the Terskey-Torpu Pass at 3300 m, its tight serpentine bends zig-zagging up the mountainside. A rest and lunch stop in Naryn breaks the drive.",
+      "The day ends at Tash-Bashat Village and a cosy hotel. An evening walk through the village or up into the hills leads to a bonfire under a wide, starry sky."
+    ],
+    "transfer": "170 km · 4-5 h",
+    "activity": "",
+    "meals": "Breakfast at yurt, lunch at restaurant, dinner at hotel",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 7,
+    "title": "Ysyk-Kol Lake & back to Bishkek",
+    "desc": [
+      "The final day heads toward Ysyk-Kol through quiet villages, climbing the Dolon Pass at 3030 m for one last sweep of mountain views. In Kochkor we call on a Dungan family and watch them prepare lagman, their signature dish.",
+      "After a brief stop at the lake near Balykchy, we drive on to Bishkek, with the option of a last wander through Osh Bazaar before the tour ends."
+    ],
+    "transfer": "350 km · 5-6 h",
+    "activity": "",
+    "meals": "Breakfast and lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

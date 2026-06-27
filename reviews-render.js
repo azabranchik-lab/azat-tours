@@ -10,7 +10,11 @@
       <div class="who"><img loading="lazy" src="${r.avatar}" alt="${esc(r.name)}"><div><b>${esc(r.name)}</b><span>${esc(sub)}</span></div></div></div>`;
   }
   const track = document.getElementById('revTrack');
-  if (track) track.innerHTML = R.filter(r => r.placement === 'home').map(card).join('');
+  if (track) {
+    const home = R.filter(r => r.placement === 'home');
+    if (home.length) track.innerHTML = home.map(card).join('');
+    else { const sec = track.closest('section'); if (sec) sec.style.display = 'none'; } // hide until real reviews exist
+  }
   const masonry = document.getElementById('reviewsMasonry');
   if (masonry) masonry.innerHTML = R.filter(r => r.placement === 'home' || r.placement === 'reviews').map(card).join('');
 })();

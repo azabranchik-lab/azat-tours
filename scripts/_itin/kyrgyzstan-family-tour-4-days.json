@@ -1,0 +1,58 @@
+[
+  {
+    "day": 1,
+    "title": "Bishkek to Chong-Kemin National Park",
+    "desc": [
+      "You leave Bishkek and head into the countryside, stopping first at the Burana Tower, a thousand-year-old minaret left over from a Silk Road city, with old stone carvings scattered around its base. The kids can climb the narrow inner staircase for a view over the valley.",
+      "Lunch is with a Dungan family in Iskra Village, who serve homemade lagman, hand-pulled noodles that are a local favourite. From there it's a short drive on to Chong-Kemin National Park, where you settle into a guesthouse and can take an easy stroll through the village before dinner."
+    ],
+    "transfer": "170 km · 3-4 h",
+    "activity": "",
+    "meals": "lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 2,
+    "title": "Canyons & the shore of Ysyk-Kol",
+    "desc": [
+      "The morning starts at the Kok-Moinok canyons, an easy walk among ribbed red and ochre rock that's a good leg-stretch for the whole family. You then drive down to Balykchy for lunch at the western tip of Ysyk-Kol, the great mountain lake that never freezes.",
+      "In the afternoon you follow the southern shore east and stop at the Skazka, or Fairy-Tale, canyons, wind-carved formations that really do look like castles and animals if you let your imagination run. You finish the day in Bokonbaev Village, where you stay the night."
+    ],
+    "transfer": "190 km · 3-4 h",
+    "activity": "",
+    "meals": "breakfast & dinner at guesthouse, lunch at restaurant",
+    "overnight": "Guesthouse",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 3,
+    "title": "Eagle hunter & up to Song-Kol",
+    "desc": [
+      "Your day opens with a visit to a local eagle hunter, who shows how these golden eagles are trained and flown, a tradition passed down through generations here. From Bokonbaev you drive on to Kochkor Village for lunch and a short rest.",
+      "The road then climbs into the mountains over the Kalmak-Ashuu Pass at 3400 m, with alpine lakes along the way, and drops you at Song-Kol, a high lake ringed by summer pastures. You spend the night in a yurt camp by the water; bring warm layers, as the evenings up here turn cold quickly."
+    ],
+    "transfer": "220 km · 4-5 h",
+    "activity": "",
+    "meals": "breakfast & lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 4,
+    "title": "Song-Kol ride & return to Bishkek",
+    "desc": [
+      "After a night under the open sky, there's the option of an easy horse ride around the lake, passing yurts and grazing herds, gentle enough for first-timers, with a longer mountain loop for anyone keen. Lunch is back at the yurt before you set off.",
+      "The drive home crosses the Tuz-Ashuu Pass, with stops at the Kilemche pastures and a few mountain viewpoints along the way. If anyone in the group isn't keen on heights, your guide can take the alternative Kalmak-Ashuu route back to Bishkek."
+    ],
+    "transfer": "300 km · 5-6 h",
+    "activity": "Horse riding · optional",
+    "meals": "breakfast & lunch at yurt",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

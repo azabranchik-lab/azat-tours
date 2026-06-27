@@ -1,0 +1,58 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to Ysyk-Kol via Burana & Kok-Moinok",
+    "desc": [
+      "You leave Bishkek for Ysyk-Kol, the Pearl of Central Asia, starting with the ancient Burana Tower and then a homemade Dungan lunch with a local family in Iskra Village, a warm introduction to the country's mix of cultures.",
+      "Along the way you stop at the Kok-Moinok canyons for a short walk, then follow the southern shore of the lake to Bokonbaev, where a guesthouse welcomes you for the night."
+    ],
+    "transfer": "280 km · 4-5 h",
+    "activity": "",
+    "meals": "Lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 2,
+    "title": "South shore: eagle hunter, canyons & Jety-Oguz",
+    "desc": [
+      "The morning begins with an eagle-hunter demonstration by a local Kyrgyz hunter, a close look at a tradition kept alive for generations. From there you explore the colour-streaked Fairy-Tale Canyons.",
+      "Lunch is at the home of mountaineer Lyubov Danichkina in Tamga Village, and the afternoon takes in the Barskoon Waterfalls and the red rock of the Jety-Oguz Valley before you reach Karakol for the night."
+    ],
+    "transfer": "150 km · 3-4 h",
+    "activity": "",
+    "meals": "Breakfast & lunch at guesthouse, dinner at restaurant",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 3,
+    "title": "Off-road to Altyn-Arashan",
+    "desc": [
+      "Today you climb into the mountains aboard a sturdy Soviet UAZ truck, following a river through pine forest up to the Altyn-Arashan gorge. Lunch waits at a guesthouse on arrival.",
+      "The afternoon is for soaking in the natural hot springs, walking the trails, or simply resting with Peak Palatka rising to 5200 m above the valley. There's an optional ride if you'd like one, and dinner is served in a traditional yurt where you spend the night."
+    ],
+    "transfer": "30 km · 2-3 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch & dinner at guesthouse",
+    "overnight": "Yurt",
+    "wc": "Shared",
+    "internet": "Wi-Fi (paid)"
+  },
+  {
+    "day": 4,
+    "title": "Drive back to Bishkek",
+    "desc": [
+      "A last quiet morning in Altyn-Arashan, with the mountains all around, before the UAZ carries you back down to Karakol for lunch at a local restaurant.",
+      "The road home runs along the northern shore of Ysyk-Kol, the Pearl of Central Asia, with long lake views before you reach Bishkek in the evening."
+    ],
+    "transfer": "440 km · 6-7 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch at restaurant",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

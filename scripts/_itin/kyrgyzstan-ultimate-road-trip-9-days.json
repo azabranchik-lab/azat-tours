@@ -1,0 +1,128 @@
+[
+  {
+    "day": 1,
+    "title": "Road trip to Song-Kol Lake",
+    "desc": [
+      "You leave Bishkek behind and head into the mountains, with a first stop at the Burana Tower, a leftover from the old Silk Road. A little further on, a Dungan family welcomes you to help shape the dough and share their cooking before you push on through Kochkor.",
+      "The road climbs over the Kalmak-Ashuu Pass and drops you onto the high plateau of Song-Kol, where the grass runs flat to the horizon. You settle into a yurt for the night, with time to walk by the water before dinner and a sky thick with stars."
+    ],
+    "transfer": "320 km · 5-6 h",
+    "activity": "",
+    "meals": "Lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 2,
+    "title": "Horse riding by Song-Kol Lake",
+    "desc": [
+      "A full day to slow down at the lake and step into nomad life. After a confidence-building morning ride along the shore, you can carry on into the hills or drop in on a herder family to see how a yurt household runs and taste kymys, fermented mare's milk.",
+      "The afternoon is unhurried, with time to rest, walk the shoreline, and watch the herds move across the pasture. As the light fades the lake turns silver, and after dinner the stargazing is some of the best you'll find anywhere."
+    ],
+    "transfer": "",
+    "activity": "",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Road trip to Tash-Bashat Village",
+    "desc": [
+      "You trace the lakeshore one last time, then take on the Terskey-Torpu Pass at 3300 m, a wall of switchbacks that unwinds slowly to reveal the valleys below. The descent leads to Naryn, where you stop for lunch and a stretch of the legs.",
+      "By late afternoon you reach Tash-Bashat, a quiet village largely untouched by tourism. Check into a comfortable hotel, wander the streets or the nearby hills, and gather round a bonfire in the evening as the stars come out."
+    ],
+    "transfer": "170 km · 4-5 h",
+    "activity": "",
+    "meals": "Breakfast at yurt, lunch at restaurant, dinner at hotel",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 4,
+    "title": "Off-road to Kok-Kiya Valley",
+    "desc": [
+      "Today the asphalt gives way to dirt as you drive deep into the At-Bashy region, passing small villages framed by serious mountains. A riverside picnic in the Bosogo Valley breaks the journey before the track begins to climb.",
+      "You cross the high Kyndy Pass at 3900 m into the wide Ak-Say pastures, where yurts and herds dot the grassland. By evening you reach your guesthouse in Kok-Kiya, with time for a slow walk to stretch your legs before dinner."
+    ],
+    "transfer": "180 km · 4-5 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, picnic lunch, dinner at guesthouse",
+    "overnight": "Guesthouse (3200 m)",
+    "wc": "Shared",
+    "internet": "Wi-Fi (paid)"
+  },
+  {
+    "day": 5,
+    "title": "Trek to Kel-Suu Lake, drive to Naryn",
+    "desc": [
+      "After breakfast you set out on foot toward Kel-Suu, one of the most hidden lakes in the country. The trail follows the river through open valleys, past grazing horses and yaks, with the mountains closing in around you.",
+      "The final stretch crosses a few streams, your guide lends a hand, before the lake appears, ringed by sheer cliffs. A short boat ride is possible before you retrace the trail, then drive to Naryn for a hotel bed and a hot dinner in town."
+    ],
+    "transfer": "150 km · 4-5 h",
+    "activity": "Trekking · 14 km · 4 h",
+    "meals": "Breakfast & lunch at guesthouse, dinner at restaurant",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 6,
+    "title": "To Ysyk-Kol, cook lagman in Kochkor",
+    "desc": [
+      "You head north over the Dolon Pass at 3030 m, then stop in Kochkor to visit a Dungan family and learn to make lagman, the hand-pulled noodles they're known for. The reward is the meal you helped cook.",
+      "Driving on east to Ysyk-Kol, you reach a lakeside yurt camp with time for a swim in the warm water. In the evening, head out to the Ak-Say canyons to catch the sunset before returning for the night."
+    ],
+    "transfer": "190 km · 4 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 7,
+    "title": "South shore: eagle hunter, canyons & Jety-Oguz",
+    "desc": [
+      "The morning opens with an eagle-hunter demonstration, a glimpse of a tradition passed down through generations. From there you wander the colour-streaked Fairy-Tale Canyons and stop in Tamga for lunch at a mountaineer's home.",
+      "In the afternoon you take in the Barskoon Waterfalls and the red sandstone ridges of Jety-Oguz before reaching Karakol, time for a short tour of town before dinner."
+    ],
+    "transfer": "150 km · 3-4 h",
+    "activity": "",
+    "meals": "Breakfast & lunch at guesthouse, dinner at restaurant",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 8,
+    "title": "Off-road to Altyn-Arashan gorge",
+    "desc": [
+      "This morning you climb into a Soviet-era UAZ truck for the bumpy, beautiful run up to Altyn-Arashan. The track follows a sparkling river through dense pine forest, and the rattle is part of the fun.",
+      "You reach the gorge in time for lunch among the peaks. The afternoon is yours: soak in the hot springs, walk the trails, or simply rest with Peak Palatka rising at 5200 m above you. Dinner and a quiet night under the mountains round out the day."
+    ],
+    "transfer": "30 km · 2-3 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 9,
+    "title": "Return to Bishkek",
+    "desc": [
+      "A slow morning in Altyn-Arashan, with the mountains all around, before the UAZ carries you back down to Karakol for a last local lunch. From there the road runs the length of the northern Ysyk-Kol shore, the lake glinting beside you the whole way.",
+      "You reach Bishkek in the evening, the close of a trip stitched together from high passes, hidden lakes, off-road tracks, and nomad hospitality."
+    ],
+    "transfer": "440 km · 6-7 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch at restaurant",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

@@ -1,4 +1,4 @@
-// Azat Tours Trip Builder — 5-step, visual, data-aware.
+// Azat Tours Trip Builder, 5-step, visual, data-aware.
 (function () {
   const TOURS = window.TOURS || [];
   const WEB3FORMS_KEY = "b8d4fb62-00dc-4e7f-ab17-3f8c8b5aeced";
@@ -19,9 +19,9 @@
     { id: 'Road trip', t: 'Road trip & comfort', d: 'Scenic drives, less effort', img: '1519681393784-d120267933ba' },
     { id: 'Off-the-beaten-path', t: 'Off the beaten path', d: 'Remote valleys, real nomad life', img: '1533105079780-92b9be482077' },
     { id: 'Winter tours', t: 'Winter adventure', d: 'Snowy passes & frozen lakes', img: '1551632811-561732d1e306' },
-    { id: 'notsure', t: 'Not sure yet', d: 'Help me choose — surprise me!', img: '1506905925346-21bda4d32df4' }
+    { id: 'notsure', t: 'Not sure yet', d: 'Help me choose, surprise me!', img: '1506905925346-21bda4d32df4' }
   ];
-  const DURATIONS = [['3-4', '3–4 days'], ['5-7', '5–7 days'], ['8-10', '8–10 days'], ['11+', '11+ days'], ['flexible', 'Flexible']];
+  const DURATIONS = [['3-4', '3-4 days'], ['5-7', '5-7 days'], ['8-10', '8-10 days'], ['11+', '11+ days'], ['flexible', 'Flexible']];
   const MONTHS = ['Flexible', 'May', 'June', 'July', 'August', 'September', 'October', 'Winter'];
   const INTERESTS = [
     { t: 'Song-Köl yurt stay', img: '1533105079780-92b9be482077' },
@@ -79,7 +79,7 @@
     return `<div class="builder-nav">
       <button class="btn btn-ghost" style="border-color:var(--line);color:var(--ink)" ${step === 0 ? 'disabled style="opacity:.4;border-color:var(--line);color:var(--ink)"' : ''} onclick="BUILDER.back()">← Back</button>
       ${canSkip ? '<button class="skip" onclick="BUILDER.next()">Skip this step</button>' : ''}
-      <button class="btn btn-primary" onclick="BUILDER.next()">${step === STEPS.length - 1 ? 'Done' : 'Continue →'}</button>
+      <button class="btn btn-primary" onclick="BUILDER.next()">${step === STEPS.length - 1 ? 'Done' : 'Continue'}</button>
     </div>`;
   }
 
@@ -95,16 +95,16 @@
           </button>`).join('')}</div>` + navBtns(false);
     }
     else if (step === 1) {
-      a.innerHTML = header('When & who', "How long, when, and how many?", "Rough answers are fine — everything is flexible and tailor-made.") +
+      a.innerHTML = header('When & who', "How long, when, and how many?", "Rough answers are fine, everything is flexible and tailor-made.") +
         `<div class="field-group"><label>Trip length</label><div class="b-chips">${DURATIONS.map(d => `<button class="b-chip ${S.duration === d[0] ? 'sel' : ''}" onclick="BUILDER.set('duration','${d[0]}')">${d[1]}</button>`).join('')}</div></div>
          <div class="field-group"><label>When do you want to travel?</label><div class="b-chips">${MONTHS.map(m => `<button class="b-chip ${S.month === m ? 'sel' : ''}" onclick="BUILDER.set('month','${m}')">${m}</button>`).join('')}</div></div>
          <div class="field-group"><label>Who's coming?</label><div class="steppers">
            <div class="stepper"><div class="lab"><b>Adults</b><span>13+ years</span></div><div class="ctrl"><button onclick="BUILDER.bump('adults',-1)">−</button><span class="val" id="vAdults">${S.adults}</span><button onclick="BUILDER.bump('adults',1)">+</button></div></div>
-           <div class="stepper"><div class="lab"><b>Children</b><span>0–12 years</span></div><div class="ctrl"><button onclick="BUILDER.bump('children',-1)">−</button><span class="val" id="vChildren">${S.children}</span><button onclick="BUILDER.bump('children',1)">+</button></div></div>
+           <div class="stepper"><div class="lab"><b>Children</b><span>0-12 years</span></div><div class="ctrl"><button onclick="BUILDER.bump('children',-1)">−</button><span class="val" id="vChildren">${S.children}</span><button onclick="BUILDER.bump('children',1)">+</button></div></div>
          </div></div>` + navBtns(false);
     }
     else if (step === 2) {
-      a.innerHTML = header('Experiences', "What do you want to experience?", "Tap everything that appeals — or skip it and leave it to us. Multiple choices welcome.") +
+      a.innerHTML = header('Experiences', "What do you want to experience?", "Tap everything that appeals, or skip it and leave it to us. Multiple choices welcome.") +
         `<div class="interest-grid">${INTERESTS.map(i => `
           <button class="int-card ${S.interests.includes(i.t) ? 'sel' : ''}" onclick="BUILDER.toggleInterest('${i.t.replace(/'/g, "\\'")}')">
             <span class="tick"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></span><img loading="lazy" src="${img(i.img, 500)}" alt="${i.t}"><span class="cap">${i.t}</span>
@@ -118,7 +118,7 @@
     else if (step === 4) {
       const matches = matchTours();
       const matchHTML = matches.length ? `
-        <div class="field-group"><label>Tours that match your choices — pick one as a starting point (optional)</label>
+        <div class="field-group"><label>Tours that match your choices, pick one as a starting point (optional)</label>
         <div class="match-list">
           ${matches.map(t => `<div class="match ${S.base === t.slug ? 'sel' : ''}" onclick="BUILDER.set('base','${t.slug}')">
             <img loading="lazy" src="${t.images && t.images[0] ? t.images[0] : img('1506905925346-21bda4d32df4')}" alt="${t.name}">
@@ -137,11 +137,11 @@
               <div class="field"><label for="bemail">Email</label><input id="bemail" type="email" placeholder="you@email.com" required value="${S.email}"></div>
             </div>
             <div class="field"><label for="bwa">WhatsApp number (optional)</label><input id="bwa" type="tel" placeholder="+1 555 123 4567" value="${S.whatsapp}"></div>
-            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px">Send my trip request →</button>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px">Send my trip request</button>
             <p class="form-note"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> We reply within 24h. No prepayment, no spam.</p>
           </form>
           <div style="text-align:center;margin-top:14px">
-            <a href="#" id="waSend" target="_blank" rel="noopener" class="msg-btn wa" style="color:#128C42;border-color:#25D366;justify-content:center;display:inline-flex">Or send it via WhatsApp instead →</a>
+            <a href="#" id="waSend" target="_blank" rel="noopener" class="msg-btn wa" style="color:#128C42;border-color:#25D366;justify-content:center;display:inline-flex">Or send it via WhatsApp instead</a>
           </div>
           <div class="form-success" id="bSuccess">
             <div class="big"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div><h3>Trip request sent!</h3>
@@ -155,7 +155,7 @@
 
   function summaryText() {
     const lines = [];
-    lines.push('— AZAT TOURS TRIP REQUEST —');
+    lines.push(', AZAT TOURS TRIP REQUEST, ');
     if (S.style) lines.push('Style: ' + (S.style === 'notsure' ? 'Not sure / suggest' : S.style));
     if (S.duration) lines.push('Length: ' + (DURATIONS.find(d => d[0] === S.duration) || [, S.duration])[1]);
     if (S.month) lines.push('When: ' + S.month);
@@ -174,7 +174,7 @@
     const base = S.base === 'custom' ? 'Fully custom' : (S.base ? (TOURS.find(x => x.slug === S.base) || {}).name : '');
     el('summary').innerHTML = `
       <h3>Your trip so far</h3>
-      <p class="muted">Builds as you choose — nothing is final.</p>
+      <p class="muted">Builds as you choose, nothing is final.</p>
       ${row('Style', S.style === 'notsure' ? 'Suggest for me' : S.style)}
       ${row('Length', dur)}
       ${row('When', S.month)}
@@ -183,7 +183,7 @@
       ${row('Pace', S.pace)}
       ${row('Comfort', S.comfort)}
       ${base ? row('Base tour', base) : ''}
-      ${step < 4 ? `<button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:18px" onclick="BUILDER.jumpToEnd()">Skip to request →</button>` : ''}`;
+      ${step < 4 ? `<button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:18px" onclick="BUILDER.jumpToEnd()">Skip to request</button>` : ''}`;
   }
 
   function wireForm() {

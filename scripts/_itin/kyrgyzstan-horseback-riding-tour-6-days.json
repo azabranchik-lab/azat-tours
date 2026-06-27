@@ -1,0 +1,86 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to Kyzart & ride to Kilemche",
+    "desc": [
+      "We leave Bishkek for Kyzart Village, in the hills below Song-Kol. A homemade lunch is waiting at the family homestay, and afterwards your guide runs through the basics in the saddle so you feel at ease before setting off.",
+      "The afternoon ride follows the Chaar-Archa River through quiet valleys to Kilemche, gentle going, and a good chance to get used to your horse. You spend the night at a yurt camp run by local herders, with pasture life unfolding all around you."
+    ],
+    "transfer": "280 km · 4 h",
+    "activity": "Horse riding · 21 km · 4-5 h",
+    "meals": "Lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (2700 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Over Jalgyz-Karagai Pass to Song-Kol",
+    "desc": [
+      "A more demanding day in the saddle. After breakfast you climb toward the Jalgyz-Karagai Pass at 3300 m, the work rewarded at the top by wide mountain views in every direction.",
+      "From the pass you descend to the lake and ride west along the shore, passing traditional yurts and grazing animals. The day ends at the Tuz-Ashuu pasture, right by the water."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 5-6 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Along Song-Kol to the western shore",
+    "desc": [
+      "An easier, relaxing day riding the open shore of Song-Kol. The lakeside ground is smooth and flat, so your guide may pick up the pace to a canter where it suits the horses.",
+      "Around midday you reach the Ozbek-Ashuu pasture on the western shore, where a nomad family serves lunch in their yurt. The rest of the day is yours, a walk along the shore or a short ride into the nearby hills."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 16 km · 4 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 4,
+    "title": "Ride back to Kyzart & drive to Ysyk-Kol",
+    "desc": [
+      "You return to Kyzart over the scenic Ozbek-Ashuu Pass at 3300 m, with one last view of Song-Kol before the descent. Lunch and a rest follow when you reach the village.",
+      "In the afternoon we drive to the southern shore of Ysyk-Kol, timing a visit to the Fairy-Tale Canyons for the low evening light on the rock. You finish the day at a guesthouse in Bokonbaev Village."
+    ],
+    "transfer": "200 km · 3-4 h",
+    "activity": "Horse riding · 20 km · 4-5 h",
+    "meals": "Breakfast at yurt, lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 5,
+    "title": "Ride to Boz-Salkyn pasture",
+    "desc": [
+      "We set out in the morning toward the Boz-Salkyn Valley, a nomad summer pasture reached through open fields and grazing meadows. A riverside picnic breaks up the ride at midday.",
+      "From there the trail climbs to the Karaly-Archa Pass at 2800 m, with broad views back over Ysyk-Kol. You descend through fragrant pine forest to a traditional yurt camp for the night."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 5-6 h",
+    "meals": "Breakfast at guesthouse, picnic lunch, dinner at yurt",
+    "overnight": "Yurt (2500 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 6,
+    "title": "Ride to Bokonbaev & return to Bishkek",
+    "desc": [
+      "You wake in the mountains and ride downhill through a scenic gorge back toward Bokonbaev Village. Along the way you meet Kyrgyz eagle hunters, who show how they work with their birds, a craft passed down through families.",
+      "Lunch wraps up the riding, and in the afternoon we drive back to Bishkek, arriving around 7-8 PM at the end of the trip."
+    ],
+    "transfer": "270 km · 4 h",
+    "activity": "Horse riding · 16 km · 4 h",
+    "meals": "Breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

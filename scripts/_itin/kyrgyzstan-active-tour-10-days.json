@@ -1,0 +1,142 @@
+[
+  {
+    "day": 1,
+    "title": "Scenic drive to Kyzyl-Oi Village",
+    "desc": [
+      "Your trip opens on the road out of Bishkek, climbing through small villages toward the Too-Ashuu Pass at 3600 m, where the view opens up over the mountains. You drop down into the Suusamyr Valley for a riverside picnic, then follow the Kok-Meren River into the gorge.",
+      "By late afternoon you reach Kyzyl-Oi, a quiet village set among red cliffs. After settling into your guesthouse, your guide takes you on a short walk through the village before dinner."
+    ],
+    "transfer": "200 km · 4-5 h",
+    "activity": "",
+    "meals": "Picnic lunch, dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 2,
+    "title": "Drive to Kyzart & ride to Kilemche",
+    "desc": [
+      "A short drive brings you to Kyzart Village, where a homemade lunch waits at a family homestay and your guide walks you through the basics in the saddle.",
+      "From there you set off on a gentle ride along the Chaar-Archa River, easing into the trail through wide valleys to Kilemche. A herder family hosts you at their yurt camp, wander the hills and watch nomad life unfold before dinner."
+    ],
+    "transfer": "90 km · 2 h",
+    "activity": "Horse riding · 21 km · 4-5 h",
+    "meals": "Breakfast & lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (2700 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Over Jalgyz-Karagai Pass to Song-Kol",
+    "desc": [
+      "Today the ride asks more of you, climbing toward the Jalgyz-Karagai Pass at 3300 m. The steady effort pays off at the top, where Song-Kol shimmers into view far below for the first time.",
+      "You rest on the pass, then descend to a lakeside yurt camp for lunch. In the afternoon you ride west along the shore, past traditional yurts and grazing herds, to the Tuz-Ashuu pasture by the water."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 4-5 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 4,
+    "title": "Along Song-Kol to the western shore",
+    "desc": [
+      "An easier day in the saddle, riding the open shore of Song-Kol. With two days behind you, you'll feel more at home with your horse, and your guide may pick up the pace to a canter across the smooth lakeside grass.",
+      "By midday you reach the Ozbek-Ashuu pasture on the western shore, where a nomad family serves lunch in their yurt. The afternoon is free, walk the shoreline or take a short ride into the nearby hills before dinner."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 16 km · 4 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 5,
+    "title": "Ride to Kyzart, then drive to Ysyk-Kol",
+    "desc": [
+      "You say goodbye to your hosts and ride back over the Ozbek-Ashuu Pass at 3300 m, with one last sweeping look over Song-Kol before the trail drops to Kyzart. There's lunch and a chance to rest in the village.",
+      "In the afternoon you trade the saddle for the road and drive to the southern shore of Ysyk-Kol, with fine views along the way. You arrive at your guesthouse near Bokonbaev in the evening."
+    ],
+    "transfer": "200 km · 3-4 h",
+    "activity": "Horse riding · 20 km · 4-5 h",
+    "meals": "Breakfast at yurt, lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 6,
+    "title": "South shore: eagle hunter, canyons & Jety-Oguz",
+    "desc": [
+      "The day starts with an eagle-hunter demonstration, a window onto an old Kyrgyz tradition. From there you explore the dramatic, colour-streaked Fairy-Tale Canyons and stop in Tamga for lunch at the home of a Soviet-era mountaineer.",
+      "The afternoon takes in the Barskoon Waterfalls and the red sandstone of the Jety-Oguz Valley before you reach Karakol, time for a short wander through town before dinner."
+    ],
+    "transfer": "150 km · 3-4 h",
+    "activity": "",
+    "meals": "Breakfast & lunch at guesthouse, dinner at restaurant",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 7,
+    "title": "Trek to Altyn-Arashan hot springs",
+    "desc": [
+      "A short drive to Ak-Suu village, then you shoulder a daypack and set off up the valley to Altyn-Arashan. The trail follows a sparkling river through alpine forest, with a riverside picnic to break the climb.",
+      "By early evening you reach the gorge and your guesthouse. After a full day on foot, sink into the natural hot springs, then dinner under a wide mountain sky."
+    ],
+    "transfer": "30 km · 30 min",
+    "activity": "Trekking · 12 km · 5 h",
+    "meals": "Breakfast at hotel, picnic lunch, dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 8,
+    "title": "Hike to alpine Ala-Kol Lake",
+    "desc": [
+      "The biggest day of the trip, and one of the most beautiful. On foot or on horseback, you head up from Altyn-Arashan, following the river before the trail turns into the forest and climbs toward the Keldike Gorge.",
+      "A last, slippery push brings you to the Ala-Kol Pass at 3900 m, where the turquoise lake and its glaciers spread out below. After photos and a rest, you descend back to Altyn-Arashan for the hot springs and dinner."
+    ],
+    "transfer": "",
+    "activity": "Trekking · 19 km · 7-8 h",
+    "meals": "Breakfast, picnic lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 9,
+    "title": "Trek out & drive to Chong-Kemin",
+    "desc": [
+      "A final morning on the trail, retracing the river and forest path down to Ak-Suu, one last lungful of mountain air. From there you drive to Karakol for a relaxed lunch.",
+      "In the afternoon you follow the northern shore of Ysyk-Kol through Cholpon-Ata and Balykchy, turning up into the Chong-Kemin valley to a cosy guesthouse. After days of trekking and driving, the evening is yours to unwind."
+    ],
+    "transfer": "300 km · 4-5 h",
+    "activity": "Trekking · 12 km · 4 h",
+    "meals": "Breakfast at guesthouse, lunch at restaurant, dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 10,
+    "title": "Burana Tower & Bishkek city tour",
+    "desc": [
+      "On the way back to Bishkek you stop at the Burana Tower, the leaning minaret of an old Silk Road town and one of the country's most recognisable sights. From there it's a short drive into the capital for lunch.",
+      "The afternoon is a guided wander through Bishkek, Ala-Too Square, the buzz of Osh Bazaar for souvenirs, and a few of the city's landmarks, before your guide sees you off at the close of the trip."
+    ],
+    "transfer": "170 km · 3-4 h",
+    "activity": "",
+    "meals": "Breakfast at guesthouse, lunch at restaurant",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

@@ -27,7 +27,7 @@ const sessions = new Map(); // userId -> state
 
 const TOUR_CATS = ['Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
 const POST_CATS = ['Travel guide', 'Planning', 'Culture', 'Practical', 'Gear', 'Horse treks', 'Day tours'];
-const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['highlights', 'Highlights']];
+const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['highlights', 'Highlights'], ['tags', 'Tags']];
 const POST_FIELDS = [['title', 'Title'], ['category', 'Category'], ['excerpt', 'Excerpt'], ['author', 'Author'], ['body', 'Body text']];
 
 // ---------- auth ----------
@@ -47,7 +47,7 @@ async function downloadPhoto(ctx, fileId, kind, slug, n) {
   const buf = Buffer.from(await (await fetch(url)).arrayBuffer());
   const ext = path.extname(file.file_path) || '.jpg';
   C.ensureDirs();
-  const dir = { post: 'posts', guide: 'guides', review: 'reviews' }[kind] || 'tours';
+  const dir = { post: 'posts', guide: 'guides', review: 'reviews', site: 'site', sights: 'sights' }[kind] || 'tours';
   const rel = `images/${dir}/${slug}-${n}-${Date.now().toString().slice(-5)}${ext}`;
   fs.writeFileSync(path.join(C.ROOT, rel), buf);
   return rel;
@@ -115,10 +115,22 @@ function postEditKb(id) {
 // ---------- commands ----------
 bot.command('whoami', ctx => ctx.reply(`Your Telegram ID: ${ctx.from.id}`));
 bot.command('cancel', ctx => { sessions.delete(ctx.from.id); ctx.reply('Cancelled. ✅'); });
+const MENU_TEXT = '🏔️ *Azat Tours admin bot*\n\nTap a section below — or type a command (see the “/” menu). /help for details.';
+function mainMenuKb() {
+  return new InlineKeyboard()
+    .text('🏔 Tours', 't:list').text('📰 Blog', 'p:list').row()
+    .text('🧭 Guides', 'g:list').text('⭐ Reviews', 'r:list').row()
+    .text('🏠 Homepage photos', 'h:home').row()
+    .text('📨 Leads', 'm:leads').text('💬 Chats', 'm:chats').row();
+}
 bot.command('start', async ctx => {
   if (!OWNER_ID) { setOwner(ctx.from.id); await ctx.reply(`✅ You are now the admin (ID ${ctx.from.id}).`); }
-  await ctx.reply('🏔️ *Azat Tours admin bot*\n\n*Tours*\n/tours · /addtour\n\n*Blog*\n/posts · /addpost\n\n*Guides & reviews*\n/guides · /addguide\n/reviews · /addreview (choose which page it shows on)\n\n*Enquiries & chat*\n/leads · /chats\nReply to any 💬 message to answer on the site\n\n/cancel — stop · /help', md);
+  await ctx.reply(MENU_TEXT, { ...md, reply_markup: mainMenuKb() });
 });
+bot.command('menu', ctx => ctx.reply(MENU_TEXT, { ...md, reply_markup: mainMenuKb() }));
+bot.callbackQuery('m:home', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(MENU_TEXT, { ...md, reply_markup: mainMenuKb() }); });
+bot.callbackQuery('m:leads', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(leadsText(), md); });
+bot.callbackQuery('m:chats', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(chatsText(), md); });
 bot.command('help', ctx => ctx.reply(
   'TOURS\n/tours — list, view, edit text, manage photos, delete\n/addtour — new tour wizard\n\n' +
   'BLOG\n/posts — list, view, edit, cover & gallery, delete\n/addpost — new article wizard\n\n' +
@@ -130,12 +142,13 @@ bot.command('tours', ctx => { const { text, kb } = tourListKb(); ctx.reply(text,
 bot.command('posts', ctx => { const { text, kb } = postListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
 
 // recent leads
-bot.command('leads', ctx => {
+function leadsText() {
   const leads = store.listLeads(12);
-  if (!leads.length) return ctx.reply('No leads yet. They will appear here the moment someone submits a form.');
+  if (!leads.length) return 'No leads yet. They will appear here the moment someone submits a form.';
   const fmt = l => `• *${(l.name || '—')}* — ${l.email || '—'}\n  ${[l.tour, l.people && l.people + ' ppl', l.dates].filter(Boolean).join(' · ')}${l.msg ? '\n  💬 ' + l.msg : ''}${l.trip_summary ? '\n  ' + l.trip_summary.replace(/\n/g, ' ') : ''}`;
-  ctx.reply('📨 *Recent leads*\n\n' + leads.map(fmt).join('\n\n'), md);
-});
+  return '📨 *Recent leads*\n\n' + leads.map(fmt).join('\n\n');
+}
+bot.command('leads', ctx => ctx.reply(leadsText(), md));
 
 // answer an on-site chat by id: /reply <sid> <text>
 bot.command('reply', ctx => {
@@ -149,14 +162,15 @@ bot.command('reply', ctx => {
 });
 
 // list open chats
-bot.command('chats', ctx => {
+function chatsText() {
   const chats = store.listOpenChats(10);
-  if (!chats.length) return ctx.reply('No chats yet.');
-  ctx.reply('💬 *Open chats* (reply with /reply <id> <text>)\n\n' + chats.map(c => {
+  if (!chats.length) return 'No chats yet.';
+  return '💬 *Open chats* (reply with /reply <id> <text>)\n\n' + chats.map(c => {
     const last = c.messages.at(-1);
     return `• \`${c.sid}\`${c.name ? ' — ' + c.name : ''}\n  ${last ? (last.from === 'owner' ? 'you: ' : 'them: ') + last.text.slice(0, 60) : ''}`;
-  }).join('\n\n'), md);
-});
+  }).join('\n\n');
+}
+bot.command('chats', ctx => ctx.reply(chatsText(), md));
 
 bot.command('addtour', ctx => {
   sessions.set(ctx.from.id, { mode: 'addtour', step: 'name', draft: C.blankTour() });
@@ -298,6 +312,7 @@ bot.on('message:text', async ctx => {
     if (s.kind === 'tour') {
       const tours = C.loadTours(); const t = tours.find(x => x.id === s.id); if (!t) { sessions.delete(ctx.from.id); return; }
       if (s.field === 'highlights') t.highlights = txt.split(/[,\n]/).map(x => x.trim()).filter(Boolean);
+      else if (s.field === 'tags') t.tags = txt.split(/[,\n]/).map(x => x.trim().toLowerCase().replace(/\s+/g, '-')).filter(Boolean);
       else { t[s.field] = txt.trim(); if (s.field === 'duration') t.days = daysFrom(txt); }
       C.saveTours(tours);
     } else if (s.kind === 'post') {
@@ -323,6 +338,16 @@ bot.on('message:text', async ctx => {
     }
     sessions.delete(ctx.from.id);
     return ctx.reply('✅ Saved. Site updated.');
+  }
+
+  // edit a sight's description
+  if (s.mode === 'sightblurb') {
+    const sights = C.loadSights(); const st = sights[s.key];
+    if (!st) { sessions.delete(ctx.from.id); return; }
+    st.blurb = txt.trim(); C.saveSights(sights);
+    sessions.delete(ctx.from.id);
+    const v = sightView(s.key);
+    return ctx.reply('✅ Description saved. Site updated.\n\n' + v.text, { ...md, reply_markup: v.kb });
   }
 
   // addtour wizard
@@ -376,6 +401,39 @@ bot.on('message:photo', async ctx => {
       if (s.kind === 'tour') { const tours = C.loadTours(); const t = tours.find(x => x.id === s.id); const rel = await downloadPhoto(ctx, fileId, 'tour', t.slug, (t.images || []).length + 1); t.images = t.images || []; t.images.push(rel); C.saveTours(tours); return ctx.reply(`✅ Photo added (${t.images.length}). Another, or /done.`); }
       const posts = C.loadPosts(); const p = posts.find(x => x.id === s.id); const rel = await downloadPhoto(ctx, fileId, 'post', p.slug, (p.images || []).length + 1); p.images = p.images || []; p.images.push(rel); C.savePosts(posts); return ctx.reply(`✅ Gallery photo added (${p.images.length}). Another, or /done.`);
     }
+    // homepage photo (Instagram grid / hero / experience / builder)
+    if (s.mode === 'sitephoto') {
+      const site = C.loadSite();
+      if (s.target === 'instagram') {
+        site.instagram = site.instagram || { url: '', photos: [] };
+        site.instagram.photos = site.instagram.photos || [];
+        const rel = await downloadPhoto(ctx, fileId, 'site', 'ig', site.instagram.photos.length + 1);
+        site.instagram.photos.push(rel); C.saveSite(site);
+        return ctx.reply(`✅ Photo added (${site.instagram.photos.length}). Send another, or /home.`);
+      }
+      if (s.target === 'experience') {
+        site.experiences = site.experiences || [];
+        const rel = await downloadPhoto(ctx, fileId, 'site', 'exp', (s.idx + 1));
+        site.experiences[s.idx] = rel; C.saveSite(site);
+        sessions.delete(ctx.from.id);
+        return ctx.reply('✅ Card photo updated. Site updated. /home for more.');
+      }
+      if (s.target === 'hero') {
+        const rel = await downloadPhoto(ctx, fileId, 'site', 'hero', Date.now().toString().slice(-5));
+        site.hero = rel; C.saveSite(site);
+        sessions.delete(ctx.from.id);
+        return ctx.reply('✅ Hero photo updated. Site updated.');
+      }
+      if (s.target === 'builder') {
+        site.builder = site.builder || [];
+        const rel = await downloadPhoto(ctx, fileId, 'site', 'builder', (s.idx + 1));
+        site.builder[s.idx] = rel; C.saveSite(site);
+        sessions.delete(ctx.from.id);
+        return ctx.reply('✅ Builder photo updated. Site updated. /home for more.');
+      }
+      sessions.delete(ctx.from.id);
+      return ctx.reply('⚠️ Unknown photo target.');
+    }
     // set new cover for a post
     if (s.mode === 'setcover') { const posts = C.loadPosts(); const p = posts.find(x => x.id === s.id); const rel = await downloadPhoto(ctx, fileId, 'post', p.slug, 'cover'); p.cover = rel; C.savePosts(posts); sessions.delete(ctx.from.id); return ctx.reply('✅ Cover updated. Site updated.'); }
     // addtour wizard photos
@@ -392,6 +450,16 @@ bot.on('message:photo', async ctx => {
     if (s.mode === 'reviewavatar') { const rs = C.loadReviews(); const r = rs.find(x => x.id === s.id); const rel = await downloadPhoto(ctx, fileId, 'review', 'rev', r.id); r.avatar = rel; C.saveReviews(rs); sessions.delete(ctx.from.id); return ctx.reply('✅ Review photo updated.'); }
     // addreview avatar -> save
     if (s.mode === 'addreview' && s.step === 'photo') { const rel = await downloadPhoto(ctx, fileId, 'review', 'rev', Date.now().toString().slice(-5)); s.draft.avatar = rel; return saveReviewDraft(ctx, s); }
+    // sight photo (replace the photo for a place in "Sights visited on this tour")
+    if (s.mode === 'sightphoto') {
+      const sights = C.loadSights(); const st = sights[s.key];
+      if (!st) { sessions.delete(ctx.from.id); return ctx.reply('⚠️ Sight not found.'); }
+      if (st.photo && String(st.photo).startsWith('images/')) delFile(st.photo);
+      st.photo = await downloadPhoto(ctx, fileId, 'sights', s.key, 1); C.saveSights(sights);
+      sessions.delete(ctx.from.id);
+      const v = sightView(s.key);
+      return ctx.reply('✅ Photo updated. Site updated.\n\n' + v.text, { ...md, reply_markup: v.kb });
+    }
   } catch (e) { console.error(e); await ctx.reply('⚠️ Could not save that photo. Try again.'); }
 });
 
@@ -515,5 +583,122 @@ async function saveReviewDraft(ctx, s) {
   await ctx.reply(`🎉 Review by *${d.name}* added, shown on ${placeLabel(d.placement)}. /reviews to manage.`, md);
 }
 
+// ================= HOMEPAGE MEDIA (site settings) =================
+const EXP_SLOTS = ['Combined adventures', 'Road trips', 'Horse treks', 'Off the beaten path', 'Winter tours'];
+function homeKb() {
+  return new InlineKeyboard()
+    .text('📸 Instagram grid', 'h:ig').row()
+    .text('🧭 Experience cards', 'h:exp').row()
+    .text('🏔 Hero photo', 'h:heroset').text('🧩 Builder photos', 'h:builder').row();
+}
+function builderView() {
+  const b = (C.loadSite().builder) || [];
+  const kb = new InlineKeyboard();
+  for (let i = 0; i < 4; i++) kb.text(`${b[i] ? '🖼' : '➕'} Photo ${i + 1}`, `h:builderset:${i}`).row();
+  kb.text('« Back', 'h:home').row();
+  return { text: `🧩 *Builder teaser* (homepage “Build it” block) — 4 photos.\nTap one to replace. ${b.filter(Boolean).length}/4 set.`, kb };
+}
+function expView() {
+  const exps = (C.loadSite().experiences) || [];
+  const kb = new InlineKeyboard();
+  EXP_SLOTS.forEach((label, i) => {
+    kb.text(`${exps[i] ? '🖼' : '➕'} ${label}`, `h:expset:${i}`).row();
+  });
+  kb.text('« Back', 'h:home').row();
+  return { text: `🧭 *Experience cards* (homepage)\nTap a card to replace its photo. ${exps.filter(Boolean).length}/${EXP_SLOTS.length} set.`, kb };
+}
+function igView() {
+  const ig = (C.loadSite().instagram) || {};
+  const photos = ig.photos || [];
+  const kb = new InlineKeyboard();
+  photos.forEach((p, i) => {
+    kb.text(`${i === 0 ? '⭐' : '🖼'} ${i + 1}`, 'h:noop').text('⭐ first', `h:igmain:${i}`).text('🗑', `h:igdel:${i}`).row();
+  });
+  kb.text('➕ Add photo', 'h:igadd').row();
+  kb.text('✏️ Instagram link', 'h:igurl').text('« Back', 'h:home').row();
+  const text = `📸 *Instagram grid* — ${photos.length} photo(s)\n🔗 Link: ${ig.url || '_(not set)_'}\n\n⭐ = shown first. Add with ➕. These photos appear in the “Follow the journey” block on the homepage.`;
+  return { text, kb };
+}
+bot.command('home', ctx => ctx.reply('🏠 *Homepage photos*\n\nManage the images shown on the front page.', { ...md, reply_markup: homeKb() }));
+bot.callbackQuery('h:home', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply('🏠 *Homepage photos*', { ...md, reply_markup: homeKb() }); });
+bot.callbackQuery('h:noop', ctx => ctx.answerCallbackQuery());
+bot.callbackQuery('h:ig', async ctx => { await ctx.answerCallbackQuery(); const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery('h:igadd', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'instagram' }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the photo(s) for the Instagram grid. /home when done.'); });
+bot.callbackQuery('h:igurl', async ctx => { sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'instagram.url' }); await ctx.answerCallbackQuery(); await ctx.reply('🔗 Send your Instagram link (e.g. `https://instagram.com/azattours.kyrgyzstan`):', md); });
+bot.callbackQuery(/^h:igdel:(\d+)$/, async ctx => {
+  const idx = Number(ctx.match[1]); await ctx.answerCallbackQuery();
+  const site = C.loadSite(); const photos = (site.instagram && site.instagram.photos) || [];
+  if (photos[idx]) { if (String(photos[idx]).startsWith('images/')) delFile(photos[idx]); photos.splice(idx, 1); C.saveSite(site); }
+  const v = igView(); await ctx.reply('🗑 Removed.\n\n' + v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery(/^h:igmain:(\d+)$/, async ctx => {
+  const idx = Number(ctx.match[1]); await ctx.answerCallbackQuery();
+  const site = C.loadSite(); const photos = (site.instagram && site.instagram.photos) || [];
+  if (photos[idx]) { const [p] = photos.splice(idx, 1); photos.unshift(p); C.saveSite(site); }
+  const v = igView(); await ctx.reply('⭐ Moved to first.\n\n' + v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery('h:exp', async ctx => { await ctx.answerCallbackQuery(); const v = expView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^h:expset:(\d+)$/, async ctx => {
+  const i = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'experience', idx: i });
+  await ctx.answerCallbackQuery(); await ctx.reply(`📷 Send the new photo for *${EXP_SLOTS[i] || ('card ' + (i + 1))}*.`, md);
+});
+bot.callbackQuery('h:heroset', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'hero' }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the new *hero* (top banner) photo. Wide/landscape works best.', md); });
+bot.callbackQuery('h:builder', async ctx => { await ctx.answerCallbackQuery(); const v = builderView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^h:builderset:(\d+)$/, async ctx => { const i = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'builder', idx: i }); await ctx.answerCallbackQuery(); await ctx.reply(`📷 Send builder photo *${i + 1}*.`, md); });
+
+// ================= SIGHTS (photos + captions for "Sights visited on this tour") =================
+function sightsListKb() {
+  const sights = C.loadSights();
+  const keys = Object.keys(sights);
+  const kb = new InlineKeyboard();
+  keys.forEach(k => {
+    const s = sights[k] || {};
+    const mark = s.photo && String(s.photo).startsWith('images/') ? '✅' : (s.photo ? '🌐' : '▫️');
+    kb.text(`${mark} ${s.name || k}`, `sg:v:${k}`).row();
+  });
+  const text = `📍 *Sights* — ${keys.length} place(s) shown in the “Sights visited on this tour” section of every tour.\n\n✅ = your photo · 🌐 = placeholder · ▫️ = no photo (a tour photo is used).\nTap a place to change its photo or description.`;
+  return { text, kb };
+}
+function sightView(key) {
+  const s = (C.loadSights())[key];
+  if (!s) return null;
+  const kb = new InlineKeyboard()
+    .text('📷 Replace photo', `sg:ph:${key}`).row()
+    .text('✏️ Edit description', `sg:bl:${key}`).row()
+    .text('« All sights', 'sg:list').row();
+  const photoLine = s.photo
+    ? (String(s.photo).startsWith('images/') ? `🖼 Your photo is set` : '🌐 Placeholder photo (replace it with your own)')
+    : '▫️ No photo yet — a tour photo is shown as a fallback';
+  const text = `📍 *${s.name || key}*\n\n${photoLine}\n📝 ${s.blurb || '_(no description)_'}`;
+  return { text, kb };
+}
+bot.command('sights', ctx => { const { text, kb } = sightsListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
+bot.callbackQuery('sg:list', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = sightsListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
+bot.callbackQuery(/^sg:v:(.+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = sightView(ctx.match[1]); if (!v) return ctx.reply('Not found.'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^sg:ph:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightphoto', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the new photo for this place. /cancel to stop.'); });
+bot.callbackQuery(/^sg:bl:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightblurb', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ctx.reply('✏️ Send a short one-line description for this place. /cancel to stop.'); });
+
 bot.catch(err => console.error('Bot error:', err));
-bot.start({ onStart: info => console.log(`✅ Azat Tours admin bot running as @${info.username}. Owner: ${OWNER_ID || '(unclaimed)'}`) });
+
+const BOT_COMMANDS = [
+  { command: 'start', description: 'Open the admin menu' },
+  { command: 'home', description: 'Homepage photos (Instagram, hero, cards)' },
+  { command: 'tours', description: 'Manage tours' },
+  { command: 'addtour', description: 'Add a tour' },
+  { command: 'posts', description: 'Manage blog articles' },
+  { command: 'addpost', description: 'Add an article' },
+  { command: 'guides', description: 'Manage guides' },
+  { command: 'reviews', description: 'Manage reviews' },
+  { command: 'sights', description: 'Sights photos & captions' },
+  { command: 'leads', description: 'Recent enquiries' },
+  { command: 'chats', description: 'Website chats' },
+  { command: 'help', description: 'Help' },
+  { command: 'cancel', description: 'Cancel current action' },
+];
+bot.start({
+  drop_pending_updates: true, // skip backlog so /start answers instantly after a restart
+  onStart: async info => {
+    try { await bot.api.setMyCommands(BOT_COMMANDS); } catch (e) { console.error('setMyCommands failed:', e.message); }
+    console.log(`✅ Azat Tours admin bot running as @${info.username}. Owner: ${OWNER_ID || '(unclaimed)'}`);
+  }
+});

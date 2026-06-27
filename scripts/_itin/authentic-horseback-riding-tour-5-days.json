@@ -1,0 +1,72 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to Epkin & ride to Kereshke pasture",
+    "desc": [
+      "You leave Bishkek in the morning and head for Epkin Village, where a family homestay puts out a homemade lunch and you meet the horse that will carry you the next few days. Your guide settles you in the saddle before the trail begins.",
+      "The ride opens onto wide views of the Korumdu and Baba-Ata ranges, an easy stretch of smooth ground that lets you find your rhythm. By evening you reach a herder's house on the Kereshke pasture, where dinner is shared at the family's table."
+    ],
+    "transfer": "230 km · 4 h",
+    "activity": "Horse riding · 17 km · 4 h",
+    "meals": "Lunch at guesthouse, dinner at shepherd's house",
+    "overnight": "Guesthouse (2500 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Ride to Mai-Tor pasture",
+    "desc": [
+      "After breakfast you ride on toward Mai-Tor, crossing gentle hills and passing the yurts and winter houses where local nomads live with the seasons. Lunch is at a herder's yurt along the way.",
+      "The afternoon brings a steady climb toward the Kyzyl-Kiya Pass, with daily life unfolding around you the whole time. You spend the night with a herding family, sharing their yurt and their evening."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 21 km · 5-6 h",
+    "meals": "Breakfast at shepherd's house, lunch & dinner at yurt",
+    "overnight": "Yurt (2800 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 3,
+    "title": "Ride over Jalgyz-Karagai Pass to Song-Kol",
+    "desc": [
+      "A traditional breakfast sets you up for a longer day. You follow the Chaar-Archa River down through the Kilemche pasture, then begin the climb toward the Jalgyz-Karagai Pass at 3400 m, the hardest effort of the trip so far.",
+      "From the top, Song-Kol opens out below you, vast and quiet. You ride down to a yurt camp on the shore, where the evening is yours to walk by the water and sit with the nomad families who summer here."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 5-6 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 4,
+    "title": "A day with nomads at Song-Kol",
+    "desc": [
+      "Today you slow down and live by the rhythm of the jailoo. From the early-morning milking of the horses to gathering dried dung for the fire, you lend a hand with the tasks that fill a herder's day and watch how a family works the land.",
+      "There's an optional ride if you want more time in the saddle, but the day is really about being here, among the herds, the yurts and the people, with nowhere you need to be."
+    ],
+    "transfer": "",
+    "activity": "",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 5,
+    "title": "Ride over Tuz-Ashuu Pass & drive to Bishkek",
+    "desc": [
+      "Your last morning in the saddle climbs to the Tuz-Ashuu Pass at 3300 m, where Song-Kol spreads out one final time behind you. You ride down to Kyzart Village for lunch.",
+      "From there it's an afternoon on the road back to Bishkek, closing a trip built from quiet trails, mountain passes and nights at a herder's table."
+    ],
+    "transfer": "280 km · 4 h",
+    "activity": "Horse riding · 20 km · 4 h",
+    "meals": "Breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

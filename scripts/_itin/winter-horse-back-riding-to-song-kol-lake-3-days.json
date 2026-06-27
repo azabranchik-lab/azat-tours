@@ -1,0 +1,35 @@
+[
+  {
+    "day": 1,
+    "title": "Ride through the snow to Kilemche",
+    "desc": ["The ride begins in Kyzart, where your guide fits you to your horse and covers the basics before you head out, no riding experience needed. You follow a riverside trail across a winter landscape, the Chaar-Archa River frozen along its banks and the hills dusted white and quiet.", "A picnic stop near the river breaks up the morning, then you ride on through gentle terrain to Kilemche Valley. There a Kyrgyz family welcomes you into their winter home for hot tea, dinner, and a warm bed, the kind of hospitality that means the most when the cold sets in outside."],
+    "transfer": "",
+    "activity": "Horse riding · 21 km · 4-5 h",
+    "meals": "lunch at guesthouse, dinner at homestay",
+    "overnight": "Guesthouse (2700 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Over Tuz-Ashuu Pass to frozen Song-Kol",
+    "desc": ["This is the hardest day. You climb toward the Tuz-Ashuu Pass at 3300 m through deep snow, and there may be stretches where you dismount and lead your horse on foot to get through. It's real winter mountain work, but the reward at the top is the sight of Song-Kol locked in ice, white from shore to shore.", "From the pass you drop down to a yurt camp, where hot tea and lunch are waiting. The afternoon is free to rest by the stove or walk out onto the frozen lake. Dinner and the night are spent in the yurt, well wrapped against the cold."],
+    "transfer": "",
+    "activity": "Horse riding · 17 km · 4 h",
+    "meals": "breakfast at homestay, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Back over the pass to Kyzart",
+    "desc": ["After breakfast you retrace your route back over the Tuz-Ashuu Pass. The trail looks different in the morning light, white valleys, empty winter slopes, and the same quiet that makes this season special. You arrive in Kyzart Village by afternoon, where a warm welcome and a hot homemade lunch round off the trip."],
+    "transfer": "",
+    "activity": "Horse riding · 21 km · 4-5 h",
+    "meals": "breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

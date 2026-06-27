@@ -1,0 +1,24 @@
+[
+  {
+    "day": 1,
+    "title": "Ride from Kyzart to Song-Kol",
+    "desc": ["The tour starts in Kyzart Village, the nearest settlement to Song-Kol. Once your guide has shown you the basics, you set off along the Chaar-Archa River across smooth, easy ground, a good stretch to find your seat and get comfortable with your horse.", "After a picnic lunch by the river, the trail climbs toward the Tuz-Ashuu Pass at 3300 m, where Song-Kol comes into view below. You descend past traditional yurts to camp on the shore, with an evening walk by the water and, weather allowing, a sky full of stars."],
+    "transfer": "",
+    "activity": "Horse riding · 22 km · 5-6 h",
+    "meals": "Picnic lunch, dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 2,
+    "title": "Back over Tuz-Ashuu Pass to Kyzart",
+    "desc": ["After breakfast you set off back toward the Tuz-Ashuu Pass, climbing gradually to 3300 m. From the top you get one last look at Song-Kol before the trail turns downhill.", "A scenic descent brings you back to Kyzart, where lunch at the guesthouse and some free time to rest mark the end of the tour."],
+    "transfer": "",
+    "activity": "Horse riding · 20 km · 4-5 h",
+    "meals": "Breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

@@ -15,6 +15,16 @@
   fab.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H8l-4 4V5a1 1 0 0 1 1-1Zm3 6h10v-2H7v2Zm0 4h7v-2H7v2Z"/></svg><span class="badge" style="display:none">1</span>';
   document.body.appendChild(fab);
 
+  // proactive nudge: a one-line note from the founder, shown once per visitor
+  const NUDGE_KEY = 'alatoo_chat_nudge_seen';
+  const nudge = document.createElement('div');
+  nudge.className = 'chat-nudge';
+  nudge.innerHTML = `
+    <button class="chat-nudge-x" aria-label="Dismiss">&times;</button>
+    <div class="chat-nudge-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></div>
+    <div class="chat-nudge-text"><b>Azat</b><span>Hi, I'm Azat. Questions about dates, routes or prices? Ask me right here, I'll reply personally.</span></div>`;
+  document.body.appendChild(nudge);
+
   const panel = document.createElement('div');
   panel.className = 'chat-panel';
   panel.innerHTML = `
@@ -28,7 +38,7 @@
       <input type="email" id="chatEmailInput" placeholder="Your email (so we can reply if you leave)">
       <button id="chatEmailSave">Save</button>
     </div>
-    <a class="chat-wa" href="${WA}" target="_blank" rel="noopener"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1Z"/></svg> Prefer WhatsApp? Message us →</a>
+    <a class="chat-wa" href="${WA}" target="_blank" rel="noopener"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1Z"/></svg> Prefer WhatsApp? Message us</a>
     <div class="chat-input">
       <input type="text" id="chatText" placeholder="Type your question…" autocomplete="off">
       <button id="chatSend" aria-label="Send"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 15-7-6 14-2.5-6.5Z"/></svg></button>
@@ -46,13 +56,20 @@
     body.appendChild(d); body.scrollTop = body.scrollHeight;
   }
   function greet() {
-    if (!body.childElementCount) bubble('owner', 'Hi!  Ask us anything about tours, dates, visas or safety — a local expert will reply here. What can we help with?');
+    if (!body.childElementCount) bubble('owner', 'Hi!  Ask us anything about tours, dates, visas or safety, a local expert will reply here. What can we help with?');
   }
-  function open() { panel.classList.add('open'); badge.style.display = 'none'; greet(); input.focus(); startPoll(); render(); }
+  function open() { dismissNudge(); panel.classList.add('open'); badge.style.display = 'none'; greet(); input.focus(); startPoll(); render(); }
   function close() { panel.classList.remove('open'); }
 
   fab.onclick = () => panel.classList.contains('open') ? close() : open();
   panel.querySelector('.x').onclick = close;
+
+  // nudge behaviour: appear once after a short delay; opening chat or dismissing remembers it
+  function showNudge() { if (localStorage.getItem(NUDGE_KEY)) return; nudge.classList.add('show'); fab.classList.add('nudging'); }
+  function dismissNudge() { nudge.classList.remove('show'); fab.classList.remove('nudging'); localStorage.setItem(NUDGE_KEY, '1'); }
+  nudge.onclick = () => { dismissNudge(); open(); };
+  nudge.querySelector('.chat-nudge-x').onclick = (e) => { e.stopPropagation(); dismissNudge(); };
+  setTimeout(showNudge, 3500);
 
   async function render() {
     try {
@@ -77,7 +94,7 @@
     bubble('user', text);
     try {
       await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid, text, email: localStorage.getItem('alatoo_chat_email') || '' }) });
-    } catch (e) { bubble('sys', 'Couldn’t send — please try WhatsApp instead.'); }
+    } catch (e) { bubble('sys', 'Couldn’t send, please try WhatsApp instead.'); }
     if (!askedEmail && !localStorage.getItem('alatoo_chat_email')) {
       askedEmail = true;
       panel.querySelector('#chatEmail').style.display = 'flex';

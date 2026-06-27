@@ -1,0 +1,86 @@
+[
+  {
+    "day": 1,
+    "title": "Drive to Oro-Bashy & ride to Ichke-Tor Lake",
+    "desc": [
+      "We leave Bishkek behind and drive into the hills to Oro-Bashy village, where lunch and your horses are waiting. Once you're settled in the saddle, the trail climbs gently into the Ichke-Tor Gorge, gaining height as the valley opens out around you.",
+      "The reward is a quiet alpine lake fed by glaciers high above. From there you continue to the Jar-Korumdu pasture, where a nomad family takes you in for the night. This is real summer-pasture country, far from any road, with only the sound of grazing herds."
+    ],
+    "transfer": "230 km · 4 h",
+    "activity": "Horse riding · 14 km · 4 h",
+    "meals": "Lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (2800 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Ride to Kereshke pasture",
+    "desc": [
+      "The morning starts the nomad way, bringing the horses in from the hills after breakfast. Then you ride on through the Korumdu Gorge and across the Chiy-Konush pasture, with the glaciers of Baba-Ata Mountain holding the skyline ahead.",
+      "The trail threads past grazing herds and herder camps before reaching the Kereshke summer pasture. Tonight a shepherd's family hosts you in their home, and there's time to watch the slow rhythm of an ordinary working day in the mountains."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 18 km · 5-6 h",
+    "meals": "Breakfast at yurt, picnic lunch, dinner at shepherd's house",
+    "overnight": "Shepherd's house (2500 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 3,
+    "title": "Ride to Mai-Tor pasture",
+    "desc": [
+      "Today you ride through gentle, rolling country dotted with yurts and the stone winter houses families return to each year. With luck you'll cross paths with herders moving their animals between pastures, a sight that hasn't changed in generations.",
+      "Lunch is at a shepherd's yurt along the way, then the trail climbs steadily to the Kyzyl-Kiya Pass, the gateway into Mai-Tor. You spend the night in a small yurt camp set among high grasslands, sharing in the everyday tasks of camp life."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 21 km · 5-6 h",
+    "meals": "Breakfast at shepherd's house, lunch & dinner at yurt",
+    "overnight": "Yurt (2800 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 4,
+    "title": "Ride to Song-Kol Lake",
+    "desc": [
+      "After a traditional breakfast in the yurt, the trail follows the Chaar-Archa River across the Kilemche pasture, with a midday stop at a nomad camp for lunch. The afternoon is the hardest stretch of the trip, a long, steady climb to the Jalgyz-Karagay Pass at 3400 m.",
+      "From the top you catch your first sight of Song-Kol spread out below. You drop down to the lakeshore and a family yurt that will be home for the next two nights. There's time to walk by the water and turn the horses loose for the evening."
+    ],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 5-6 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 5,
+    "title": "A day with nomads at Song-Kol",
+    "desc": [
+      "There's no schedule today. You live alongside the herders as they move the sheep, bring the cows in for milking, and keep an eye on the stallion guarding his herd. You can try your hand at milking a mare, gathering fuel for the stove, or helping prepare a meal.",
+      "If you want to ride, your hosts can take you out for a short loop to see more of the lake and the hills around it. The day winds down quietly, a shared dinner, a few stories, and the wide open sky above the lake."
+    ],
+    "transfer": "",
+    "activity": "",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 6,
+    "title": "Ride to Kyzart & return to Bishkek",
+    "desc": [
+      "You say your goodbyes and ride up to the Tuz-Ashuu Pass at 3300 m for one last look back over Song-Kol, then begin the long descent toward Kyzart Village. Lunch and a rest are waiting when you arrive.",
+      "From Kyzart we drive back to Bishkek, the mountains giving way to town. You'll reach the city in the afternoon, carrying the quiet of the high pastures and the faces of the families who hosted you along the way."
+    ],
+    "transfer": "280 km · 4 h",
+    "activity": "Horse riding · 20 km · 4 h",
+    "meals": "Breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

@@ -64,7 +64,7 @@ if (leadForm) {
     e.preventDefault();
     const submitBtn = leadForm.querySelector('button[type="submit"]');
 
-    // DEMO mode — no key configured yet
+    // DEMO mode, no key configured yet
     if (!WEB3FORMS_KEY || WEB3FORMS_KEY.startsWith('YOUR-')) {
       leadForm.style.display = 'none';
       success.classList.add('show');

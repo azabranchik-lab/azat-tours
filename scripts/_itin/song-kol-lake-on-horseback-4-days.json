@@ -1,0 +1,46 @@
+[
+  {
+    "day": 1,
+    "title": "Saddle up & ride to Kilemche",
+    "desc": ["The trip begins in Kyzart, where your guide fits you to your horse and runs through the basics, there's no need for any riding experience. Once you feel settled, you set off at an easy pace along the Chaar-Archa River, with open valleys and rounded green hills on every side.", "You stop for a picnic lunch out on the trail, then ride on to a herder family's yurt camp at Kilemche. There's time before dinner to wander the surrounding hills and watch the rhythm of nomad life, animals brought in for the evening, smoke rising from the stoves."],
+    "transfer": "",
+    "activity": "Horse riding · 21 km · 4-5 h",
+    "meals": "picnic lunch, dinner at yurt",
+    "overnight": "Yurt (2700 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Over Jalgyz-Karagai Pass to Song-Kol",
+    "desc": ["This is the most demanding day of the ride. You climb steadily toward the Jalgyz-Karagai Pass at 3300 m, the trail rising through high pasture with wide mountain views opening up behind you. The work is worth it: from the top, Song-Kol appears far below, a sheet of pale blue against the grass.", "From the pass you drop down toward the lake, riding west along the shore past grazing herds and scattered summer yurts. You finish the day at the Tuz-Ashuu pasture, right by the water, where a nomad family hosts you for the night."],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 5-6 h",
+    "meals": "breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Along the shore to western Song-Kol",
+    "desc": ["After two days in the saddle you'll feel more at home with your horse, and today's ride is the relaxed one. The trail runs flat along the lakeshore, and on the smooth open grass there's room to pick up the pace, a canter, even a gallop, if you're game.", "By midday you reach the Ozbek-Ashuu pasture, where a local family serves lunch in their yurt and welcomes you to stay the night. The afternoon is yours: walk along the water, rest, or take a short ride into the nearby hills before dinner."],
+    "transfer": "",
+    "activity": "Horse riding · 16 km · 4 h",
+    "meals": "breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 4,
+    "title": "Ride back to Kyzart over Ozbek-Ashuu",
+    "desc": ["The last day takes you back across the mountains to Kyzart. You climb gradually to the Ozbek-Ashuu Pass at 3300 m for one final look at Song-Kol spread out behind you, then begin the long, scenic descent down a pretty trail toward the valley.", "You arrive in Kyzart Village by afternoon, where a hot homemade lunch is waiting. There's time to rest and clean up before you carry on to your next stop."],
+    "transfer": "",
+    "activity": "Horse riding · 20 km · 4-5 h",
+    "meals": "breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

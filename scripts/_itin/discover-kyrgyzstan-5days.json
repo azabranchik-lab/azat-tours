@@ -1,0 +1,72 @@
+[
+  {
+    "day": 1,
+    "title": "Road trip to Song-Kol",
+    "desc": [
+      "You leave Bishkek and start with the Burana Tower and its old archaeological grounds, then sit down with a Dungan family for a homemade lagman lunch, a warm window into one of the country's many cultures.",
+      "The road carries on through Kochkor and up over the Kalmak-Ashuu Pass at 3400 m, with mountains opening on every side, before dropping to Song-Kol. You spend the night in a yurt on the high lakeshore."
+    ],
+    "transfer": "320 km · 5-6 h",
+    "activity": "",
+    "meals": "Lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 2,
+    "title": "Ride at Song-Kol, drive to Ysyk-Kol",
+    "desc": [
+      "A gentle morning ride takes you along the shore of Song-Kol, past yurts and grazing herds, with the option to head up into the nearby hills if you'd like more time on horseback.",
+      "After lunch you leave the lake and drive toward Ysyk-Kol, perhaps stopping at the Ak-Say canyons on the way, before settling into a guesthouse near Bokonbaev for the night."
+    ],
+    "transfer": "220 km · 4 h",
+    "activity": "Horse riding · 17 km · 4 h",
+    "meals": "Breakfast & lunch at yurt, dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 3,
+    "title": "South shore: eagle hunter, canyons & Jety-Oguz",
+    "desc": [
+      "The day opens with an eagle-hunter demonstration by a local Kyrgyz hunter, a chance to see a tradition that's been passed down for generations. From there you explore the colour-streaked Fairy-Tale Canyons.",
+      "Lunch is at Lyubov Danichkina's home in Tamga Village, then you take in the Barskoon Waterfalls and the red sandstone of the Jety-Oguz Valley before arriving in Karakol for the night."
+    ],
+    "transfer": "150 km · 3-4 h",
+    "activity": "",
+    "meals": "Breakfast & lunch at guesthouse, dinner at restaurant",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 4,
+    "title": "Off-road to Altyn-Arashan",
+    "desc": [
+      "This morning you climb into the mountains aboard a rugged Soviet UAZ truck, following a sparkling river through dense pine forest up to the Altyn-Arashan gorge, a bumpy, beautiful ride.",
+      "After lunch the afternoon is yours: soak in the natural hot springs, wander the trails, or simply sit and take in Peak Palatka rising to 5200 m at the head of the valley."
+    ],
+    "transfer": "30 km · 2-3 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch & dinner at guesthouse",
+    "overnight": "Guesthouse",
+    "wc": "Shared",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 5,
+    "title": "Drive back to Bishkek",
+    "desc": [
+      "After a slow mountain morning, the UAZ carries you back down to Karakol for lunch at a local restaurant.",
+      "From there the road runs along the northern shore of Ysyk-Kol, the Pearl of Central Asia, with long lake views the whole way to Bishkek, where you arrive in the evening."
+    ],
+    "transfer": "440 km · 6-7 h",
+    "activity": "",
+    "meals": "Breakfast at hotel, lunch at restaurant",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

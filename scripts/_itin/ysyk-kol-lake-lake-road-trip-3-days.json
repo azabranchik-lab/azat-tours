@@ -1,0 +1,44 @@
+[
+  {
+    "day": 1,
+    "title": "Bishkek to Karakol along Ysyk-Kol",
+    "desc": [
+      "You set off east from Bishkek, with a first stop at the 11th-century Burana Tower near Tokmok, a lone brick minaret marking the site of an old Silk Road town, surrounded by weathered stone figures. Lunch follows in Iskra Village with a Dungan family, whose cooking blends Chinese and Central Asian flavours into something you won't find elsewhere.",
+      "The road then runs the length of Ysyk-Kol, the vast lake that gives the region its name, passing the Kyrchyn Gorge that once hosted the World Nomad Games. You reach Karakol in the evening for dinner and a comfortable night in a hotel."
+    ],
+    "transfer": "430 km · 6-7 h",
+    "activity": "",
+    "meals": "lunch at guesthouse, dinner at restaurant",
+    "overnight": "Hotel",
+    "wc": "Private",
+    "internet": "Wi-Fi"
+  },
+  {
+    "day": 2,
+    "title": "South shore canyons to a mountain yurt",
+    "desc": [
+      "A short morning tour takes you around Karakol before you head out along the lake's southern shore. First stop is the Jety-Oguz Gorge, where a wall of red sandstone cliffs rises from the green valley, and lunch is a home-cooked Russian meal in Tamga at the house of a former Soviet alpinist.",
+      "The afternoon brings a gentle walk to the waterfall in Barskoon Gorge and a stop among the strange shapes of the Fairy-Tale canyons. As the day cools you climb up to the high Boz-Salkyn pastures, where you spend the night in a yurt and get a real taste of how nomad families live through the summer."
+    ],
+    "transfer": "150 km · 3-4 h",
+    "activity": "",
+    "meals": "breakfast at hotel, lunch at guesthouse, dinner at yurt",
+    "overnight": "Yurt",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 3,
+    "title": "Ride to Shatyly & back to Bishkek",
+    "desc": [
+      "The morning is a half-day ride through alpine forest and meadow up to the Shatyly panorama, a viewpoint that opens onto the whole sweep of Ysyk-Kol with the snow-capped Kungey Ala-Too behind it. If you'd rather not ride, the same route works well on foot.",
+      "Back at the trailhead you drive to Bokonbaev Village to meet local eagle hunters, who show how they work with their birds, and have lunch at a guesthouse before the long drive back to Bishkek. The eagle display is a demonstration, real hunting only happens in winter."
+    ],
+    "transfer": "280 km · 4 h",
+    "activity": "Horse riding · half day",
+    "meals": "breakfast at guesthouse, lunch at restaurant",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]

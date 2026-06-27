@@ -66,7 +66,7 @@
           <h3>Turn this into a real trip</h3>
           <p>Build your Kyrgyzstan adventure in 5 visual steps and a local expert sends a tailored plan within 24 hours. Free, no prepayment.</p>
           <div class="btns">
-            <a href="builder.html" class="btn btn-primary">Build my trip →</a>
+            <a href="builder.html" class="btn btn-primary">Build my trip</a>
             <a href="tours.html" class="btn btn-ghost" style="border-color:rgba(255,255,255,.4)">Browse tours</a>
           </div>
         </div>
@@ -75,6 +75,6 @@
 
     <div class="article-foot">
       <a href="blog.html">← All articles</a>
-      <a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%20read%20your%20article%20and%20have%20a%20question." target="_blank" rel="noopener">Ask us on WhatsApp →</a>
+      <a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%20read%20your%20article%20and%20have%20a%20question." target="_blank" rel="noopener">Ask us on WhatsApp</a>
     </div>`;
 })();

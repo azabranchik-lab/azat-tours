@@ -1,0 +1,46 @@
+{
+  "pack_base": [
+    "Warm layers you can add or shed, such as a fleece or light down jacket, since mornings and evenings get cold even in summer",
+    "Lighter clothes for the middle of the day, like t-shirts and a long-sleeve shirt",
+    "A waterproof, windproof jacket for sudden mountain weather",
+    "Sturdy, broken-in footwear with good grip for walking on uneven ground",
+    "Sun protection: a hat or cap, sunglasses, and high-SPF sunscreen for strong high-altitude sun",
+    "A refillable water bottle so you can top up at camps and guesthouses",
+    "A power bank and your charging cables, as power is limited or absent at remote camps",
+    "A small personal first-aid kit with any medications you take regularly",
+    "Some cash in Kyrgyz som for small purchases where cards are not accepted"
+  ],
+  "pack_by_tag": {
+    "trekking": [
+      "Proper hiking boots with ankle support for rocky, uneven trails",
+      "Trekking poles to ease the climbs and descents",
+      "A comfortable daypack for water, snacks, and a spare layer"
+    ],
+    "horseback": [
+      "Long trousers that won't chafe during long hours in the saddle",
+      "Riding gloves to protect your hands on the reins",
+      "Closed shoes or boots with a small heel that sit well in the stirrups"
+    ],
+    "road-trip": [
+      "Motion-sickness tablets, as mountain roads can be winding and bumpy",
+      "A light blanket or extra layer for long drives at altitude",
+      "Snacks and entertainment for the stretches between stops"
+    ],
+    "winter": [
+      "Thermal base layers, top and bottom, to stay warm in deep cold",
+      "An insulated hat and warm, waterproof gloves",
+      "Heavy socks and warm, waterproof boots for snow"
+    ]
+  },
+  "before": [
+    "Visa: many nationalities can enter Kyrgyzstan visa-free for up to 60 days, but please check the current rules for your own passport before you travel",
+    "Money: the local currency is the Kyrgyz som; carry cash for villages and camps, as card payments mostly work only in towns and cities",
+    "ATMs and exchange: withdraw or change money in larger towns; rates at banks and exchange offices beat the airport",
+    "Connectivity: mobile data is decent in towns, but there is usually no signal at high mountain yurt camps, so let people know you may be offline",
+    "Altitude: some camps sit around 3,000 to 3,900 metres, so take it easy on the first day and drink plenty of water",
+    "Drinking water: stick to bottled or boiled water, and bring enough for stretches where none is available",
+    "Electricity: the supply is 230V with European-style round (Type C/F) plugs, so bring an adapter if you need one",
+    "Tipping: tips are not required but always appreciated for guides, drivers, and camp staff who look after you",
+    "Language: Kyrgyz and Russian are the main languages; a few basic phrases go a long way, and your guide can translate"
+  ]
+}

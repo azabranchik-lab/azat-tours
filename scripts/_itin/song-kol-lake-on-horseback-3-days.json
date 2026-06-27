@@ -1,0 +1,35 @@
+[
+  {
+    "day": 1,
+    "title": "Ride from Kyzart to Kilemche",
+    "desc": ["The tour begins in Kyzart Village, the closest settlement to Song-Kol. After your guide runs through the basics in the saddle, you set off at an easy pace along the Chaar-Archa River, letting horse and rider get used to one another across wide, gentle valleys.", "A picnic lunch by the water breaks up the day before you carry on toward Kilemche. By evening you reach a yurt camp kept by a herder family, time to wander the surrounding hills, watch the rhythm of nomad life, and settle in before dinner."],
+    "transfer": "",
+    "activity": "Horse riding · 21 km · 4-5 h",
+    "meals": "Picnic lunch, dinner at yurt",
+    "overnight": "Yurt (2700 m)",
+    "wc": "Shared",
+    "internet": ""
+  },
+  {
+    "day": 2,
+    "title": "Over Jalgyz-Karagai Pass to Song-Kol",
+    "desc": ["Today asks more of you. After breakfast you climb steadily toward the Jalgyz-Karagai Pass at 3300 m, with the mountains opening up around you the higher you go. From the top comes your first glimpse of Song-Kol lying far below.", "You drop down to a lakeside yurt camp for lunch, then ride west along the shore in the afternoon, passing grazing herds and scattered yurts on your way to the Tuz-Ashuu pasture. The evening is yours by the water, and on a clear night the stars are something to see."],
+    "transfer": "",
+    "activity": "Horse riding · 23 km · 5-6 h",
+    "meals": "Breakfast, lunch & dinner at yurt",
+    "overnight": "Yurt (3100 m)",
+    "wc": "Shared",
+    "internet": "Mobile data"
+  },
+  {
+    "day": 3,
+    "title": "Back over Tuz-Ashuu Pass to Kyzart",
+    "desc": ["After saying goodbye to your host family, you ride back toward the Tuz-Ashuu Pass at 3300 m. The climb is gradual, and from the top you take in Song-Kol one last time, ringed by open pasture and high peaks.", "From there a pretty trail carries you down toward Kyzart. Lunch and a rest at the guesthouse round off your time in the saddle before the tour comes to a close."],
+    "transfer": "",
+    "activity": "Horse riding · 20 km · 4-5 h",
+    "meals": "Breakfast at yurt, lunch at guesthouse",
+    "overnight": "",
+    "wc": "",
+    "internet": ""
+  }
+]
