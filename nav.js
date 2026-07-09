@@ -1,5 +1,5 @@
 // Shared header + mobile menu + footer + floating CTAs, injected from ONE source.
-// Per-page config via <body data-page="home|tours|tour|tour-alakul|about|blog|post|contact|reviews|plan">.
+// Per-page config via <body data-page="home|tours|tour|about|blog|post|contact|reviews|plan">.
 // Must load BEFORE script.js (which binds #burger/#header/#mobileMenu synchronously).
 // builder.html intentionally omits this (it has its own minimal top bar).
 (function () {
@@ -22,9 +22,8 @@
     post:       { active: 'blog',    cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
     contact:    { active: 'contact', cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
     reviews:    { active: '',        cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
-    plan:       { active: 'plan',    cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
+    plan:       { active: 'plan',    cta: ['Build your trip', 'builder.html'], solid: true, mcta: true },  /* no self-link: plan page's CTA drives to the builder */
     tour:       { active: 'tours',   cta: ['Request this tour', '#book'],     solid: true, mcta: false },
-    'tour-alakul': { active: 'tours', cta: ['Book this trek', '#book'],       solid: true, mcta: false },
   };
   var cfg = CFG[page] || CFG.tours;
 
