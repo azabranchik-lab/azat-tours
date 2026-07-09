@@ -1,6 +1,6 @@
 # Azat Tours — operating instructions (read every session)
 
-> Context to read first: `PROJECT-STATE.md` (status, data/deploy), `BRAND.md` (brand + §10 design
+> Context to read first: `docs/PROJECT-STATE.md` (status, data/deploy), `docs/BRAND.md` (brand + §10 design
 > language), memories `azat-tours-project`, `mobile-native-design`, `soft-alpine-design`.
 
 ## Prime directive: UX/UI first
@@ -22,7 +22,7 @@ visual change and "see if he likes it" — decide first, build once.
 4. **Show, don't tell — and lock the details:** render mockups (visualize tool) showing the EXACT layout
    (alignment, side, spacing, order, states), not just the vibe. Get the owner's pick/approval on the mockup.
    This step is where decisions get made — not in the code.
-5. **Build once** in the approved direction. **Apply the design language** — "Soft Alpine" (BRAND.md §10):
+5. **Build once** in the approved direction. **Apply the design language** — "Soft Alpine" (docs/BRAND.md §10):
    soft gradients, no hard lines, aurora accents. Reuse existing components/tokens before inventing.
 6. **Verify** (see below) and report honestly (what works, what's a known limitation).
 
