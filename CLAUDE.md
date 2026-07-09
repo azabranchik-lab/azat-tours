@@ -28,6 +28,10 @@ visual change and "see if he likes it" — decide first, build once.
 
 ## Specialists — invoke proactively (don't wait to be asked)
 Use the right packaged expertise instead of winging it. Match task → skill:
+- **Project skills (in `.claude/skills/`, use these FIRST — they carry this project's specifics):**
+  page/layout/usability work → `ux-laws` + `site-logic`; SEO/meta/search copy → `seo-tourism`;
+  code/data/deploy changes or "something broke" → `site-architecture`; CTAs/forms/selling copy/
+  conversion → `sales-funnel`.
 - Substantial UI build/restyle → `frontend-design`; before shipping a page → `/design-review` (this project's
   command) or the `design`/`accessibility-review` skills.
 - Marketing copy, landing pages, SEO, conversion → `marketing` skills (`copywriting`, `page-cro`, `seo-audit`),
