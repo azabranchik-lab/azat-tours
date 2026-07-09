@@ -3,6 +3,14 @@
 (function () {
   const TOURS = window.TOURS || [];
   const waMsg = name => `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + name + " tour.")}`;
+  const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // soft rise-in for a set of cards (stagger capped so long lists don't crawl)
+  function riseIn(els) {
+    if (reduceMotion) return;
+    els.forEach(c => c.classList.remove('animate-in'));
+    if (els[0]) void els[0].offsetWidth;                      // reflow → restart animation
+    els.forEach((c, i) => { c.style.animationDelay = (Math.min(i, 8) * 35) + 'ms'; c.classList.add('animate-in'); });
+  }
 
   const ARROW = '';
   function card(t) {
@@ -49,6 +57,7 @@
     want.forEach(s => { const t = TOURS.find(x => x.slug === s); if (t) pick.push(t); });
     while (pick.length < 6 && byDays.length) { const t = byDays.shift(); if (!pick.includes(t)) pick.push(t); }
     featured.innerHTML = pick.slice(0, 6).map(card).join('');
+    riseIn([...featured.querySelectorAll('.tour')]);
   }
 
   // ---- CATALOG (tours.html) ----
@@ -190,7 +199,8 @@
         const showBtn = sheet.querySelector('.fs-show');
         if (showBtn) showBtn.textContent = `Show ${shown} tour${shown === 1 ? '' : 's'}`;
       }
-      const refresh = () => { applyFilters(); syncUI(); };
+      const playIn = () => riseIn(cards.filter(c => c.style.display !== 'none'));
+      const refresh = () => { applyFilters(); syncUI(); playIn(); };
       function setCat(c) { activeCat = c; refresh(); if (window.innerWidth <= 680 && !sheet.classList.contains('open')) window.scrollTo({ top: grid.offsetTop - 120, behavior: 'smooth' }); }
       function toggleTag(t) { activeTags.has(t) ? activeTags.delete(t) : activeTags.add(t); refresh(); }
 
@@ -200,6 +210,7 @@
         if (mode === 'short') arr.sort((a, b) => (+a.dataset.days) - (+b.dataset.days));
         else if (mode === 'long') arr.sort((a, b) => (+b.dataset.days) - (+a.dataset.days));
         arr.forEach(c => grid.appendChild(c));
+        playIn();
       }
 
       // one delegated handler for every chip/row (desktop rail, mobile category swipe, and the sheet)

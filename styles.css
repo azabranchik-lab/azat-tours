@@ -118,7 +118,7 @@ header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 /* ---------- PAGE HERO (sub-pages) ---------- */
 .page-hero{position:relative;color:#fff;overflow:hidden;padding:170px 0 70px}
 .page-hero .bg{position:absolute;inset:0;z-index:-2}
-.page-hero .bg img{width:100%;height:100%;object-fit:cover}
+.page-hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
 .page-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(12,30,26,.7),rgba(11,30,27,.86))}
 .crumb{font-size:.84rem;color:rgba(255,255,255,.75);margin-bottom:14px}
 .crumb a:hover{color:#fff}
@@ -154,6 +154,9 @@ section{position:relative}
 .tours-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
 .tour{background:var(--grad-surface);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .35s ease,box-shadow .35s ease}
 .tour:hover{transform:translateY(-6px);box-shadow:0 28px 60px -26px rgba(12,40,36,.55)}
+@keyframes tourIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.tour.animate-in{animation:tourIn .34s ease both}   /* soft rise-in on load / filter / sort */
+@media(prefers-reduced-motion:reduce){.tour.animate-in{animation:none}}
 .tour-img{position:relative;aspect-ratio:4/3;overflow:hidden}
 .tour-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
 .tour:hover .tour-img img{transform:scale(1.07)}
@@ -614,7 +617,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .mobile-cta{display:flex}
   .float-wa{bottom:84px}
   .step:not(:last-child)::after{display:none}
-  .page-hero{padding:140px 0 54px}
+  .page-hero{padding:116px 0 40px}   /* shorter mobile hero → less side-crop on the wide bg photo */
   .hl-grid,.incl-grid{grid-template-columns:1fr}
   .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px}
   .gallery a.w2{grid-column:span 2}
