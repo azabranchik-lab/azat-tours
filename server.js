@@ -128,7 +128,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ---------- static ----------
-  let urlPath = decodeURIComponent(p);
+  let urlPath;
+  try { urlPath = decodeURIComponent(p); }
+  catch { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Bad request'); }
   if (urlPath === '/') urlPath = '/index.html';
   const filePath = path.join(ROOT, urlPath);
   if (!filePath.startsWith(ROOT)) { res.writeHead(403); return res.end('Forbidden'); }
