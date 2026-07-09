@@ -146,6 +146,10 @@
           <div class="form-success" id="bSuccess">
             <div class="big"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div><h3>Trip request sent!</h3>
             <p style="color:var(--ink-soft)">A local expert will email you within 24 hours with a tailored plan${S.name ? ', ' + S.name.split(' ')[0] : ''}.</p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+              <a href="tours.html" class="btn btn-primary">Browse tours while you wait</a>
+              <a href="plan-trip.html" class="btn btn-dark">Read the travel guide</a>
+            </div>
           </div>
         </div>` +
         `<div class="builder-nav"><button class="btn btn-ghost" style="border-color:var(--line);color:var(--ink)" onclick="BUILDER.back()">← Back</button><span></span></div>`;
@@ -202,7 +206,12 @@
         const j = await r.json();
         if (j.ok) { f.style.display = 'none'; el('bSuccess').classList.add('show'); localStorage.removeItem(LS); }
         else throw new Error();
-      } catch (err) { btn.disabled = false; btn.textContent = orig; alert('Something went wrong. Please send via WhatsApp instead.'); }
+      } catch (err) {
+        btn.disabled = false; btn.textContent = orig;
+        let er = f.querySelector('.form-err');
+        if (!er) { er = document.createElement('p'); er.className = 'form-err'; er.setAttribute('role', 'alert'); btn.insertAdjacentElement('afterend', er); }
+        er.innerHTML = "Couldn't send that just now. Please <a href=\"https://wa.me/996222222011\" target=\"_blank\" rel=\"noopener\">send it on WhatsApp</a> instead.";
+      }
     });
   }
   function updateWa() {

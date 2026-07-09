@@ -128,13 +128,13 @@ header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 .page-hero p{margin-top:14px;max-width:54ch;color:rgba(255,255,255,.88);font-size:1.08rem}
 
 /* reveal animation */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .42s cubic-bezier(.2,.7,.2,1),transform .42s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
-.hero .reveal{transform:translateY(34px)}
-[data-delay="1"]{transition-delay:.12s}
-[data-delay="2"]{transition-delay:.24s}
-[data-delay="3"]{transition-delay:.36s}
-[data-delay="4"]{transition-delay:.48s}
+.hero .reveal{transform:translateY(28px)}
+[data-delay="1"]{transition-delay:.08s}
+[data-delay="2"]{transition-delay:.16s}
+[data-delay="3"]{transition-delay:.24s}
+[data-delay="4"]{transition-delay:.32s}
 
 /* ---------- TRUST BAR ---------- */
 .trustbar{background:var(--panel);color:var(--panel-text)}
@@ -328,6 +328,8 @@ section{position:relative}
 .field label{display:block;font-size:.8rem;font-weight:600;margin-bottom:6px;letter-spacing:.02em}
 .field input,.field select,.field textarea{width:100%;padding:.8em .95em;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);font:inherit;font-size:.95rem;color:var(--ink);transition:border-color .2s,box-shadow .2s}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(18,122,111,.15)}
+.form-err{margin-top:12px;color:var(--clay);font-size:.9rem;line-height:1.5}
+.form-err a{color:var(--lake);font-weight:600;text-decoration:underline}
 .field textarea{resize:vertical;min-height:80px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-card .btn-primary{width:100%;justify-content:center;margin-top:8px}
@@ -646,7 +648,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   /* tab bar becomes a horizontal swipe row on phones */
   .tour-tabs .tabbar{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 18px;padding:2px 18px;scrollbar-width:none}
   .tour-tabs .tabbar::-webkit-scrollbar{display:none}
-  .tour-tabs .tab{flex:0 0 auto}
+  .tour-tabs .tab{flex:0 0 auto;min-height:44px}
   /* compact horizontal cards on phones (tours + blog) */
   .tour{flex-direction:row;align-items:stretch;border-radius:16px}
   .tour-img{flex:0 0 42%;max-width:150px;min-width:116px;aspect-ratio:auto}
@@ -1049,7 +1051,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .mfilter-badge[hidden]{display:none}                        /* hide the count at 0 (display override beats [hidden]) */
   .msort-menu{position:absolute;top:calc(100% + 8px);left:0;z-index:70;min-width:172px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;padding:5px}
   .msort-menu.open{display:block}
-  .msort-menu button{display:block;width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.9rem;color:var(--ink);padding:.6em .7em;border-radius:9px;cursor:pointer}
+  .msort-menu button{display:block;width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.9rem;color:var(--ink);padding:.75em .7em;min-height:44px;border-radius:9px;cursor:pointer}
   .msort-menu button:hover{background:var(--paper-2)}
   .msort-menu button.sel{color:var(--lake);font-weight:600}
 

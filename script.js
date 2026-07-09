@@ -89,7 +89,9 @@ if (leadForm) {
     } catch (err) {
       submitBtn.disabled = false;
       submitBtn.textContent = original;
-      alert('Sorry, something went wrong sending your request. Please message us on WhatsApp instead.');
+      let er = leadForm.querySelector('.form-err');
+      if (!er) { er = document.createElement('p'); er.className = 'form-err'; er.setAttribute('role', 'alert'); submitBtn.insertAdjacentElement('afterend', er); }
+      er.innerHTML = "Couldn't send that just now. Please <a href=\"https://wa.me/996222222011\" target=\"_blank\" rel=\"noopener\">message us on WhatsApp</a> and we'll reply fast.";
     }
   });
 }
