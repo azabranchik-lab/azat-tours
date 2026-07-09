@@ -12,6 +12,49 @@
   if (!t) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Tour not found</h1><p><a href="tours.html">← Back to all tours</a></p></div>'; return; }
 
   document.title = `${t.name}, Kyrgyzstan Tour | Azat Tours`;
+
+  // ---- per-tour SEO: meta description, og tags, canonical, JSON-LD ----
+  // Honesty rule: no Offer (price is on request) and no ratings in the markup.
+  (function seo() {
+    const desc = ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158);
+    const pageUrl = 'https://azattours.com/tour.html?slug=' + encodeURIComponent(t.slug);
+    const setMeta = (attr, key, val) => {
+      if (!val) return;
+      let m = document.head.querySelector(`meta[${attr}="${key}"]`);
+      if (!m) { m = document.createElement('meta'); m.setAttribute(attr, key); document.head.appendChild(m); }
+      m.setAttribute('content', val);
+    };
+    setMeta('name', 'description', desc);
+    setMeta('property', 'og:type', 'website');
+    setMeta('property', 'og:title', document.title);
+    setMeta('property', 'og:description', desc);
+    setMeta('property', 'og:image', (t.images && t.images[0]) || '');
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    let canon = document.head.querySelector('link[rel="canonical"]');
+    if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }
+    canon.href = pageUrl;
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify([
+      {
+        '@context': 'https://schema.org', '@type': 'TouristTrip',
+        name: t.name, description: t.summary || desc,
+        image: (t.images && t.images[0]) || undefined,
+        touristType: t.cats,
+        itinerary: { '@type': 'ItemList', numberOfItems: (t.itinerary || []).length, itemListElement: (t.itinerary || []).map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.title })) },
+        provider: { '@type': 'TravelAgency', name: 'Azat Tours Kyrgyzstan', url: 'https://azattours.com' }
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://azattours.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Tours', item: 'https://azattours.com/tours.html' },
+          { '@type': 'ListItem', position: 3, name: t.name, item: pageUrl }
+        ]
+      }
+    ]);
+    document.head.appendChild(ld);
+  })();
   const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + t.name + " tour.")}`;
   const img = i => (t.images && t.images[i]) || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80';
 

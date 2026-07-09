@@ -67,7 +67,8 @@ content/*.json  --(lib/content.js regenerate)-->  *-data.js  --(script tag)-->  
    server's authoritative `content/*.json` right after unpack (before restart):
    `node -e "const C=require('./lib/content');['regenerateDataFile','regeneratePostsFile','regenerateReviews','regenerateGuides','regenerateSite','regenerateSights'].forEach(f=>C[f]&&C[f]())"`
 3. `npm install` only if dependencies changed → run any pending seed/merge scripts for NEW content
-   fields (see above) → regenerate (step 2) → `pm2 restart alatoo`.
+   fields (see above) → regenerate (step 2) → `node scripts/build-sitemap.js` (sitemap lists every
+   tour/post URL from the server's content) → `pm2 restart alatoo`.
 4. Pre-prod once: replace placeholder domain `azattours.travel` everywhere; rotate the bot token
    (@BotFather) and move to env `BOT_TOKEN`/`OWNER_ID`; never commit `config.json`.
 

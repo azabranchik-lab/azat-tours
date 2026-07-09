@@ -37,6 +37,49 @@
   const dateStr = p.date ? new Date(p.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
   document.title = `${p.title} | Azat Tours Kyrgyzstan`;
 
+  // ---- per-post SEO: meta description, og tags, canonical, JSON-LD ----
+  (function seo() {
+    const desc = String(p.excerpt || p.body || '').replace(/\s+/g, ' ').trim().slice(0, 158);
+    const pageUrl = 'https://azattours.com/post.html?slug=' + encodeURIComponent(p.slug);
+    const setMeta = (attr, key, val) => {
+      if (!val) return;
+      let m = document.head.querySelector(`meta[${attr}="${key}"]`);
+      if (!m) { m = document.createElement('meta'); m.setAttribute(attr, key); document.head.appendChild(m); }
+      m.setAttribute('content', val);
+    };
+    setMeta('name', 'description', desc);
+    setMeta('property', 'og:type', 'article');
+    setMeta('property', 'og:title', document.title);
+    setMeta('property', 'og:description', desc);
+    setMeta('property', 'og:image', p.cover || '');
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    let canon = document.head.querySelector('link[rel="canonical"]');
+    if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }
+    canon.href = pageUrl;
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify([
+      {
+        '@context': 'https://schema.org', '@type': 'BlogPosting',
+        headline: p.title, description: desc,
+        image: p.cover || undefined,
+        datePublished: p.date || undefined,
+        author: { '@type': 'Person', name: p.author },
+        publisher: { '@type': 'TravelAgency', name: 'Azat Tours Kyrgyzstan', url: 'https://azattours.com' },
+        mainEntityOfPage: pageUrl
+      },
+      {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://azattours.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://azattours.com/blog.html' },
+          { '@type': 'ListItem', position: 3, name: p.title, item: pageUrl }
+        ]
+      }
+    ]);
+    document.head.appendChild(ld);
+  })();
+
   const gallery = (p.images || []).length ? `
     <figure style="margin-top:40px"><div class="gallery" style="margin:0">
       ${p.images.map((src, i) => `<a href="${src}" target="_blank" rel="noopener" class="${i === 0 ? 'w2' : ''}"><img loading="lazy" src="${src}" alt="${esc(p.title)} photo ${i + 1}"></a>`).join('')}
