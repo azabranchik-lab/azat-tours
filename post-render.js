@@ -9,7 +9,9 @@
   if (!p) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Article not found</h1><p><a href="blog.html">← Back to the blog</a></p></div>'; return; }
 
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  const inline = s => esc(s)
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>')   // [text](url) links (internal tour links etc.)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
   // markdown-subset -> HTML
   function mdToHtml(src) {

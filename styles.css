@@ -827,6 +827,8 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .article{max-width:740px;margin:0 auto;padding:64px 24px 0}
 .article .lead{font-size:1.25rem;line-height:1.6;color:var(--ink);font-family:"Fraunces",serif;margin-bottom:28px}
 .article p{font-size:1.06rem;line-height:1.75;color:var(--body-text);margin-bottom:20px}
+.article p a,.article li a{color:var(--lake);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.article p a:hover,.article li a:hover{color:var(--lake-deep)}
 .article h2{font-size:1.7rem;margin:42px 0 14px}
 .article h3{font-size:1.25rem;margin:30px 0 10px}
 .article ul,.article ol{margin:0 0 22px 1.1em;color:var(--body-text)}
