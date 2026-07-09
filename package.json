@@ -8,6 +8,7 @@
     "serve": "node server.js",
     "bot": "node bot.js",
     "seed": "node scripts/seed-content.js",
+    "regen": "node scripts/regenerate-all.js",
     "build-tours": "node scripts/build-tours.js"
   },
   "engines": { "node": ">=18" },

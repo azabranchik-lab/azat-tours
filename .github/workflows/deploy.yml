@@ -1,0 +1,63 @@
+# Auto-deploy Azat Tours to the VPS on every push to main.
+#
+# Required GitHub Actions secrets (Settings → Secrets and variables → Actions):
+#   SSH_HOST     — VPS IP or hostname (e.g. 1.2.3.4 or azattours.com)
+#   SSH_USER     — SSH user (e.g. root or ubuntu)
+#   SSH_KEY      — private SSH key (contents of ~/.ssh/id_ed25519 or similar)
+#   DEPLOY_PATH  — absolute path to the project on the server (e.g. /var/www/azat-tours)
+#
+# Optional:
+#   SSH_PORT     — non-standard SSH port (defaults to 22 if unset)
+#
+# One-time server setup (do this BEFORE the first CI run):
+#   1. Install Node 18+, npm, git, pm2 (npm i -g pm2)
+#   2. git clone https://github.com/azabranchik-lab/azat-tours.git $DEPLOY_PATH
+#      (for a private repo: add a deploy key on the server or use a PAT)
+#   3. cd $DEPLOY_PATH && npm ci --omit=dev
+#   4. Copy config.example.json → config.json and fill in token + ownerId
+#   5. Move the live images/ folder into public/images/ (post-reorg layout)
+#   6. node scripts/regenerate-all.js
+#   7. pm2 start ecosystem.config.js && pm2 save && pm2 startup
+#   8. Verify the site is up, then add the secrets above and push to trigger CI.
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # allow manual trigger from the GitHub UI
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false  # queue runs; don't cancel a live deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH → pull → regen → pm2 reload
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_stop: true  # abort on first failed command
+          script: |
+            set -euo pipefail
+            cd "${{ secrets.DEPLOY_PATH }}"
+            echo "→ fetching main"
+            git fetch --prune origin main
+            git checkout main
+            git reset --hard origin/main
+            echo "→ installing prod deps"
+            npm ci --omit=dev
+            echo "→ regenerating public/*-data.js from content/*.json"
+            node scripts/regenerate-all.js
+            echo "→ pm2 reload"
+            pm2 startOrReload ecosystem.config.js --update-env
+            sleep 2
+            echo "→ health check"
+            PORT=$(node -e "try{console.log(JSON.parse(require('fs').readFileSync('config.json')).port||5173)}catch(e){console.log(5173)}")
+            curl -sfL "http://127.0.0.1:$PORT/" > /dev/null || (echo 'site down after reload'; pm2 logs azat-tours --lines 30 --nostream; exit 1)
+            echo "✓ deploy done"
