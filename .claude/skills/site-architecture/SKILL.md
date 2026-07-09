@@ -62,8 +62,12 @@ content/*.json  --(lib/content.js regenerate)-->  *-data.js  --(script tag)-->  
 1. `tar --exclude=kyrgyzstan-tours/node_modules --exclude=kyrgyzstan-tours/config.json
    --exclude=kyrgyzstan-tours/content --exclude=kyrgyzstan-tours/images -czf alatoo-update.tar.gz kyrgyzstan-tours`
 2. Unpack over the server copy (server's `content/` + `images/` stay untouched).
-3. `npm install` only if dependencies changed → run any pending seed/merge scripts for new content
-   fields (see above) → `pm2 restart alatoo`.
+   ⚠ The tar ships the LOCAL `*-data.js`; unpacking overwrites the server's regenerated copies, so any
+   bot content edits since the last local sync would revert. Therefore ALWAYS regenerate from the
+   server's authoritative `content/*.json` right after unpack (before restart):
+   `node -e "const C=require('./lib/content');['regenerateDataFile','regeneratePostsFile','regenerateReviews','regenerateGuides','regenerateSite','regenerateSights'].forEach(f=>C[f]&&C[f]())"`
+3. `npm install` only if dependencies changed → run any pending seed/merge scripts for NEW content
+   fields (see above) → regenerate (step 2) → `pm2 restart alatoo`.
 4. Pre-prod once: replace placeholder domain `azattours.travel` everywhere; rotate the bot token
    (@BotFather) and move to env `BOT_TOKEN`/`OWNER_ID`; never commit `config.json`.
 

@@ -4,7 +4,7 @@
   const POSTS = window.POSTS || [];
   const params = new URLSearchParams(location.search);
   const slug = params.get('slug');
-  const p = POSTS.find(x => x.slug === slug) || POSTS[0];
+  const p = slug ? (POSTS.find(x => x.slug === slug) || null) : POSTS[0];
   const root = document.getElementById('postRoot');
   if (!p) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Article not found</h1><p><a href="blog.html">← Back to the blog</a></p></div>'; return; }
 

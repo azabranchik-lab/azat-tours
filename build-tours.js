@@ -1,5 +1,15 @@
-// Converts the kyrgyzriders clean export into a slim tours-data.js the site can render.
-// Run:  node build-tours.js
+// LEGACY one-time importer: converts the kyrgyzriders clean export into tours-data.js.
+// ⚠ DANGER: writes tours-data.js DIRECTLY, bypassing content/tours.json + lib/content.js.
+// Running it reverts blurbs, tags, places, enriched itineraries and bot photos on the site.
+// The source of truth is content/tours.json (regenerate via lib/content.js). This script is
+// kept only for a cold re-import and is guarded — pass --force to actually run it.
+// Run (only if you know what you're doing):  node build-tours.js --force
+if (!process.argv.includes('--force')) {
+  console.error('Refusing to run: this overwrites tours-data.js and bypasses content/tours.json.\n' +
+    'The live source is content/tours.json (edit via bot / merge scripts, regenerate via lib/content.js).\n' +
+    'If you really need a cold re-import, re-run with --force.');
+  process.exit(1);
+}
 const fs = require('fs');
 const path = require('path');
 

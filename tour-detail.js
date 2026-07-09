@@ -4,7 +4,10 @@
   const params = new URLSearchParams(location.search);
   const slug = params.get('slug');
   const id = params.get('id');
-  const t = TOURS.find(x => (slug && x.slug === slug) || (id && String(x.id) === id)) || TOURS[0];
+  // With a slug/id: match exactly (unknown -> not found). Bare tour.html: show the first tour.
+  const t = (slug || id)
+    ? TOURS.find(x => (slug && x.slug === slug) || (id && String(x.id) === id)) || null
+    : TOURS[0];
   const root = document.getElementById('tourRoot');
   if (!t) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Tour not found</h1><p><a href="tours.html">← Back to all tours</a></p></div>'; return; }
 

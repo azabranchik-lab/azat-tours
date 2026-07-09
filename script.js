@@ -145,24 +145,3 @@ if (leadForm) {
     else if (e.key === 'ArrowLeft') show(idx - 1);
   });
 })();
-
-// ---------- tour filters ----------
-const chips = document.querySelectorAll('.chip');
-if (chips.length) {
-  const tours = document.querySelectorAll('.tours-grid .tour');
-  const noResult = document.querySelector('.no-result');
-  chips.forEach(chip => {
-    chip.onclick = () => {
-      chips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      const cat = chip.dataset.filter;
-      let shown = 0;
-      tours.forEach(t => {
-        const match = cat === 'all' || t.dataset.cat.split(' ').includes(cat);
-        t.classList.toggle('hide', !match);
-        if (match) shown++;
-      });
-      if (noResult) noResult.classList.toggle('show', shown === 0);
-    };
-  });
-}
