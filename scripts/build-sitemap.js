@@ -9,7 +9,7 @@ const path = require('path');
 const content = require('../lib/content');
 
 const DOMAIN = 'https://azattours.com';
-const OUT = path.join(__dirname, '..', 'sitemap.xml');
+const OUT = path.join(__dirname, '..', 'public', 'sitemap.xml');
 
 // static pages: [path, changefreq, priority]. reviews.html stays out (noindex until real
 // reviews exist); builder.html stays out (app-like, not a landing page).

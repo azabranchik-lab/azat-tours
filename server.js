@@ -7,6 +7,7 @@ const zlib = require('zlib');
 const store = require('./lib/store');
 
 const ROOT = __dirname;
+const PUBLIC = path.join(ROOT, 'public'); // website assets are served from here
 const PORT = process.env.PORT || 5173;
 
 let cfg = {};
@@ -132,8 +133,8 @@ const server = http.createServer(async (req, res) => {
   try { urlPath = decodeURIComponent(p); }
   catch { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Bad request'); }
   if (urlPath === '/') urlPath = '/index.html';
-  const filePath = path.join(ROOT, urlPath);
-  if (!filePath.startsWith(ROOT)) { res.writeHead(403); return res.end('Forbidden'); }
+  const filePath = path.join(PUBLIC, urlPath);
+  if (!filePath.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404, { 'Content-Type': 'text/html' }); return res.end('<h1>404 Not Found</h1>'); }
     const type = TYPES[path.extname(filePath)] || 'application/octet-stream';

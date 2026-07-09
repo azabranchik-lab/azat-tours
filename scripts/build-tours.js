@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SRC = path.join(__dirname, '..', 'kyrgyzriders_tours_clean.json');
-const OUT = path.join(__dirname, 'tours-data.js');
+const OUT = path.join(__dirname, '..', 'public', 'tours-data.js');
 
 const raw = JSON.parse(fs.readFileSync(SRC, 'utf8'));
 

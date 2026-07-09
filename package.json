@@ -8,7 +8,7 @@
     "serve": "node server.js",
     "bot": "node bot.js",
     "seed": "node scripts/seed-content.js",
-    "build-tours": "node build-tours.js"
+    "build-tours": "node scripts/build-tours.js"
   },
   "engines": { "node": ">=18" },
   "dependencies": {

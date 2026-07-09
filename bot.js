@@ -49,10 +49,10 @@ async function downloadPhoto(ctx, fileId, kind, slug, n) {
   C.ensureDirs();
   const dir = { post: 'posts', guide: 'guides', review: 'reviews', site: 'site', sights: 'sights' }[kind] || 'tours';
   const rel = `images/${dir}/${slug}-${n}-${Date.now().toString().slice(-5)}${ext}`;
-  fs.writeFileSync(path.join(C.ROOT, rel), buf);
+  fs.writeFileSync(path.join(C.PUBLIC, rel), buf);
   return rel;
 }
-function delFile(rel) { try { fs.unlinkSync(path.join(C.ROOT, rel)); } catch (e) {} }
+function delFile(rel) { try { fs.unlinkSync(path.join(C.PUBLIC, rel)); } catch (e) {} }
 
 // ================= TOURS =================
 function tourListKb() {

@@ -2,7 +2,7 @@
 // Telegram-facing files (bot.js, server.js) keep emojis — they read fine in Telegram.
 const fs = require('fs');
 const path = require('path');
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..', 'public');
 
 const S = (body, fill) => `<svg class="${fill ? 'gicf' : 'gico'}" viewBox="0 0 24 24" ${fill ? '' : 'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"'}>${body}</svg>`;
 
