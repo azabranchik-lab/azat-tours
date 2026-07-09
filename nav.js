@@ -76,7 +76,7 @@
         '<li><a href="contact.html">Contact</a></li>' +
       '</ul></div>' +
       '<div><h4>Get in touch</h4><ul>' +
-        '<li><a href="mailto:hello@azattours.travel">hello@azattours.travel</a></li>' +
+        '<li><a href="mailto:hello@azattours.com">hello@azattours.com</a></li>' +
         '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">+996 222 222 011</a></li>' +
         '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">WhatsApp</a></li>' +
         '<li><a href="contact.html">Bishkek, Kyrgyzstan</a></li>' +

@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Replace https://azattours.travel with your real domain once live. -->
+<!-- Replace https://azattours.com with your real domain once live. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://azattours.travel/</loc>
+    <loc>https://azattours.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/tours.html</loc>
+    <loc>https://azattours.com/tours.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/tour-ala-kul.html</loc>
+    <loc>https://azattours.com/tour-ala-kul.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/blog.html</loc>
+    <loc>https://azattours.com/blog.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/about.html</loc>
+    <loc>https://azattours.com/about.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/contact.html</loc>
+    <loc>https://azattours.com/contact.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/plan-trip.html</loc>
+    <loc>https://azattours.com/plan-trip.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/post.html?slug=ala-kol-trek-guide</loc>
+    <loc>https://azattours.com/post.html?slug=ala-kol-trek-guide</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/post.html?slug=best-time-to-visit-kyrgyzstan</loc>
+    <loc>https://azattours.com/post.html?slug=best-time-to-visit-kyrgyzstan</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.travel/post.html?slug=yurt-culture-etiquette</loc>
+    <loc>https://azattours.com/post.html?slug=yurt-culture-etiquette</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
