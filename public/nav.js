@@ -15,7 +15,7 @@
 
   // per-page: which nav link is active, the CTA, header style, whether to show the mobile sticky CTA
   var CFG = {
-    home:       { active: '',        cta: ['Plan your trip', '#plan'],        solid: false, mcta: true },
+    home:       { active: '',        cta: ['Get a free quote', '#plan'],      solid: false, mcta: true },  /* label matches the #plan form heading; avoids duplicating the "Plan your trip" nav link */
     tours:      { active: 'tours',   cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: false },  /* no sticky bar: WhatsApp is in footer, a "Tours" link on the tours page is redundant */
     about:      { active: 'about',   cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
     blog:       { active: 'blog',    cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
@@ -60,7 +60,7 @@
     '<footer><div class="wrap"><div class="foot-grid">' +
       '<div><div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>' +
       '<p class="blurb">Azat means &ldquo;free&rdquo; in Kyrgyz, and free is how we want you to feel here. Small-group and tailor-made adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
-      '<div class="socials"><a href="#" onclick="return false" aria-label="Instagram">◎</a><a href="#" onclick="return false" aria-label="Facebook">f</a><a href="#" onclick="return false" aria-label="YouTube">▶</a></div></div>' +
+      '<div class="socials"><a href="https://instagram.com/azattours.kyrgyzstan" target="_blank" rel="noopener" aria-label="Instagram">◎</a></div></div>' +
       '<div><h4>Tours</h4><ul>' +
         '<li><a href="tours.html?cat=Combined">Combined trips</a></li>' +
         '<li><a href="tours.html?cat=Horse%20riding">Horse treks</a></li>' +
@@ -80,7 +80,7 @@
         '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">WhatsApp</a></li>' +
         '<li><a href="contact.html">Bishkek, Kyrgyzstan</a></li>' +
       '</ul></div>' +
-      '</div><div class="foot-bottom"><span>© 2026 Azat Tours Travel. Demo prototype, content is placeholder.</span><span>Privacy · Terms · Cookies</span></div></div></footer>';
+      '</div><div class="foot-bottom"><span>© 2026 Azat Tours, Bishkek, Kyrgyzstan.</span></div></div></footer>';
 
   var floatWa = '<a href="' + WA + '" target="_blank" rel="noopener" class="float-wa" data-wa aria-label="Chat on WhatsApp">' + WA_SVG + '</a>';
   var mobileCta = cfg.mcta
