@@ -108,10 +108,10 @@
         `<button class="chip active" data-f="all">All <span style="opacity:.6">${TOURS.length}</span></button>` +
         present.map(c => `<button class="chip" data-f="${c}">${c} <span style="opacity:.6">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
 
-      // mobile "Filters" button (placed into the mobile toolbar below, shown via CSS on small screens)
+      // mobile "Filters & sort" button (one big touch target; opens the sheet, badge = live result count)
       const mBtn = document.createElement('button');
       mBtn.id = 'mFilterBtn'; mBtn.className = 'mfilter-btn'; mBtn.type = 'button';
-      mBtn.innerHTML = 'Filters <span class="mfilter-badge" hidden>0</span>';
+      mBtn.innerHTML = `Filters &amp; sort <span class="mfilter-badge">${TOURS.length}</span>`;
 
       // mobile bottom-sheet: Type (categories, single-select) + tag filters, grouped
       const GROUPS = [['Activity', ['trekking', 'horseback', 'road-trip', 'off-road']], ['Duration', ['short', 'week', 'long']], ['Season', ['summer', 'winter', 'all-year']]];
@@ -119,11 +119,14 @@
         present.map(c => `<button class="chip chip-tag" type="button" data-f="${c}">${c} <span class="chip-n">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
       const sheet = document.createElement('div');
       sheet.id = 'filterSheet'; sheet.className = 'filter-sheet';
+      const sheetSort = [['rec', 'Recommended'], ['short', 'Shortest first'], ['long', 'Longest first']]
+        .map(([k, l]) => `<button class="fs-sortrow${k === 'rec' ? ' sel' : ''}" type="button" data-fsort="${k}"><span>${l}</span><span class="r"></span></button>`).join('');
       sheet.innerHTML =
         '<div class="fs-backdrop" data-close></div>' +
         '<div class="fs-panel">' +
-          '<div class="fs-head"><b>Filter tours</b><button class="fs-x" type="button" data-close aria-label="Close">&times;</button></div>' +
+          '<div class="fs-head"><b>Filters &amp; sort</b><button class="fs-x" type="button" data-close aria-label="Close">&times;</button></div>' +
           '<div class="fs-body">' +
+          `<div class="fs-group"><div class="fs-gtitle">Sort</div><div class="fs-sort">${sheetSort}</div></div>` +
           `<div class="fs-group"><div class="fs-gtitle">Type</div><div class="fs-chips">${sheetCats}</div></div>` +
           GROUPS.map(([g, keys]) => {
             const ks = keys.filter(k => tagCount(k) > 0);
@@ -149,9 +152,9 @@
       dfilters.className = 'dfilters';
       dfilters.innerHTML =
         '<div class="dfilters-act">' +
-          `<button class="dfilter-btn" id="dFilterBtn" type="button">${FIC}<span>Filters</span><span class="dfilter-badge" hidden>0</span></button>` +
+          `<button class="dfilter-btn" id="dFilterBtn" type="button">${FIC}<span>All filters</span><span class="dfilter-badge" hidden>0</span></button>` +
           '<div class="dpop" id="dFilterPop">' +
-            '<div class="dpop-head"><b>Filters</b><button class="dpop-clear" type="button" data-clear>Clear all</button></div>' +
+            '<div class="dpop-head"><b>All filters</b><button class="dpop-clear" type="button" data-clear>Clear all</button></div>' +
             `<div class="dpop-body">${popGroups}</div>` +
           '</div>' +
         '</div>' +
@@ -159,39 +162,29 @@
       const main = grid.closest('.catalog-main');
       main.insertBefore(dfilters, bar);   // above the mobile #filterBar, i.e. above the grid
 
-      // ---- mobile toolbar: Sort + Filters (shown via CSS on small screens) ----
-      const SIC = '<svg class="msort-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 5v14M7 19l-3-3M7 5l3 3"/><path d="M17 19V5M17 5l3 3M17 19l-3-3"/></svg>';
+      // ---- mobile toolbar: one big "Filters & sort" button + live count (sort moved into the sheet) ----
       const mtb = document.createElement('div');
       mtb.className = 'mtoolbar';
-      const sortBtn = document.createElement('button');
-      sortBtn.className = 'msort'; sortBtn.type = 'button';
-      sortBtn.innerHTML = `${SIC}<span>Sort</span>`;
-      const sortMenu = document.createElement('div');
-      sortMenu.className = 'msort-menu';
-      sortMenu.innerHTML = [['rec', 'Recommended'], ['short', 'Shortest first'], ['long', 'Longest first']]
-        .map(([k, l]) => `<button type="button" data-sort="${k}"${k === 'rec' ? ' class="sel"' : ''}>${l}</button>`).join('');
-      const sortWrap = document.createElement('div');
-      sortWrap.className = 'msort-wrap';
-      sortWrap.append(sortBtn, sortMenu);
       const mCount = document.createElement('span');
       mCount.className = 'mcount'; mCount.textContent = TOURS.length + ' tours';
       const mActions = document.createElement('div');
       mActions.className = 'mtb-actions';
-      mActions.append(sortWrap, mBtn);
-      mtb.append(mCount, mActions);     // count left, Sort+Filters right
+      mActions.append(mBtn);
+      mtb.append(mCount, mActions);
       main.insertBefore(mtb, grid);
 
       // ---- shared state (one source of truth for both desktop chips and the sheet) ----
       function syncUI() {
         document.querySelectorAll('[data-f]').forEach(c => c.classList.toggle('active', c.dataset.f === activeCat));
         document.querySelectorAll('[data-t]').forEach(c => c.classList.toggle('active', activeTags.has(c.dataset.t)));
-        const n = activeTags.size, badge = mBtn.querySelector('.mfilter-badge');
-        badge.textContent = n; badge.hidden = n === 0; mBtn.classList.toggle('has', n > 0);
+        const n = activeTags.size;
+        const shown = cards.filter(c => c.style.display !== 'none').length;
+        const badge = mBtn.querySelector('.mfilter-badge');
+        badge.textContent = shown; mBtn.classList.toggle('has', n > 0 || activeCat !== 'all');   // badge = live result count (approved mockup)
         const dBadge = document.querySelector('.dfilter-badge');
         if (dBadge) { dBadge.textContent = n; dBadge.hidden = n === 0; }
         const dBtn = document.getElementById('dFilterBtn');
         if (dBtn) dBtn.classList.toggle('has', n > 0);
-        const shown = cards.filter(c => c.style.display !== 'none').length;
         const countEl = document.getElementById('tourCount');
         if (countEl) countEl.textContent = shown;            // live result count in the head
         const mc = document.querySelector('.mcount');
@@ -217,6 +210,8 @@
       document.addEventListener('click', e => {
         if (!e.target.closest('#filterBar, #filterSheet, #dCatBar, #dFilterPop')) return;
         if (e.target.closest('[data-clear]')) { activeTags.clear(); activeCat = 'all'; return refresh(); }
+        const s = e.target.closest('[data-fsort]');
+        if (s) { sheet.querySelectorAll('[data-fsort]').forEach(x => x.classList.toggle('sel', x === s)); return applySort(s.dataset.fsort); }
         const f = e.target.closest('[data-f]'); if (f) return setCat(f.dataset.f);
         const t = e.target.closest('[data-t]'); if (t) return toggleTag(t.dataset.t);
       });
@@ -227,16 +222,6 @@
       const dPop = document.getElementById('dFilterPop');
       document.getElementById('dFilterBtn').onclick = e => { e.stopPropagation(); dPop.classList.toggle('open'); };
       document.addEventListener('click', e => { if (dPop.classList.contains('open') && !e.target.closest('.dfilters-act')) dPop.classList.remove('open'); });
-
-      // mobile sort menu: toggle on button, pick option, close on outside tap
-      sortBtn.onclick = e => { e.stopPropagation(); sortMenu.classList.toggle('open'); };
-      sortMenu.onclick = e => {
-        const b = e.target.closest('[data-sort]'); if (!b) return;
-        sortMenu.querySelectorAll('button').forEach(x => x.classList.toggle('sel', x === b));
-        applySort(b.dataset.sort);
-        sortMenu.classList.remove('open');
-      };
-      document.addEventListener('click', e => { if (sortMenu.classList.contains('open') && !e.target.closest('.msort-wrap')) sortMenu.classList.remove('open'); });
 
       // deep-link from homepage cards: ?cat=Horse riding activates that category
       const wantCat = new URLSearchParams(location.search).get('cat');

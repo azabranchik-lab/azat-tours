@@ -1101,3 +1101,47 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .hero .hero-inner{padding-top:18px;padding-bottom:24px}
   .hero-actions{margin-top:16px}
 }
+
+/* ===== Пачка 4: мобильный каталог v2 (утверждён на мокапе p4v2) + футер-тапы ===== */
+/* sort rows inside the filter sheet (big touch targets, radio look) */
+.fs-sort{display:flex;flex-direction:column}
+.fs-sortrow{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:48px;padding:12px 2px;background:none;border:0;border-bottom:1px solid rgba(16,32,28,.07);font-family:var(--font-body);font-size:.98rem;font-weight:600;color:var(--ink);cursor:pointer;text-align:left}
+.fs-sortrow:last-child{border-bottom:0}
+.fs-sortrow .r{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;transition:border .2s;box-sizing:border-box}
+.fs-sortrow.sel .r{border:7px solid var(--lake)}
+[data-theme="dark"] .fs-sortrow{border-bottom-color:rgba(237,240,236,.08)}
+
+@media (max-width:680px){
+  /* catalog page head: light, no decorative photo band (owner: "быстрее к турам") */
+  body[data-page="tours"] .page-hero{background:var(--paper);color:var(--ink);padding:92px 0 2px}
+  body[data-page="tours"] .page-hero .bg{display:none}
+  body[data-page="tours"] .page-hero::after{display:none}
+  body[data-page="tours"] .page-hero .crumb,body[data-page="tours"] .page-hero p{color:var(--ink-soft)}
+  body[data-page="tours"] .page-hero .crumb a{color:var(--ink-soft)}
+
+  /* one big Filters & sort button, count line below it */
+  .mtoolbar{flex-direction:column;align-items:stretch;gap:10px;margin:6px 0 18px}
+  .mtb-actions{order:1;display:flex}
+  .mcount{order:2}
+  .mfilter-btn{flex:1;width:100%;padding:15px;font-size:1rem;font-weight:700;gap:10px}
+  .mfilter-badge{background:var(--lake-fill);min-width:24px;height:20px;font-size:.74rem}
+
+  /* big catalog cards: full-width photo, badges on the photo (approved mockup) */
+  body[data-page="tours"] #toursGrid .tour{flex-direction:column;border-radius:20px}
+  body[data-page="tours"] #toursGrid .tour-img{flex:none;max-width:none;min-width:0;aspect-ratio:16/10}
+  body[data-page="tours"] #toursGrid .tour-body{padding:15px 17px;justify-content:flex-start}
+
+  /* footer links: >=44px tap zones (audit #5), soft separators help aim */
+  footer .foot-grid ul{gap:0}
+  footer .foot-grid ul a{display:block;padding:12px 0;border-bottom:1px solid rgba(243,247,246,.08)}
+  footer .foot-grid ul li:last-child a{border-bottom:0}
+  .socials a{width:44px;height:44px}
+}
+
+@media (max-width:680px){
+  /* category chips row is back per the approved p4v2 mockup (one-tap type filter above the big button) */
+  body[data-page="tours"] #filterBar{display:flex !important;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:2px 2px 4px;margin:8px 0 2px;scrollbar-width:none}
+  body[data-page="tours"] #filterBar::-webkit-scrollbar{display:none}
+  body[data-page="tours"] #filterBar .chip{flex:none;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
+  body[data-page="tours"] #filterBar .chip span{margin-left:.35em}
+}
