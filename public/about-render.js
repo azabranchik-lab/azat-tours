@@ -4,6 +4,9 @@
   const G = window.GUIDES || [];
   const grid = document.getElementById('guidesGrid');
   if (!grid) return;
+  // honesty rule: no guides yet -> no section (same pattern as reviews);
+  // it comes back by itself once real guides are added via the bot
+  if (!G.length) { const sec = grid.closest('section'); if (sec) sec.style.display = 'none'; return; }
   const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   grid.innerHTML = G.map(g => {

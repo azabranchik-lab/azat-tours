@@ -95,7 +95,7 @@
         <span class="tag">${esc(p.category)}</span>
         <h1>${esc(p.title)}</h1>
         <div class="byline">
-          <img src="${p.authorImg}" alt="${esc(p.author)}">
+          ${p.authorImg ? `<img src="${p.authorImg}" alt="${esc(p.author)}">` : ''}
           <span>By ${esc(p.author)}</span><span class="dot"></span><span>${dateStr}</span><span class="dot"></span><span>${readTime}</span>
         </div>
       </div>
