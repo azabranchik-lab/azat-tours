@@ -95,14 +95,6 @@ header.scrolled .nav-links a:not(.btn),header.solid .nav-links a:not(.btn){color
 .nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--lake-bright);transition:width .25s ease}
 .nav-links a:not(.btn):hover::after{width:100%}
 .nav-cta{padding:.6em 1.2em}
-/* narrow-desktop squeeze: logo + 5 links + toggle + CTA don't fit below ~900px */
-@media (min-width:681px) and (max-width:900px){
-  .nav-links{gap:14px}
-  .nav-cta{padding:.5em .9em}
-  .logo{white-space:nowrap}
-  .nav-links a[href="plan-trip.html"]{display:none}   /* the header CTA already leads there on these pages */
-  .scroll-hint{display:none}   /* overlaps the hero trust line at this width */
-}
 .burger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:0;cursor:pointer;width:44px;height:44px}
 .burger span{width:26px;height:2px;background:var(--surface);transition:background .35s}
 header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
@@ -123,6 +115,15 @@ header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 .hero-trust .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.5)}
 .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;opacity:.75;display:flex;flex-direction:column;align-items:center;gap:8px}
 .scroll-hint .line{width:1px;height:34px;background:linear-gradient(#fff,transparent);animation:pulse 2s ease-in-out infinite}
+/* narrow-desktop squeeze: logo + 5 links + toggle + CTA don't fit below ~900px
+   (placed after the base .nav-links/.nav-cta/.scroll-hint rules it overrides) */
+@media (min-width:681px) and (max-width:900px){
+  .nav-links{gap:14px}
+  .nav-cta{padding:.5em .9em}
+  .logo{white-space:nowrap}
+  .nav-links a[href="plan-trip.html"]{display:none}   /* the header CTA already leads there on these pages */
+  .scroll-hint{display:none}   /* overlaps the hero trust line at this width */
+}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 
 /* ---------- PAGE HERO (sub-pages) ---------- */
