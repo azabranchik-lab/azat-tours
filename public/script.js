@@ -147,3 +147,30 @@ if (leadForm) {
     else if (e.key === 'ArrowLeft') show(idx - 1);
   });
 })();
+
+// ---- Hero slideshow (home) ----
+// Owner-approved kino-panel redesign: photos auto-crossfade every 7s; the
+// .hero-dots bars are indicators only. First slide ships eager (LCP), the
+// rest lazy-load after window load. Skipped entirely under reduced motion.
+(function () {
+  const bg = document.querySelector('.hero-bg');
+  if (!bg) return;
+  const slides = Array.from(bg.querySelectorAll('img'));
+  const dots = Array.from(bg.querySelectorAll('.hero-dots i'));
+  if (slides.length < 2) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let started = false;
+  function start() {
+    if (started) return; started = true;
+    slides.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } });
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      i = (i + 1) % slides.length;
+      slides.forEach((im, k) => im.classList.toggle('on', k === i));
+      dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    }, 7000);
+  }
+  if (document.readyState === 'complete') setTimeout(start, 1500);
+  else window.addEventListener('load', () => setTimeout(start, 1500));
+})();

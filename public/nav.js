@@ -13,17 +13,17 @@
   // nav links: [activeKey, label, href]
   var NAV = [['tours', 'Tours', 'tours.html'], ['about', 'About', 'about.html'], ['blog', 'Blog', 'blog.html'], ['contact', 'Contact', 'contact.html'], ['plan', 'Plan your trip', 'plan-trip.html']];
 
-  // per-page: which nav link is active, the CTA, header style, whether to show the mobile sticky CTA
+  // per-page: which nav link is active, the CTA, header style
   var CFG = {
-    home:       { active: '',        cta: ['Get a free quote', '#plan'],      solid: false, mcta: true },  /* label matches the #plan form heading; avoids duplicating the "Plan your trip" nav link */
-    tours:      { active: 'tours',   cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: false },  /* no sticky bar: WhatsApp is in footer, a "Tours" link on the tours page is redundant */
-    about:      { active: 'about',   cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
-    blog:       { active: 'blog',    cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
-    post:       { active: 'blog',    cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
-    contact:    { active: 'contact', cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
-    reviews:    { active: '',        cta: ['Plan your trip', 'plan-trip.html'], solid: true, mcta: true },
-    plan:       { active: 'plan',    cta: ['Build your trip', 'builder.html'], solid: true, mcta: true },  /* no self-link: plan page's CTA drives to the builder */
-    tour:       { active: 'tours',   cta: ['Request this tour', '#book'],     solid: true, mcta: false },
+    home:       { active: '',        cta: ['Get a free quote', '#plan'],      solid: false },  /* label matches the #plan form heading; avoids duplicating the "Plan your trip" nav link */
+    tours:      { active: 'tours',   cta: ['Plan your trip', 'plan-trip.html'], solid: true },
+    about:      { active: 'about',   cta: ['Plan your trip', 'plan-trip.html'], solid: true },
+    blog:       { active: 'blog',    cta: ['Plan your trip', 'plan-trip.html'], solid: true },
+    post:       { active: 'blog',    cta: ['Plan your trip', 'plan-trip.html'], solid: true },
+    contact:    { active: 'contact', cta: ['Plan your trip', 'plan-trip.html'], solid: true },
+    reviews:    { active: '',        cta: ['Plan your trip', 'plan-trip.html'], solid: true },
+    plan:       { active: 'plan',    cta: ['Build your trip', 'builder.html'], solid: true },  /* no self-link: plan page's CTA drives to the builder */
+    tour:       { active: 'tours',   cta: ['Request this tour', '#book'],     solid: true },
   };
   var cfg = CFG[page] || CFG.tours;
 
@@ -83,10 +83,8 @@
       '</div><div class="foot-bottom"><span>© 2026 Azat Tours, Bishkek, Kyrgyzstan.</span></div></div></footer>';
 
   var floatWa = '<a href="' + WA + '" target="_blank" rel="noopener" class="float-wa" data-wa aria-label="Chat on WhatsApp">' + WA_SVG + '</a>';
-  var mobileCta = cfg.mcta
-    ? '<div class="mobile-cta"><a href="' + WA + '" target="_blank" rel="noopener" class="btn btn-primary">WhatsApp us</a><a href="tours.html" class="btn btn-dark">Tours</a></div>'
-    : '';
+  /* mobile bottom bar (WhatsApp us / Tours) removed 2026-07-10 by owner decision — kino-panel hero redesign */
 
   document.body.insertAdjacentHTML('afterbegin', header + mobile);
-  document.body.insertAdjacentHTML('beforeend', footer + floatWa + mobileCta);
+  document.body.insertAdjacentHTML('beforeend', footer + floatWa);
 })();
