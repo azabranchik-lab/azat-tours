@@ -689,13 +689,13 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 /* option cards (image) */
 .opt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .opt-card,.choice,.b-chip,.match,.stepper button{color:var(--ink)}
-.opt-card{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;border:2px solid transparent;background:var(--surface);box-shadow:var(--shadow);transition:transform .25s,border-color .25s;text-align:left}
+.opt-card{position:relative;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;cursor:pointer;border:2px solid transparent;background:var(--surface);box-shadow:var(--shadow);transition:transform .25s,border-color .25s;text-align:left}
 .opt-card:hover{transform:translateY(-4px)}
 .opt-card.sel{border-color:var(--lake)}
-.opt-card .im{position:relative;aspect-ratio:4/3;overflow:hidden}
+.opt-card .im{position:relative;display:block;width:100%;flex:0 0 auto;aspect-ratio:4/3;overflow:hidden}
 .opt-card .im img{width:100%;height:100%;object-fit:cover}
 .opt-card .im::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(10,28,24,.35))}
-.opt-card .tx{padding:14px 16px}
+.opt-card .tx{display:block;padding:14px 16px}
 .opt-card .tx b{display:block;font-size:1.02rem;margin-bottom:2px}
 .opt-card .tx span{font-size:.84rem;color:var(--ink-soft)}
 .opt-card .tick{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);display:grid;place-items:center;color:transparent;font-weight:800;transition:.2s;z-index:2}
@@ -1067,4 +1067,5 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .blog-feature{grid-template-columns:1fr}
   .team-grid{grid-template-columns:1fr;gap:18px}
   .opt-cards,.interest-grid,.choice-cards{grid-template-columns:1fr}
+  .opt-card .im{aspect-ratio:16/9}
 }
