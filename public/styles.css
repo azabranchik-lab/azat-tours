@@ -194,6 +194,7 @@ section{position:relative}
 .chip:hover{box-shadow:0 2px 6px rgba(12,40,36,.08),0 0 0 1px var(--lake)}
 .chip.active{background:var(--panel);color:var(--panel-text);border-color:var(--ink)}
 .chip-tag{font-size:.82rem;padding:.5em 1em}
+.chip-n{margin-left:.35em}   /* inline-flex chips collapse the literal space before the count */
 .no-result{display:none;text-align:center;padding:60px 0;color:var(--ink-soft)}
 .no-result.show{display:block}
 

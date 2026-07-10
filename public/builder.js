@@ -16,18 +16,18 @@
   const STYLES = [
     { id: 'Horse riding', t: 'Horseback riding', d: 'Ride like a nomad to alpine lakes', img: '1486870591958-9b9d0d1dda99' },
     { id: 'Combined', t: 'A bit of everything', d: 'Ride, trek & road-trip combined', img: '1464822759023-fed622ff2c3b' },
-    { id: 'Road trip', t: 'Road trip & comfort', d: 'Scenic drives, less effort', img: '1519681393784-d120267933ba' },
-    { id: 'Off-the-beaten-path', t: 'Off the beaten path', d: 'Remote valleys, real nomad life', img: '1533105079780-92b9be482077' },
+    { id: 'Road trip', t: 'Road trip & comfort', d: 'Scenic drives, less effort', img: '1454496522488-7a8e488e8606' },
+    { id: 'Off-the-beaten-path', t: 'Off the beaten path', d: 'Remote valleys, real nomad life', img: '1519681393784-d120267933ba' },
     { id: 'Winter tours', t: 'Winter adventure', d: 'Snowy passes & frozen lakes', img: '1551632811-561732d1e306' },
     { id: 'notsure', t: 'Not sure yet', d: 'Help me choose, surprise me!', img: '1506905925346-21bda4d32df4' }
   ];
   const DURATIONS = [['3-4', '3-4 days'], ['5-7', '5-7 days'], ['8-10', '8-10 days'], ['11+', '11+ days'], ['flexible', 'Flexible']];
   const MONTHS = ['Flexible', 'May', 'June', 'July', 'August', 'September', 'October', 'Winter'];
   const INTERESTS = [
-    { t: 'Song-Köl yurt stay', img: '1533105079780-92b9be482077' },
+    { t: 'Song-Kol yurt stay', img: '1506905925346-21bda4d32df4' },
     { t: 'Horseback riding', img: '1486870591958-9b9d0d1dda99' },
-    { t: 'Ala-Köl trek', img: '1551632811-561732d1e306' },
-    { t: 'Issyk-Köl lake', img: '1464822759023-fed622ff2c3b' },
+    { t: 'Ala-Kol trek', img: '1551632811-561732d1e306' },
+    { t: 'Issyk-Kul lake', img: '1464822759023-fed622ff2c3b' },
     { t: 'Kel-Suu lake & off-road', img: '1454496522488-7a8e488e8606' },
     { t: 'Tash-Rabat & Silk Road', img: '1519681393784-d120267933ba' },
     { t: 'Eagle hunters & Kok-Boru', img: '1488646953014-85cb44e25828' },

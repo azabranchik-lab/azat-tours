@@ -14,7 +14,7 @@
     return `<a href="${link(p)}" class="blog-feature reveal in" style="cursor:pointer">
       <div class="img"><img src="${p.cover}" alt="${esc(p.title)}"></div>
       <div class="body">
-        <div class="post-meta"><span class="tag">${esc(p.category)}</span><span>${dateStr(p.date)}</span>·<span>${rt(p.body)} read</span></div>
+        <div class="post-meta"><span class="tag">${esc(p.category)}</span><span>${dateStr(p.date)} · ${rt(p.body)} read</span></div>
         <h2>${esc(p.title)}</h2>
         <p>${esc(p.excerpt)}</p>
         <span class="btn btn-dark" style="align-self:flex-start">Read the guide</span>
