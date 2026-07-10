@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const store = require('./lib/store');
+const content = require('./lib/content'); // read-only here: per-slug meta for tour.html/post.html
 
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public'); // website assets are served from here
@@ -65,6 +66,69 @@ function cleanLead(b) {
   return out;
 }
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// ---- per-slug <head> meta for tour.html / post.html ----
+// WhatsApp/Facebook/Telegram scrapers don't run JS, so the og tags that
+// tour-detail.js / post-render.js set client-side never reach link previews.
+// Mirror the same title/description/og formulas into the served HTML.
+// Returns null when the slug is unknown or content JSON is unavailable
+// (caller then serves the file unmodified).
+// tours.json is ~800KB; don't re-parse it on every tour.html hit.
+// mtime-keyed cache stays fresh when the bot edits content live.
+const _contentCache = {};
+function cachedLoad(jsonPath, loader) {
+  const mtime = fs.statSync(jsonPath).mtimeMs;
+  const c = _contentCache[jsonPath];
+  if (c && c.mtime === mtime) return c.data;
+  const data = loader() || [];
+  _contentCache[jsonPath] = { mtime, data };
+  return data;
+}
+function buildSlugMeta(urlPath, slug) {
+  try {
+    if (urlPath === '/tour.html') {
+      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug);
+      if (!t) return null;
+      return {
+        key: 'tour-' + slug,
+        title: `${t.name}, Kyrgyzstan Tour | Azat Tours`,
+        desc: ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158),
+        ogType: 'website',
+        image: (t.images && t.images[0]) || '',
+        url: 'https://azattours.com/tour.html?slug=' + encodeURIComponent(slug)
+      };
+    }
+    if (urlPath === '/post.html') {
+      const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug);
+      if (!po) return null;
+      return {
+        key: 'post-' + slug,
+        title: `${po.title} | Azat Tours Kyrgyzstan`,
+        desc: String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158),
+        ogType: 'article',
+        image: po.cover || '',
+        url: 'https://azattours.com/post.html?slug=' + encodeURIComponent(slug)
+      };
+    }
+  } catch (e) { /* content/*.json missing or malformed -> serve unmodified */ }
+  return null;
+}
+function injectSlugMeta(html, m) {
+  const at = s => esc(s).replace(/"/g, '&quot;'); // attribute context needs quotes escaped too
+  const tags =
+    `<meta name="description" content="${at(m.desc)}">\n` +
+    `<meta property="og:type" content="${m.ogType}">\n` +
+    `<meta property="og:title" content="${at(m.title)}">\n` +
+    `<meta property="og:description" content="${at(m.desc)}">\n` +
+    (m.image ? `<meta property="og:image" content="${at(m.image)}">\n` : '') +
+    `<meta property="og:url" content="${at(m.url)}">\n` +
+    `<meta name="twitter:card" content="summary_large_image">\n` +
+    `<link rel="canonical" href="${at(m.url)}">\n`;
+  return html
+    .replace(/<title>[^<]*<\/title>/, `<title>${esc(m.title)}</title>`)
+    .replace(/<meta name="description"[^>]*>\s*/i, '') // drop the shared static one; injected tag replaces it
+    .replace('</head>', tags + '</head>');
+}
 
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, `http://localhost:${PORT}`);
@@ -138,7 +202,11 @@ const server = http.createServer(async (req, res) => {
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404, { 'Content-Type': 'text/html' }); return res.end('<h1>404 Not Found</h1>'); }
     const type = TYPES[path.extname(filePath)] || 'application/octet-stream';
-    const etag = '"' + st.size.toString(36) + '-' + Math.round(st.mtimeMs).toString(36) + '"';
+    // per-slug meta for tour/post pages: without the slug in the ETag a 304
+    // could confirm another slug's cached <head>
+    const slug = u.searchParams.get('slug');
+    const slugMeta = slug ? buildSlugMeta(urlPath, slug) : null;
+    const etag = '"' + st.size.toString(36) + '-' + Math.round(st.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + '"';
     const headers = {
       'Content-Type': type,
       'ETag': etag,
@@ -149,6 +217,7 @@ const server = http.createServer(async (req, res) => {
     if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); return res.end(); }
     fs.readFile(filePath, (e, data) => {
       if (e) { res.writeHead(404, { 'Content-Type': 'text/html' }); return res.end('<h1>404 Not Found</h1>'); }
+      if (slugMeta) data = Buffer.from(injectSlugMeta(data.toString('utf8'), slugMeta), 'utf8');
       const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
       const compressible = /text\/|javascript|json|svg/.test(type);
       if (acceptsGzip && compressible && data.length > 1024) {
