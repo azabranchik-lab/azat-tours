@@ -52,6 +52,15 @@ Specialists cost tokens too — use them where they prevent rework or raise qual
 - **Copy:** brand voice (warm, first-person, concrete, no corporate filler, no em-dashes, no emoji).
 
 ## Project guardrails (learned, must respect)
+- **ВНЕШНОСТЬ И РАСПОЛОЖЕНИЕ — МОЖНО. ЛОГИКУ — НЕЛЬЗЯ (правило владельца, 2026-07-10).**
+  Redesign may change look (colors, fonts, spacing, shadows, animations) and rearrange EXISTING
+  elements/sections for composition. FORBIDDEN without the owner's explicit «да»: (1) adding new
+  buttons/links/fields/sections; (2) removing existing elements or functions; (3) changing what any
+  click does — every button, filter, form, menu, tab behaves exactly as in the old version (git
+  history is the reference); (4) changing user flow — same result via the same steps (e.g. filters:
+  one «Filters» button → panel opens → pick options → list filters, exactly as before). If the new
+  design seems to need an addition/removal/behavior change — propose 2-3 options and wait for «да».
+  (Already owner-approved exceptions: hero photo slideshow; removing the mobile WhatsApp/Tours bar.)
 - **Desktop vs mobile are separate** — changing one must not change the other unless intended. Scope via
   `@media`, page/data-page selectors, or base-vs-override; the owner enforces this strictly.
 - **Preview renderer is unreliable for color/theme** (freezes transitions, wrong computed colors). Verify
