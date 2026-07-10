@@ -100,7 +100,7 @@ header.scrolled .nav-links a:not(.btn),header.solid .nav-links a:not(.btn){color
 header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 
 /* ---------- HERO ---------- */
-.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:-2}
 .hero-bg img{width:100%;height:100%;object-fit:cover;animation:slowzoom 20s ease-out forwards}
 @keyframes slowzoom{from{transform:scale(1.12)}to{transform:scale(1)}}
@@ -574,7 +574,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .exp-card{padding:18px}
   .field-row{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr}
-  .hero-inner{padding-bottom:120px}
+  .hero .hero-inner{padding-bottom:200px}   /* hero CTA must clear the 79px fixed .mobile-cta bar; .hero prefix beats the .wrap{padding:0 18px} shorthand reset below */
   .mobile-cta{display:flex}
   .float-wa{bottom:84px}
   .step:not(:last-child)::after{display:none}
@@ -867,8 +867,9 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 /* ============================================================
    ON-SITE CHAT WIDGET
    ============================================================ */
-.chat-fab{position:fixed;right:22px;bottom:22px;z-index:75;width:60px;height:60px;border-radius:50%;background:var(--lake-fill);color:#fff;display:grid;place-items:center;box-shadow:0 12px 30px -8px rgba(18,122,111,.7);cursor:pointer;border:0;transition:transform .25s}
+.chat-fab{position:fixed;right:22px;bottom:22px;z-index:75;width:60px;height:60px;border-radius:50%;background:var(--lake-fill);color:#fff;display:grid;place-items:center;box-shadow:0 12px 30px -8px rgba(18,122,111,.7);cursor:pointer;border:0;transition:transform .25s,opacity .25s}
 .chat-fab:hover{transform:scale(1.07)}
+.chat-fab.fab-hidden{opacity:0;pointer-events:none;transform:translateY(12px)}
 .chat-fab svg{width:30px;height:30px}
 .chat-fab .badge{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:10px;background:var(--clay);color:#fff;font-size:.72rem;font-weight:700;display:grid;place-items:center;padding:0 5px}
 .chat-panel{position:fixed;right:22px;bottom:92px;z-index:76;width:360px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 130px);background:var(--surface);border-radius:20px;box-shadow:0 30px 70px -24px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:opacity .25s,transform .25s}

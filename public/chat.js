@@ -56,7 +56,7 @@
     body.appendChild(d); body.scrollTop = body.scrollHeight;
   }
   function greet() {
-    if (!body.childElementCount) bubble('owner', 'Hi!  Ask us anything about tours, dates, visas or safety, a local expert will reply here. What can we help with?');
+    if (!body.childElementCount) bubble('owner', 'Hi! Ask us anything about tours, dates, visas or safety, a local expert will reply here. What can we help with?');
   }
   function open() { dismissNudge(); panel.classList.add('open'); badge.style.display = 'none'; greet(); input.focus(); startPoll(); render(); }
   function close() { panel.classList.remove('open'); }
@@ -69,7 +69,33 @@
   function dismissNudge() { nudge.classList.remove('show'); fab.classList.remove('nudging'); localStorage.setItem(NUDGE_KEY, '1'); }
   nudge.onclick = () => { dismissNudge(); open(); };
   nudge.querySelector('.chat-nudge-x').onclick = (e) => { e.stopPropagation(); dismissNudge(); };
-  setTimeout(showNudge, 3500);
+  setTimeout(() => {
+    showNudge();
+    if (!nudge.classList.contains('show')) return;
+    // self-dismiss: don't sit on top of content until the user hunts the ×
+    setTimeout(() => { if (nudge.classList.contains('show')) dismissNudge(); }, 8000);
+    const y0 = window.scrollY;
+    const onScroll = () => {
+      if (Math.abs(window.scrollY - y0) > 400) {
+        window.removeEventListener('scroll', onScroll);
+        if (nudge.classList.contains('show')) dismissNudge();
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }, 3500);
+
+  // keep the chat button clear of form submit areas (it covered Send buttons on 375px)
+  const leadForms = document.querySelectorAll('form');
+  if (leadForms.length && 'IntersectionObserver' in window) {
+    const inView = new Set();
+    const syncFab = () => fab.classList.toggle('fab-hidden', inView.size > 0 && !panel.classList.contains('open'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => en.isIntersecting ? inView.add(en.target) : inView.delete(en.target));
+      syncFab();
+    });
+    leadForms.forEach((f) => io.observe(f));
+    panel.addEventListener('transitionend', syncFab);
+  }
 
   async function render() {
     try {
