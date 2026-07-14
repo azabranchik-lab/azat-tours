@@ -61,6 +61,12 @@ Specialists cost tokens too — use them where they prevent rework or raise qual
   one «Filters» button → panel opens → pick options → list filters, exactly as before). If the new
   design seems to need an addition/removal/behavior change — propose 2-3 options and wait for «да».
   (Already owner-approved exceptions: hero photo slideshow; removing the mobile WhatsApp/Tours bar.)
+- **ПРОЦЕСС ВЫБОРА (правило владельца, 2026-07-10, после инцидента с тулбаром каталога):** when the
+  owner asks an open design question («может, придумать что-то другое?»), that is an invitation to
+  DISCUSS: bring **2-3 variants as mockup images with honest pros/cons** and let him pick. Showing
+  ONE variant and getting «ок» on it is NOT a choice — do not code from it. Per-stage ritual:
+  обсуждение вариантов → мокапы → его выбор → код → скрины до/после → коммит → СТОП до его
+  «дальше». One stage/batch at a time, never two.
 - **Desktop vs mobile are separate** — changing one must not change the other unless intended. Scope via
   `@media`, page/data-page selectors, or base-vs-override; the owner enforces this strictly.
 - **Preview renderer is unreliable for color/theme** (freezes transitions, wrong computed colors). Verify
