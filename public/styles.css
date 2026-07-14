@@ -1138,10 +1138,6 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .socials a{width:44px;height:44px}
 }
 
-@media (max-width:680px){
-  /* category chips row is back per the approved p4v2 mockup (one-tap type filter above the big button) */
-  body[data-page="tours"] #filterBar{display:flex !important;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:2px 2px 4px;margin:8px 0 2px;scrollbar-width:none}
-  body[data-page="tours"] #filterBar::-webkit-scrollbar{display:none}
-  body[data-page="tours"] #filterBar .chip{flex:none;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
-  body[data-page="tours"] #filterBar .chip span{margin-left:.35em}
-}
+/* mobile category chip strip removed (owner, 2026-07-10): the same Type filter
+   lives inside the "Filters & sort" sheet; #filterBar stays hidden at <=680px
+   via the display:none rule above. Desktop uses .dcats, untouched. */
