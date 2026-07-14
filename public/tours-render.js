@@ -111,7 +111,7 @@
       // mobile "Filters & sort" button (one big touch target; opens the sheet, badge = live result count)
       const mBtn = document.createElement('button');
       mBtn.id = 'mFilterBtn'; mBtn.className = 'mfilter-btn'; mBtn.type = 'button';
-      mBtn.innerHTML = `Filters &amp; sort <span class="mfilter-badge">${TOURS.length}</span>`;
+      mBtn.innerHTML = `All filters <span class="mfilter-badge">${TOURS.length}</span>`;
 
       // mobile bottom-sheet: Type (categories, single-select) + tag filters, grouped
       const GROUPS = [['Activity', ['trekking', 'horseback', 'road-trip', 'off-road']], ['Duration', ['short', 'week', 'long']], ['Season', ['summer', 'winter', 'all-year']]];
@@ -119,14 +119,12 @@
         present.map(c => `<button class="chip chip-tag" type="button" data-f="${c}">${c} <span class="chip-n">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
       const sheet = document.createElement('div');
       sheet.id = 'filterSheet'; sheet.className = 'filter-sheet';
-      const sheetSort = [['rec', 'Recommended'], ['short', 'Shortest first'], ['long', 'Longest first']]
-        .map(([k, l]) => `<button class="fs-sortrow${k === 'rec' ? ' sel' : ''}" type="button" data-fsort="${k}"><span>${l}</span><span class="r"></span></button>`).join('');
+      // Sort now lives in a visible segment in the mobile toolbar (below), not in the sheet.
       sheet.innerHTML =
         '<div class="fs-backdrop" data-close></div>' +
         '<div class="fs-panel">' +
-          '<div class="fs-head"><b>Filters &amp; sort</b><button class="fs-x" type="button" data-close aria-label="Close">&times;</button></div>' +
+          '<div class="fs-head"><b>All filters</b><button class="fs-x" type="button" data-close aria-label="Close">&times;</button></div>' +
           '<div class="fs-body">' +
-          `<div class="fs-group"><div class="fs-gtitle">Sort</div><div class="fs-sort">${sheetSort}</div></div>` +
           `<div class="fs-group"><div class="fs-gtitle">Type</div><div class="fs-chips">${sheetCats}</div></div>` +
           GROUPS.map(([g, keys]) => {
             const ks = keys.filter(k => tagCount(k) > 0);
@@ -167,10 +165,12 @@
       mtb.className = 'mtoolbar';
       const mCount = document.createElement('span');
       mCount.className = 'mcount'; mCount.textContent = TOURS.length + ' tours';
-      const mActions = document.createElement('div');
-      mActions.className = 'mtb-actions';
-      mActions.append(mBtn);
-      mtb.append(mCount, mActions);
+      // visible sort segment (Recommended / Shortest / Longest) — same data-fsort engine as before
+      const mSort = document.createElement('div');
+      mSort.className = 'msort-seg'; mSort.id = 'mSortSeg';
+      mSort.innerHTML = [['rec', 'Recommended'], ['short', 'Shortest'], ['long', 'Longest']]
+        .map(([k, l]) => `<button type="button" data-fsort="${k}"${k === 'rec' ? ' class="sel"' : ''}>${l}</button>`).join('');
+      mtb.append(mCount, mSort, mBtn);
       main.insertBefore(mtb, grid);
 
       // ---- shared state (one source of truth for both desktop chips and the sheet) ----
@@ -208,10 +208,10 @@
 
       // one delegated handler for every chip/row (desktop rail, mobile category swipe, and the sheet)
       document.addEventListener('click', e => {
-        if (!e.target.closest('#filterBar, #filterSheet, #dCatBar, #dFilterPop')) return;
+        if (!e.target.closest('#filterBar, #filterSheet, #dCatBar, #dFilterPop, #mSortSeg')) return;
         if (e.target.closest('[data-clear]')) { activeTags.clear(); activeCat = 'all'; return refresh(); }
         const s = e.target.closest('[data-fsort]');
-        if (s) { sheet.querySelectorAll('[data-fsort]').forEach(x => x.classList.toggle('sel', x === s)); return applySort(s.dataset.fsort); }
+        if (s) { document.querySelectorAll('[data-fsort]').forEach(x => x.classList.toggle('sel', x === s)); return applySort(s.dataset.fsort); }
         const f = e.target.closest('[data-f]'); if (f) return setCat(f.dataset.f);
         const t = e.target.closest('[data-t]'); if (t) return toggleTag(t.dataset.t);
       });

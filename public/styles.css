@@ -1014,8 +1014,13 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   /* ---------- catalog: Sort + Filters toolbar + bottom-sheet (category row removed) ---------- */
   #filterBar{display:none !important}                 /* old swipe category row removed (Variant A) */
   body[data-page="tours"] .catalog-main > .eyebrow{display:none}   /* count moved into the toolbar */
-  .mtoolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 22px}
-  .mcount{font-size:.88rem;font-weight:600;color:var(--ink-soft)}   /* live "N tours" — left of the actions */
+  .mtoolbar{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin:2px 0 22px}
+  .mcount{font-size:.88rem;font-weight:600;color:var(--ink-soft)}   /* live "N tours" */
+  /* visible sort segment (Recommended / Shortest / Longest) */
+  .msort-seg{display:flex;background:var(--paper-2);border-radius:999px;padding:4px;gap:4px}
+  .msort-seg button{flex:1;min-height:44px;border:0;background:none;border-radius:999px;font-family:inherit;font-size:.85rem;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:background .22s,color .22s}
+  .msort-seg button.sel{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(10,36,30,.12)}
+  .mfilter-btn{width:100%}
   .mtb-actions{display:flex;align-items:center;gap:10px}
   .msort-wrap{position:relative;flex:none}
   .msort,.mfilter-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;border:0;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line);border-radius:999px;padding:.5em 1.15em;font-family:inherit;font-size:.9rem;font-weight:600;line-height:1;color:var(--ink);cursor:pointer;transition:box-shadow .22s,color .22s}
@@ -1120,10 +1125,8 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   body[data-page="tours"] .page-hero .crumb a{color:var(--ink-soft)}
 
   /* one big Filters & sort button, count line below it */
-  .mtoolbar{flex-direction:column;align-items:stretch;gap:10px;margin:6px 0 18px}
-  .mtb-actions{order:1;display:flex}
-  .mcount{order:2}
-  .mfilter-btn{flex:1;width:100%;padding:15px;font-size:1rem;font-weight:700;gap:10px}
+  .mtoolbar{gap:10px;margin:6px 0 18px}   /* column layout + order inherited from the <=680 block */
+  .mfilter-btn{width:100%;padding:15px;font-size:1rem;font-weight:700;gap:10px}
   .mfilter-badge{background:var(--lake-fill);min-width:24px;height:20px;font-size:.74rem}
 
   /* big catalog cards: full-width photo, badges on the photo (approved mockup) */
