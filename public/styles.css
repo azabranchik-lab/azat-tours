@@ -1083,6 +1083,18 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .exp-grid{grid-auto-rows:initial}
   .exp-grid .exp-card{flex:0 0 74%;scroll-snap-align:start;height:200px}
 
+  /* modern primary CTA on mobile (owner-picked "Aurora", no arrows): soft mint->teal
+     glow layered on the teal fill + a comfortable 54px tap height on EVERY primary
+     button. Full-width only where the button stands alone (catalog hero + forms),
+     so two-button CTA rows (hero, dark CTAs) stay intact. */
+  .btn-primary{min-height:54px;justify-content:center;
+    background:
+      radial-gradient(120% 140% at 12% -20%,rgba(47,202,178,.5),transparent 55%),
+      radial-gradient(120% 160% at 100% 120%,rgba(11,90,80,.55),transparent 55%),
+      var(--lake-fill);
+    box-shadow:0 14px 30px -14px rgba(15,122,108,.6),0 4px 10px -4px rgba(10,36,30,.25)}
+  body[data-page="tours"] .page-hero .btn-primary{width:100%}   /* catalog: solo Build goes full-width */
+
   /* ---------- hero ---------- */
   .hero-actions{gap:10px}   /* row of two pills, as on the approved kino-panel mockup; ghost "Browse tours" is back since the bottom bar is gone */
   .hero-trust{gap:8px 14px;font-size:.82rem}
