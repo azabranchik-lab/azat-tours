@@ -51,6 +51,18 @@ Specialists cost tokens too — use them where they prevent rework or raise qual
 - **Performance & polish:** lazy images, smooth transitions, no layout shift, no horizontal overflow.
 - **Copy:** brand voice (warm, first-person, concrete, no corporate filler, no em-dashes, no emoji).
 
+## Mobile-first, always (owner rule — apply every session, don't wait to be asked)
+- **Mobile viewport (375-414px) first for every design/UX decision.** Desktop is secondary: check
+  mobile behavior before touching desktop layout.
+- **Body text is left-aligned by default** — never center paragraphs. Center only short elements:
+  headlines, CTAs, hero taglines, quotes.
+- **Tap targets (buttons/links) ≥ 44-48px tall**, with enough spacing to avoid mis-taps.
+- **Key navigation/CTAs reachable in the "thumb zone"** (bottom half of the screen) on mobile.
+- **No horizontal scroll on mobile** — anything overflowing the viewport is a bug.
+- **Minimum body font size on mobile is 16px.**
+- **When previewing/approving any design change, show the mobile screenshot (390px) first, desktop
+  (1440px) second.**
+
 ## Project guardrails (learned, must respect)
 - **ВНЕШНОСТЬ И РАСПОЛОЖЕНИЕ — МОЖНО. ЛОГИКУ — НЕЛЬЗЯ (правило владельца, 2026-07-10).**
   Redesign may change look (colors, fonts, spacing, shadows, animations) and rearrange EXISTING
