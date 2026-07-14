@@ -108,10 +108,13 @@
         `<button class="chip active" data-f="all">All <span style="opacity:.6">${TOURS.length}</span></button>` +
         present.map(c => `<button class="chip" data-f="${c}">${c} <span style="opacity:.6">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
 
-      // mobile "Filters & sort" button (one big touch target; opens the sheet, badge = live result count)
+      // shared "filters" icon (same on the desktop All-filters button, below)
+      const FIC = '<svg class="dfb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="10" cy="8" r="2.4" fill="var(--surface)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--surface)"/></svg>';
+      // mobile "All filters" button (one big touch target; opens the sheet). Keeps a hidden
+      // badge span so the .has active-state hook still works; count shown in the toolbar line.
       const mBtn = document.createElement('button');
       mBtn.id = 'mFilterBtn'; mBtn.className = 'mfilter-btn'; mBtn.type = 'button';
-      mBtn.innerHTML = `All filters <span class="mfilter-badge">${TOURS.length}</span>`;
+      mBtn.innerHTML = `${FIC}<span>All filters</span><span class="mfilter-badge" hidden>${TOURS.length}</span>`;
 
       // mobile bottom-sheet: Type (categories, single-select) + tag filters, grouped
       const GROUPS = [['Activity', ['trekking', 'horseback', 'road-trip', 'off-road']], ['Duration', ['short', 'week', 'long']], ['Season', ['summer', 'winter', 'all-year']]];
@@ -145,7 +148,6 @@
         return ks.length ? `<div class="dpop-group"><div class="dpop-gtitle">${g}</div><div class="dpop-chips">` +
           ks.map(k => `<button class="chip chip-tag" type="button" data-t="${k}">${tagLabel(k)} <span class="chip-n">${tagCount(k)}</span></button>`).join('') + '</div></div>' : '';
       }).join('');
-      const FIC = '<svg class="dfb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="10" cy="8" r="2.4" fill="var(--surface)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--surface)"/></svg>';
       const dfilters = document.createElement('div');
       dfilters.className = 'dfilters';
       dfilters.innerHTML =
