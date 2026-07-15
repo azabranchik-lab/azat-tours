@@ -79,7 +79,7 @@ img{display:block;max-width:100%}
 .eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lake-deep)}
 .catalog-main > .eyebrow{letter-spacing:.1em;font-weight:600;color:var(--ink-soft)}   /* calmer count line (Soft Alpine) */
 .btn{display:inline-flex;align-items:center;gap:.5em;font-weight:600;font-size:.98rem;padding:.85em 1.5em;border-radius:999px;cursor:pointer;border:1.5px solid transparent;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease;white-space:nowrap}
-.btn:active{transform:translateY(1px)}
+.btn:active{transform:translateY(1px) scale(.98)}
 .btn-primary{background:var(--lake-fill);color:#fff;box-shadow:0 10px 24px -10px rgba(18,122,111,.7)}
 .btn-primary:hover{background:var(--lake-deep);transform:translateY(-2px);box-shadow:0 16px 30px -12px rgba(18,122,111,.8)}
 .btn-ghost{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
@@ -183,7 +183,8 @@ section{position:relative}
 .founder h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin:8px 0 14px}
 .founder > p{color:var(--ink-soft);font-size:1.08rem;max-width:58ch;margin:0 auto 14px}
 .founder .founder-mission{font-family:var(--font-display);font-size:1.3rem;color:var(--lake-deep);max-width:none;margin:6px auto 0}
-.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;max-width:none}
+.head-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 /* ---------- TOUR CARDS ---------- */
 .tours-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
@@ -619,7 +620,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .hero{min-height:0;display:block;color:var(--ink);background:var(--paper)}
   .hero-bg{position:relative;inset:auto;z-index:0;height:min(58svh,520px);min-height:300px;border-radius:0 0 26px 26px}
   .hero-bg::after{background:linear-gradient(180deg,rgba(10,26,22,.45),transparent 38%)}   /* only a top veil for the logo; the photo stays clean */
-  .hero .hero-inner{padding-top:22px;padding-bottom:48px}   /* room for the CTA glow now the trust line is gone */
+  .hero .hero-inner{padding-top:22px;padding-bottom:28px}   /* no CTA in the hero anymore */
   .hero h1{font-size:clamp(1.75rem,7.6vw,2.3rem);max-width:14ch;text-shadow:none}
   .hero h1 em{color:var(--lake)}
   .hero p.lead{color:var(--ink-soft);font-size:.97rem;margin-top:12px;max-width:36ch}
@@ -1200,7 +1201,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .hero-bg{height:min(48svh,330px);min-height:250px}
   .hero h1{font-size:clamp(1.6rem,7vw,2rem)}
   .hero p.lead{font-size:.92rem;margin-top:10px}
-  .hero .hero-inner{padding-top:18px;padding-bottom:40px}
+  .hero .hero-inner{padding-top:18px;padding-bottom:26px}
   .hero-actions{margin-top:16px}
 }
 
