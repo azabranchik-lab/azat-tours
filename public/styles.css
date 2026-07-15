@@ -618,7 +618,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .hero{min-height:0;display:block;color:var(--ink);background:var(--paper)}
   .hero-bg{position:relative;inset:auto;z-index:0;height:min(58svh,520px);min-height:300px;border-radius:0 0 26px 26px}
   .hero-bg::after{background:linear-gradient(180deg,rgba(10,26,22,.45),transparent 38%)}   /* only a top veil for the logo; the photo stays clean */
-  .hero .hero-inner{padding-top:22px;padding-bottom:30px}
+  .hero .hero-inner{padding-top:22px;padding-bottom:48px}   /* room for the CTA glow now the trust line is gone */
   .hero h1{font-size:clamp(1.75rem,7.6vw,2.3rem);max-width:14ch;text-shadow:none}
   .hero h1 em{color:var(--lake)}
   .hero p.lead{color:var(--ink-soft);font-size:.97rem;margin-top:12px;max-width:36ch}
@@ -1199,7 +1199,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .hero-bg{height:min(48svh,330px);min-height:250px}
   .hero h1{font-size:clamp(1.6rem,7vw,2rem)}
   .hero p.lead{font-size:.92rem;margin-top:10px}
-  .hero .hero-inner{padding-top:18px;padding-bottom:24px}
+  .hero .hero-inner{padding-top:18px;padding-bottom:40px}
   .hero-actions{margin-top:16px}
 }
 
