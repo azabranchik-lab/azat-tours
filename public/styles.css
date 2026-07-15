@@ -145,6 +145,10 @@ header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 .crumb a:hover{color:#fff}
 .page-hero h1{font-size:clamp(2.4rem,5vw,4rem)}
 .page-hero p{margin-top:14px;max-width:54ch;color:rgba(255,255,255,.88);font-size:1.08rem}
+/* blog hero — compact editorial (left-aligned, gold eyebrow kicker) */
+body[data-page="blog"] .page-hero{padding:110px 0 48px}
+body[data-page="blog"] .page-hero h1{font-size:clamp(2.1rem,3.6vw,3rem);line-height:1.08}
+body[data-page="blog"] .page-hero .eyebrow{margin:0 0 10px;font-size:.78rem;max-width:none;color:var(--gold)}
 
 /* reveal animation */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .42s cubic-bezier(.2,.7,.2,1),transform .42s cubic-bezier(.2,.7,.2,1)}
@@ -349,8 +353,10 @@ section{position:relative}
 .form-success h3{margin:10px 0 6px}
 
 /* ---------- FOOTER ---------- */
-footer{background:var(--panel);color:var(--panel-text-soft);padding:70px 0 30px}
-.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}
+footer{background:var(--panel);color:var(--panel-text-soft);padding:48px 0 30px}
+/* slim footer: brand + two link columns */
+.foot-slim{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:32px 40px;align-items:start}
+.foot-slim .foot-bottom{grid-column:1/-1;margin-top:6px}
 footer h4{color:#fff;font-family:var(--font-display);font-size:1.05rem;margin-bottom:16px;font-weight:600}
 footer .logo{color:#fff;margin-bottom:16px}
 footer ul{list-style:none;display:flex;flex-direction:column;gap:10px}
@@ -387,7 +393,6 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .exp-grid .exp-card:last-child{grid-column:span 2}
   .faq-wrap,.lead-grid,.blog-feature{grid-template-columns:1fr}
   .blog-feature .img{min-height:240px}
-  .foot-grid{grid-template-columns:1fr 1fr}
 }
 /* ============================================================
    TOUR DETAIL PAGE
@@ -579,7 +584,6 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .exp-grid .exp-card:last-child{grid-column:span 2}
   .faq-wrap,.lead-grid,.blog-feature{grid-template-columns:1fr}
   .blog-feature .img{min-height:240px}
-  .foot-grid{grid-template-columns:1fr 1fr}
   .tour-layout{grid-template-columns:1fr}
 }
 @media(max-width:680px){
@@ -592,7 +596,12 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .exp-grid .exp-card:nth-child(-n+3),.exp-grid .exp-card:nth-child(n+4){grid-column:auto}
   .exp-card{padding:18px}
   .field-row{grid-template-columns:1fr}
-  .foot-grid{grid-template-columns:1fr}
+  /* slim footer on mobile: brand full-width, then two link columns */
+  .foot-slim{grid-template-columns:1fr 1fr;gap:24px 20px}
+  .foot-brand{grid-column:1/-1}
+  footer .foot-col ul a{padding:5px 0;display:inline-block}
+  .msg-buttons{justify-content:center}   /* center the lone WhatsApp pill on mobile */
+  .msg-btn{font-size:16px;padding:13px 24px}   /* 16px text + ~47px tap target */
   /* ---------- «Кино-панель» hero (owner-approved): photo band on top, text on a light panel ---------- */
   .hero{min-height:0;display:block;color:var(--ink);background:var(--paper)}
   .hero-bg{position:relative;inset:auto;z-index:0;height:min(58svh,520px);min-height:300px;border-radius:0 0 26px 26px}
@@ -606,9 +615,11 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .hero-trust{color:var(--ink-soft);margin-top:18px}
   .hero-trust .dot{background:rgba(16,32,28,.3)}
   .hero-dots{left:18px;bottom:12px}
-  .float-wa{bottom:88px}   /* stacked above the chat fab now that the bottom bar is gone */
+  .float-wa{bottom:98px}   /* stacked above the chat fab now that the bottom bar is gone */
   .step:not(:last-child)::after{display:none}
   .page-hero{padding:116px 0 40px}   /* shorter mobile hero → less side-crop on the wide bg photo */
+  body[data-page="blog"] .page-hero{padding:80px 0 28px}
+  body[data-page="blog"] .page-hero h1{font-size:1.95rem;line-height:1.12}
   .hl-grid,.incl-grid{grid-template-columns:1fr}
   .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px}
   .gallery a.w2{grid-column:span 2}
@@ -640,10 +651,28 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   .tour-foot{padding-top:10px}
   .tour-foot a{font-size:.86rem}
   .tour-badge{top:8px;left:8px;font-size:.6rem;padding:.3em .6em}
-  .post{flex-direction:row;align-items:stretch}
-  .post .img{flex:0 0 42%;max-width:150px;min-width:116px;aspect-ratio:auto}
-  .post .body{padding:13px 15px}
-  .post h3{font-size:1.04rem;margin:6px 0 8px;line-height:1.25}
+  /* compact list rows: centered, 4:3 landscape thumbnail (no more portrait crop) */
+  .post{flex-direction:row;align-items:center;gap:12px;padding:10px}
+  .post .img{flex:0 0 116px;width:116px;max-width:116px;min-width:0;aspect-ratio:4/3;border-radius:10px}
+  .post .body{padding:0}
+  .post h3{font-size:1.04rem;margin:4px 0 0;line-height:1.3}
+  .post .body .more{padding-top:8px}
+  /* featured card → photo-overlay hero on mobile: text over the image with a dark scrim.
+     .img and .body share one grid cell (grid-area 1/1) so they overlap. */
+  .blog-feature{grid-template-columns:1fr;border-radius:18px;margin-bottom:28px}
+  .blog-feature .img{grid-area:1/1;min-height:250px}
+  .blog-feature .body{grid-area:1/1;z-index:1;justify-content:flex-end;padding:18px 16px 20px;
+    background:linear-gradient(to top,rgba(9,26,22,.92) 0%,rgba(9,26,22,.4) 48%,rgba(9,26,22,0) 100%)}
+  .blog-feature .body h2{color:#fff;font-size:1.5rem;margin:10px 0 8px;line-height:1.25}
+  .blog-feature .body p{color:rgba(255,255,255,.85);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .blog-feature .post-meta{color:rgba(255,255,255,.85)}
+  .blog-feature .tag{background:#5dcaa5;color:#06251f}
+  body[data-page="blog"] .blog-feature .btn-dark{background:#fff;color:#0d221e}
+  /* category chips → one swipeable row, 44px tap targets (blog only).
+     page-scoped selector so it beats the later base .blog-cats rule (~L889). */
+  body[data-page="blog"] .blog-cats{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 24px;padding:0 18px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  body[data-page="blog"] .blog-cats::-webkit-scrollbar{display:none}
+  .blog-cats .chip{flex:none;min-height:44px;display:inline-flex;align-items:center}
   .why-card{padding:22px 20px}
   .why-ic{margin-bottom:12px}
   /* builder promo: stack text + image grid (its 2-col layout is an inline style) */
@@ -804,10 +833,10 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 /* ============================================================
    PLAN YOUR TRIP (research hub)
    ============================================================ */
-.jump-nav{position:sticky;top:62px;z-index:40;background:var(--bar-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.jump-nav .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:14px;padding-bottom:14px;scrollbar-width:none}
+.jump-nav{position:sticky;top:68px;z-index:40;background:var(--bar-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.jump-nav .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:12px;padding-bottom:12px;scrollbar-width:none}
 .jump-nav .wrap::-webkit-scrollbar{display:none}
-.jump-nav a{flex:none;font-size:.86rem;font-weight:600;color:var(--ink-soft);padding:.45em 1em;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);transition:.2s;white-space:nowrap}
+.jump-nav a{flex:none;font-size:.86rem;font-weight:600;color:var(--ink-soft);padding:.55em 1.05em;border-radius:999px;border:1px solid var(--line);background:var(--grad-surface);transition:.2s;white-space:nowrap}
 .jump-nav a:hover{border-color:var(--lake);color:var(--lake)}
 
 .guide-sec{scroll-margin-top:130px}
@@ -817,14 +846,14 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .guide-sec ul.ticks{list-style:none;display:flex;flex-direction:column;gap:10px;margin:6px 0 14px}
 .guide-sec ul.ticks li{display:flex;gap:10px;align-items:flex-start;color:var(--ink-soft);font-size:.96rem}
 .guide-sec ul.ticks li::before{content:"✓";color:var(--lake);font-weight:800;flex:none}
-.callout{background:var(--paper-2);border-left:4px solid var(--lake);border-radius:0 14px 14px 0;padding:18px 22px;margin:8px 0 20px}
-.callout b{display:block;margin-bottom:4px}
-.callout p{margin:0;font-size:.92rem}
+.callout{background:var(--grad-surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin:16px 0 2px;box-shadow:0 1px 2px rgba(12,40,36,.04)}
+.callout b{display:block;margin-bottom:4px;color:var(--lake-deep)}
+.callout p{margin:0;font-size:.92rem;color:var(--ink-soft)}
 
 /* season table */
 .season-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);font-size:.9rem}
 .season-table th,.season-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
-.season-table th{background:var(--panel);color:var(--panel-text);font-weight:600;font-size:.82rem;letter-spacing:.03em}
+.season-table th{background:var(--paper-2);color:var(--ink-soft);font-weight:600;font-size:.82rem;letter-spacing:.03em;border-bottom:2px solid var(--line)}
 .season-table tr:last-child td{border-bottom:0}
 .season-table .s-best{background:rgba(25,167,147,.18);font-weight:700;color:var(--lake-deep)}
 .season-table .s-ok{background:rgba(217,164,65,.16)}
@@ -832,10 +861,44 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .season-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:.84rem;color:var(--ink-soft)}
 .season-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:middle}
 
+/* plan-trip: reorder guide sections + jump-nav into a visitor journey (composition only; DOM order unchanged).
+   Before you book -> On the ground -> Peace of mind (Safety last, into the CTA). */
+body[data-page="plan"] .pad>.wrap{display:flex;flex-direction:column}
+body[data-page="plan"] #visa{order:1}
+body[data-page="plan"] #best-time{order:2}
+body[data-page="plan"] #getting-there{order:3}
+body[data-page="plan"] #money{order:4}
+body[data-page="plan"] #health{order:5}
+body[data-page="plan"] #packing{order:6}
+body[data-page="plan"] #connectivity{order:7}
+body[data-page="plan"] #safety{order:8}
+body[data-page="plan"] .jump-nav a[href="#visa"]{order:1}
+body[data-page="plan"] .jump-nav a[href="#best-time"]{order:2}
+body[data-page="plan"] .jump-nav a[href="#getting-there"]{order:3}
+body[data-page="plan"] .jump-nav a[href="#money"]{order:4}
+body[data-page="plan"] .jump-nav a[href="#health"]{order:5}
+body[data-page="plan"] .jump-nav a[href="#packing"]{order:6}
+body[data-page="plan"] .jump-nav a[href="#connectivity"]{order:7}
+body[data-page="plan"] .jump-nav a[href="#safety"]{order:8}
+
 @media(max-width:820px){
   .guide-grid{grid-template-columns:1fr;gap:24px}
   .season-table{font-size:.8rem}
   .season-table th,.season-table td{padding:9px 8px}
+}
+/* season table -> one card per season on phones (readable, keeps the ideal/possible tints) */
+@media(max-width:680px){
+  .season-table{box-shadow:none;background:none;border-radius:0;font-size:1rem}
+  .season-table thead{display:none}
+  .season-table tbody,.season-table tr,.season-table td{display:block;width:auto}
+  .season-table tr{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+  .season-table tr:last-child{margin-bottom:0}
+  .season-table td{border-bottom:1px solid var(--line);padding:11px 14px;display:flex;justify-content:space-between;gap:14px;text-align:right}
+  .season-table td:last-child{border-bottom:0}
+  .season-table td::before{content:attr(data-label);color:var(--ink-soft);font-weight:600;text-align:left}
+  .season-table td:first-child{font-size:1.05rem;font-weight:700;color:var(--ink);background:var(--paper-2);justify-content:flex-start}
+  .season-table td:first-child::before{content:none}
+  .season-table td.s-no:empty::after{content:"—";color:var(--ink-soft)}
 }
 
 /* ============================================================
@@ -936,9 +999,9 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .chat-fab.nudging::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(18,122,111,.5);animation:chatpulse 2.2s ease-out infinite;pointer-events:none}
 @keyframes chatpulse{to{box-shadow:0 0 0 16px rgba(18,122,111,0)}}
 @media(max-width:680px){
-  .chat-panel{right:8px;left:8px;width:auto;bottom:84px;height:70vh}
-  .chat-fab{bottom:24px}
-  .chat-nudge{bottom:152px;max-width:calc(100vw - 44px)}
+  .chat-panel{right:8px;left:8px;width:auto;bottom:94px;height:70vh}
+  .chat-fab{bottom:34px}
+  .chat-nudge{bottom:162px;max-width:calc(100vw - 44px)}
 }
 @media(prefers-reduced-motion:reduce){
   .chat-nudge{transition:none}
@@ -1082,6 +1145,9 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   /* experiences tiles */
   .exp-grid{grid-auto-rows:initial}
   .exp-grid .exp-card{flex:0 0 74%;scroll-snap-align:start;height:200px}
+  /* carousels force overflow-y:auto (clips vertically) — drop the reveal's vertical
+     slide so cards fade in without bobbing/cropping inside the scroller. Keep opacity. */
+  #featuredGrid .reveal,.exp-grid .reveal{transform:none}
 
   /* modern primary CTA on mobile (owner-picked "Aurora", no arrows): soft mint->teal
      glow layered on the teal fill + a comfortable 54px tap height on EVERY primary
@@ -1147,11 +1213,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   body[data-page="tours"] #toursGrid .tour-img{flex:none;max-width:none;min-width:0;aspect-ratio:16/10}
   body[data-page="tours"] #toursGrid .tour-body{padding:15px 17px;justify-content:flex-start}
 
-  /* footer links: >=44px tap zones (audit #5), soft separators help aim */
-  footer .foot-grid ul{gap:0}
-  footer .foot-grid ul a{display:block;padding:12px 0;border-bottom:1px solid rgba(243,247,246,.08)}
-  footer .foot-grid ul li:last-child a{border-bottom:0}
-  .socials a{width:44px;height:44px}
+  .socials a{width:44px;height:44px}   /* comfortable tap target for the footer Instagram icon */
 }
 
 /* mobile category chip strip removed (owner, 2026-07-10): the same Type filter

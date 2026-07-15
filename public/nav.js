@@ -57,30 +57,25 @@
     '</div>';
 
   var footer =
-    '<footer><div class="wrap"><div class="foot-grid">' +
-      '<div><div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>' +
-      '<p class="blurb">Azat means &ldquo;free&rdquo; in Kyrgyz, and free is how we want you to feel here. Small-group and tailor-made adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
-      '<div class="socials"><a href="https://instagram.com/azattours.kyrgyzstan" target="_blank" rel="noopener" aria-label="Instagram">◎</a></div></div>' +
-      '<div><h4>Tours</h4><ul>' +
-        '<li><a href="tours.html?cat=Combined">Combined trips</a></li>' +
-        '<li><a href="tours.html?cat=Horse%20riding">Horse treks</a></li>' +
-        '<li><a href="tours.html?cat=Road%20trip">Road trips</a></li>' +
-        '<li><a href="tours.html">All tours</a></li>' +
-        '<li><a href="plan-trip.html">Tailor-made</a></li>' +
-      '</ul></div>' +
-      '<div><h4>Company</h4><ul>' +
+    '<footer><div class="wrap foot-slim">' +
+      '<div class="foot-brand">' +
+        '<div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>' +
+        '<p class="blurb">Azat means &ldquo;free&rdquo;. Small-group adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
+        '<div class="socials"><a href="https://instagram.com/azattours.kyrgyzstan" target="_blank" rel="noopener" aria-label="Instagram">◎</a></div>' +
+      '</div>' +
+      '<div class="foot-col"><h4>Explore</h4><ul>' +
         '<li><a href="about.html">About us</a></li>' +
         '<li><a href="blog.html">Blog</a></li>' +
         '<li><a href="plan-trip.html">Plan your trip</a></li>' +
         '<li><a href="contact.html">Contact</a></li>' +
       '</ul></div>' +
-      '<div><h4>Get in touch</h4><ul>' +
-        '<li><a href="mailto:hello@azattours.com">hello@azattours.com</a></li>' +
-        '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">+996 222 222 011</a></li>' +
+      '<div class="foot-col"><h4>Contact</h4><ul>' +
         '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">WhatsApp</a></li>' +
+        '<li><a href="mailto:hello@azattours.com">hello@azattours.com</a></li>' +
         '<li><a href="contact.html">Bishkek, Kyrgyzstan</a></li>' +
       '</ul></div>' +
-      '</div><div class="foot-bottom"><span>© 2026 Azat Tours, Bishkek, Kyrgyzstan.</span></div></div></footer>';
+      '<div class="foot-bottom"><span>© 2026 Azat Tours, Bishkek, Kyrgyzstan.</span></div>' +
+    '</div></footer>';
 
   var floatWa = '<a href="' + WA + '" target="_blank" rel="noopener" class="float-wa" data-wa aria-label="Chat on WhatsApp">' + WA_SVG + '</a>';
   /* mobile bottom bar (WhatsApp us / Tours) removed 2026-07-10 by owner decision — kino-panel hero redesign */
