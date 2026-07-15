@@ -18,6 +18,7 @@
   /* fonts (Bricolage display + Figtree body) */
   --font-display:"Bricolage Grotesque","Segoe UI",sans-serif;
   --font-body:"Figtree",system-ui,sans-serif;
+  --font-logo:"Fraunces",Georgia,serif;
   /* semantic, theme-aware surfaces */
   --surface:#fff;
   --surface-2:#F4F8F7;
@@ -90,7 +91,7 @@ img{display:block;max-width:100%}
 header{position:fixed;top:0;left:0;right:0;z-index:60;transition:background .35s ease,box-shadow .35s ease,padding .35s ease;padding:18px 0}
 header.scrolled,header.solid{background:var(--bar-bg);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line);padding:10px 0}
 .nav{display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:.6em;font-family:var(--font-display);font-weight:700;font-size:1.4rem;color:#fff;transition:color .35s ease}
+.logo{display:flex;align-items:center;gap:.6em;font-family:var(--font-logo);font-weight:600;font-size:1.5rem;letter-spacing:.005em;color:#fff;transition:color .35s ease}
 header.scrolled .logo,header.solid .logo{color:var(--ink)}
 .logo .mark{width:34px;height:34px;flex:none}
 .logo small{display:block;font-family:var(--font-body);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;opacity:.8;margin-top:-3px}
