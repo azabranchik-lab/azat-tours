@@ -35,7 +35,6 @@
   }
 
   var LOGO = '<a href="index.html" class="logo">' +
-    '<svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M2 32 L13 12 L20 24 L26 14 L38 32 Z" fill="#19A793"/><path d="M13 12 L20 24 L16 24 Z" fill="#fff" opacity=".75"/><path d="M26 14 L31 22 L28 22 Z" fill="#fff" opacity=".55"/></svg>' +
     '<span>Azat Tours<small>Kyrgyzstan</small></span></a>';
 
   var header =
