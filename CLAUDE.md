@@ -52,6 +52,10 @@ Specialists cost tokens too — use them where they prevent rework or raise qual
 - **Copy:** brand voice (warm, first-person, concrete, no corporate filler, no em-dashes, no emoji).
 
 ## Mobile-first, always (owner rule — apply every session, don't wait to be asked)
+- **Design a modern 2026-standard mobile UX first — not a shrunk desktop.** Aim for the polish of a
+  current top-tier mobile product: native patterns (bottom sheets, segmented controls, sticky/thumb-zone
+  CTAs, swipe carousels), generous spacing, tasteful micro-interactions (150-250ms, transform/opacity
+  only), soft depth over hard borders. Mobile is the primary surface, judged at that quality bar.
 - **Mobile viewport (375-414px) first for every design/UX decision.** Desktop is secondary: check
   mobile behavior before touching desktop layout.
 - **Body text is left-aligned by default** — never center paragraphs. Center only short elements:
