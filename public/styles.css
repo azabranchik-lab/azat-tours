@@ -1044,6 +1044,8 @@ body[data-page="plan"] .plan-faq .faq-a .season-legend{margin-bottom:4px}
   .chat-panel{right:8px;left:8px;width:auto;bottom:94px;height:70vh}
   .chat-fab{bottom:34px}
   .chat-nudge{bottom:162px;max-width:calc(100vw - 44px)}
+  /* iOS Safari zooms the whole page when a focused field is under 16px */
+  .chat-input input,.chat-email input{font-size:16px}
 }
 @media(prefers-reduced-motion:reduce){
   .chat-nudge{transition:none}
