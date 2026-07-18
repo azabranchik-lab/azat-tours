@@ -73,7 +73,7 @@ Winter is for a different kind of traveller. Trekking passes close, but you can 
     id: 1001, slug: 'yurt-culture-etiquette', title: 'Staying in a yurt: nomad culture & etiquette',
     category: 'Culture', excerpt: 'The culture behind the Kyrgyz yurt, what to expect, and how to be a respectful guest.',
     author: 'Cholpon, culture guide', authorImg: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&q=80',
-    date: '2026-05-08', cover: U('1533105079780-92b9be482077'), images: [],
+    date: '2026-05-08', cover: U('1506905925346-21bda4d32df4'), images: [],
     body: `A night in a yurt is the moment most travellers fall in love with Kyrgyzstan. It's not a hotel gimmick here — it's a living home that has sheltered nomad families on these pastures for centuries.
 
 ## More than a tent
