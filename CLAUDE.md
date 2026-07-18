@@ -93,6 +93,10 @@ Specialists cost tokens too — use them where they prevent rework or raise qual
 - Work happens on a branch/locally; commit or deploy only when asked.
 
 ## Shipping & safety — don't break things (owner is token-sensitive; rework is the enemy)
+- **Update the handoff docs after EVERY batch of commits** (owner rule, 2026-07-18) — not at session
+  end: append what changed, where, what was verified and any deploy nuance to `docs/PROJECT-STATE.md`,
+  and tick the batch in `docs/REDESIGN-PLAN.md`. A stale handoff costs the next session real work
+  (this file once fell 16 commits behind and the next chat started from an outdated map).
 - **Git checkpoints:** commit at every stable feature (small, focused commits on `master` = cheap rollback).
   A break should be a `git revert`, not a manual redo. Run **`/code-review`** on the diff BEFORE committing.
 - **Regression guard before saying "done":** verify at 375px AND 1280px, light AND dark theme, console clean,
