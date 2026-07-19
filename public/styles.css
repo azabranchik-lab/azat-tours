@@ -355,7 +355,9 @@ section{position:relative}
 .field label{display:block;font-size:.8rem;font-weight:600;margin-bottom:6px;letter-spacing:.02em}
 .field input,.field select,.field textarea{width:100%;padding:.8em .95em;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);font:inherit;font-size:.95rem;color:var(--ink);transition:border-color .2s,box-shadow .2s}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(18,122,111,.15)}
-.form-err{margin-top:12px;color:var(--clay);font-size:.9rem;line-height:1.5}
+/* --clay itself is 4.44:1 on paper and 3.96:1 on the dark surface, i.e. error text was the
+   least readable text on the site. Same hue, enough contrast, per theme. */
+.form-err{margin-top:12px;color:#B4472F;font-size:.9rem;line-height:1.5}
 .form-err a{color:var(--lake);font-weight:600;text-decoration:underline}
 .field textarea{resize:vertical;min-height:80px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -1131,6 +1133,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
 /* readability fixes in dark */
 .chat-input input,.chat-email input{background:var(--surface-2);color:var(--ink)}
 .chat-input input::placeholder,.chat-email input::placeholder{color:var(--ink-soft)}
+[data-theme="dark"] .form-err{color:#D9705A}   /* the light-theme red is 3.96:1 on this surface */
 [data-theme="dark"] .tour-badge{background:rgba(18,26,22,.82);color:#fff}
 [data-theme="dark"] .field input::placeholder,[data-theme="dark"] .field textarea::placeholder{color:var(--ink-soft)}
 [data-theme="dark"] .stat span,[data-theme="dark"] footer{color:rgba(237,240,236,.72)}
