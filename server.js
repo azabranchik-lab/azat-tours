@@ -172,12 +172,17 @@ const server = http.createServer(async (req, res) => {
       if (!rateLimit(clientIp(req), 'chat', 30, 10 * 60 * 1000)) return sendJson(res, 429, { ok: false, error: 'rate_limited' });
       const name = String(b.name || '').slice(0, 120).trim();
       const email = String(b.email || '').slice(0, 160).trim();
-      store.ensureChat(sid, { name, email });
+      const page = String(b.page || '').slice(0, 300).trim();
+      const pageTitle = String(b.pageTitle || '').slice(0, 200).trim();
+      // only announce the page when it changed, so a thread isn't repeated on every message
+      const prevPage = (store.getChat(sid) || {}).page || '';
+      store.ensureChat(sid, { name, email, page, pageTitle });
       store.addMessage(sid, 'user', text);
       const who = name ? `${esc(name)}` : 'a visitor';
+      const where = page && page !== prevPage ? `\n\n<i>📍 ${esc(pageTitle || page)}\n${esc(page)}</i>` : '';
       await tg('sendMessage', {
         chat_id: OWNER_ID, parse_mode: 'HTML',
-        text: `💬 <b>Question from ${who}</b>${email ? ` (${esc(email)})` : ''}\n\n${esc(text)}\n\n<i>Reply to this message to answer on the site.</i>\n#chat ${sid}`
+        text: `💬 <b>Question from ${who}</b>${email ? ` (${esc(email)})` : ''}\n\n${esc(text)}${where}\n\n<i>Reply to this message to answer on the site.</i>\n#chat ${sid}`
       });
       return sendJson(res, 200, { ok: true });
     }
