@@ -812,6 +812,9 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .b-chip{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:.7em 1.3em;font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;transition:.2s}
 .b-chip:hover{border-color:var(--lake)}
 .b-chip.sel{background:var(--lake-fill);color:#fff;border-color:var(--lake)}
+/* unanswered required group: point at what to tap instead of blocking the button */
+.needs-pick{border-radius:16px;box-shadow:0 0 0 3px rgba(194,80,58,.14);padding:8px;margin:-8px}
+.needs-pick .opt-card,.needs-pick .b-chip{border-color:var(--clay)}
 .field-group{margin-bottom:28px}
 .field-group > label{display:block;font-weight:700;margin-bottom:12px;font-size:1.02rem}
 

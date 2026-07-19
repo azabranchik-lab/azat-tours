@@ -11,6 +11,21 @@
   let step = 0;
   const STEPS = ['Style', 'When & who', 'Experiences', 'Pace & comfort', 'Review & send'];
 
+  // A request with no answers is useless to the owner, so the first two steps ask for one.
+  // Both have a one-tap honest way out ("Not sure yet", "Flexible"), so this costs a tap, not a
+  // decision. Steps 3 and 4 stay optional, they already offer "Skip this step".
+  const REQUIRED = { 0: ['style'], 1: ['duration', 'month'] };
+  const ASK = {
+    style: 'Pick one, or tap “Not sure yet” and we’ll suggest.',
+    duration: 'Choose how long, or pick “Flexible”.',
+    month: 'Choose a month, or pick “Flexible”.'
+  };
+  // screen state, deliberately not part of S: S is persisted, this is not an answer
+  let invalid = [];
+  const missing = s => (REQUIRED[s] || []).filter(k => !S[k]);
+  const flag = k => invalid.includes(k) ? ' needs-pick' : '';
+  const askLine = k => invalid.includes(k) ? `<p class="form-err" role="alert">${ASK[k]}</p>` : '';
+
   // ---- option data ----
   const STYLES = [
     { id: 'Horse riding', t: 'Horseback riding', d: 'Ride like a nomad to alpine lakes', img: '1486870591958-9b9d0d1dda99' },
@@ -88,7 +103,8 @@
     const a = el('stepArea');
     if (step === 0) {
       a.innerHTML = header('Trip style', "What kind of adventure?", "Pick the vibe that excites you most. Not sure? Choose “Not sure yet” and we'll suggest.") +
-        `<div class="opt-cards">${STYLES.map(s => `
+        askLine('style') +
+        `<div class="opt-cards${flag('style')}">${STYLES.map(s => `
           <button class="opt-card ${S.style === s.id ? 'sel' : ''}" onclick="BUILDER.set('style','${s.id}')">
             <span class="tick"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></span>
             <span class="im"><img loading="lazy" src="${img(s.img)}" alt="${s.t}"></span>
@@ -97,8 +113,8 @@
     }
     else if (step === 1) {
       a.innerHTML = header('When & who', "How long, when, and how many?", "Rough answers are fine, everything is flexible and tailor-made.") +
-        `<div class="field-group"><label>Trip length</label><div class="b-chips">${DURATIONS.map(d => `<button class="b-chip ${S.duration === d[0] ? 'sel' : ''}" onclick="BUILDER.set('duration','${d[0]}')">${d[1]}</button>`).join('')}</div></div>
-         <div class="field-group"><label>When do you want to travel?</label><div class="b-chips">${MONTHS.map(m => `<button class="b-chip ${S.month === m ? 'sel' : ''}" onclick="BUILDER.set('month','${m}')">${m}</button>`).join('')}</div></div>
+        `<div class="field-group"><label>Trip length</label><div class="b-chips${flag('duration')}">${DURATIONS.map(d => `<button class="b-chip ${S.duration === d[0] ? 'sel' : ''}" onclick="BUILDER.set('duration','${d[0]}')">${d[1]}</button>`).join('')}</div>${askLine('duration')}</div>
+         <div class="field-group"><label>When do you want to travel?</label><div class="b-chips${flag('month')}">${MONTHS.map(m => `<button class="b-chip ${S.month === m ? 'sel' : ''}" onclick="BUILDER.set('month','${m}')">${m}</button>`).join('')}</div>${askLine('month')}</div>
          <div class="field-group"><label>Who's coming?</label><div class="steppers">
            <div class="stepper"><div class="lab"><b>Adults</b><span>13+ years</span></div><div class="ctrl"><button onclick="BUILDER.bump('adults',-1)">−</button><span class="val" id="vAdults">${S.adults}</span><button onclick="BUILDER.bump('adults',1)">+</button></div></div>
            <div class="stepper"><div class="lab"><b>Children</b><span>0-12 years</span></div><div class="ctrl"><button onclick="BUILDER.bump('children',-1)">−</button><span class="val" id="vChildren">${S.children}</span><button onclick="BUILDER.bump('children',1)">+</button></div></div>
@@ -233,12 +249,23 @@
 
   // ---- public API ----
   window.BUILDER = {
-    set(k, v) { S[k] = (S[k] === v && k !== 'base') ? '' : v; render(); },
+    set(k, v) { S[k] = (S[k] === v && k !== 'base') ? '' : v; invalid = invalid.filter(x => x !== k || !S[k]); render(); },
     toggleInterest(t) { const i = S.interests.indexOf(t); if (i >= 0) S.interests.splice(i, 1); else S.interests.push(t); render(); },
     bump(k, d) { S[k] = Math.max(k === 'adults' ? 1 : 0, Math.min(20, S[k] + d)); render(); },
-    next() { if (step < STEPS.length - 1) { step++; render(true); } },
-    back() { if (step > 0) { step--; render(true); } },
-    jumpToEnd() { step = STEPS.length - 1; render(true); }
+    next() {
+      const gaps = missing(step);
+      if (gaps.length) {
+        // stay on the step and say what is missing, rather than sending an empty request
+        invalid = gaps; render();
+        const first = document.querySelector('.needs-pick');
+        if (first) first.scrollIntoView({ block: 'center' });
+        return;
+      }
+      invalid = [];
+      if (step < STEPS.length - 1) { step++; render(true); }
+    },
+    back() { if (step > 0) { invalid = []; step--; render(true); } },
+    jumpToEnd() { invalid = []; step = STEPS.length - 1; render(true); }
   };
 
   render();
