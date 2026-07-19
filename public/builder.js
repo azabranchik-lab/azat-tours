@@ -1,7 +1,6 @@
 // Azat Tours Trip Builder, 5-step, visual, data-aware.
 (function () {
   const TOURS = window.TOURS || [];
-  const WEB3FORMS_KEY = "b8d4fb62-00dc-4e7f-ab17-3f8c8b5aeced";
   const LS = 'alatoo_builder';
 
   const blank = { style: '', duration: '', month: '', adults: 2, children: 0, interests: [], pace: '', comfort: '', base: '', name: '', email: '', whatsapp: '' };
@@ -66,7 +65,9 @@
 
   // ---- render ----
   const el = id => document.getElementById(id);
-  function render() { renderBar(); renderStep(); renderSummary(); save(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  // scrollTop only when the step changes: doing it on every render meant that picking an option
+  // yanked the page to the top mid-answer
+  function render(toTop) { renderBar(); renderStep(); renderSummary(); save(); if (toTop) window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
   function renderBar() {
     el('stepsBar').innerHTML = STEPS.map((_, i) => `<div class="sstep ${i < step ? 'done' : ''} ${i === step ? 'active' : ''}"></div>`).join('');
@@ -145,7 +146,7 @@
           </div>
           <div class="form-success" id="bSuccess">
             <div class="big"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div><h3>Trip request sent!</h3>
-            <p style="color:var(--ink-soft)">A local expert will email you within 24 hours with a tailored plan${S.name ? ', ' + S.name.split(' ')[0] : ''}.</p>
+            <p style="color:var(--ink-soft)" id="bSuccessLine">A local expert will email you within 24 hours with a tailored plan.</p>
             <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
               <a href="tours.html" class="btn btn-primary">Browse tours while you wait</a>
               <a href="plan-trip.html" class="btn btn-dark">Read the travel guide</a>
@@ -198,13 +199,23 @@
     f.addEventListener('submit', async e => {
       e.preventDefault(); sync();
       const btn = f.querySelector('button[type="submit"]'); const orig = btn.textContent;
-      if (!WEB3FORMS_KEY || WEB3FORMS_KEY.startsWith('YOUR-')) { f.style.display = 'none'; el('bSuccess').classList.add('show'); localStorage.removeItem(LS); return; }
       btn.disabled = true; btn.textContent = 'Sending…';
-      const payload = { name: S.name, email: S.email, whatsapp: S.whatsapp, tour: 'Trip Builder request', trip_summary: summaryText() };
+      const bot = f.querySelector('[name="botcheck"]');
+      const payload = {
+        name: S.name, email: S.email, whatsapp: S.whatsapp,
+        tour: 'Trip Builder request', trip_summary: summaryText(),
+        botcheck: bot && bot.checked ? 1 : ''   // the server drops leads that fill this
+      };
       try {
         const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         const j = await r.json();
-        if (j.ok) { f.style.display = 'none'; el('bSuccess').classList.add('show'); localStorage.removeItem(LS); }
+        if (j.ok) {
+          // name is read here, not when step 5 rendered, so it matches what was actually typed
+          const first = (S.name || '').trim().split(' ')[0];
+          const line = el('bSuccessLine');
+          if (line && first) line.textContent = `A local expert will email you within 24 hours with a tailored plan, ${first}.`;
+          f.style.display = 'none'; el('bSuccess').classList.add('show'); localStorage.removeItem(LS);
+        }
         else throw new Error();
       } catch (err) {
         btn.disabled = false; btn.textContent = orig;
@@ -225,9 +236,9 @@
     set(k, v) { S[k] = (S[k] === v && k !== 'base') ? '' : v; render(); },
     toggleInterest(t) { const i = S.interests.indexOf(t); if (i >= 0) S.interests.splice(i, 1); else S.interests.push(t); render(); },
     bump(k, d) { S[k] = Math.max(k === 'adults' ? 1 : 0, Math.min(20, S[k] + d)); render(); },
-    next() { if (step < STEPS.length - 1) { step++; render(); } },
-    back() { if (step > 0) { step--; render(); } },
-    jumpToEnd() { step = STEPS.length - 1; render(); }
+    next() { if (step < STEPS.length - 1) { step++; render(true); } },
+    back() { if (step > 0) { step--; render(true); } },
+    jumpToEnd() { step = STEPS.length - 1; render(true); }
   };
 
   render();

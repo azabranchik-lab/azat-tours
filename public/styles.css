@@ -821,7 +821,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .stepper .lab b{display:block}
 .stepper .lab span{font-size:.82rem;color:var(--ink-soft)}
 .stepper .ctrl{display:flex;align-items:center;gap:12px}
-.stepper button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);font-size:1.3rem;cursor:pointer;transition:.2s;line-height:1}
+.stepper button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);font-size:1.3rem;cursor:pointer;transition:.2s;line-height:1}
 .stepper button:hover{border-color:var(--lake);color:var(--lake)}
 .stepper .val{font-family:var(--font-display);font-size:1.4rem;min-width:24px;text-align:center}
 
@@ -1252,6 +1252,9 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .team-grid{grid-template-columns:1fr;gap:18px}
   .opt-cards,.interest-grid,.choice-cards{grid-template-columns:1fr}
   .opt-card .im{aspect-ratio:16/9}
+  /* iOS Safari zooms the page when a focused field is under 16px. Scoped to the builder on
+     purpose: the owner chose to leave the lead and contact forms as they are for now. */
+  .builder-wrap .field input,.builder-wrap .field select,.builder-wrap .field textarea{font-size:16px}
 }
 
 /* short phones (iPhone SE 667px): smaller photo band so headline + CTAs fit the first screen */
