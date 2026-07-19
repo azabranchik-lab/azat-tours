@@ -5,7 +5,15 @@
   const KEY = 'alatoo_chat_sid';
   let sid = localStorage.getItem(KEY);
   if (!sid) { sid = 'c' + Math.abs(Date.now() ^ (Math.floor(performance.now() * 1000))).toString(36) + Math.floor(performance.now()).toString(36); localStorage.setItem(KEY, sid); }
-  let askedEmail = false, lastCount = 0, pollTimer = null;
+  let askedEmail = false, lastCount = 0, pollTimer = null, pollRate = 0;
+
+  const POLL_OPEN = 4000, POLL_IDLE = 20000;
+  const mq = window.matchMedia('(max-width:680px)');
+  const isMobile = () => mq.matches;
+  const vvp = window.visualViewport;
+  let vvBound = false, histPushed = false, popPending = false;
+  const notices = [];   // client-side warnings that must survive a full re-render
+  const pending = [];   // messages that never reached the server, kept visible for the same reason
 
   // hide the standalone WhatsApp float so we have one clean entry point
   document.querySelectorAll('.float-wa').forEach(el => el.style.display = 'none');
@@ -47,6 +55,7 @@
 
   const body = panel.querySelector('#chatBody');
   const input = panel.querySelector('#chatText');
+  const emailInput = panel.querySelector('#chatEmailInput');
   const badge = fab.querySelector('.badge');
 
   function bubble(from, text) {
@@ -58,11 +67,120 @@
   function greet() {
     if (!body.childElementCount) bubble('owner', 'Hi! Ask us anything about tours, dates, visas or safety, a local expert will reply here. What can we help with?');
   }
-  function open() { dismissNudge(); panel.classList.add('open'); badge.style.display = 'none'; greet(); input.focus(); startPoll(); render(); }
-  function close() { panel.classList.remove('open'); }
+  // --- mobile sheet plumbing: scroll lock, keyboard-aware sizing, back gesture ---
+  // NOTE: `body` above is #chatBody, not document.body. Always write document.body explicitly.
+  // The page keeps its scroll position: nothing is taken out of flow, so there is nothing to
+  // save and restore. Touch dragging is stopped by touch-action and the touchmove barrier below.
+  function lockScroll() {
+    if (!isMobile()) return;
+    document.body.classList.add('chat-locked');
+  }
+  function unlockScroll() {
+    document.body.classList.remove('chat-locked');
+  }
+  // iOS anchors position:fixed to the layout viewport, which the keyboard doesn't shrink, so the
+  // composer ends up behind it and Safari scrolls the page to reveal it. Pinning the sheet to the
+  // visual viewport puts the composer in view already, leaving Safari nothing to scroll.
+  // the keyboard cannot be up unless one of the two fields holds focus; checking focus rather
+  // than size alone is what stops the sheet from chasing the keyboard's closing animation
+  const typing = () => document.activeElement === input || document.activeElement === emailInput;
+  function unpin() {
+    panel.classList.remove('vv');
+    panel.style.removeProperty('--chat-h');
+    panel.style.removeProperty('--chat-top');
+  }
+  function syncViewport() {
+    if (!vvp || !isMobile() || !panel.classList.contains('open')) return;
+    // pin to the visual viewport ONLY while the keyboard is really up. iOS fires viewport events
+    // for rubber-band scrolling, for the collapsing URL bar and all through the keyboard's
+    // dismiss animation; following those made the sheet drift and flicker.
+    if (!typing() || window.innerHeight - vvp.height <= 120) { unpin(); return; }
+    panel.style.setProperty('--chat-h', vvp.height + 'px');
+    panel.style.setProperty('--chat-top', vvp.offsetTop + 'px');
+    panel.classList.add('vv');
+    // only follow the newest message if the reader is already at the bottom, otherwise the
+    // keyboard opening would yank them away from the older reply they scrolled up to read
+    if (body.scrollHeight - body.scrollTop - body.clientHeight < 40) body.scrollTop = body.scrollHeight;
+  }
+  function bindViewport() {
+    if (!vvp || vvBound) return;
+    vvp.addEventListener('resize', syncViewport);   // resize only: 'scroll' is what made it drift
+    vvBound = true;
+  }
+  function unbindViewport() {
+    if (vvp && vvBound) {
+      vvp.removeEventListener('resize', syncViewport);
+      vvBound = false;
+    }
+    panel.classList.remove('vv');
+    panel.style.removeProperty('--chat-h');
+    panel.style.removeProperty('--chat-top');
+  }
+  function pushHistory() {
+    if (!isMobile() || histPushed) return;
+    try { history.pushState({ chat: 1 }, ''); histPushed = true; } catch (e) { /* no history access */ }
+  }
+
+  function open() {
+    if (panel.classList.contains('open')) return;   // reachable from both the fab and the nudge
+    dismissNudge();
+    lockScroll();
+    panel.classList.add('open');
+    badge.style.display = 'none';
+    greet();
+    bindViewport(); syncViewport();
+    pushHistory();
+    // owner's call: on the phone the keyboard must wait for a deliberate tap on the field,
+    // so the sheet opens showing the conversation. Desktop keeps the ready-to-type cursor.
+    if (!isMobile()) input.focus();
+    startPoll(POLL_OPEN); render();
+  }
+  function close(fromPop) {
+    if (!panel.classList.contains('open')) return;
+    panel.classList.remove('open');
+    input.blur();
+    unbindViewport();
+    unlockScroll();
+    startPoll(POLL_IDLE);
+    if (!fromPop && histPushed) { histPushed = false; popPending = true; history.back(); }
+  }
 
   fab.onclick = () => panel.classList.contains('open') ? close() : open();
-  panel.querySelector('.x').onclick = close;
+  panel.querySelector('.x').onclick = () => close();
+
+  window.addEventListener('popstate', () => {
+    // our own close() already popped this entry; without the guard a close-then-reopen
+    // within the same frame would let the late event slam the reopened sheet shut
+    if (popPending) { popPending = false; return; }
+    if (panel.classList.contains('open')) { histPushed = false; close(true); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && panel.classList.contains('open')) close();
+  });
+  // rotating into tablet width must not strand the lock
+  const onMq = e => { if (!e.matches && panel.classList.contains('open')) { unbindViewport(); unlockScroll(); } };
+  // Safari 13 and older only have the deprecated addListener; calling addEventListener there
+  // throws and would abort the rest of this file, leaving the widget without polling
+  if (mq.addEventListener) mq.addEventListener('change', onMq);
+  else if (mq.addListener) mq.addListener(onMq);
+  // Only the transcript may move. CSS overscroll/touch-action covers modern iOS; this is the
+  // barrier that holds on older Safari, where a drag started on the header or the composer
+  // still rubber-bands the page underneath.
+  panel.addEventListener('touchmove', e => {
+    if (!isMobile() || !panel.classList.contains('open')) return;
+    const inTranscript = body.contains(e.target) && body.scrollHeight > body.clientHeight;
+    if (!inTranscript) e.preventDefault();
+  }, { passive: false });
+  // iOS fires the visualViewport resize after focus, hence the nudges
+  [input, emailInput].forEach(el => {
+    el.addEventListener('focus', () => { setTimeout(syncViewport, 60); setTimeout(syncViewport, 350); });
+    // release the pin the moment focus leaves, before the keyboard starts animating away:
+    // waiting even 120ms let the sheet resize to a mid-animation height and visibly collapse
+    el.addEventListener('blur', unpin);
+  });
+  // focusout bubbles where blur does not, so this is the reliable net: after focus settles,
+  // if neither field holds it the keyboard is on its way out and the sheet goes full height
+  panel.addEventListener('focusout', () => setTimeout(() => { if (!typing()) unpin(); }, 0));
 
   // nudge behaviour: appear once after a short delay; opening chat or dismissing remembers it
   function showNudge() { if (localStorage.getItem(NUDGE_KEY)) return; nudge.classList.add('show'); fab.classList.add('nudging'); }
@@ -106,6 +224,10 @@
       body.innerHTML = '';
       greet();
       msgs.forEach(m => bubble(m.from === 'owner' ? 'owner' : 'user', m.text));
+      // undelivered messages and their warning live only on the client, so the wipe above
+      // would erase them: the visitor would read "it didn't send" with no message in sight
+      pending.forEach(t => bubble('user', t));
+      notices.forEach(t => bubble('sys', t));
       // unread badge when closed
       if (!panel.classList.contains('open') && msgs.length > lastCount) {
         const newOwner = msgs.slice(lastCount).filter(m => m.from === 'owner').length;
@@ -114,13 +236,41 @@
       lastCount = msgs.length;
     } catch (e) { /* server offline: stay quiet */ }
   }
-  function startPoll() { if (!pollTimer) pollTimer = setInterval(render, 4000); }
+  // 4s while the chat is open, 20s in the background so the badge still arrives
+  function startPoll(ms) {
+    const want = ms || (panel.classList.contains('open') ? POLL_OPEN : POLL_IDLE);
+    if (pollTimer && pollRate === want) return;
+    clearInterval(pollTimer); pollRate = want;
+    pollTimer = setInterval(() => { if (!document.hidden) render(); }, want);
+  }
+  // catch up on return to the tab, but only for visitors who actually have a conversation
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && (lastCount > 0 || panel.classList.contains('open'))) render();
+  });
+
+  // which page the visitor is asking from, so the owner has context in Telegram
+  function pageCtx() {
+    const q = new URLSearchParams(location.search);
+    return { page: location.pathname + location.search, pageTitle: document.title, slug: q.get('slug') || '' };
+  }
+  const FAIL = 'That message didn’t reach us. Please try again, or message us on WhatsApp.';
+  const BUSY = 'You’ve sent several messages very quickly. Give it a few minutes, or message us on WhatsApp and we’ll pick it up there.';
+  function notice(t) { if (!notices.includes(t)) { notices.push(t); bubble('sys', t); } }
 
   async function send(text) {
     bubble('user', text);
+    let ok = false;
     try {
-      await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid, text, email: localStorage.getItem('alatoo_chat_email') || '' }) });
-    } catch (e) { bubble('sys', 'Couldn’t send, please try WhatsApp instead.'); }
+      const r = await fetch('/api/chat', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ sid, text, email: localStorage.getItem('alatoo_chat_email') || '' }, pageCtx()))
+      });
+      let j = {}; try { j = await r.json(); } catch (e) { /* empty body */ }
+      ok = r.ok && j.ok !== false;
+      if (!ok) notice(r.status === 429 ? BUSY : FAIL);
+    } catch (e) { notice(FAIL); }
+    if (!ok) { pending.push(text); return; }
+    notices.length = 0; pending.length = 0;
     if (!askedEmail && !localStorage.getItem('alatoo_chat_email')) {
       askedEmail = true;
       panel.querySelector('#chatEmail').style.display = 'flex';
@@ -134,11 +284,11 @@
 
   panel.querySelector('#chatEmailSave').onclick = () => {
     const v = panel.querySelector('#chatEmailInput').value.trim();
-    if (v) { localStorage.setItem('alatoo_chat_email', v); fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid, text: '(left email: ' + v + ')', email: v }) }); }
+    if (v) { localStorage.setItem('alatoo_chat_email', v); fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ sid, text: '(left email: ' + v + ')', email: v }, pageCtx())) }); }
     panel.querySelector('#chatEmail').style.display = 'none';
-    bubble('sys', v ? 'Thanks! We’ll reply here and by email.' : '');
+    if (v) bubble('sys', 'Thanks! We’ll reply here and by email.');
   };
 
   // light background polling so badge updates even before first open
-  startPoll();
+  startPoll(POLL_IDLE);
 })();
