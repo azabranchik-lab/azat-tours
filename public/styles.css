@@ -93,7 +93,6 @@ header.scrolled,header.solid{background:var(--bar-bg);backdrop-filter:blur(12px)
 .nav{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:.6em;font-family:var(--font-logo);font-weight:600;font-size:1.5rem;letter-spacing:.005em;color:#fff;transition:color .35s ease}
 header.scrolled .logo,header.solid .logo{color:var(--ink)}
-.logo .mark{width:34px;height:34px;flex:none}
 .logo small{display:block;font-family:var(--font-body);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;opacity:.8;margin-top:-3px}
 .nav-links{display:flex;align-items:center;gap:30px}
 .nav-links a{font-size:.92rem;font-weight:500;transition:color .25s ease;position:relative}
@@ -768,12 +767,8 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 /* ============================================================
    TRIP BUILDER
    ============================================================ */
-.builder-top{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--bar-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.builder-top .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
-.builder-top .logo{color:var(--ink)}
-.builder-top .exit{font-size:.9rem;color:var(--ink-soft);font-weight:600}
-.builder-top .exit:hover{color:var(--ink)}
-
+/* The builder used to carry its own top bar (mountain logo, a theme toggle, "Exit to site").
+   It now uses the shared header from nav.js like every other page, so those rules are gone. */
 .builder-wrap{max-width:1080px;margin:0 auto;padding:120px 24px 60px}
 .steps-bar{display:flex;gap:8px;margin-bottom:10px}
 .steps-bar .sstep{flex:1;height:6px;border-radius:999px;background:var(--paper-2);overflow:hidden}
@@ -850,8 +845,41 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 
 /* nav */
 .builder-nav{display:flex;justify-content:space-between;gap:14px;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+/* .btn-ghost is white-on-transparent for dark heroes; the builder sits on paper. This used to be
+   an inline style on the button, where it beat every class rule (and shipped twice, so the
+   disabled state never applied). */
+.builder-nav .btn-ghost{border-color:var(--line);color:var(--ink)}
+.builder-nav .btn-ghost:hover{background:var(--surface-2)}
+.builder-nav .btn-ghost[disabled]{opacity:.4;cursor:default}
+.builder-nav .btn-ghost[disabled]:hover{background:transparent}
 .builder-nav .skip{align-self:center;font-size:.9rem;color:var(--ink-soft);font-weight:600;cursor:pointer;background:none;border:0}
 .builder-nav .skip:hover{color:var(--ink)}
+
+/* ---- step 2: Airbnb-style dates (tabs, month grid, flexible row) ---- */
+/* .msort-seg itself is defined inside the mobile media query (it was built for the catalog
+   toolbar), so the tab bar needs its own base rules or it renders unstyled on desktop */
+.when-seg{display:flex;background:var(--paper-2);border-radius:999px;padding:4px;gap:4px;margin:0 0 22px;max-width:340px}
+.when-seg button{flex:1;min-height:44px;border:0;background:none;border-radius:999px;font-family:inherit;font-size:.92rem;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:background .22s,color .22s}
+.when-seg button.sel{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(10,36,30,.12)}
+.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.month-chip{flex-direction:column;line-height:1.15;padding:.55em .4em;text-align:center;justify-content:center}
+.month-chip small{display:block;font-size:.68rem;opacity:.6;font-weight:400;margin-top:1px}
+.month-chip.sel small{opacity:.75}
+/* the flexible row is a real answer, not a footnote: same card language as the pace choices */
+.flex-row{display:grid;grid-template-columns:34px 1fr;column-gap:12px;align-items:center;width:100%;margin-top:10px;padding:12px 14px;min-height:60px}
+.flex-row .ic{grid-row:1/span 2;margin:0;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:rgba(15,122,108,.1)}
+.flex-row .ic .gico{width:1.2rem;height:1.2rem}
+.flex-row b{grid-column:2;align-self:end;font-size:.98rem;margin-bottom:1px}
+.flex-row > span:last-child{grid-column:2;align-self:start;font-size:.84rem;line-height:1.3;color:var(--ink-soft)}
+.date-row{display:flex;gap:12px}
+.date-row .field{flex:1}
+.date-row .field label{font-size:.82rem;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.date-note{margin-top:10px;font-size:.88rem;color:var(--ink-soft)}
+.nights-row .val{width:74px;border:0;background:none;font-family:var(--font-display);font-size:1.4rem;text-align:center;color:var(--ink);padding:0}
+.nights-row .val:focus{outline:2px solid var(--lake);outline-offset:3px;border-radius:6px}
+
+/* the review form: was an inline style, which no class rule could override */
+.builder-form{box-shadow:var(--shadow);max-width:none}
 
 /* matched tours on review */
 .match-list{display:flex;flex-direction:column;gap:14px;margin:6px 0 26px}
@@ -1128,7 +1156,6 @@ body[data-page="plan"] .plan-faq .faq-a .season-legend{margin-bottom:4px}
 .nav-links .theme-toggle{color:#fff}
 header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{color:var(--ink)}
 .mobile-menu .top .theme-toggle{color:#fff}
-.builder-top .theme-toggle{color:var(--ink)}
 
 /* readability fixes in dark */
 .chat-input input,.chat-email input{background:var(--surface-2);color:var(--ink)}
@@ -1261,6 +1288,135 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   /* iOS Safari zooms the page when a focused field is under 16px. Scoped to the builder on
      purpose: the owner chose to leave the lead and contact forms as they are for now. */
   .builder-wrap .field input,.builder-wrap .field select,.builder-wrap .field textarea{font-size:16px}
+}
+
+/* ============================================================
+   TRIP BUILDER — mobile step screen (этап 8, owner-approved mockup: variant A + A2)
+   Must stay AFTER the block above, which forces one-column grids on .opt-cards/.interest-grid.
+   Everything here is builder-scoped; .form-card and .tick are shared atoms, so they are
+   always prefixed. Desktop is untouched.
+   ============================================================ */
+@media(max-width:680px){
+  /* --- shell: 18px gutter like the rest of the site, clear of the shared 87px header,
+     plus room for the pinned action bar --- */
+  .builder-wrap{padding:83px 18px calc(104px + env(safe-area-inset-bottom,0px))}
+  #stepArea{scroll-margin-top:108px}
+
+  /* --- progress: sticky right under the shared header, three states that differ by width
+     AND height, not colour alone --- */
+  .steps-bar{position:sticky;top:71px;z-index:55;gap:6px;margin:0 -18px 14px;padding:12px 18px;background:var(--bar-bg);backdrop-filter:blur(12px)}
+  .steps-bar .sstep{height:4px;background:var(--paper-2)}
+  .steps-bar .sstep.done{background:var(--lake-fill)}
+  .steps-bar .sstep.active{flex:1.7;height:6px;margin:-1px 0;background:linear-gradient(90deg,var(--lake),var(--lake-bright));box-shadow:0 0 0 3px rgba(15,122,108,.14)}
+
+  /* --- question block --- */
+  .step-label{font-size:.72rem;margin-bottom:6px}
+  .step-h{font-size:1.45rem;line-height:1.18;margin-bottom:6px}
+  .step-sub{font-size:.92rem;line-height:1.45;margin-bottom:18px}
+  .field-group{margin-bottom:22px}
+  .field-group > label{font-size:.95rem;margin-bottom:10px}
+
+  /* --- step 1: styles as list rows (the shape already shipped for the mobile catalog card) --- */
+  .opt-cards{grid-template-columns:1fr;gap:10px}
+  .opt-card{flex-direction:row;align-items:center;gap:12px;padding:8px;border:0;border-radius:16px;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line);transition:box-shadow .22s}
+  .opt-card:hover{transform:none}
+  .opt-card.sel{box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 2px var(--lake),0 10px 24px -16px rgba(15,122,108,.55)}
+  /* 6 rows x 70px fit one screen, so the list needs no scrolling at all and the
+     scroll-versus-tap problem disappears instead of being softened. Material puts a
+     two-line list item at 56-72px; 70px is still 1.6x the 44px minimum tap target. */
+  .opt-card .im{width:54px;height:54px;flex:none;aspect-ratio:auto;border-radius:11px}
+  .opt-card .im::after{display:none}
+  .opt-card .tx{padding:0;min-width:0}
+  .opt-card .tx b{font-size:.98rem;margin-bottom:0;line-height:1.2}
+  .opt-card .tx span{display:block;font-size:.82rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* single-select reads as a radio dot on the left, not a checkbox tick on the right, and the
+     selected row also gets a heavier title, so state never rests on colour alone */
+  .opt-card .tick{position:static;order:-1;margin:0;flex:none;width:22px;height:22px;border:0;background:none;box-shadow:inset 0 0 0 2px var(--line);color:transparent}
+  .opt-card.sel .tick{box-shadow:inset 0 0 0 7px var(--lake)}
+  .opt-card.sel .tick .gico{display:none}
+  .opt-card.sel .tx b{font-weight:700}
+
+  /* --- step 2: chips on the Soft Alpine pill recipe + full-width steppers --- */
+  .b-chips{gap:8px}
+  .b-chip{border:0;min-height:44px;display:inline-flex;align-items:center;padding:.6em 1.1em;font-size:.92rem;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line);transition:box-shadow .22s,background .22s,color .22s}
+  .b-chip.sel{background:var(--lake-fill);color:#fff;box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--lake)}
+  .steppers{flex-direction:column;gap:10px}
+  .stepper{justify-content:space-between;gap:12px;min-height:62px;padding:8px 14px;border-radius:16px;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line)}
+  .stepper button{border:0;background:var(--surface);box-shadow:0 1px 2px rgba(12,40,36,.06),0 0 0 1px var(--line)}
+
+  /* validation ring has to survive border:0, otherwise the step check goes silent on mobile */
+  .needs-pick .opt-card,.needs-pick .b-chip{box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1.5px var(--clay)}
+
+  /* --- step 2 dates on mobile --- */
+  .when-seg{margin-bottom:18px}
+  .when-seg button{min-height:44px;font-size:.9rem}
+  .month-grid{gap:7px}
+  .month-chip{min-height:52px;padding:.45em .3em;font-size:.9rem}
+  .month-chip small{font-size:.62rem}
+  .flex-row{min-height:58px;padding:11px 13px}
+  .date-row{gap:10px}
+  .nights-row .val{width:64px;font-size:1.3rem}
+
+  /* --- step 3: interests two-up (this is what the one-column rule above cost: 2385px) --- */
+  .interest-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .int-card{aspect-ratio:4/3;border:0;border-radius:14px;box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line)}
+  .int-card.sel{box-shadow:0 0 0 2px var(--lake),0 10px 24px -16px rgba(15,122,108,.55)}
+  .int-card .cap{padding:10px;font-size:.84rem;line-height:1.2}
+  .int-card .tick{width:24px;height:24px}
+
+  /* --- step 4: pace & comfort as rows, in the .fs-sortrow rhythm --- */
+  .choice-cards{grid-template-columns:1fr;gap:8px}
+  .choice{display:grid;grid-template-columns:36px 1fr;column-gap:12px;align-items:center;min-height:64px;padding:12px 14px;border:0;border-radius:16px;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line)}
+  .choice.sel{background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 2px var(--lake)}
+  .choice .ic{grid-row:1/span 2;margin:0;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:rgba(15,122,108,.10)}
+  .choice .ic .gico{width:1.25rem;height:1.25rem}
+  .choice b{grid-column:2;align-self:end;font-size:.98rem;margin-bottom:1px}
+  .choice > span:last-child{grid-column:2;align-self:start;font-size:.84rem;line-height:1.3}
+
+  /* --- step 5: matches + form on the aurora panel recipe --- */
+  .match{border:0;gap:12px;padding:10px;border-radius:16px;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line)}
+  .match.sel{background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 2px var(--lake)}
+  .match img{width:76px;height:60px;border-radius:12px}
+  .match .mb b{font-size:.96rem;line-height:1.25}
+  .match .mb span{font-size:.8rem}
+  .match .tick{border:0;box-shadow:inset 0 0 0 2px var(--line)}
+  .match.sel .tick{box-shadow:none}
+  .builder-wrap .form-card{border-radius:20px;padding:20px 16px;background:var(--aurora),var(--grad-surface)}
+
+  /* --- summary becomes a receipt that grows: empty rows are hidden --- */
+  .builder-grid > aside{margin-top:22px}
+  .summary-card{border:0;border-radius:20px;padding:18px;background:var(--aurora),var(--grad-surface);box-shadow:var(--soft-shadow)}
+  .summary-card h3{font-size:1.02rem}
+  .summary-card .muted{margin-bottom:10px}
+  .sum-row{border-top:0;background-image:var(--hairline);background-repeat:no-repeat;background-position:top;background-size:100% 1px;padding:9px 0;font-size:.88rem}
+  .sum-row:has(.v.empty){display:none}
+  .summary-card .btn-primary{min-height:44px;background:none;color:var(--lake);box-shadow:inset 0 0 0 1px var(--line)}
+
+  /* --- the SAME .builder-nav, moved into the thumb zone --- */
+  .builder-nav{position:fixed;left:0;right:0;bottom:0;z-index:65;margin:0;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));border-top:0;flex-wrap:wrap;align-items:center;gap:10px;background:radial-gradient(120% 140% at 20% 0%,rgba(15,122,108,.14),transparent 60%),radial-gradient(120% 140% at 100% 0%,rgba(232,166,61,.10),transparent 60%),var(--bar-bg);backdrop-filter:blur(14px);box-shadow:0 -10px 30px -18px rgba(10,36,30,.45)}
+  .builder-nav .btn-ghost{flex:none;min-height:54px;padding:0 18px;border:0;background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line)}
+  .builder-nav .btn-ghost[disabled]{display:none}   /* step 1 has no Back to offer: Continue takes the row */
+  .builder-nav .btn-primary{flex:1;justify-content:center}
+  .builder-nav .skip{order:-1;width:100%;min-height:40px;text-align:center}
+  /* The bar is fixed, so whatever ends the page sits under it. Since nav.js appends the shared
+     footer after the flow, the clearance belongs there rather than on .builder-wrap, and it has to
+     cover the tallest state of the bar (the Skip row adds ~50px). */
+  body[data-page="builder"] footer{padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))}
+  /* a soft fade above the bar reads as "there is more below" instead of a hard cut */
+  .builder-nav::before{content:'';position:absolute;left:0;right:0;top:-26px;height:26px;pointer-events:none;background:linear-gradient(to top,var(--paper),transparent)}
+  /* last step: unpin, so the bar never competes with the form's own submit */
+  body[data-step="3"] .builder-nav{position:static;background:none;box-shadow:none;backdrop-filter:none;padding:0;margin-top:22px}
+  body[data-step="3"] .builder-wrap{padding-bottom:36px}
+
+  /* --- floating buttons: chat clears the bar, WhatsApp steps aside (owner: A2).
+     chat.js appends both as body siblings after main.builder-wrap, so no HTML change is needed.
+     WhatsApp stays reachable inside the chat and as the link on the last step. --- */
+  .builder-wrap ~ .chat-fab{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  .builder-wrap ~ .float-wa{display:none}
+  .builder-wrap ~ .chat-nudge{bottom:calc(156px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:680px) and (prefers-reduced-motion:reduce){
+  .opt-card,.int-card,.choice,.b-chip,.builder-nav .btn{transition:none}
 }
 
 /* short phones (iPhone SE 667px): smaller photo band so headline + CTAs fit the first screen */

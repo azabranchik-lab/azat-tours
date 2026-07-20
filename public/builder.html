@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- viewport-fit=cover so env(safe-area-inset-bottom) is a real number on notched iPhones;
+     without it the sticky action bar's safe-area padding silently resolves to 0 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <title>Build Your Trip, Design Your Own Kyrgyzstan Adventure | Azat Tours</title>
-<meta name="description" content="Design your perfect Kyrgyzstan trip in 5 easy steps. Pick your style, dates and experiences, we'll match you with tours and send a tailored plan within 24 hours. Free, no prepayment." />
+<meta name="description" content="Design your perfect Kyrgyzstan trip in 4 easy steps. Tell us your style, dates and how you like to travel, we'll match you with tours and send a tailored plan within 24 hours. Free, no prepayment." />
 <meta name="robots" content="noindex" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,23 +15,9 @@
 <link rel="stylesheet" href="styles.css" />
 <script src="theme.js"></script>
 </head>
-<body>
+<body data-page="builder">
 
-<!-- top bar -->
-<header class="builder-top">
-  <div class="wrap">
-    <a href="index.html" class="logo">
-      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path d="M2 32 L13 12 L20 24 L26 14 L38 32 Z" fill="#19A793"/>
-        <path d="M13 12 L20 24 L16 24 Z" fill="#fff" opacity=".75"/>
-        <path d="M26 14 L31 22 L28 22 Z" fill="#fff" opacity=".55"/>
-      </svg>
-      <span>Azat Tours<small>Trip Builder</small></span>
-    </a>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Light / dark"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg></button>
-    <a href="index.html" class="exit">✕ Exit to site</a>
-  </div>
-</header>
+<!-- header, mobile menu and footer are injected by nav.js, same as every other page -->
 
 <main class="builder-wrap">
   <div class="steps-bar" id="stepsBar"></div>
@@ -39,12 +27,10 @@
   </div>
 </main>
 
-<!-- floating whatsapp -->
-<a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I'd%20like%20help%20building%20my%20Kyrgyzstan%20trip." target="_blank" rel="noopener" class="float-wa" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg>
-</a>
-
+<script src="nav.js"></script>
+<script src="script.js"></script>
 <script src="tours-data.js"></script>
+<script src="sights-data.js"></script>
 <script src="builder.js"></script>
 <script src="chat.js"></script>
 </body>

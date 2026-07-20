@@ -24,6 +24,7 @@
     reviews:    { active: '',        cta: ['Plan your trip', 'plan-trip.html'], solid: true },
     plan:       { active: 'plan',    cta: ['Build your trip', 'builder.html'], solid: true },  /* no self-link: plan page's CTA drives to the builder */
     tour:       { active: 'tours',   cta: ['Request this tour', '#book'],     solid: true },
+    builder:    { active: '',        cta: null,                              solid: true },  /* the step flow has its own sticky Continue; a second primary here would compete */
   };
   var cfg = CFG[page] || CFG.tours;
 
@@ -37,11 +38,12 @@
   var LOGO = '<a href="index.html" class="logo">' +
     '<span>Azat Tours<small>Kyrgyzstan</small></span></a>';
 
+  var headerCta = cfg.cta ? '<a href="' + cfg.cta[1] + '" class="btn btn-primary nav-cta">' + cfg.cta[0] + '</a>' : '';
+
   var header =
     '<header id="header"' + (cfg.solid ? ' class="solid"' : '') + '>' +
       '<div class="wrap nav">' + LOGO +
-        '<div class="nav-links">' + navLinks(false) + THEME_BTN +
-          '<a href="' + cfg.cta[1] + '" class="btn btn-primary nav-cta">' + cfg.cta[0] + '</a>' +
+        '<div class="nav-links">' + navLinks(false) + THEME_BTN + headerCta +
         '</div>' +
         '<button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>' +
       '</div>' +
@@ -52,7 +54,7 @@
       '<div class="top"><span class="logo" style="color:#fff">Azat Tours</span>' + THEME_BTN +
         '<button class="close" id="closeMenu" aria-label="Close menu">&times;</button></div>' +
       '<nav>' + navLinks(true) + '</nav>' +
-      '<a href="' + cfg.cta[1] + '" class="btn btn-primary" data-close>' + cfg.cta[0] + '</a>' +
+      (cfg.cta ? '<a href="' + cfg.cta[1] + '" class="btn btn-primary" data-close>' + cfg.cta[0] + '</a>' : '') +
     '</div>';
 
   var footer =
