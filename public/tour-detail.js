@@ -84,7 +84,7 @@
     winter: ["Thermal base layers, top and bottom, to stay warm in deep cold", "An insulated hat and warm, waterproof gloves", "Heavy socks and warm, waterproof boots for snow"]
   };
   const BEFORE = [
-    "Visa: many nationalities can enter Kyrgyzstan visa-free for up to 60 days, but please check the current rules for your own passport before you travel",
+    "Visa: most Western and East-Asian passports enter visa-free for up to 30 days within any 60-day period, a rule that changed at the end of 2025, so check your own nationality on evisa.e-gov.kg before you travel",
     "Money: the local currency is the Kyrgyz som; carry cash for villages and camps, as card payments mostly work only in towns and cities",
     "ATMs and exchange: withdraw or change money in larger towns; rates at banks and exchange offices beat the airport",
     "Connectivity: mobile data is decent in towns, but there is usually no signal at high mountain yurt camps, so let people know you may be offline",

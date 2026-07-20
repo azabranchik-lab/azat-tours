@@ -123,13 +123,13 @@ When you sleep in a yurt by Song-Köl or eat a home-cooked dinner in a village, 
   {
     id: 1005, slug: 'easy-from-abroad', category: CAT, date: '2026-04-20',
     title: 'Easy from abroad: visas, arrival and logistics',
-    excerpt: 'Visa-free for 60+ nationalities. We help with airport pickup, SIM cards, logistics and everything in between.',
+    excerpt: 'Visa-free for most Western and East-Asian passports. We help with airport pickup, SIM cards, logistics and everything in between.',
     author: 'Azat, founder', authorImg: AV.azat, cover: COVER.abroad,
     body: `Kyrgyzstan is far easier to visit than most people expect. Half the worry of a trip is the getting-there part — so we take that off your plate.
 
 ## Visas: simpler than you think
 
-Citizens of **60+ countries** can enter Kyrgyzstan visa-free, many for up to 60 days. Tell us your passport and we'll confirm exactly what applies to you.
+Travellers from the EU, UK, USA, Canada, Australia, New Zealand, Japan and South Korea enter visa-free for **up to 30 days within any 60-day period**. This changed at the end of 2025, and plenty of older guides online still say 60 days, so check your own nationality on evisa.e-gov.kg. Staying longer? The online Sapar e-visa covers up to 90 days. Tell us your passport and we'll confirm exactly what applies to you.
 
 ## We meet you at the airport
 
@@ -137,7 +137,7 @@ Citizens of **60+ countries** can enter Kyrgyzstan visa-free, many for up to 60 
 - A local SIM card so you're connected from the start
 - Help with city logistics, money and your first night
 
-[tip:Just land|Most travellers arrive into Bishkek (Manas, FRU). Send us your flight and someone will be waiting with your name.]
+[tip:Just land|Most travellers arrive into Bishkek (Manas, code BSZ since August 2025, formerly FRU). Send us your flight and someone will be waiting with your name.]
 
 ## Everything in between
 
