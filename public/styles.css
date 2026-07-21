@@ -579,7 +579,6 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .cmethod b{display:block;font-size:1rem}
 .cmethod span{font-size:.88rem;color:var(--ink-soft)}
 .cmethod.wa .ic{background:rgba(37,211,102,.15)}
-#contactMap{height:300px;border-radius:18px;overflow:hidden;border:1px solid var(--line);margin-top:8px;z-index:1}
 .hours{display:flex;justify-content:space-between;font-size:.92rem;padding:8px 0;border-bottom:1px solid var(--line);max-width:340px}
 .hours:last-child{border-bottom:0}
 .hours span:first-child{color:var(--ink-soft)}
