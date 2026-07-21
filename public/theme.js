@@ -10,5 +10,8 @@
     var next = cur === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     try { localStorage.setItem('theme', next); } catch (e) {}
+    // On mobile the toggle lives inside the open burger menu — close it after switching.
+    var mm = document.getElementById('mobileMenu');
+    if (mm) mm.classList.remove('open');
   };
 })();

@@ -62,7 +62,6 @@
       '<div class="foot-brand">' +
         '<div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>' +
         '<p class="blurb">Azat means &ldquo;free&rdquo;. Small-group adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
-        '<div class="socials"><a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" aria-label="Instagram">◎</a></div>' +
       '</div>' +
       '<div class="foot-col"><h4>Explore</h4><ul>' +
         '<li><a href="about.html">About us</a></li>' +
