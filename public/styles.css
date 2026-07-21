@@ -107,17 +107,17 @@ header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
-.hero-bg{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
 .hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.1s ease}
 .hero-bg img.on{opacity:1;animation:slowzoom 20s ease-out forwards}
 @keyframes slowzoom{from{transform:scale(1.12)}to{transform:scale(1)}}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,30,26,.55) 0%,rgba(15,30,26,.15) 35%,rgba(13,40,36,.55) 78%,rgba(11,30,27,.9) 100%)}
-.hero-dots{position:absolute;left:32px;bottom:20px;z-index:1;display:flex;gap:6px}
+.hero-dots{position:absolute;left:32px;bottom:20px;z-index:2;display:flex;gap:6px}
 .hero-dots i{width:26px;height:3px;border-radius:99px;background:rgba(255,255,255,.4);transition:background .5s;cursor:pointer;position:relative}
 .hero-dots i::before{content:"";position:absolute;inset:-16px -2px}
 .hero-dots i:focus-visible{outline:2px solid #fff;outline-offset:4px}
 .hero-dots i.on{background:#fff}
-.hero-inner{padding-bottom:84px;padding-top:140px;width:100%}
+.hero-inner{padding-bottom:84px;padding-top:140px;width:100%;position:relative;z-index:1}
 .hero h1{font-size:clamp(2.7rem,7vw,5.6rem);font-weight:800;max-width:15ch;text-shadow:0 2px 30px rgba(0,0,0,.3)}
 .hero h1 em{font-style:italic;color:#fbe6c4}
 .hero p.lead{font-size:clamp(1.05rem,1.6vw,1.3rem);max-width:46ch;margin-top:22px;color:rgba(255,255,255,.92)}

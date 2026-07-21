@@ -188,6 +188,7 @@ if (leadForm) {
     d.setAttribute('aria-label', 'Show photo ' + (k + 1));
     function pick() { start(); show(k); play(); }
     d.addEventListener('click', pick);
+    d.addEventListener('mouseenter', pick);   // desktop: hover a dot to switch photo
     d.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
     });
