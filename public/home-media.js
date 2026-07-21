@@ -29,8 +29,18 @@
     if (exps[i]) { var im = card.querySelector('img'); if (im) im.src = exps[i]; }
   });
 
-  // ---- Hero background ----
-  if (S.hero) { var hero = document.querySelector('.hero-bg img'); if (hero) hero.src = S.hero; }
+  // ---- Hero background (first slide only; the rest are swapped by script.js) ----
+  // The slide carries a srcset, and srcset always beats src — so setting src
+  // alone did nothing and the bot reported "Hero photo updated" over an
+  // unchanged page. Dropping the srcset fixes that, but only do it when the
+  // photo actually differs: a bot upload is a single file with no other sizes,
+  // while the shipped default has an 800/1400/2000 set that phones need.
+  var hero = document.querySelector('.hero-bg img');
+  if (S.hero && hero && hero.getAttribute('src') !== S.hero) {
+    hero.removeAttribute('srcset');
+    hero.removeAttribute('sizes');
+    hero.src = S.hero;
+  }
 
   // ---- Builder teaser (4 shots) ----
   var builder = Array.isArray(S.builder) ? S.builder : [];

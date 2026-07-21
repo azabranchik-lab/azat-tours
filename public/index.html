@@ -10,7 +10,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Azat Tours, Tours in Kyrgyzstan" />
 <meta property="og:description" content="Trek the Tian Shan, sleep in yurts, ride with nomads. Local experts, free quote, no prepayment." />
-<meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80" />
+<meta property="og:image" content="https://azattours.com/img/hero/hero-1-reflection-1400.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 <script type="application/ld+json">
 {
@@ -42,7 +42,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <link rel="preconnect" href="https://images.unsplash.com" />
-<link rel="preload" as="image" imagesrcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80 800w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80 1400w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80 2000w" imagesizes="100vw" />
+<link rel="preload" as="image" imagesrcset="img/hero/hero-1-reflection-800.jpg 800w, img/hero/hero-1-reflection-1400.jpg 1400w, img/hero/hero-1-reflection-2000.jpg 2000w" imagesizes="100vw" />
 <script src="theme.js"></script>
 </head>
 <body data-page="home">
@@ -52,12 +52,20 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-bg">
-    <img class="on" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80"
-         srcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80 800w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1400&q=80 1400w, https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80 2000w"
-         sizes="100vw" fetchpriority="high" alt="Mountain lake in the Tian Shan, Kyrgyzstan" />
-    <img data-src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80" alt="" />
-    <img data-src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1400&q=80" alt="" />
-    <div class="hero-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+    <!-- One photo set for every device; srcset lets the browser pick the width.
+         First slide ships eager (LCP), the rest lazy-load after window.load. -->
+    <img class="on" src="img/hero/hero-1-reflection-1400.jpg"
+         srcset="img/hero/hero-1-reflection-800.jpg 800w, img/hero/hero-1-reflection-1400.jpg 1400w, img/hero/hero-1-reflection-2000.jpg 2000w"
+         sizes="100vw" fetchpriority="high" alt="The Tian Shan mountains of Kyrgyzstan" />
+    <img data-src="img/hero/hero-2-lake-view-1400.jpg"
+         data-srcset="img/hero/hero-2-lake-view-800.jpg 800w, img/hero/hero-2-lake-view-1400.jpg 1400w, img/hero/hero-2-lake-view-2000.jpg 2000w" sizes="100vw" alt="" />
+    <img data-src="img/hero/hero-3-ridge-1400.jpg"
+         data-srcset="img/hero/hero-3-ridge-800.jpg 800w, img/hero/hero-3-ridge-1400.jpg 1400w, img/hero/hero-3-ridge-2000.jpg 2000w" sizes="100vw" alt="" />
+    <img data-src="img/hero/hero-4-yurts-meadow-1400.jpg"
+         data-srcset="img/hero/hero-4-yurts-meadow-800.jpg 800w, img/hero/hero-4-yurts-meadow-1400.jpg 1400w, img/hero/hero-4-yurts-meadow-2000.jpg 2000w" sizes="100vw" alt="" />
+    <img data-src="img/hero/hero-5-yurts-lake-1400.jpg"
+         data-srcset="img/hero/hero-5-yurts-lake-800.jpg 800w, img/hero/hero-5-yurts-lake-1400.jpg 1400w, img/hero/hero-5-yurts-lake-2000.jpg 2000w" sizes="100vw" alt="" />
+    <div class="hero-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
   </div>
   <div class="wrap hero-inner">
     <h1 class="reveal" data-delay="1">Trek the Tian&nbsp;Shan.<br/>Sleep in <em>yurts.</em><br/>Ride with nomads.</h1>
@@ -146,9 +154,9 @@
       <p>The lakes, valleys and Silk-Road sites our trips are built around, every tour can be tailored to include them.</p>
     </div>
     <div class="exp-grid">
-      <a href="tours.html" class="exp-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=800&q=80" alt="Song-Kol Lake" /><div><h3>Song-Kol Lake</h3><span>Naryn region · alpine pastures &amp; yurts</span></div></a>
-      <a href="tours.html" class="exp-card reveal" data-delay="1"><img loading="lazy" src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80" alt="Kel-Suu Lake" /><div><h3>Kel-Suu Lake</h3><span>At-Bashy · hidden canyon lake</span></div></a>
-      <a href="tours.html" class="exp-card reveal" data-delay="2"><img loading="lazy" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt="Lake Issyk-Kul" /><div><h3>Lake Issyk-Kul</h3><span>The pearl of the Tian Shan</span></div></a>
+      <a href="tours.html" class="exp-card reveal"><img loading="lazy" src="img/places/song-kol.jpg" alt="Felt yurts at sunset on the shore of Song-Kol Lake" /><div><h3>Song-Kol Lake</h3><span>Naryn region · alpine pastures &amp; yurts</span></div></a>
+      <a href="tours.html" class="exp-card reveal" data-delay="1"><img loading="lazy" src="img/places/kel-suu.jpg" alt="A boat on the turquoise water of Kel-Suu between sheer canyon walls" /><div><h3>Kel-Suu Lake</h3><span>At-Bashy · hidden canyon lake</span></div></a>
+      <a href="tours.html" class="exp-card reveal" data-delay="2"><img loading="lazy" src="img/places/issyk-kul.jpg" alt="Waves on the sandy shore of Lake Issyk-Kul with the Tian Shan behind" /><div><h3>Lake Issyk-Kul</h3><span>The pearl of the Tian Shan</span></div></a>
       <a href="tours.html" class="exp-card reveal" data-delay="1"><img loading="lazy" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Tash Rabat" /><div><h3>Tash Rabat</h3><span>Naryn · Silk-Road caravanserai</span></div></a>
     </div>
   </div>
@@ -184,16 +192,16 @@
 <section class="pad exp" id="instagram">
   <div class="wrap">
     <div class="ig-head reveal">
-      <div><p class="eyebrow">Follow the journey</p><h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem)">@azattours.kyrgyzstan</h2></div>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn btn-dark">Follow on Instagram</a>
+      <div><p class="eyebrow">Follow the journey</p><h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem)">@azattourskg</h2></div>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="btn btn-dark">Follow on Instagram</a>
     </div>
     <div class="ig-grid">
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></span></a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c-1-7 3-10 7-11l1.4-3.4 3 1.4-1 3.4c1.6 1 2.6 3 2.6 6"/><path d="M5 20h10"/></svg></span></a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3 20h18Z"/><path d="M12 4v16"/></svg></span></a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></span></a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v8l-2 1v4h11a4 4 0 0 0 0-7c-3 0-4-1-4-3V4Z"/><path d="M5 17h14"/></svg></span></a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=70" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18M6 18a6 6 0 0 1 12 0"/><path d="M12 5v2.5M5.5 9 7 10.5M18.5 9 17 10.5"/></svg></span></a>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="img/ig/ig-1-riders-mist.jpg" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></span></a>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="img/ig/ig-2-guide-taigan.jpg" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c-1-7 3-10 7-11l1.4-3.4 3 1.4-1 3.4c1.6 1 2.6 3 2.6 6"/><path d="M5 20h10"/></svg></span></a>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="img/ig/ig-3-kalpak.jpg" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3 20h18Z"/><path d="M12 4v16"/></svg></span></a>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="img/ig/ig-4-trail.jpg" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></span></a>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="img/ig/ig-5-pass.jpg" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v8l-2 1v4h11a4 4 0 0 0 0-7c-3 0-4-1-4-3V4Z"/><path d="M5 17h14"/></svg></span></a>
+      <a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" class="ig-card reveal"><img loading="lazy" src="img/ig/ig-6-balbals.jpg" alt="Instagram post"><span class="ig-ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18M6 18a6 6 0 0 1 12 0"/><path d="M12 5v2.5M5.5 9 7 10.5M18.5 9 17 10.5"/></svg></span></a>
     </div>
   </div>
 </section>

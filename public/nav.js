@@ -62,7 +62,7 @@
       '<div class="foot-brand">' +
         '<div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>' +
         '<p class="blurb">Azat means &ldquo;free&rdquo;. Small-group adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
-        '<div class="socials"><a href="https://instagram.com/azattours.kyrgyzstan" target="_blank" rel="noopener" aria-label="Instagram">◎</a></div>' +
+        '<div class="socials"><a href="https://www.instagram.com/azattourskg/" target="_blank" rel="noopener" aria-label="Instagram">◎</a></div>' +
       '</div>' +
       '<div class="foot-col"><h4>Explore</h4><ul>' +
         '<li><a href="about.html">About us</a></li>' +
@@ -72,7 +72,7 @@
       '</ul></div>' +
       '<div class="foot-col"><h4>Contact</h4><ul>' +
         '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">WhatsApp</a></li>' +
-        '<li><a href="mailto:hello@azattours.com">hello@azattours.com</a></li>' +
+        '<li><a href="mailto:azatbeyshenaliev1@gmail.com">azatbeyshenaliev1@gmail.com</a></li>' +
         '<li><a href="contact.html">Bishkek, Kyrgyzstan</a></li>' +
       '</ul></div>' +
       '<div class="foot-bottom"><span>© 2026 Azat Tours, Bishkek, Kyrgyzstan.</span></div>' +

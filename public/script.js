@@ -162,7 +162,10 @@ if (leadForm) {
   let started = false;
   function start() {
     if (started) return; started = true;
-    slides.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } });
+    slides.forEach((im) => {
+      if (im.dataset.srcset) { im.srcset = im.dataset.srcset; im.removeAttribute('data-srcset'); }
+      if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); }
+    });
     let i = 0;
     setInterval(() => {
       if (document.hidden) return;

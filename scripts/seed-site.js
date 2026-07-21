@@ -5,18 +5,20 @@ const C = require('../lib/content');
 
 const site = C.loadSite() || {};
 
-// Instagram "Follow the journey" grid — placeholder photos (owner replaces with REAL
-// Kyrgyzstan photos via the bot: /home → Instagram → Add photo).
+// Instagram "Follow the journey" grid — the owner's own photos, shipped in git
+// under public/img/ (see scripts/build-photos.js). Paths are relative to public/,
+// which is what home-media.js drops straight into src=. The bot can still replace
+// them, and its uploads land in the server-owned public/images/ instead.
 if (!site.instagram) {
   site.instagram = {
-    url: 'https://instagram.com/azattours.kyrgyzstan',
+    url: 'https://www.instagram.com/azattourskg/',
     photos: [
-      'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=400&q=70',
-      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=400&q=70',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=70',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=400&q=70',
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=400&q=70',
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=70',
+      'img/ig/ig-1-riders-mist.jpg',
+      'img/ig/ig-2-guide-taigan.jpg',
+      'img/ig/ig-3-kalpak.jpg',
+      'img/ig/ig-4-trail.jpg',
+      'img/ig/ig-5-pass.jpg',
+      'img/ig/ig-6-balbals.jpg',
     ],
   };
 }
@@ -34,7 +36,9 @@ if (!site.experiences) {
 }
 
 // Hero banner + builder teaser (homepage) — owner replaces via bot (/home).
-if (!site.hero) site.hero = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80';
+// Must match the first slide in index.html: home-media.js overwrites that slide
+// with this value, so a stale URL here would silently undo the hero.
+if (!site.hero) site.hero = 'img/hero/hero-1-reflection-1400.jpg';
 if (!site.builder) {
   site.builder = [
     'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=500&q=70',

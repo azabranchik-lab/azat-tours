@@ -624,7 +624,7 @@ bot.callbackQuery('h:home', async ctx => { await ctx.answerCallbackQuery(); awai
 bot.callbackQuery('h:noop', ctx => ctx.answerCallbackQuery());
 bot.callbackQuery('h:ig', async ctx => { await ctx.answerCallbackQuery(); const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
 bot.callbackQuery('h:igadd', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'instagram' }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the photo(s) for the Instagram grid. /home when done.'); });
-bot.callbackQuery('h:igurl', async ctx => { sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'instagram.url' }); await ctx.answerCallbackQuery(); await ctx.reply('🔗 Send your Instagram link (e.g. `https://instagram.com/azattours.kyrgyzstan`):', md); });
+bot.callbackQuery('h:igurl', async ctx => { sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'instagram.url' }); await ctx.answerCallbackQuery(); await ctx.reply('🔗 Send your Instagram link (e.g. `https://www.instagram.com/azattourskg/`):', md); });
 bot.callbackQuery(/^h:igdel:(\d+)$/, async ctx => {
   const idx = Number(ctx.match[1]); await ctx.answerCallbackQuery();
   const site = C.loadSite(); const photos = (site.instagram && site.instagram.photos) || [];

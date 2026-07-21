@@ -9,10 +9,16 @@
     "bot": "node bot.js",
     "seed": "node scripts/seed-content.js",
     "regen": "node scripts/regenerate-all.js",
-    "build-tours": "node scripts/build-tours.js"
+    "build-tours": "node scripts/build-tours.js",
+    "build-photos": "node scripts/build-photos.js"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "grammy": "^1.44.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
   }
 }
