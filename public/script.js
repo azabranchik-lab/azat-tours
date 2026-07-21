@@ -161,8 +161,8 @@ if (leadForm) {
   if (slides.length < 2) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Phones change 0.4s faster than desktop.
-  const DELAY = window.matchMedia('(max-width:680px)').matches ? 6600 : 7000;
+  // Phones change 0.7s faster than desktop.
+  const DELAY = window.matchMedia('(max-width:680px)').matches ? 6300 : 7000;
   let i = 0, timer = null, started = false;
 
   function show(idx) {
