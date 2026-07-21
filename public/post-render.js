@@ -89,7 +89,7 @@
 
   root.innerHTML = `
     <section class="article-hero">
-      <div class="bg"><img src="${p.cover || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80'}" alt="${esc(p.title)}"></div>
+      <div class="bg"><img src="${p.cover || 'img/hero/hero-1-reflection-1400.jpg'}" alt="${esc(p.title)}"></div>
       <div class="wrap">
         <p class="crumb"><a href="index.html">Home</a> / <a href="blog.html">Blog</a> / ${esc(p.category)}</p>
         <span class="tag">${esc(p.category)}</span>

@@ -14,7 +14,7 @@
 
   const ARROW = '';
   function card(t) {
-    const img = t.images && t.images[0] ? t.images[0] : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80';
+    const img = t.images && t.images[0] ? t.images[0] : 'img/hero/hero-1-reflection-1400.jpg';
     const hl = (t.highlights && t.highlights.length ? t.highlights : t.itinerary.map(d => d.title))
       .slice(0, 3).map(h => `<li>${h}</li>`).join('');
     const b = t.blurb;

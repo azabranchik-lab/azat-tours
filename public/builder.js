@@ -112,7 +112,7 @@
   // Nothing is hardcoded here on purpose: replace a tour photo with /tours or a place photo with
   // /sights in the bot and this screen follows, because both read the same generated data.
   const SIGHTS = window.SIGHTS || {};
-  const unsplash = (id, w) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w || 600}&q=70`;
+  const unsplash = () => 'img/hero/hero-1-reflection-1400.jpg'; // local fallback (was Unsplash placeholder)
 
   const tourPhoto = (pick, taken) => {
     const t = TOURS.find(x => pick(x) && x.images && x.images.length && !(taken || []).includes(x.images[0]));

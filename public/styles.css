@@ -551,7 +551,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .about-intro{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
 .about-intro h2{font-size:clamp(1.9rem,3.5vw,2.8rem);margin-bottom:18px}
 .about-intro p{color:var(--ink-soft);margin-bottom:14px;max-width:60ch}
-.about-intro .photo{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow)}
+.about-intro .photo{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:7/10;box-shadow:var(--shadow)}
 .about-intro .photo img{width:100%;height:100%;object-fit:cover}
 .about-intro .photo .cap{position:absolute;left:16px;bottom:16px;right:16px;background:rgba(20,30,26,.72);backdrop-filter:blur(6px);color:#fff;border-radius:12px;padding:12px 14px;font-size:.84rem}
 
@@ -591,7 +591,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 @media(max-width:680px){
   .team-grid{grid-template-columns:1fr 1fr;gap:16px}
   .values-grid{grid-template-columns:1fr}
-  .about-intro .photo{aspect-ratio:4/3}
+  .about-intro .photo{aspect-ratio:7/10}
 }
 
 @media(max-width:980px){
@@ -690,7 +690,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
   body[data-page="blog"] .blog-feature .btn-dark{background:#fff;color:#0d221e}
   /* category chips → one swipeable row, 44px tap targets (blog only).
      page-scoped selector so it beats the later base .blog-cats rule (~L889). */
-  body[data-page="blog"] .blog-cats{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 24px;padding:0 18px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  body[data-page="blog"] .blog-cats{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 24px;padding:6px 18px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   body[data-page="blog"] .blog-cats::-webkit-scrollbar{display:none}
   .blog-cats .chip{flex:none;min-height:44px;display:inline-flex;align-items:center}
   .why-card{padding:22px 20px}

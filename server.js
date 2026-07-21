@@ -106,7 +106,9 @@ function buildSlugMeta(urlPath, slug) {
         title: `${po.title} | Azat Tours Kyrgyzstan`,
         desc: String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158),
         ogType: 'article',
-        image: po.cover || '',
+        // og:image must be absolute for social scrapers; site-relative covers
+        // (local files, or bot-set covers under images/) get the canonical origin.
+        image: po.cover ? (/^https?:\/\//.test(po.cover) ? po.cover : 'https://azattours.com/' + String(po.cover).replace(/^\/+/, '')) : '',
         url: 'https://azattours.com/post.html?slug=' + encodeURIComponent(slug)
       };
     }

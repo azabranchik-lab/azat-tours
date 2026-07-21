@@ -7,12 +7,12 @@ const ROOT = path.join(__dirname, '..');
 const P = path.join(ROOT, 'content', 'posts.json');
 
 const COVER = {
-  guides: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1100&q=75',
-  tailor: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1100&q=75',
-  safety: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1100&q=75',
-  community: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1100&q=75',
-  abroad: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1100&q=75',
-  pricing: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1100&q=75',
+  guides: 'img/blog/local-guide-eagle.jpg',
+  tailor: 'img/blog/tailor-made-trips.jpg',
+  safety: 'img/blog/safety-in-the-mountains.jpg',
+  community: 'img/blog/community-tourism.jpg',
+  abroad: 'img/blog/easy-arrival.jpg',
+  pricing: 'img/blog/fair-honest-pricing.jpg',
 };
 const AV = {
   azat: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&q=80',
@@ -33,7 +33,7 @@ const posts = [
 
 Our guides are Kyrgyz. We learned these valleys on horseback before we ever called it work — which pass clears first in summer, which family keeps a yurt by which lake, which river is calm in the morning and dangerous by afternoon.
 
-[img:${COVER.safety.replace('w=1100','w=1100')}|A pass looks different to someone who has crossed it a hundred times.]
+[img:img/blog/body/guide-riders.jpg|A pass looks different to someone who has crossed it a hundred times.]
 
 ## What a local guide actually does for you
 
@@ -108,7 +108,7 @@ There's a 24/7 support team back in Bishkek for the whole trip — for you and f
 
 When you sleep in a yurt by Song-Köl or eat a home-cooked dinner in a village, that's a real family's home and livelihood — not a chain. We work with herder families and village hosts directly.
 
-[img:${COVER.tailor}|Summer pastures come alive when families move up with their animals — and a few guests.]
+[img:img/blog/body/summer-pasture.jpg|Summer pastures come alive when families move up with their animals, and a few guests.]
 
 ## Why it matters
 

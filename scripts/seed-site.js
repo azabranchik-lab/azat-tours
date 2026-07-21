@@ -27,11 +27,11 @@ if (!site.instagram) {
 // replaces with REAL Kyrgyzstan photos via the bot (/home → Experience cards).
 if (!site.experiences) {
   site.experiences = [
-    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80', // Combined adventures
-    'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80', // Road trips
-    'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=800&q=80', // Horse treks
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80', // Off the beaten path
-    'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80', // Winter tours
+    'img/exp/combined-adventures.jpg', // Combined adventures
+    'img/exp/road-trips.jpg', // Road trips
+    'img/exp/horse-treks.jpg', // Horse treks
+    'img/exp/off-the-beaten-path.jpg', // Off the beaten path
+    'img/exp/winter-tours.jpg', // Winter tours
   ];
 }
 
@@ -41,10 +41,10 @@ if (!site.experiences) {
 if (!site.hero) site.hero = 'img/hero/hero-1-reflection-1400.jpg';
 if (!site.builder) {
   site.builder = [
-    'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=500&q=70',
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=500&q=70',
-    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=70',
-    'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=500&q=70',
+    'img/page/tours.jpg',
+    'img/blog/tailor-made-trips.jpg',
+    'img/blog/safety-in-the-mountains.jpg',
+    'img/exp/horse-treks.jpg',
   ];
 }
 

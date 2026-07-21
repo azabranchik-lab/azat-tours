@@ -56,7 +56,7 @@
     document.head.appendChild(ld);
   })();
   const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + t.name + " tour.")}`;
-  const img = i => (t.images && t.images[i]) || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80';
+  const img = i => (t.images && t.images[i]) || 'img/hero/hero-1-reflection-1400.jpg';
 
   // Sights gazetteer (photo + blurb per place), owner-managed via the bot (/sights),
   // loaded from sights-data.js (window.SIGHTS). Fallback to {} so the page still renders.
@@ -234,7 +234,7 @@
   const relSame = relPool.filter(x => (x.cats || []).some(c => (t.cats || []).includes(c)));
   const related = (relSame.length >= 3 ? relSame : relPool).slice(0, 3);
   const relCard = rt => {
-    const rimg = rt.images && rt.images[0] ? rt.images[0] : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80';
+    const rimg = rt.images && rt.images[0] ? rt.images[0] : 'img/hero/hero-1-reflection-1400.jpg';
     const rhl = (rt.highlights && rt.highlights.length ? rt.highlights : rt.itinerary.map(d => d.title)).slice(0, 3).map(h => `<li>${h}</li>`).join('');
     return `<a class="tour" href="tour.html?slug=${encodeURIComponent(rt.slug)}">
       <div class="tour-img"><img loading="lazy" src="${rimg}" alt="${rt.name}"><span class="tour-badge">${rt.cats[0] || rt.category}</span>${rt.duration ? `<span class="tour-dur">${rt.duration}</span>` : ''}</div>
