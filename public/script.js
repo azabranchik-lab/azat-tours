@@ -149,9 +149,10 @@ if (leadForm) {
 })();
 
 // ---- Hero slideshow (home) ----
-// Owner-approved kino-panel redesign: photos auto-crossfade every 7s; the
-// .hero-dots bars are indicators only. First slide ships eager (LCP), the
-// rest lazy-load after window load. Skipped entirely under reduced motion.
+// Owner-approved kino-panel redesign: photos auto-crossfade; the .hero-dots
+// bars double as clickable indicators (tap to pick a photo, which resets the
+// timer). Phones advance 0.4s faster. First slide ships eager (LCP), the rest
+// lazy-load after window load. Auto-advance skipped under reduced motion.
 (function () {
   const bg = document.querySelector('.hero-bg');
   if (!bg) return;
@@ -159,21 +160,39 @@ if (leadForm) {
   const dots = Array.from(bg.querySelectorAll('.hero-dots i'));
   if (slides.length < 2) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  let started = false;
-  function start() {
-    if (started) return; started = true;
+
+  // Phones change 0.4s faster than desktop.
+  const DELAY = window.matchMedia('(max-width:680px)').matches ? 6600 : 7000;
+  let i = 0, timer = null, started = false;
+
+  function show(idx) {
+    i = idx;
+    slides.forEach((im, k) => im.classList.toggle('on', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+  }
+  function go() { if (!document.hidden) show((i + 1) % slides.length); }
+  function play() { clearInterval(timer); timer = setInterval(go, DELAY); }
+
+  function loadAll() {
     slides.forEach((im) => {
       if (im.dataset.srcset) { im.srcset = im.dataset.srcset; im.removeAttribute('data-srcset'); }
       if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); }
     });
-    let i = 0;
-    setInterval(() => {
-      if (document.hidden) return;
-      i = (i + 1) % slides.length;
-      slides.forEach((im, k) => im.classList.toggle('on', k === i));
-      dots.forEach((d, k) => d.classList.toggle('on', k === i));
-    }, 7000);
   }
+  function start() { if (started) return; started = true; loadAll(); play(); }
+
+  // Clickable / keyboard-selectable dots.
+  dots.forEach((d, k) => {
+    d.setAttribute('role', 'button');
+    d.setAttribute('tabindex', '0');
+    d.setAttribute('aria-label', 'Show photo ' + (k + 1));
+    function pick() { start(); show(k); play(); }
+    d.addEventListener('click', pick);
+    d.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
+    });
+  });
+
   if (document.readyState === 'complete') setTimeout(start, 1500);
   else window.addEventListener('load', () => setTimeout(start, 1500));
 })();

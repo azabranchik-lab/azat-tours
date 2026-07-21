@@ -113,7 +113,9 @@ header.scrolled .burger span,header.solid .burger span{background:var(--ink)}
 @keyframes slowzoom{from{transform:scale(1.12)}to{transform:scale(1)}}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,30,26,.55) 0%,rgba(15,30,26,.15) 35%,rgba(13,40,36,.55) 78%,rgba(11,30,27,.9) 100%)}
 .hero-dots{position:absolute;left:32px;bottom:20px;z-index:1;display:flex;gap:6px}
-.hero-dots i{width:26px;height:3px;border-radius:99px;background:rgba(255,255,255,.4);transition:background .5s}
+.hero-dots i{width:26px;height:3px;border-radius:99px;background:rgba(255,255,255,.4);transition:background .5s;cursor:pointer;position:relative}
+.hero-dots i::before{content:"";position:absolute;inset:-16px -2px}
+.hero-dots i:focus-visible{outline:2px solid #fff;outline-offset:4px}
 .hero-dots i.on{background:#fff}
 .hero-inner{padding-bottom:84px;padding-top:140px;width:100%}
 .hero h1{font-size:clamp(2.7rem,7vw,5.6rem);font-weight:800;max-width:15ch;text-shadow:0 2px 30px rgba(0,0,0,.3)}
