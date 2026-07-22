@@ -48,10 +48,24 @@ sitemap, один H1/стр., сильная перелинковка.
 - **Кастомная 404** (`public/404.html`, брендированная, noindex) + `send404()` в `server.js` (было голое `<h1>`).
 - ⚠️ `server.js` менялся → на сервере **`pm2 restart`**.
 
-**Осталось из аудита (по приоритету, НЕ сделано):** 🔴 фото туров/sights хотлинкаются с kyrgyzriders
-(420+16 — копирайт+перф) → свои/лицензированные; 🟠 JSON-LD туров/постов только через JS (AI-боты без JS
+### 🔴→✅ Фото каталога локализованы (самохостинг вместо kyrgyzriders)
+Владелец подтвердил **разрешение kyrgyzriders (2026-07-22)** → скачали все их фото к нам.
+- `scripts/download-catalog-images.js` — скачал **340 уникальных** URL (0 неудач) → `public/img/catalog/`
+  (sha1-имена, дедуп, ресайз sharp 1600w q82, **44 МБ**, в git). Разовый, возобновляемый.
+- `scripts/localize-catalog-images.js` — переписал `content/tours.json` `images[]` + `content/sights.json`
+  `photo` на `img/catalog/…` (436 ссылок), регенерил `tours-data.js`+`sights-data.js`. **Идемпотентный,
+  повторяемый.** Проверено: 0 kyrgyzriders-картинок в shipped-данных; тур-страница = 20 локальных фото,
+  в Network нет kyrgyzriders, консоль чистая.
+- Остаток: у каждого тура поле `url` = страница-первоисточник kyrgyzriders (39 шт) — **не рендерится**
+  (метаданные скрейпа, не утечка). При желании обнулить отдельно.
+- ⚠️ **Деплой:** картинки в git приедут с кодом; `tours-data.js`/`sights-data.js` в git → сайт покажет
+  локальные сразу. НО на сервере после `git pull` прогнать **`node scripts/localize-catalog-images.js`**
+  (перепишет серверный `content/*.json` + регенерит), иначе правка ботом вернёт kyrgyzriders.
+
+**Осталось из аудита (по приоритету, НЕ сделано):** 🟠 JSON-LD туров/постов только через JS (AI-боты без JS
 не видят) → вшивать на сервере; 🟠 reviews.html «сирота»+noindex; 🟠 plan-trip секции — `<button>` вместо
-headings; 🟡 alt у туров/IG общие; 🟡 тонкий блог; 🟡 нет WebP/AVIF; 🌐 Google Business Profile (Maps).
+headings; 🟡 alt у туров/IG общие; 🟡 тонкий блог; 🟡 нет WebP/AVIF (в т.ч. новый `img/catalog`);
+🌐 Google Business Profile (Maps).
 
 ---
 
