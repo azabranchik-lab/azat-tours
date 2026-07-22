@@ -84,32 +84,53 @@ function cachedLoad(jsonPath, loader) {
   _contentCache[jsonPath] = { mtime, data };
   return data;
 }
+// Make a possibly site-relative image path absolute (social scrapers + JSON-LD need it).
+const ORIGIN = 'https://azattours.com';
+const abs = u => u ? (/^https?:\/\//.test(u) ? u : ORIGIN + '/' + String(u).replace(/^\/+/, '')) : '';
+
 function buildSlugMeta(urlPath, slug) {
   try {
     if (urlPath === '/tour.html') {
       const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug);
       if (!t) return null;
+      const desc = ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158);
+      const url = ORIGIN + '/tour.html?slug=' + encodeURIComponent(slug);
+      const image = abs((t.images && t.images[0]) || '');
       return {
-        key: 'tour-' + slug,
-        title: `${t.name}, Kyrgyzstan Tour | Azat Tours`,
-        desc: ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158),
-        ogType: 'website',
-        image: (t.images && t.images[0]) || '',
-        url: 'https://azattours.com/tour.html?slug=' + encodeURIComponent(slug)
+        key: 'tour-' + slug, title: `${t.name}, Kyrgyzstan Tour | Azat Tours`,
+        desc, ogType: 'website', image, url,
+        jsonld: [
+          { '@context': 'https://schema.org', '@type': 'TouristTrip', name: t.name, description: t.summary || desc,
+            image: image || undefined, touristType: t.cats,
+            itinerary: { '@type': 'ItemList', numberOfItems: (t.itinerary || []).length, itemListElement: (t.itinerary || []).map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.title })) },
+            provider: { '@type': 'TravelAgency', name: 'Azat Tours Kyrgyzstan', url: ORIGIN } },
+          { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
+            { '@type': 'ListItem', position: 2, name: 'Tours', item: ORIGIN + '/tours.html' },
+            { '@type': 'ListItem', position: 3, name: t.name, item: url } ] }
+        ]
       };
     }
     if (urlPath === '/post.html') {
       const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug);
       if (!po) return null;
+      const desc = String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158);
+      const url = ORIGIN + '/post.html?slug=' + encodeURIComponent(slug);
+      const image = abs(po.cover || '');
       return {
-        key: 'post-' + slug,
-        title: `${po.title} | Azat Tours Kyrgyzstan`,
-        desc: String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158),
-        ogType: 'article',
-        // og:image must be absolute for social scrapers; site-relative covers
-        // (local files, or bot-set covers under images/) get the canonical origin.
-        image: po.cover ? (/^https?:\/\//.test(po.cover) ? po.cover : 'https://azattours.com/' + String(po.cover).replace(/^\/+/, '')) : '',
-        url: 'https://azattours.com/post.html?slug=' + encodeURIComponent(slug)
+        key: 'post-' + slug, title: `${po.title} | Azat Tours Kyrgyzstan`,
+        desc, ogType: 'article', image, url,
+        jsonld: [
+          { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: po.title, description: desc,
+            image: image || undefined, datePublished: po.date || undefined,
+            author: { '@type': 'Person', name: po.author },
+            publisher: { '@type': 'TravelAgency', name: 'Azat Tours Kyrgyzstan', url: ORIGIN },
+            mainEntityOfPage: url },
+          { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: ORIGIN + '/blog.html' },
+            { '@type': 'ListItem', position: 3, name: po.title, item: url } ] }
+        ]
       };
     }
   } catch (e) { /* content/*.json missing or malformed -> serve unmodified */ }
@@ -117,6 +138,10 @@ function buildSlugMeta(urlPath, slug) {
 }
 function injectSlugMeta(html, m) {
   const at = s => esc(s).replace(/"/g, '&quot;'); // attribute context needs quotes escaped too
+  // JSON-LD for bots that don't run JS; escape "<" so a value can't close the script tag.
+  const ld = m.jsonld
+    ? `<script type="application/ld+json" data-ssr="1">${JSON.stringify(m.jsonld).replace(/</g, '\\u003c')}</script>\n`
+    : '';
   const tags =
     `<meta name="description" content="${at(m.desc)}">\n` +
     `<meta property="og:type" content="${m.ogType}">\n` +
@@ -125,7 +150,7 @@ function injectSlugMeta(html, m) {
     (m.image ? `<meta property="og:image" content="${at(m.image)}">\n` : '') +
     `<meta property="og:url" content="${at(m.url)}">\n` +
     `<meta name="twitter:card" content="summary_large_image">\n` +
-    `<link rel="canonical" href="${at(m.url)}">\n`;
+    `<link rel="canonical" href="${at(m.url)}">\n` + ld;
   return html
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(m.title)}</title>`)
     .replace(/<meta name="description"[^>]*>\s*/i, '') // drop the shared static one; injected tag replaces it

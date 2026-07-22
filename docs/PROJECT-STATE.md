@@ -62,10 +62,18 @@ sitemap, один H1/стр., сильная перелинковка.
   локальные сразу. НО на сервере после `git pull` прогнать **`node scripts/localize-catalog-images.js`**
   (перепишет серверный `content/*.json` + регенерит), иначе правка ботом вернёт kyrgyzriders.
 
-**Осталось из аудита (по приоритету, НЕ сделано):** 🟠 JSON-LD туров/постов только через JS (AI-боты без JS
-не видят) → вшивать на сервере; 🟠 reviews.html «сирота»+noindex; 🟠 plan-trip секции — `<button>` вместо
-headings; 🟡 alt у туров/IG общие; 🟡 тонкий блог; 🟡 нет WebP/AVIF (в т.ч. новый `img/catalog`);
-🌐 Google Business Profile (Maps).
+### 🟠→✅ JSON-LD туров/постов теперь вшивается на сервере
+`server.js` (`buildSlugMeta`/`injectSlugMeta`) строит те же `TouristTrip`+`BreadcrumbList` (туры) и
+`BlogPosting`+`BreadcrumbList` (посты) из данных и вшивает `<script type=ld+json data-ssr>` в сырой
+HTML (картинки абсолютные, `<` экранирован). `tour-detail.js`/`post-render.js` **пропускают** свою
+инъекцию, если `script[data-ssr]` уже есть → без дублей; на чистой статике (без Node) JS остаётся
+фолбэком. Проверено: сырой HTML (curl, без JS) содержит JSON-LD; в браузере ровно 1 блок.
+⚠️ `server.js` → `pm2 restart`. Нюанс кэша: ETag завязан на mtime `tour.html`/`post.html`, так что
+после смены логики инъекции старые кэши обновятся, когда файлы перезальются на деплое (mtime сменится).
+
+**Осталось из аудита (по приоритету, НЕ сделано):** 🟠 reviews.html «сирота»+noindex; 🟠 plan-trip
+секции — `<button>` вместо headings; 🟡 alt у туров/IG общие; 🟡 тонкий блог; 🟡 нет WebP/AVIF
+(в т.ч. новый `img/catalog`); 🌐 Google Business Profile (Maps).
 
 ---
 

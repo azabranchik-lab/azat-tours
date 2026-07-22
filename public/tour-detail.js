@@ -53,7 +53,8 @@
         ]
       }
     ]);
-    document.head.appendChild(ld);
+    // Skip if the server already rendered the JSON-LD (avoids a duplicate block).
+    if (!document.head.querySelector('script[data-ssr]')) document.head.appendChild(ld);
   })();
   const wa = `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + t.name + " tour.")}`;
   const img = i => (t.images && t.images[i]) || 'img/hero/hero-1-reflection-1400.jpg';

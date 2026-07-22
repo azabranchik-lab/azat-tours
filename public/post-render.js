@@ -79,7 +79,8 @@
         ]
       }
     ]);
-    document.head.appendChild(ld);
+    // Skip if the server already rendered the JSON-LD (avoids a duplicate block).
+    if (!document.head.querySelector('script[data-ssr]')) document.head.appendChild(ld);
   })();
 
   const gallery = (p.images || []).length ? `
