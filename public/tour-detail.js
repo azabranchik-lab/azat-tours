@@ -21,6 +21,34 @@
   const absUrl = u => u ? (/^https?:\/\//.test(u) ? u : 'https://azattours.com/' + String(u).replace(/^\/+/, '')) : '';
   document.title = tourTitle(t.name);
 
+  // Per-tour FAQ, generated from real fields (honest, no invented specifics).
+  // KEEP IN SYNC with server.js tourFaqs() — the SSR FAQPage schema must match
+  // this visible copy, or Google flags a mismatch.
+  const fmtActivities = a => String(a).split(',').map(s => {
+    const m = s.match(/(.+?)\s*-\s*(\d+)\s*days?/i);
+    return m ? m[2] + ' days ' + m[1].trim() : s.trim();
+  }).join(' and ');
+  const tourFaqs = t => {
+    const out = [];
+    const dur = t.duration || (t.days ? t.days + ' days' : '');
+    const start = t.start_from || 'Bishkek';
+    if (dur) out.push(['How long is this tour?', 'It runs ' + dur + ', starting and ending in ' + start + '.']);
+    if (t.season) out.push(['When is the best time to go?', 'The season runs ' + t.season + '. June to September brings the warmest days, and the high-pasture yurt camps are open.']);
+    const pace = t.tour_speed ? t.tour_speed.charAt(0).toLowerCase() + t.tour_speed.slice(1) : '';
+    if (pace || t.activities) {
+      let a = "It's " + (pace || 'an active trip');
+      if (t.activities) a += ', with ' + fmtActivities(t.activities);
+      a += '. Good general fitness is enough, and there is no technical climbing.';
+      out.push(['How fit do I need to be?', a]);
+    }
+    if ((t.tags || []).indexOf('horseback') >= 0 || /horse|combined/i.test(t.category || '')) {
+      out.push(['Do I need horse-riding experience?', 'No. Our guides match each horse to your level and keep the first day gentle, so complete beginners ride this route every season.']);
+    }
+    if (t.accommodations) out.push(['Where will I stay?', 'A mix over the trip: ' + t.accommodations + '.']);
+    return out;
+  };
+  const faqs = tourFaqs(t);
+
   // ---- per-tour SEO: meta description, og tags, canonical, JSON-LD ----
   // Honesty rule: no Offer (price is on request) and no ratings in the markup.
   (function seo() {
@@ -43,7 +71,7 @@
     canon.href = pageUrl;
     const ld = document.createElement('script');
     ld.type = 'application/ld+json';
-    ld.textContent = JSON.stringify([
+    const ldData = [
       {
         '@context': 'https://schema.org', '@type': 'TouristTrip',
         name: t.name, description: t.summary || desc,
@@ -60,7 +88,12 @@
           { '@type': 'ListItem', position: 3, name: t.name, item: pageUrl }
         ]
       }
-    ]);
+    ];
+    if (faqs.length) ldData.push({
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: faqs.map(f => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }))
+    });
+    ld.textContent = JSON.stringify(ldData);
     // Skip if the server already rendered the JSON-LD (avoids a duplicate block).
     if (!document.head.querySelector('script[data-ssr]')) document.head.appendChild(ld);
   })();
@@ -257,6 +290,18 @@
           <div class="tours-grid">${related.map(relCard).join('')}</div>
         </section>` : '';
 
+  // Visible FAQ accordion (reuses .faq-item/.faq-q/.faq-a + the toggle in script.js).
+  const faqHTML = faqs.length ? `
+        <section class="reveal in">
+          <h2>Common questions</h2>
+          <div>${faqs.map(f => `
+            <div class="faq-item">
+              <button class="tfaq-q">${f[0]}<span class="ic">+</span></button>
+              <div class="faq-a"><p>${f[1]}</p></div>
+            </div>`).join('')}
+          </div>
+        </section>` : '';
+
   root.innerHTML = `
   <section class="tour-hero">
     <div class="bg"><img src="${img(0)}" alt="${t.name}, guided tour in Kyrgyzstan" /></div>
@@ -285,6 +330,8 @@
         ${sightsHTML}
 
         ${galleryHTML}
+
+        ${faqHTML}
 
         <section id="book" class="reveal in" style="${relatedHTML ? '' : 'border-bottom:0'}">
           <h2>Tell us about your trip</h2>
@@ -343,6 +390,25 @@
   });
   const first = root.querySelector('.tl.open .tl-a');
   if (first) first.style.maxHeight = first.scrollHeight + 'px';
+
+  // Tour FAQ accordion: bound HERE (own .tfaq-q class), NOT via script.js's shared
+  // .faq-q handler. That handler set an inline max-height from scrollHeight, which
+  // on this injected page computed to 0 and kept the answer collapsed. Open state is
+  // pure CSS (.faq-item.open, styles.css), so this only toggles the class — reliable,
+  // no scrollHeight timing. Single-open accordion, all start closed.
+  root.querySelectorAll('.tfaq-q').forEach(q => {
+    q.onclick = () => {
+      const item = q.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      root.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-a').style.maxHeight = '';   // back to CSS max-height:0
+      });
+      // Open with max-height:none (a plain length here can compute to 0 in some engines);
+      // the CSS overflow clip is lifted so the full answer shows.
+      if (!wasOpen) { item.classList.add('open'); item.querySelector('.faq-a').style.maxHeight = 'none'; }
+    };
+  });
 
   // about-this-tour tabs
   root.querySelectorAll('.tab').forEach(tab => {

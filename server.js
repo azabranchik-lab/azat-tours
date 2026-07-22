@@ -99,6 +99,38 @@ function tourTitle(name) {
 }
 function postTitle(title) { return title + ' | Azat Tours'; } // was " | Azat Tours Kyrgyzstan" (too long)
 
+// Per-tour FAQ from real fields. KEEP IN SYNC with tour-detail.js tourFaqs() —
+// this feeds the SSR FAQPage schema and must match the visible copy the client renders.
+function fmtActivities(a) {
+  return String(a).split(',').map(s => {
+    const m = s.match(/(.+?)\s*-\s*(\d+)\s*days?/i);
+    return m ? m[2] + ' days ' + m[1].trim() : s.trim();
+  }).join(' and ');
+}
+function tourFaqs(t) {
+  const out = [];
+  const dur = t.duration || (t.days ? t.days + ' days' : '');
+  const start = t.start_from || 'Bishkek';
+  if (dur) out.push(['How long is this tour?', 'It runs ' + dur + ', starting and ending in ' + start + '.']);
+  if (t.season) out.push(['When is the best time to go?', 'The season runs ' + t.season + '. June to September brings the warmest days, and the high-pasture yurt camps are open.']);
+  const pace = t.tour_speed ? t.tour_speed.charAt(0).toLowerCase() + t.tour_speed.slice(1) : '';
+  if (pace || t.activities) {
+    let a = "It's " + (pace || 'an active trip');
+    if (t.activities) a += ', with ' + fmtActivities(t.activities);
+    a += '. Good general fitness is enough, and there is no technical climbing.';
+    out.push(['How fit do I need to be?', a]);
+  }
+  if ((t.tags || []).indexOf('horseback') >= 0 || /horse|combined/i.test(t.category || '')) {
+    out.push(['Do I need horse-riding experience?', 'No. Our guides match each horse to your level and keep the first day gentle, so complete beginners ride this route every season.']);
+  }
+  if (t.accommodations) out.push(['Where will I stay?', 'A mix over the trip: ' + t.accommodations + '.']);
+  return out;
+}
+function faqSchema(faqs) {
+  return { '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faqs.map(f => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } })) };
+}
+
 function buildSlugMeta(urlPath, slug) {
   try {
     if (urlPath === '/tour.html') {
@@ -119,7 +151,7 @@ function buildSlugMeta(urlPath, slug) {
             { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
             { '@type': 'ListItem', position: 2, name: 'Tours', item: ORIGIN + '/tours.html' },
             { '@type': 'ListItem', position: 3, name: t.name, item: url } ] }
-        ]
+        ].concat(tourFaqs(t).length ? [faqSchema(tourFaqs(t))] : [])
       };
     }
     if (urlPath === '/post.html') {
