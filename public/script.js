@@ -27,7 +27,7 @@ if (burger && mm) {
 // ---------- FAQ accordion ----------
 document.querySelectorAll('.faq-q').forEach(q => {
   q.onclick = () => {
-    const item = q.parentElement;
+    const item = q.closest('.faq-item');   // robust whether or not the button is wrapped in a heading
     const a = item.querySelector('.faq-a');
     const open = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-a').style.maxHeight = null; });
