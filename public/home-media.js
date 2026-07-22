@@ -14,7 +14,10 @@
   if (grid && photos.length) {
     grid.innerHTML = photos.map(function (src) {
       var href = url ? ' href="' + url + '" target="_blank" rel="noopener"' : ' href="#" onclick="return false"';
-      return '<a class="ig-card"' + href + '><img loading="lazy" src="' + src + '" alt="Azat Tours on Instagram">' + icon + '</a>';
+      // Derive a descriptive alt from the filename (e.g. ig-1-riders-mist -> "riders mist").
+      var cap = String(src).split('/').pop().replace(/\.\w+$/, '').replace(/^ig-\d+-/, '').replace(/[-_]+/g, ' ').trim();
+      var alt = cap ? 'Azat Tours in Kyrgyzstan, ' + cap : 'Azat Tours on Instagram';
+      return '<a class="ig-card"' + href + '><img loading="lazy" src="' + src + '" alt="' + alt + '">' + icon + '</a>';
     }).join('');
   }
   if (url) {

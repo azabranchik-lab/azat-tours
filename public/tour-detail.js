@@ -142,7 +142,7 @@
     <section class="reveal in">
       <h2>Gallery</h2>
       <div class="gallery">
-        ${galleryImgs.map((src, i) => `<a href="${src}" target="_blank" rel="noopener" class="${i === 0 ? 'w2 h2' : (i === 3 ? 'w2' : '')}"><img loading="lazy" src="${src}" alt="${t.name} photo ${i + 1}"></a>`).join('')}
+        ${galleryImgs.map((src, i) => `<a href="${src}" target="_blank" rel="noopener" class="${i === 0 ? 'w2 h2' : (i === 3 ? 'w2' : '')}"><img loading="lazy" src="${src}" alt="${t.name} tour in Kyrgyzstan, photo ${i + 1}"></a>`).join('')}
       </div>
     </section>` : '';
 
@@ -224,7 +224,7 @@
           <div class="exp-grid">${sightSrc.map(p => {
             const s = SIGHTS[normSight(p.name)] || {};
             const name = s.name || p.name;
-            return `<div class="exp-card sight"><img loading="lazy" src="${s.photo || img(0)}" alt="${name}"><div><h3>${name}</h3>${s.blurb ? `<span>${s.blurb}</span>` : ''}</div></div>`;
+            return `<div class="exp-card sight"><img loading="lazy" src="${s.photo || img(0)}" alt="${name}, Kyrgyzstan"><div><h3>${name}</h3>${s.blurb ? `<span>${s.blurb}</span>` : ''}</div></div>`;
           }).join('')}</div>
         </section>` : '';
 
@@ -251,7 +251,7 @@
 
   root.innerHTML = `
   <section class="tour-hero">
-    <div class="bg"><img src="${img(0)}" alt="${t.name}" /></div>
+    <div class="bg"><img src="${img(0)}" alt="${t.name}, guided tour in Kyrgyzstan" /></div>
     <div class="wrap">
       <p class="crumb reveal in"><a href="index.html">Home</a> / <a href="tours.html">Tours</a> / ${t.name}</p>
       <div class="badges reveal in">${t.cats.map(c => `<span class="pill">${c}</span>`).join('')}<span class="pill sale">Free quote · no prepayment</span></div>

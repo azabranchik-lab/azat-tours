@@ -79,8 +79,19 @@ HTML (картинки абсолютные, `<` экранирован). `tour-
 секций + CTA H2, раскрытие/сворачивание работает и на plan-trip, и на главной; оверфлоу нет.
 **reviews.html — оставили как есть** (noindex+сирота не вредят SEO; ждёт реальных отзывов).
 
-**Осталось из аудита (по приоритету, НЕ сделано):** 🟡 alt у туров/IG общие; 🟡 тонкий блог; 🟡 нет
-WebP/AVIF (в т.ч. новый `img/catalog`); 🌐 Google Business Profile (Maps) + реальные отзывы (бизнес-действие).
+### 🟡→✅ alt-тексты улучшены
+Instagram: было «Instagram post» ×12 (статик) + «Azat Tours on Instagram» (рендер) → статические 12 плиток
+получили описательные alt по кадрам; `home-media.js` выводит уникальный alt из имени файла
+(«Azat Tours in Kyrgyzstan, riders mist» и т.п.). Туры (`tour-detail.js`): hero → «…, guided tour in
+Kyrgyzstan», галерея → «… tour in Kyrgyzstan, photo N», sights → «{место}, Kyrgyzstan». Проверено в браузере.
+
+**Осталось из аудита (НЕ сделано, 🟡/бизнес):** 🟡 тонкий блог (дописать 6 «Travelling with us»);
+🟡 нет WebP/AVIF (hero + `img/catalog` — нужен `<picture>`); 🌐 Google Business Profile (Maps) +
+реальные отзывы (бизнес-действие, не код).
+
+### ⚠️ Незапушено (пуш — в другом чате по решению владельца)
+Коммиты **не запушены**: `bc288de` (SEO-quick), `ac062ea` (фото каталога), `b9811a2` (JSON-LD на сервере),
+`b49ec4e` (plan-trip headings), `<alt-коммит>`. Локальный `main` впереди `origin`. Запушить: `git push origin main`.
 
 ---
 
