@@ -241,21 +241,44 @@ const server = http.createServer(async (req, res) => {
   if (!filePath.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) { return send404(res); }
-    const type = TYPES[path.extname(filePath)] || 'application/octet-stream';
+    const ext0 = path.extname(filePath).toLowerCase();
+
+    // Transparent AVIF/WebP negotiation: the DOM keeps requesting foo.jpg, but
+    // when the browser advertises a modern format via Accept and a committed
+    // `<file>.avif`/`.webp` sibling exists (built by scripts/build-image-formats.js),
+    // serve that lighter file instead. No markup changes anywhere — only the
+    // bytes on the wire differ, so layout/flow are untouched.
+    let served = filePath, servedStat = st, type = TYPES[ext0] || 'application/octet-stream';
+    const negotiable = ext0 === '.jpg' || ext0 === '.jpeg' || ext0 === '.png';
+    if (negotiable) {
+      const accept = req.headers.accept || '';
+      const cand = [];
+      if (/image\/avif/.test(accept)) cand.push(['.avif', 'image/avif']);
+      if (/image\/webp/.test(accept)) cand.push(['.webp', 'image/webp']);
+      for (const [vext, vtype] of cand) {
+        try {
+          const vs = fs.statSync(filePath + vext);
+          if (vs.isFile()) { served = filePath + vext; servedStat = vs; type = vtype; break; }
+        } catch {}
+      }
+    }
+
     // per-slug meta for tour/post pages: without the slug in the ETag a 304
     // could confirm another slug's cached <head>
     const slug = u.searchParams.get('slug');
     const slugMeta = slug ? buildSlugMeta(urlPath, slug) : null;
-    const etag = '"' + st.size.toString(36) + '-' + Math.round(st.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + '"';
+    const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + '"';
     const headers = {
       'Content-Type': type,
       'ETag': etag,
-      'Last-Modified': st.mtime.toUTCString(),
+      'Last-Modified': servedStat.mtime.toUTCString(),
       // images have unique/stable names → cache long; HTML/JS/CSS/data revalidate so deploys & bot edits show immediately
       'Cache-Control': /^image\//.test(type) ? 'public, max-age=604800' : 'no-cache'
     };
+    // Negotiable image URLs vary by Accept so shared caches key avif/webp/jpeg apart.
+    if (negotiable) headers['Vary'] = 'Accept';
     if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); return res.end(); }
-    fs.readFile(filePath, (e, data) => {
+    fs.readFile(served, (e, data) => {
       if (e) { return send404(res); }
       if (slugMeta) data = Buffer.from(injectSlugMeta(data.toString('utf8'), slugMeta), 'utf8');
       const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
