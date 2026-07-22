@@ -51,8 +51,9 @@ adds the tourism + project specifics.
 - Contact/NAP consistent: email, WhatsApp number, Bishkek address on contact page + Organization schema.
 
 ## Technical
-- `sitemap.xml` + `robots.txt` exist but carry the placeholder domain `azattours.travel` — replace
-  with the real domain everywhere (~12 files: canonicals, og, sitemap, robots, emails) before deploy.
+- **Domain: `azattours.com`** is the real, registered production domain (confirmed 2026-07-22). All
+  code already uses it (canonicals, og, sitemap, robots, JSON-LD). The old `azattours.travel` was a
+  placeholder and no longer appears in code — no domain swap needed at deploy.
 - Canonical on every page (exists on static pages; per-tour canonical comes with the per-page fix).
 - Performance = ranking factor: images lazy-load (done), compress/resize hero images, no layout shift.
 - og/twitter cards per page (same gap as titles on tour/post).
@@ -65,4 +66,4 @@ adds the tourism + project specifics.
 - Blog exists with 9 posts; new SEO posts should follow brand voice (first person, concrete,
   no AI-filler — run `anti-ai-copywriting`) and each must link to tours.
 - Verify: view-source shows unique title/meta (not only after JS), schema validates
-  (validator.schema.org), sitemap lists real URLs, no placeholder domain remains (`grep azattours.travel`).
+  (validator.schema.org), sitemap lists real URLs, domain is `azattours.com` everywhere (no stray `azattours.travel`).

@@ -2,5 +2,5 @@
 User-agent: *
 Allow: /
 
-# Point crawlers to the sitemap (update the domain once live)
+# Point crawlers to the sitemap
 Sitemap: https://azattours.com/sitemap.xml

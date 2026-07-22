@@ -10,6 +10,7 @@ const content = require('../lib/content');
 
 const DOMAIN = 'https://azattours.com';
 const OUT = path.join(__dirname, '..', 'public', 'sitemap.xml');
+const BUILD_DATE = new Date().toISOString().slice(0, 10); // YYYY-MM-DD, set when the sitemap is generated
 
 // static pages: [path, changefreq, priority]. reviews.html stays out (noindex until real
 // reviews exist); builder.html stays out (app-like, not a landing page).
@@ -22,8 +23,8 @@ const STATIC = [
   ['/contact.html', 'monthly', '0.6'],
 ];
 
-function url(loc, changefreq, priority) {
-  return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+function url(loc, changefreq, priority, lastmod) {
+  return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod || BUILD_DATE}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }
 
 function main() {
@@ -33,7 +34,7 @@ function main() {
   const entries = [
     ...STATIC.map(([p, f, pr]) => url(DOMAIN + p, f, pr)),
     ...tours.map(t => url(`${DOMAIN}/tour.html?slug=${encodeURIComponent(t.slug)}`, 'monthly', '0.8')),
-    ...posts.map(p => url(`${DOMAIN}/post.html?slug=${encodeURIComponent(p.slug)}`, 'monthly', '0.6')),
+    ...posts.map(p => url(`${DOMAIN}/post.html?slug=${encodeURIComponent(p.slug)}`, 'monthly', '0.6', p.date)),
   ];
 
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +

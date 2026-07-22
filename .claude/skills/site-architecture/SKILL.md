@@ -69,7 +69,7 @@ content/*.json  --(lib/content.js regenerate)-->  *-data.js  --(script tag)-->  
 3. `npm install` only if dependencies changed → run any pending seed/merge scripts for NEW content
    fields (see above) → regenerate (step 2) → `node scripts/build-sitemap.js` (sitemap lists every
    tour/post URL from the server's content) → `pm2 restart alatoo`.
-4. Pre-prod once: replace placeholder domain `azattours.travel` everywhere; rotate the bot token
+4. Pre-prod once: domain is `azattours.com` (real, already used everywhere; no swap needed); rotate the bot token
    (@BotFather) and move to env `BOT_TOKEN`/`OWNER_ID`; never commit `config.json`.
 
 ## Debugging quick table

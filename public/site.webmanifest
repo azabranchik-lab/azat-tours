@@ -1,0 +1,13 @@
+{
+  "name": "Azat Tours Kyrgyzstan",
+  "short_name": "Azat Tours",
+  "description": "Small-group and tailor-made tours across Kyrgyzstan, run by local guides.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#103b39",
+  "theme_color": "#103b39",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

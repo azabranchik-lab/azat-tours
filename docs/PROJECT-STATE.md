@@ -30,6 +30,31 @@
 
 ---
 
+## Сессия 2026-07-22 — SEO-аудит + быстрые технические фиксы
+
+Провёл полный SEO-аудит (3 разведоси: технический head, schema/sitemap/robots/домен, on-page/контент).
+**База сильная** (~7.5/10): per-item мета через `server.js` (соц-скрейперы без JS), schema
+(TravelAgency/FAQPage/TouristTrip/BlogPosting/Breadcrumb), честность (нет фейк-рейтингов), полный
+sitemap, один H1/стр., сильная перелинковка.
+
+**Быстрые фиксы (сделаны, 1 коммит):**
+- **Домен `azattours.com` подтверждён владельцем** как реальный/зарегистрированный. В коде и так везде
+  он; свёл устаревшие `azattours.travel` в доках/скиллах + убрал плейсхолдер-комментарий в `robots.txt`.
+- Подрезал длинные meta (title ≤60, description ≤160): about/tours/plan-trip.
+- Добавил `og:url` на index/tours/about/blog/contact/plan-trip; `sameAs`(IG) в TravelAgency-schema.
+- `<lastmod>` в sitemap (`build-sitemap.js` + пересобрал).
+- Иконки: `apple-touch-icon.png`/`favicon-32x32.png`/`icon-192/512.png` из `favicon.svg`, `site.webmanifest`,
+  `<meta theme-color #103b39>` во всех head. Server MIME для `.webmanifest/.xml/.txt`.
+- **Кастомная 404** (`public/404.html`, брендированная, noindex) + `send404()` в `server.js` (было голое `<h1>`).
+- ⚠️ `server.js` менялся → на сервере **`pm2 restart`**.
+
+**Осталось из аудита (по приоритету, НЕ сделано):** 🔴 фото туров/sights хотлинкаются с kyrgyzriders
+(420+16 — копирайт+перф) → свои/лицензированные; 🟠 JSON-LD туров/постов только через JS (AI-боты без JS
+не видят) → вшивать на сервере; 🟠 reviews.html «сирота»+noindex; 🟠 plan-trip секции — `<button>` вместо
+headings; 🟡 alt у туров/IG общие; 🟡 тонкий блог; 🟡 нет WebP/AVIF; 🌐 Google Business Profile (Maps).
+
+---
+
 ## Сессия 2026-07-21 — весь видимый сток заменён на фото Азата + контакты + UX-фиксы
 
 Три коммита: `37c0ad8` (фото по всему сайту), `989117a` (UX-хром), `<этот>` (docs). Предыдущий
@@ -735,7 +760,7 @@ Top places, пункты меню, вопросы билдера, футер.
   - **Убраны все выдуманные соц-доказательства** (реальных отзывов нет): фейк-статистика, бейджи Tripadvisor/Google, рейтинги 4.9/«128 reviews», `aggregateRating` в schema, «2400+ travellers», «since/est. 2009». Страница `reviews.html` **скрыта** (ссылки убраны из подвалов и sitemap, файл оставлен на диске).
   - SEO: self-canonical + og добавлены где не было; новый `favicon.svg` (горная марка) подключён во всех страницах.
 - **НЕ тронуто (внутреннее, оставить как есть):** pm2-процесс `alatoo`, `name` в package.json (`alatoo-kyrgyzstan`), `.claude/launch.json` (`alatoo`), localStorage-ключи (`alatoo_chat_*`, `alatoo_builder`), `content/*.json` + `images/` (серверный контент, через бота), `reviews-data.js` (генерится из content).
-- **Домен-заглушка:** теперь `azattours.travel` (в canonical/og/sitemap/robots/email/IG). Зарегистрировать реальный домен + IG `@azattours.kyrgyzstan` + email перед продом.
+- **Домен (обновлено 2026-07-22):** реальный зарегистрированный домен — **`azattours.com`** (подтверждено владельцем). Весь код уже на нём (canonical/og/sitemap/robots/JSON-LD); `azattours.travel` — устаревшая заглушка, в коде её нет. IG — реальный `@azattourskg` (`instagram.com/azattourskg/`).
 - **Осталось:** задеплоить (tar без `node_modules`/`config.json`/`content`/`images`; **новый `favicon.svg` попадёт в архив автоматически**; можно добавить `--exclude=.git` и `--exclude` папки-бэкапа) → `pm2 restart alatoo`. Внести реальные данные клиента (отзывы появятся → вернуть reviews-страницу).
 - **Мелочь на потом:** на `tour-ala-kul.html` осталась промо-плашка «Save 10% before May 31» (выдуманная срочность) — убрать/заменить, если не актуально.
 

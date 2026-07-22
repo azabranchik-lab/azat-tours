@@ -16,7 +16,7 @@ try { cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf
 const TOKEN = process.env.BOT_TOKEN || cfg.token;
 const OWNER_ID = Number(process.env.OWNER_ID || cfg.ownerId) || 0;
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
 
 // ---- Telegram helper ----
 async function tg(method, payload) {
@@ -132,6 +132,14 @@ function injectSlugMeta(html, m) {
     .replace('</head>', tags + '</head>');
 }
 
+// Branded 404 page (falls back to a bare heading if the file is missing).
+function send404(res) {
+  fs.readFile(path.join(PUBLIC, '404.html'), (e, d) => {
+    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(e ? '<h1>404 Not Found</h1>' : d);
+  });
+}
+
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, `http://localhost:${PORT}`);
   const p = u.pathname;
@@ -207,7 +215,7 @@ const server = http.createServer(async (req, res) => {
   const filePath = path.join(PUBLIC, urlPath);
   if (!filePath.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.stat(filePath, (err, st) => {
-    if (err || !st.isFile()) { res.writeHead(404, { 'Content-Type': 'text/html' }); return res.end('<h1>404 Not Found</h1>'); }
+    if (err || !st.isFile()) { return send404(res); }
     const type = TYPES[path.extname(filePath)] || 'application/octet-stream';
     // per-slug meta for tour/post pages: without the slug in the ETag a 304
     // could confirm another slug's cached <head>
@@ -223,7 +231,7 @@ const server = http.createServer(async (req, res) => {
     };
     if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); return res.end(); }
     fs.readFile(filePath, (e, data) => {
-      if (e) { res.writeHead(404, { 'Content-Type': 'text/html' }); return res.end('<h1>404 Not Found</h1>'); }
+      if (e) { return send404(res); }
       if (slugMeta) data = Buffer.from(injectSlugMeta(data.toString('utf8'), slugMeta), 'utf8');
       const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
       const compressible = /text\/|javascript|json|svg/.test(type);
