@@ -60,7 +60,7 @@
 html{color-scheme:light dark}
 [data-theme="dark"]{color-scheme:dark}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent} /* kill the grey tap flash in mobile WebViews (IG/Android); :active/focus states give feedback instead */
 body{
   font-family:var(--font-body);
   background:var(--paper);
@@ -1102,8 +1102,10 @@ body[data-page="plan"] .plan-faq .faq-a .season-legend{margin-bottom:4px}
   .chat-input button{width:48px;min-height:48px;border-radius:14px}
   .chat-email{padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))}
   .chat-email button{min-height:44px;padding:0 16px}
-  /* iOS Safari zooms the whole page when a focused field is under 16px */
+  /* iOS Safari / IG in-app WebView zoom the whole page when a focused field is under 16px */
   .chat-input input,.chat-email input{font-size:16px}
+  /* same fix for the real forms (lead on home, contact, tour) — base is .95rem */
+  .field input,.field select,.field textarea{font-size:16px}
   .chat-fab{bottom:34px}
   .chat-nudge{bottom:162px;max-width:calc(100vw - 44px)}
   /* Scroll lock under the sheet. Deliberately NOT position:fixed and NOT overflow:hidden on

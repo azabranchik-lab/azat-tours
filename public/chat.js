@@ -2,9 +2,16 @@
 // Owner replies in Telegram -> stored -> widget polls and shows them.
 (function () {
   const WA = "https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%20have%20a%20question.";
+  // Storage can throw or be blocked in in-app WebViews (Instagram/Facebook) and
+  // private contexts. Wrap it so a failure never kills chat init or the poll loop;
+  // fall back to memory so the session still works for the current page view.
+  const _ls = (function () { try { return window.localStorage; } catch (e) { return null; } })();
+  const _mem = {};
+  const lsGet = k => { try { return _ls ? _ls.getItem(k) : (k in _mem ? _mem[k] : null); } catch (e) { return k in _mem ? _mem[k] : null; } };
+  const lsSet = (k, v) => { try { if (_ls) _ls.setItem(k, v); else _mem[k] = String(v); } catch (e) { _mem[k] = String(v); } };
   const KEY = 'alatoo_chat_sid';
-  let sid = localStorage.getItem(KEY);
-  if (!sid) { sid = 'c' + Math.abs(Date.now() ^ (Math.floor(performance.now() * 1000))).toString(36) + Math.floor(performance.now()).toString(36); localStorage.setItem(KEY, sid); }
+  let sid = lsGet(KEY);
+  if (!sid) { sid = 'c' + Math.abs(Date.now() ^ (Math.floor(performance.now() * 1000))).toString(36) + Math.floor(performance.now()).toString(36); lsSet(KEY, sid); }
   let askedEmail = false, lastCount = 0, pollTimer = null, pollRate = 0;
 
   const POLL_OPEN = 4000, POLL_IDLE = 20000;
@@ -183,8 +190,8 @@
   panel.addEventListener('focusout', () => setTimeout(() => { if (!typing()) unpin(); }, 0));
 
   // nudge behaviour: appear once after a short delay; opening chat or dismissing remembers it
-  function showNudge() { if (localStorage.getItem(NUDGE_KEY)) return; nudge.classList.add('show'); fab.classList.add('nudging'); }
-  function dismissNudge() { nudge.classList.remove('show'); fab.classList.remove('nudging'); localStorage.setItem(NUDGE_KEY, '1'); }
+  function showNudge() { if (lsGet(NUDGE_KEY)) return; nudge.classList.add('show'); fab.classList.add('nudging'); }
+  function dismissNudge() { nudge.classList.remove('show'); fab.classList.remove('nudging'); lsSet(NUDGE_KEY, '1'); }
   nudge.onclick = () => { dismissNudge(); open(); };
   nudge.querySelector('.chat-nudge-x').onclick = (e) => { e.stopPropagation(); dismissNudge(); };
   setTimeout(() => {
@@ -263,7 +270,7 @@
     try {
       const r = await fetch('/api/chat', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Object.assign({ sid, text, email: localStorage.getItem('alatoo_chat_email') || '' }, pageCtx()))
+        body: JSON.stringify(Object.assign({ sid, text, email: lsGet('alatoo_chat_email') || '' }, pageCtx()))
       });
       let j = {}; try { j = await r.json(); } catch (e) { /* empty body */ }
       ok = r.ok && j.ok !== false;
@@ -271,7 +278,7 @@
     } catch (e) { notice(FAIL); }
     if (!ok) { pending.push(text); return; }
     notices.length = 0; pending.length = 0;
-    if (!askedEmail && !localStorage.getItem('alatoo_chat_email')) {
+    if (!askedEmail && !lsGet('alatoo_chat_email')) {
       askedEmail = true;
       panel.querySelector('#chatEmail').style.display = 'flex';
     }
@@ -284,7 +291,7 @@
 
   panel.querySelector('#chatEmailSave').onclick = () => {
     const v = panel.querySelector('#chatEmailInput').value.trim();
-    if (v) { localStorage.setItem('alatoo_chat_email', v); fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ sid, text: '(left email: ' + v + ')', email: v }, pageCtx())) }); }
+    if (v) { lsSet('alatoo_chat_email', v); fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ sid, text: '(left email: ' + v + ')', email: v }, pageCtx())) }); }
     panel.querySelector('#chatEmail').style.display = 'none';
     if (v) bubble('sys', 'Thanks! We’ll reply here and by email.');
   };
