@@ -11,7 +11,15 @@
   const root = document.getElementById('tourRoot');
   if (!t) { root.innerHTML = '<div class="wrap" style="padding:160px 0 80px"><h1>Tour not found</h1><p><a href="tours.html">← Back to all tours</a></p></div>'; return; }
 
-  document.title = `${t.name}, Kyrgyzstan Tour | Azat Tours`;
+  // Keep in sync with server.js tourTitle(): avoid a double "Kyrgyzstan", cap ≤60.
+  const tourTitle = name => {
+    let base = name;
+    if (!/kyrgyzstan/i.test(base) && base.length + 12 <= 60) base += ', Kyrgyzstan';
+    const withBrand = base + ' | Azat Tours';
+    return withBrand.length <= 60 ? withBrand : base;
+  };
+  const absUrl = u => u ? (/^https?:\/\//.test(u) ? u : 'https://azattours.com/' + String(u).replace(/^\/+/, '')) : '';
+  document.title = tourTitle(t.name);
 
   // ---- per-tour SEO: meta description, og tags, canonical, JSON-LD ----
   // Honesty rule: no Offer (price is on request) and no ratings in the markup.
@@ -28,7 +36,7 @@
     setMeta('property', 'og:type', 'website');
     setMeta('property', 'og:title', document.title);
     setMeta('property', 'og:description', desc);
-    setMeta('property', 'og:image', (t.images && t.images[0]) || '');
+    setMeta('property', 'og:image', absUrl((t.images && t.images[0]) || '')); // og:image must be absolute
     setMeta('name', 'twitter:card', 'summary_large_image');
     let canon = document.head.querySelector('link[rel="canonical"]');
     if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }

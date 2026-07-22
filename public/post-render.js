@@ -37,7 +37,7 @@
   const words = String(p.body).trim().split(/\s+/).length;
   const readTime = Math.max(1, Math.round(words / 200)) + ' min read';
   const dateStr = p.date ? new Date(p.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-  document.title = `${p.title} | Azat Tours Kyrgyzstan`;
+  document.title = `${p.title} | Azat Tours`; // shorter suffix keeps more titles ≤60
 
   // ---- per-post SEO: meta description, og tags, canonical, JSON-LD ----
   (function seo() {
@@ -53,7 +53,8 @@
     setMeta('property', 'og:type', 'article');
     setMeta('property', 'og:title', document.title);
     setMeta('property', 'og:description', desc);
-    setMeta('property', 'og:image', p.cover || '');
+    const absUrl = u => u ? (/^https?:\/\//.test(u) ? u : 'https://azattours.com/' + String(u).replace(/^\/+/, '')) : '';
+    setMeta('property', 'og:image', absUrl(p.cover || '')); // og:image must be absolute
     setMeta('name', 'twitter:card', 'summary_large_image');
     let canon = document.head.querySelector('link[rel="canonical"]');
     if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }

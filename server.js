@@ -88,6 +88,17 @@ function cachedLoad(jsonPath, loader) {
 const ORIGIN = 'https://azattours.com';
 const abs = u => u ? (/^https?:\/\//.test(u) ? u : ORIGIN + '/' + String(u).replace(/^\/+/, '')) : '';
 
+// SEO <title> builders. Names are already clean (scripts/normalize-tour-names.js),
+// so we only avoid a double "Kyrgyzstan"/redundant suffix and keep titles ≤60:
+// priority is the keyword-rich name > country hint > brand.
+function tourTitle(name) {
+  let base = name;
+  if (!/kyrgyzstan/i.test(base) && base.length + 12 <= 60) base += ', Kyrgyzstan';
+  const withBrand = base + ' | Azat Tours';
+  return withBrand.length <= 60 ? withBrand : base;
+}
+function postTitle(title) { return title + ' | Azat Tours'; } // was " | Azat Tours Kyrgyzstan" (too long)
+
 function buildSlugMeta(urlPath, slug) {
   try {
     if (urlPath === '/tour.html') {
@@ -97,7 +108,7 @@ function buildSlugMeta(urlPath, slug) {
       const url = ORIGIN + '/tour.html?slug=' + encodeURIComponent(slug);
       const image = abs((t.images && t.images[0]) || '');
       return {
-        key: 'tour-' + slug, title: `${t.name}, Kyrgyzstan Tour | Azat Tours`,
+        key: 'tour-' + slug, title: tourTitle(t.name),
         desc, ogType: 'website', image, url,
         jsonld: [
           { '@context': 'https://schema.org', '@type': 'TouristTrip', name: t.name, description: t.summary || desc,
@@ -118,7 +129,7 @@ function buildSlugMeta(urlPath, slug) {
       const url = ORIGIN + '/post.html?slug=' + encodeURIComponent(slug);
       const image = abs(po.cover || '');
       return {
-        key: 'post-' + slug, title: `${po.title} | Azat Tours Kyrgyzstan`,
+        key: 'post-' + slug, title: postTitle(po.title),
         desc, ogType: 'article', image, url,
         jsonld: [
           { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: po.title, description: desc,
@@ -137,6 +148,9 @@ function buildSlugMeta(urlPath, slug) {
   return null;
 }
 function injectSlugMeta(html, m) {
+  // A tour/post page reached without a valid slug is a thin duplicate of the first
+  // item — keep it out of the index instead of serving a generic indexable page.
+  if (m.noindex) return html.replace('</head>', '<meta name="robots" content="noindex">\n</head>');
   const at = s => esc(s).replace(/"/g, '&quot;'); // attribute context needs quotes escaped too
   // JSON-LD for bots that don't run JS; escape "<" so a value can't close the script tag.
   const ld = m.jsonld
@@ -266,7 +280,10 @@ const server = http.createServer(async (req, res) => {
     // per-slug meta for tour/post pages: without the slug in the ETag a 304
     // could confirm another slug's cached <head>
     const slug = u.searchParams.get('slug');
-    const slugMeta = slug ? buildSlugMeta(urlPath, slug) : null;
+    const isItemPage = urlPath === '/tour.html' || urlPath === '/post.html';
+    let slugMeta = slug ? buildSlugMeta(urlPath, slug) : null;
+    // tour/post page with no valid slug (bare or unknown) → noindex, not a generic dupe
+    if (isItemPage && !slugMeta) slugMeta = { noindex: true, key: 'noindex' };
     const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + '"';
     const headers = {
       'Content-Type': type,
