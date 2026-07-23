@@ -290,6 +290,20 @@
           <div class="tours-grid">${related.map(relCard).join('')}</div>
         </section>` : '';
 
+  // Length variants of the same route (e.g. "Ultimate Road Trip" runs 7-12 days as
+  // separate tours). Linking them turns duration clones that compete for the same
+  // query into one cluster, and lets people pick by time budget. Day count comes
+  // from the NAME suffix, not t.days (one tour's days field is off by one).
+  const seriesBase = n => n.replace(/\s*-\s*\d+\s*Days?\s*$/i, '').trim();
+  const seriesDays = n => { const m = n.match(/-\s*(\d+)\s*Days?\s*$/i); return m ? +m[1] : 0; };
+  const variants = seriesDays(t.name)
+    ? TOURS.filter(x => x.slug !== t.slug && seriesDays(x.name) && seriesBase(x.name) === seriesBase(t.name))
+        .sort((a, b) => seriesDays(a.name) - seriesDays(b.name))
+    : [];
+  const variantHTML = variants.length ? `
+        <div class="variant-row reveal in">Also available as: ${variants.map(v =>
+          `<a href="tour.html?slug=${encodeURIComponent(v.slug)}">${seriesDays(v.name)} days</a>`).join(' · ')}</div>` : '';
+
   // Visible FAQ accordion (reuses .faq-item/.faq-q/.faq-a + the toggle in script.js).
   const faqHTML = faqs.length ? `
         <section class="reveal in">
@@ -320,6 +334,7 @@
 
         ${tabsHTML}
         ${desktopAboutHTML}
+        ${variantHTML}
 
         <section class="reveal in">
           <h2>Day-by-day itinerary</h2>

@@ -450,6 +450,14 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .bk-h{font-weight:600;font-size:.9rem;margin-bottom:9px}   /* used by the booking sidebar (.book-side) */
 
 /* itinerary timeline */
+/* short indexable intro under the catalog grid */
+.catalog-note{margin-top:36px;max-width:70ch}
+.catalog-note p{color:var(--ink-soft);font-size:.97rem;margin-bottom:12px}
+.catalog-note p:last-child{margin-bottom:0}
+/* "Also available as: 7 days · 9 days" — links between length variants of one route */
+.variant-row{margin:4px 0 10px;font-size:.95rem;color:var(--ink-soft)}
+.variant-row a{color:var(--lake);font-weight:600}
+.variant-row a:hover{text-decoration:underline}
 .timeline{position:relative;margin-top:10px}
 .tl{position:relative;padding:0 0 4px 56px;margin-bottom:8px}
 .tl::before{content:attr(data-day);position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--lake-fill);color:#fff;display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:.9rem}
@@ -1106,6 +1114,8 @@ body[data-page="plan"] .plan-faq .faq-a .season-legend{margin-bottom:4px}
   .chat-input input,.chat-email input{font-size:16px}
   /* same fix for the real forms (lead on home, contact, tour) — base is .95rem */
   .field input,.field select,.field textarea{font-size:16px}
+  /* new body-text elements respect the 16px mobile floor */
+  .variant-row,.catalog-note p{font-size:1rem}
   .chat-fab{bottom:34px}
   .chat-nudge{bottom:162px;max-width:calc(100vw - 44px)}
   /* Scroll lock under the sheet. Deliberately NOT position:fixed and NOT overflow:hidden on
