@@ -6,6 +6,7 @@ const path = require('path');
 const { Bot, InlineKeyboard } = require('grammy');
 const C = require('./lib/content');
 const store = require('./lib/store');
+const { waLink } = require('./lib/lead');
 
 // ---------- config ----------
 const CONFIG_PATH = path.join(__dirname, 'config.json');
@@ -136,7 +137,7 @@ bot.command('start', async ctx => {
 });
 bot.command('menu', ctx => ctx.reply(MENU_TEXT, { ...md, reply_markup: mainMenuKb() }));
 bot.callbackQuery('m:home', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(MENU_TEXT, { ...md, reply_markup: mainMenuKb() }); });
-bot.callbackQuery('m:leads', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(leadsText(), md); });
+bot.callbackQuery('m:leads', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = leadListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.callbackQuery('m:chats', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(chatsText(), md); });
 bot.command('help', ctx => ctx.reply(
   'TOURS\n/tours — list, view, edit text, manage photos, delete\n/addtour — new tour wizard\n\n' +
@@ -148,14 +149,47 @@ bot.command('help', ctx => ctx.reply(
 bot.command('tours', ctx => { const { text, kb } = tourListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.command('posts', ctx => { const { text, kb } = postListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
 
-// recent leads
-function leadsText() {
-  const leads = store.listLeads(12);
-  if (!leads.length) return 'No leads yet. They will appear here the moment someone submits a form.';
-  const fmt = l => `• ${b(l.name || '—')} — ${esc(l.email || '—')}\n  ${esc([l.tour, l.people && l.people + ' ppl', l.dates].filter(Boolean).join(' · '))}${l.msg ? '\n  💬 ' + esc(l.msg) : ''}${l.trip_summary ? '\n  ' + esc(l.trip_summary.replace(/\n/g, ' ')) : ''}`;
-  return '📨 <b>Recent leads</b>\n\n' + leads.map(fmt).join('\n\n');
+// recent leads — a tappable list; each opens a card with WhatsApp reply + "handled"
+function leadListKb() {
+  const leads = store.listLeads(20);
+  const kb = new InlineKeyboard();
+  if (!leads.length) return { text: 'No leads yet. They will appear here the moment someone submits a form.', kb };
+  leads.forEach(l => kb.text(`${l.handled ? '✅' : '🆕'} ${(l.name || '—') + (l.tour ? ' · ' + l.tour : '')}`.slice(0, 55), `l:v:${l.id}`).row());
+  return { text: '📨 <b>Recent leads</b> — tap one to reply or mark it handled:', kb };
 }
-bot.command('leads', ctx => ctx.reply(leadsText(), md));
+function leadView(id) {
+  const l = store.getLead(id);
+  if (!l) return null;
+  const when = l.ts ? String(l.ts).slice(0, 16).replace('T', ' ') : '';
+  const lines = [
+    l.handled ? '✅ <b>Handled</b>' : '🆕 <b>New lead</b>',
+    l.tour ? `🏔 ${esc(l.tour)}` : '',
+    `👤 ${esc(l.name || '—')}`,
+    `✉️ <code>${esc(l.email || '—')}</code>`,
+    l.people ? `👥 ${esc(l.people)} traveller(s)` : '',
+    l.dates ? `📅 ${esc(l.dates)}` : '',
+    l.whatsapp ? `📱 <code>${esc(l.whatsapp)}</code>` : '',
+    l.msg ? `💬 ${esc(l.msg)}` : '',
+    l.trip_summary ? `\n${esc(l.trip_summary)}` : '',
+    when ? `\n🕓 ${esc(when)}` : ''
+  ].filter(Boolean);
+  const kb = new InlineKeyboard();
+  const wa = waLink(l);
+  if (wa) kb.url('💬 Reply on WhatsApp', wa).row();
+  if (!l.handled) kb.text('✅ Mark handled', `l:done:${l.id}`).row();
+  kb.text('« Back', 'l:list');
+  return { text: lines.join('\n'), kb };
+}
+bot.command('leads', ctx => { const { text, kb } = leadListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
+bot.callbackQuery('l:list', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = leadListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
+bot.callbackQuery(/^l:v:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = leadView(Number(ctx.match[1])); if (!v) return ctx.reply('Lead not found.'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^l:done:(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]);
+  store.markLeadHandled(id);
+  await ctx.answerCallbackQuery({ text: 'Marked handled ✅' });
+  const v = leadView(id);
+  if (v) { try { await ctx.editMessageText(v.text, { ...md, reply_markup: v.kb }); } catch (e) { await ctx.reply(v.text, { ...md, reply_markup: v.kb }); } }
+});
 
 // answer an on-site chat by id: /reply <sid> <text>
 bot.command('reply', ctx => {

@@ -6,6 +6,7 @@ const path = require('path');
 const zlib = require('zlib');
 const store = require('./lib/store');
 const content = require('./lib/content'); // read-only here: per-slug meta for tour.html/post.html
+const { waLink } = require('./lib/lead'); // "Reply on WhatsApp" button on the lead notification
 
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public'); // website assets are served from here
@@ -232,14 +233,20 @@ const server = http.createServer(async (req, res) => {
         '🔔 <b>New lead from the website</b>',
         lead.tour ? `🏔 ${esc(lead.tour)}` : '',
         `👤 ${esc(lead.name || '—')}`,
-        `✉️ ${esc(lead.email || '—')}`,
+        `✉️ <code>${esc(lead.email || '—')}</code>`,
         lead.people ? `👥 ${esc(lead.people)} traveller(s)` : '',
         lead.dates ? `📅 ${esc(lead.dates)}` : '',
-        lead.whatsapp ? `📱 ${esc(lead.whatsapp)}` : '',
+        lead.whatsapp ? `📱 <code>${esc(lead.whatsapp)}</code>` : '',
         lead.msg ? `💬 ${esc(lead.msg)}` : '',
         lead.trip_summary ? `\n${esc(lead.trip_summary)}` : ''
       ].filter(Boolean);
-      await tg('sendMessage', { chat_id: OWNER_ID, text: lines.join('\n'), parse_mode: 'HTML' });
+      // Action buttons: WhatsApp (only if they left a number) + mark handled.
+      // The bot (bot.js) handles the l:done:<id> callback; same lead id.
+      const wa = waLink(lead);
+      const row = [];
+      if (wa) row.push({ text: '💬 Reply on WhatsApp', url: wa });
+      row.push({ text: '✅ Mark handled', callback_data: `l:done:${rec.id}` });
+      await tg('sendMessage', { chat_id: OWNER_ID, text: lines.join('\n'), parse_mode: 'HTML', reply_markup: { inline_keyboard: [row] } });
       return sendJson(res, 200, { ok: true, id: rec.id });
     }
 
