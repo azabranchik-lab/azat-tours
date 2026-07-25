@@ -3,6 +3,8 @@ config.json
 content/
 images/
 *.tar.gz
+*.bak
+*.tmp
 logs/
 
 .gstack/
