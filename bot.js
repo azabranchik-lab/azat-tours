@@ -38,6 +38,16 @@ bot.use(async (ctx, next) => {
   return next();
 });
 
+// Navigating away (a command, or tapping a section/menu button) abandons any
+// half-finished edit or wizard, so the next thing you type isn't swallowed by a
+// stale prompt. /done and /cancel manage the session themselves, so skip them.
+bot.use(async (ctx, next) => {
+  const cmd = ctx.message && typeof ctx.message.text === 'string' && ctx.message.text.startsWith('/') && !/^\/(done|cancel)\b/i.test(ctx.message.text);
+  const nav = ctx.callbackQuery && /^(m:|t:list$|p:list$|g:list$|r:list$|sg:list$|l:list$|h:home$)/.test(ctx.callbackQuery.data || '');
+  if ((cmd || nav) && ctx.from) sessions.delete(ctx.from.id);
+  return next();
+});
+
 // ---------- helpers ----------
 const daysFrom = d => { const m = String(d).match(/(\d+)/); return m ? Number(m[1]) : 0; };
 // Messages use HTML (not Markdown): legacy Markdown has no reliable way to escape
@@ -48,6 +58,10 @@ const md = { parse_mode: 'HTML' };
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const b = s => `<b>${esc(s)}</b>`;       // bold a (possibly untrusted) value safely
 const code = s => `<code>${esc(s)}</code>`;
+// A prompt that waits for the owner to send something always offers a way out,
+// so there are no dead-ends where the only escape is remembering /cancel.
+const cancelKb = () => new InlineKeyboard().text('✖️ Cancel', 'x:cancel');
+const ask = (ctx, text) => ctx.reply(text, { ...md, reply_markup: cancelKb() });
 
 async function downloadPhoto(ctx, fileId, kind, slug, n) {
   const file = await ctx.api.getFile(fileId);
@@ -123,6 +137,7 @@ function postEditKb(id) {
 // ---------- commands ----------
 bot.command('whoami', ctx => ctx.reply(`Your Telegram ID: ${ctx.from.id}`));
 bot.command('cancel', ctx => { sessions.delete(ctx.from.id); ctx.reply('Cancelled. ✅'); });
+bot.callbackQuery('x:cancel', async ctx => { sessions.delete(ctx.from.id); await ctx.answerCallbackQuery({ text: 'Cancelled' }); await ctx.reply('Cancelled. ✅ Use /start for the menu.'); });
 const MENU_TEXT = '🏔️ <b>Azat Tours admin bot</b>\n\nTap a section below — or type a command (see the “/” menu). /help for details.';
 function mainMenuKb() {
   return new InlineKeyboard()
@@ -244,9 +259,10 @@ bot.callbackQuery(/^t:ef:(\d+):(\w+)$/, async ctx => {
     const kb = new InlineKeyboard(); TOUR_CATS.forEach(c => kb.text(c, `t:setcat:${id}:${c}`).row());
     return ctx.reply('Pick a category:', { reply_markup: kb });
   }
+  const t = C.loadTours().find(x => x.id === id);
   sessions.set(ctx.from.id, { mode: 'editfield', kind: 'tour', id, field });
   const hint = field === 'highlights' ? ' (comma-separated)' : '';
-  await ctx.reply(`Send the new ${b((TOUR_FIELDS.find(f => f[0] === field) || [, field])[1])}${hint}:`, md);
+  await ask(ctx, `✏️ ${b(t ? t.name : 'tour')} → send the new ${b((TOUR_FIELDS.find(f => f[0] === field) || [, field])[1])}${hint}:`);
 });
 bot.callbackQuery(/^t:setcat:(\d+):(.+)$/, async ctx => {
   const id = Number(ctx.match[1]); await ctx.answerCallbackQuery();
@@ -255,9 +271,13 @@ bot.callbackQuery(/^t:setcat:(\d+):(.+)$/, async ctx => {
   await ctx.reply(`✅ Category set to ${b(ctx.match[2])}. Site updated.`, md);
 });
 bot.callbackQuery(/^t:ph:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = tourPhotosView(Number(ctx.match[1])); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
-bot.callbackQuery(/^t:phadd:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'addphotos', kind: 'tour', id }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send photos now. /done when finished.'); });
+bot.callbackQuery(/^t:phadd:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'addphotos', kind: 'tour', id }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send photos now, then tap /done.'); });
 bot.callbackQuery(/^t:phdel:(\d+):(\d+)$/, async ctx => {
   const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  await ctx.reply(`Delete photo ${idx + 1}? This can't be undone.`, { reply_markup: new InlineKeyboard().text('🗑 Yes, delete', `t:phdelyes:${id}:${idx}`).text('« Keep', `t:ph:${id}`) });
+});
+bot.callbackQuery(/^t:phdelyes:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Deleted' });
   const tours = C.loadTours(); const t = tours.find(x => x.id === id);
   if (t && t.images[idx]) { if (t.images[idx].startsWith('images/')) delFile(t.images[idx]); t.images.splice(idx, 1); C.saveTours(tours); }
   const v = tourPhotosView(id); if (v) await ctx.reply('🗑 Removed.\n\n' + v.text, { ...md, reply_markup: v.kb });
@@ -284,9 +304,10 @@ bot.callbackQuery(/^p:e:(\d+)$/, async ctx => { await ctx.answerCallbackQuery();
 bot.callbackQuery(/^p:ef:(\d+):(\w+)$/, async ctx => {
   const id = Number(ctx.match[1]), field = ctx.match[2]; await ctx.answerCallbackQuery();
   if (field === 'category') { const kb = new InlineKeyboard(); POST_CATS.forEach((c, i) => { kb.text(c, `p:setcat:${id}:${c}`); if (i % 2) kb.row(); }); return ctx.reply('Pick a category:', { reply_markup: kb }); }
+  const po = C.loadPosts().find(x => x.id === id);
   sessions.set(ctx.from.id, { mode: 'editfield', kind: 'post', id, field });
   const hint = field === 'body' ? '\n\n<i>You can use ## headings, - lists, &gt; quotes, **bold**, [img:URL|caption], [tip:Title|Text].</i>' : '';
-  await ctx.reply(`Send the new ${b((POST_FIELDS.find(f => f[0] === field) || [, field])[1])}:${hint}`, md);
+  await ask(ctx, `✏️ ${b(po ? po.title : 'article')} → send the new ${b((POST_FIELDS.find(f => f[0] === field) || [, field])[1])}:${hint}`);
 });
 bot.callbackQuery(/^p:setcat:(\d+):(.+)$/, async ctx => {
   const id = Number(ctx.match[1]); await ctx.answerCallbackQuery();
@@ -294,7 +315,7 @@ bot.callbackQuery(/^p:setcat:(\d+):(.+)$/, async ctx => {
   if (p) { p.category = ctx.match[2]; C.savePosts(posts); }
   await ctx.reply(`✅ Category set to ${b(ctx.match[2])}.`, md);
 });
-bot.callbackQuery(/^p:cover:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'setcover', id }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the new cover photo.'); });
+bot.callbackQuery(/^p:cover:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'setcover', id }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new cover photo.'); });
 bot.callbackQuery(/^p:ph:(\d+)$/, async ctx => {
   const id = Number(ctx.match[1]); await ctx.answerCallbackQuery();
   const p = C.loadPosts().find(x => x.id === id); if (!p) return;
@@ -304,9 +325,13 @@ bot.callbackQuery(/^p:ph:(\d+)$/, async ctx => {
   await ctx.reply(`🏞 ${b(p.title)} — ${(p.images || []).length} gallery photo(s).`, { ...md, reply_markup: kb });
 });
 bot.callbackQuery('p:noop', ctx => ctx.answerCallbackQuery());
-bot.callbackQuery(/^p:phadd:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'addphotos', kind: 'post', id }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send gallery photos. /done when finished.'); });
+bot.callbackQuery(/^p:phadd:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'addphotos', kind: 'post', id }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send gallery photos, then tap /done.'); });
 bot.callbackQuery(/^p:phdel:(\d+):(\d+)$/, async ctx => {
   const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  await ctx.reply(`Delete gallery photo ${idx + 1}? This can't be undone.`, { reply_markup: new InlineKeyboard().text('🗑 Yes, delete', `p:phdelyes:${id}:${idx}`).text('« Keep', `p:ph:${id}`) });
+});
+bot.callbackQuery(/^p:phdelyes:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Deleted' });
   const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
   if (p && p.images[idx]) { if (p.images[idx].startsWith('images/')) delFile(p.images[idx]); p.images.splice(idx, 1); C.savePosts(posts); }
   await ctx.reply('🗑 Removed.');
@@ -350,6 +375,16 @@ bot.on('message:text', async ctx => {
 
   // edit a single field on an existing item
   if (s.mode === 'editfield') {
+    // Validate before saving so an empty send can't wipe a title, and a bad
+    // link can't reach the homepage. Session stays set so the owner can resend.
+    const val = txt.trim();
+    const REQUIRED = ['name', 'title', 'summary', 'text', 'excerpt', 'role', 'country', 'bio', 'duration', 'body'];
+    if (s.field === 'instagram.url') {
+      if (!/^https?:\/\/\S+$/i.test(val)) return ask(ctx, '⚠️ That doesn\'t look like a link. Send a full URL starting with https:// :');
+    } else if (REQUIRED.includes(s.field)) {
+      if (!val) return ask(ctx, '⚠️ That can\'t be empty. Send a value:');
+      if (val.length > 4000) return ask(ctx, '⚠️ That\'s too long (max 4000 characters). Send a shorter version:');
+    }
     try {
     if (s.kind === 'tour') {
       const tours = C.loadTours(); const t = tours.find(x => x.id === s.id); if (!t) { sessions.delete(ctx.from.id); return; }
@@ -588,10 +623,11 @@ bot.callbackQuery(/^g:v:(\d+)$/, async ctx => { await ctx.answerCallbackQuery();
 bot.callbackQuery(/^g:e:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); await ctx.reply('Which field?', { reply_markup: guideEditKb(Number(ctx.match[1])) }); });
 bot.callbackQuery(/^g:ef:(\d+):(\w+)$/, async ctx => {
   const id = Number(ctx.match[1]), field = ctx.match[2]; await ctx.answerCallbackQuery();
+  const g = C.loadGuides().find(x => x.id === id);
   sessions.set(ctx.from.id, { mode: 'editfield', kind: 'guide', id, field });
-  await ctx.reply(`Send the new ${b((GUIDE_FIELDS.find(f => f[0] === field) || [, field])[1])}${field === 'languages' ? ' (e.g. <code>KG RU EN</code>)' : ''}:`, md);
+  await ask(ctx, `✏️ ${b(g ? g.name : 'guide')} → send the new ${b((GUIDE_FIELDS.find(f => f[0] === field) || [, field])[1])}${field === 'languages' ? ' (e.g. <code>KG RU EN</code>)' : ''}:`);
 });
-bot.callbackQuery(/^g:photo:(\d+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'guidephoto', id: Number(ctx.match[1]) }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the new guide photo.'); });
+bot.callbackQuery(/^g:photo:(\d+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'guidephoto', id: Number(ctx.match[1]) }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new guide photo.'); });
 bot.callbackQuery(/^g:del:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery(); await ctx.reply('Delete this guide?', { reply_markup: new InlineKeyboard().text('✅ Yes', `g:delyes:${id}`).text('Cancel', `g:v:${id}`) }); });
 bot.callbackQuery(/^g:delyes:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery({ text: 'Deleted' }); const gs = C.loadGuides(); const g = gs.find(x => x.id === id); C.saveGuides(gs.filter(x => x.id !== id)); await ctx.reply(`🗑 Deleted ${b(g ? g.name : id)}. Site updated.`, md); });
 
@@ -626,13 +662,14 @@ bot.callbackQuery(/^r:v:(\d+)$/, async ctx => { await ctx.answerCallbackQuery();
 bot.callbackQuery(/^r:e:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); await ctx.reply('Which field?', { reply_markup: reviewEditKb(Number(ctx.match[1])) }); });
 bot.callbackQuery(/^r:ef:(\d+):(\w+)$/, async ctx => {
   const id = Number(ctx.match[1]), field = ctx.match[2]; await ctx.answerCallbackQuery();
+  const r = C.loadReviews().find(x => x.id === id);
   sessions.set(ctx.from.id, { mode: 'editfield', kind: 'review', id, field });
-  await ctx.reply(`Send the new ${b((REVIEW_FIELDS.find(f => f[0] === field) || [, field])[1])}${field === 'rating' ? ' (1–5)' : ''}:`, md);
+  await ask(ctx, `✏️ ${b(r ? 'review by ' + r.name : 'review')} → send the new ${b((REVIEW_FIELDS.find(f => f[0] === field) || [, field])[1])}${field === 'rating' ? ' (1–5)' : ''}:`);
 });
 bot.callbackQuery(/^r:place:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery(); await ctx.reply('Where should this review show?', { reply_markup: placementKb(`rsp:${id}`) }); });
 bot.callbackQuery(/^rsp:(\d+):(.+)$/, async ctx => {
   const id = Number(ctx.match[1]); let val = ctx.match[2]; await ctx.answerCallbackQuery();
-  if (val === 'tour') { sessions.set(ctx.from.id, { mode: 'reviewslug', id }); return ctx.reply('Send the <b>tour slug</b> (the part after slug= in the tour URL, e.g. <code>best-of-kyrgyzstan-10-days</code>):', md); }
+  if (val === 'tour') { sessions.set(ctx.from.id, { mode: 'reviewslug', id }); return ask(ctx, 'Send the <b>tour slug</b> (the part after slug= in the tour URL, e.g. <code>best-of-kyrgyzstan-10-days</code>):'); }
   const rs = C.loadReviews(); const r = rs.find(x => x.id === id); if (r) { r.placement = val; C.saveReviews(rs); }
   await ctx.reply(`✅ Now shown on ${esc(placeLabel(val))}. Site updated.`, md);
 });
@@ -708,10 +745,14 @@ bot.command('home', ctx => ctx.reply('🏠 <b>Homepage photos</b>\n\nManage the 
 bot.callbackQuery('h:home', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply('🏠 <b>Homepage photos</b>', { ...md, reply_markup: homeKb() }); });
 bot.callbackQuery('h:noop', ctx => ctx.answerCallbackQuery());
 bot.callbackQuery('h:ig', async ctx => { await ctx.answerCallbackQuery(); const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
-bot.callbackQuery('h:igadd', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'instagram' }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the photo(s) for the Instagram grid. /home when done.'); });
-bot.callbackQuery('h:igurl', async ctx => { sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'instagram.url' }); await ctx.answerCallbackQuery(); await ctx.reply('🔗 Send your Instagram link (e.g. <code>https://www.instagram.com/azattourskg/</code>):', md); });
+bot.callbackQuery('h:igadd', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'instagram' }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the photo(s) for the Instagram grid, then /home.'); });
+bot.callbackQuery('h:igurl', async ctx => { sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'instagram.url' }); await ctx.answerCallbackQuery(); await ask(ctx, '🔗 Send your Instagram link (e.g. <code>https://www.instagram.com/azattourskg/</code>):'); });
 bot.callbackQuery(/^h:igdel:(\d+)$/, async ctx => {
   const idx = Number(ctx.match[1]); await ctx.answerCallbackQuery();
+  await ctx.reply(`Delete Instagram photo ${idx + 1}? This can't be undone.`, { reply_markup: new InlineKeyboard().text('🗑 Yes, delete', `h:igdelyes:${idx}`).text('« Keep', 'h:ig') });
+});
+bot.callbackQuery(/^h:igdelyes:(\d+)$/, async ctx => {
+  const idx = Number(ctx.match[1]); await ctx.answerCallbackQuery({ text: 'Deleted' });
   const site = C.loadSite(); const photos = (site.instagram && site.instagram.photos) || [];
   if (photos[idx]) { if (String(photos[idx]).startsWith('images/')) delFile(photos[idx]); photos.splice(idx, 1); C.saveSite(site); }
   const v = igView(); await ctx.reply('🗑 Removed.\n\n' + v.text, { ...md, reply_markup: v.kb });
@@ -725,11 +766,11 @@ bot.callbackQuery(/^h:igmain:(\d+)$/, async ctx => {
 bot.callbackQuery('h:exp', async ctx => { await ctx.answerCallbackQuery(); const v = expView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
 bot.callbackQuery(/^h:expset:(\d+)$/, async ctx => {
   const i = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'experience', idx: i });
-  await ctx.answerCallbackQuery(); await ctx.reply(`📷 Send the new photo for ${b(EXP_SLOTS[i] || ('card ' + (i + 1)))}.`, md);
+  await ctx.answerCallbackQuery(); await ask(ctx, `📷 Send the new photo for ${b(EXP_SLOTS[i] || ('card ' + (i + 1)))}.`);
 });
-bot.callbackQuery('h:heroset', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'hero' }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the new <b>hero</b> (top banner) photo. Wide/landscape works best.', md); });
+bot.callbackQuery('h:heroset', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'hero' }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new <b>hero</b> (top banner) photo. Wide/landscape works best.'); });
 bot.callbackQuery('h:builder', async ctx => { await ctx.answerCallbackQuery(); const v = builderView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
-bot.callbackQuery(/^h:builderset:(\d+)$/, async ctx => { const i = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'builder', idx: i }); await ctx.answerCallbackQuery(); await ctx.reply(`📷 Send builder photo <b>${i + 1}</b>.`, md); });
+bot.callbackQuery(/^h:builderset:(\d+)$/, async ctx => { const i = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'builder', idx: i }); await ctx.answerCallbackQuery(); await ask(ctx, `📷 Send builder photo <b>${i + 1}</b>.`); });
 
 // ================= SIGHTS (photos + captions for "Sights visited on this tour") =================
 function sightsListKb() {
@@ -760,8 +801,8 @@ function sightView(key) {
 bot.command('sights', ctx => { const { text, kb } = sightsListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.callbackQuery('sg:list', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = sightsListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.callbackQuery(/^sg:v:(.+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = sightView(ctx.match[1]); if (!v) return ctx.reply('Not found.'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
-bot.callbackQuery(/^sg:ph:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightphoto', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ctx.reply('📷 Send the new photo for this place. /cancel to stop.'); });
-bot.callbackQuery(/^sg:bl:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightblurb', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ctx.reply('✏️ Send a short one-line description for this place. /cancel to stop.'); });
+bot.callbackQuery(/^sg:ph:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightphoto', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new photo for this place.'); });
+bot.callbackQuery(/^sg:bl:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightblurb', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '✏️ Send a short one-line description for this place.'); });
 
 bot.catch(async (err) => {
   console.error('Bot error:', err);
