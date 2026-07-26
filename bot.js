@@ -7,6 +7,7 @@ const { Bot, InlineKeyboard, InputFile } = require('grammy');
 const C = require('./lib/content');
 const store = require('./lib/store');
 const { waLink } = require('./lib/lead');
+const ai = require('./lib/ai');
 
 // ---------- config ----------
 const CONFIG_PATH = path.join(__dirname, 'config.json');
@@ -96,6 +97,7 @@ function tourListKb() {
   const kb = new InlineKeyboard();
   tours.slice(0, 40).forEach(t => kb.text(`${t.status === 'draft' ? '📝 ' : ''}${t.name}`.slice(0, 45), `t:v:${t.id}`).row());
   if (tours.length) kb.text('🔎 Search', 'xsearch:tour').row();
+  kb.text('✍️ New tour with Claude', 'ai:tour').row();
   const more = tours.length > 40 ? ` (showing 40 — use 🔎 to find the rest)` : '';
   return { text: `📋 <b>${tours.length} tours</b>${more} — tap one:`, kb };
 }
@@ -165,7 +167,7 @@ function postListKb() {
   const kb = new InlineKeyboard();
   posts.forEach(p => kb.text(`${p.status === 'draft' ? '📝 ' : ''}${p.title}`.slice(0, 45), `p:v:${p.id}`).row());
   if (posts.length) kb.text('🔎 Search', 'xsearch:post').row();
-  kb.text('➕ New article', 'p:add').row();
+  kb.text('➕ New article', 'p:add').text('✍️ New post with Claude', 'ai:post').row();
   return { text: `📰 <b>${posts.length} articles</b> — tap one:`, kb };
 }
 function postView(id) {
@@ -351,6 +353,50 @@ bot.callbackQuery(/^dr:discyes:(p|t):(\d+)$/, async ctx => {
   const { text, kb } = draftListKb(); await ctx.reply('🗑 Draft discarded.\n\n' + text, { ...md, reply_markup: kb });
 });
 
+// ---------- order content from Claude (brief -> AI draft -> review queue) ----------
+bot.callbackQuery('ai:post', async ctx => {
+  await ctx.answerCallbackQuery();
+  if (!ai.available()) return ctx.reply('✍️ Claude drafting is not set up yet — ' + ai.why() + '.');
+  sessions.set(ctx.from.id, { mode: 'aibrief', kind: 'post', brief: '' });
+  await ask(ctx, '✍️ <b>New post with Claude</b>\n\nDescribe the post: the topic and the facts (numbers, places, dates). I write it in our voice using only your facts, and mark anything missing so you can fill it in. Send it in one or several messages, then /done.');
+});
+bot.callbackQuery('ai:tour', async ctx => {
+  await ctx.answerCallbackQuery();
+  if (!ai.available()) return ctx.reply('✍️ Claude drafting is not set up yet — ' + ai.why() + '.');
+  sessions.set(ctx.from.id, { mode: 'aibrief', kind: 'tour', brief: '' });
+  await ask(ctx, '✍️ <b>New tour with Claude</b>\n\nRoughly describe the program: the route day by day and the facts (distances, altitudes, seasons). I draft the tour from your facts and invent nothing. Send it, then /done.');
+});
+async function sendLong(ctx, text) {
+  const s = String(text || '');
+  for (let i = 0; i < s.length; i += 3800) await ctx.reply(esc(s.slice(i, i + 3800)), md);
+}
+async function aiDraft(ctx, s) {
+  if (!s.brief || !s.brief.trim()) { sessions.delete(ctx.from.id); return ctx.reply('No brief received. Tap the button again and send some text first.'); }
+  await ctx.reply('✍️ Writing your draft, one moment…');
+  try {
+    if (s.kind === 'post') {
+      const out = await ai.draftPost(s.brief);
+      const posts = C.loadPosts(); const d = C.blankPost();
+      Object.assign(d, { title: out.title, excerpt: out.excerpt, category: out.category, body: out.body });
+      d.id = C.nextPostId(posts); d.slug = C.uniquePostSlug(d.title, posts); d.date = new Date().toISOString().slice(0, 10);
+      if (!d.cover) d.cover = 'img/hero/hero-1-reflection-1400.jpg';
+      d.status = 'draft'; posts.unshift(d); C.savePosts(posts); sessions.delete(ctx.from.id);
+      await ctx.reply('✅ <b>Draft ready.</b> Full text below. Add photos and publish from 📝 Drafts.', md);
+      await sendLong(ctx, out.body);
+      const v = draftView('p', d.id); return ctx.reply(v.text, { ...md, reply_markup: v.kb });
+    }
+    const out = await ai.draftTour(s.brief);
+    const tours = C.loadTours(); const d = C.blankTour();
+    Object.assign(d, { name: out.name, category: out.category, cats: [out.category], duration: out.duration, days: daysFrom(out.duration), season: out.season, summary: out.summary, highlights: out.highlights, itinerary: out.itinerary });
+    d.id = C.nextId(tours); d.slug = C.uniqueSlug(d.name, tours); d.status = 'draft'; tours.unshift(d); C.saveTours(tours); sessions.delete(ctx.from.id);
+    await ctx.reply('✅ <b>Draft ready.</b> Open Edit → Itinerary to review each day, add photos, then publish from 📝 Drafts.', md);
+    const v = draftView('t', d.id); return ctx.reply(v.text, { ...md, reply_markup: v.kb });
+  } catch (e) {
+    console.error('ai draft failed:', e); sessions.delete(ctx.from.id);
+    return ctx.reply('⚠️ Could not write the draft — ' + (e.message || 'unknown error') + '. Try again.');
+  }
+}
+
 bot.command('addtour', ctx => {
   sessions.set(ctx.from.id, { mode: 'addtour', step: 'name', draft: C.blankTour() });
   ctx.reply('🆕 <b>New tour</b>\n\nTour <b>name</b>?', md);
@@ -367,6 +413,7 @@ bot.command('done', async ctx => {
   if (s.mode === 'addpost' && s.step === 'extra') return savePostDraft(ctx, s);
   if (s.mode === 'addguide' && s.step === 'photo') return saveGuideDraft(ctx, s);
   if (s.mode === 'addreview' && s.step === 'photo') return saveReviewDraft(ctx, s);
+  if (s.mode === 'aibrief') return aiDraft(ctx, s);
   if (s.mode === 'addphotos') { sessions.delete(ctx.from.id); return ctx.reply('✅ Done adding photos.'); }
 });
 
@@ -568,6 +615,12 @@ bot.on('message:text', async ctx => {
   if (!s) return;
   const txt = ctx.message.text;
   if (txt.startsWith('/')) return;
+
+  // collecting a brief for an AI draft (accumulate messages until /done)
+  if (s.mode === 'aibrief') {
+    s.brief = (s.brief ? s.brief + '\n' : '') + txt;
+    return ctx.reply('Got it. Add more detail, or /done to write the draft.', { ...md, reply_markup: cancelKb() });
+  }
 
   // search within a list by name
   if (s.mode === 'search') {

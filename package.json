@@ -17,6 +17,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
     "grammy": "^1.44.0"
   },
   "devDependencies": {
