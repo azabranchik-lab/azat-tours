@@ -8,6 +8,8 @@ const C = require('./lib/content');
 const store = require('./lib/store');
 const { waLink } = require('./lib/lead');
 const ai = require('./lib/ai');
+const PREVIEW_KEY = require('./lib/previewkey');
+const ORIGIN = cfg.origin || 'https://azattours.com';
 
 // ---------- config ----------
 const CONFIG_PATH = path.join(__dirname, 'config.json');
@@ -317,12 +319,16 @@ function draftView(kind, id) {
     const p = C.loadPosts().find(x => x.id === id); if (!p || p.status !== 'draft') return null;
     const body = p.body || '';
     const text = `📰 <b>DRAFT</b> — ${b(p.title)}\n📂 ${esc(p.category)} · ✍️ ${esc(p.author)}\n\n<i>${esc((p.excerpt || '').slice(0, 200))}</i>\n\n${esc(body.slice(0, 700))}${body.length > 700 ? '…' : ''}`;
-    const kb = new InlineKeyboard().text('✅ Publish', `dr:pub:p:${id}`).text('✏️ Edit', `p:v:${id}`).row().text('🗑 Discard', `dr:disc:p:${id}`).text('« Drafts', 'dr:list').row();
+    const kb = new InlineKeyboard();
+    if (PREVIEW_KEY && p.slug) kb.url('👁 Preview on site', `${ORIGIN}/post.html?slug=${encodeURIComponent(p.slug)}&preview=${PREVIEW_KEY}`).row();
+    kb.text('✅ Publish', `dr:pub:p:${id}`).text('✏️ Edit', `p:v:${id}`).row().text('🗑 Discard', `dr:disc:p:${id}`).text('« Drafts', 'dr:list').row();
     return { text, kb };
   }
   const t = C.loadTours().find(x => x.id === id); if (!t || t.status !== 'draft') return null;
   const text = `🏔 <b>DRAFT</b> — ${b(t.name)}\n📂 ${esc((t.cats || []).join(', ') || t.category)} · ⏱ ${esc(t.duration || '—')}\n🗺 ${(t.itinerary || []).length} day(s) · 📷 ${(t.images || []).length} photo(s)\n\n${esc((t.summary || '').slice(0, 600))}`;
-  const kb = new InlineKeyboard().text('✅ Publish', `dr:pub:t:${id}`).text('✏️ Edit', `t:v:${id}`).row().text('🗑 Discard', `dr:disc:t:${id}`).text('« Drafts', 'dr:list').row();
+  const kb = new InlineKeyboard();
+  if (PREVIEW_KEY && t.slug) kb.url('👁 Preview on site', `${ORIGIN}/tour.html?slug=${encodeURIComponent(t.slug)}&preview=${PREVIEW_KEY}`).row();
+  kb.text('✅ Publish', `dr:pub:t:${id}`).text('✏️ Edit', `t:v:${id}`).row().text('🗑 Discard', `dr:disc:t:${id}`).text('« Drafts', 'dr:list').row();
   return { text, kb };
 }
 bot.command('drafts', ctx => { const { text, kb } = draftListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });

@@ -7,6 +7,7 @@ const zlib = require('zlib');
 const store = require('./lib/store');
 const content = require('./lib/content'); // read-only here: per-slug meta for tour.html/post.html
 const { waLink } = require('./lib/lead'); // "Reply on WhatsApp" button on the lead notification
+const PREVIEW_KEY = require('./lib/previewkey'); // secret gate for previewing drafts on the live site
 
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public'); // website assets are served from here
@@ -132,10 +133,10 @@ function faqSchema(faqs) {
     mainEntity: faqs.map(f => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } })) };
 }
 
-function buildSlugMeta(urlPath, slug) {
+function buildSlugMeta(urlPath, slug, includeDrafts) {
   try {
     if (urlPath === '/tour.html') {
-      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug && x.status !== 'draft');
+      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug && (includeDrafts || x.status !== 'draft'));
       if (!t) return null;
       const desc = ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158);
       const url = ORIGIN + '/tour.html?slug=' + encodeURIComponent(slug);
@@ -156,7 +157,7 @@ function buildSlugMeta(urlPath, slug) {
       };
     }
     if (urlPath === '/post.html') {
-      const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug && x.status !== 'draft');
+      const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug && (includeDrafts || x.status !== 'draft'));
       if (!po) return null;
       const desc = String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158);
       const url = ORIGIN + '/post.html?slug=' + encodeURIComponent(slug);
@@ -290,6 +291,17 @@ const server = http.createServer(async (req, res) => {
   try { urlPath = decodeURIComponent(p); }
   catch { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Bad request'); }
   if (urlPath === '/') urlPath = '/index.html';
+
+  // Draft preview: serve draft-inclusive data ONLY with the secret key. Without
+  // it, the public data files stay drafts-free. Not cached, not indexed.
+  if (PREVIEW_KEY && (urlPath === '/posts-data.js' || urlPath === '/tours-data.js') && u.searchParams.get('key') === PREVIEW_KEY) {
+    const isPosts = urlPath === '/posts-data.js';
+    const list = isPosts ? content.loadPosts() : content.loadTours();
+    const body = (isPosts ? 'window.POSTS = ' : 'window.TOURS = ') + JSON.stringify(list) + ';\n';
+    res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' });
+    return res.end(body);
+  }
+
   const filePath = path.join(PUBLIC, urlPath);
   if (!filePath.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.stat(filePath, (err, st) => {
@@ -319,11 +331,13 @@ const server = http.createServer(async (req, res) => {
     // per-slug meta for tour/post pages: without the slug in the ETag a 304
     // could confirm another slug's cached <head>
     const slug = u.searchParams.get('slug');
+    const preview = !!(PREVIEW_KEY && u.searchParams.get('preview') === PREVIEW_KEY);
     const isItemPage = urlPath === '/tour.html' || urlPath === '/post.html';
-    let slugMeta = slug ? buildSlugMeta(urlPath, slug) : null;
+    let slugMeta = slug ? buildSlugMeta(urlPath, slug, preview) : null;
     // tour/post page with no valid slug (bare or unknown) → noindex, not a generic dupe
     if (isItemPage && !slugMeta) slugMeta = { noindex: true, key: 'noindex' };
-    const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + '"';
+    if (preview) slugMeta = Object.assign({ noindex: true, key: 'noindex' }, slugMeta || {}, { noindex: true, key: (slugMeta && slugMeta.key || 'pv') + '-pv' });
+    const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + (preview ? '-pv' : '') + '"';
     const headers = {
       'Content-Type': type,
       'ETag': etag,
@@ -337,6 +351,8 @@ const server = http.createServer(async (req, res) => {
     fs.readFile(served, (e, data) => {
       if (e) { return send404(res); }
       if (slugMeta) data = Buffer.from(injectSlugMeta(data.toString('utf8'), slugMeta), 'utf8');
+      // preview mode: point the page at the draft-inclusive data (key-gated)
+      if (preview && ext0 === '.html') data = Buffer.from(data.toString('utf8').replace(/(src=")(posts-data\.js|tours-data\.js)(")/g, `$1$2?key=${PREVIEW_KEY}$3`), 'utf8');
       const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
       const compressible = /text\/|javascript|json|svg/.test(type);
       if (acceptsGzip && compressible && data.length > 1024) {
