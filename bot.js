@@ -28,7 +28,7 @@ const sessions = new Map(); // userId -> state
 
 const TOUR_CATS = ['Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
 const POST_CATS = ['Travel guide', 'Planning', 'Culture', 'Practical', 'Gear', 'Horse treks', 'Day tours'];
-const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['highlights', 'Highlights'], ['tags', 'Tags']];
+const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags']];
 const POST_FIELDS = [['title', 'Title'], ['category', 'Category'], ['excerpt', 'Excerpt'], ['author', 'Author'], ['body', 'Body text']];
 
 // ---------- auth ----------
@@ -95,13 +95,16 @@ function tourListKb() {
   const tours = C.loadTours();
   const kb = new InlineKeyboard();
   tours.slice(0, 40).forEach(t => kb.text(t.name.slice(0, 45), `t:v:${t.id}`).row());
-  return { text: `📋 <b>${tours.length} tours</b> — tap one:`, kb };
+  if (tours.length) kb.text('🔎 Search', 'xsearch:tour').row();
+  const more = tours.length > 40 ? ` (showing 40 — use 🔎 to find the rest)` : '';
+  return { text: `📋 <b>${tours.length} tours</b>${more} — tap one:`, kb };
 }
 function tourView(id) {
   const t = C.loadTours().find(x => x.id === id);
   if (!t) return null;
   const kb = new InlineKeyboard()
     .text('✏️ Edit text', `t:e:${id}`).text('🖼 Photos', `t:ph:${id}`).row()
+    .text('🗺 Itinerary', `t:itin:${id}`).row()
     .text('🗑 Delete', `t:del:${id}`).text('« Back', 't:list').row();
   const info = `${b(t.name)}\n📂 ${esc((t.cats || []).join(', ') || t.category)}\n⏱ ${esc(t.duration || '—')} · 📷 ${(t.images || []).length} photos\n\n${t.summary ? esc(t.summary.slice(0, 350)) : '<i>no description</i>'}`;
   return { info, kb };
@@ -126,11 +129,42 @@ function tourPhotosView(id) {
   return { text: `🖼 ${b(t.name)} — ${imgs.length} photo(s)\n⭐ = cover (first) · 🔼🔽 reorder · 🗑 delete · ➕ add.`, kb };
 }
 
+// ---- itinerary (day-by-day plan) ----
+const DAY_FIELDS = [['title', 'Title'], ['desc', 'Description'], ['transfer', 'Transfer'], ['activity', 'Activity'], ['meals', 'Meals'], ['overnight', 'Overnight']];
+function itineraryView(id) {
+  const t = C.loadTours().find(x => x.id === id);
+  if (!t) return null;
+  const days = t.itinerary || [];
+  const kb = new InlineKeyboard();
+  days.forEach((d, i) => kb.text(`Day ${d.day || i + 1} — ${(d.title || 'untitled').slice(0, 35)}`, `t:day:${id}:${i}`).row());
+  kb.text('➕ Add day', `t:dayadd:${id}`).row().text('« Back', `t:v:${id}`);
+  return { text: `🗺 ${b(t.name)} — ${days.length} day(s). Tap a day to edit, or add one.`, kb };
+}
+function dayView(id, idx) {
+  const t = C.loadTours().find(x => x.id === id);
+  if (!t || !t.itinerary || !t.itinerary[idx]) return null;
+  const d = t.itinerary[idx];
+  const descTxt = Array.isArray(d.desc) ? d.desc.join('\n\n') : (d.desc || '');
+  const kb = new InlineKeyboard();
+  DAY_FIELDS.forEach(([f, l], i) => { kb.text(l, `t:df:${id}:${idx}:${f}`); if (i % 2) kb.row(); });
+  kb.row().text('🗑 Delete day', `t:daydel:${id}:${idx}`).text('« Days', `t:itin:${id}`);
+  const lines = [
+    `🗺 <b>Day ${d.day || idx + 1}</b> — ${esc(d.title || 'untitled')}`,
+    descTxt ? `\n${esc(descTxt.slice(0, 500))}` : '\n<i>(no description)</i>',
+    d.transfer ? `\n🚐 ${esc(d.transfer)}` : '',
+    d.activity ? `🥾 ${esc(d.activity)}` : '',
+    d.meals ? `🍽 ${esc(d.meals)}` : '',
+    d.overnight ? `🌙 ${esc(d.overnight)}` : ''
+  ].filter(Boolean);
+  return { text: lines.join('\n'), kb };
+}
+
 // ================= POSTS =================
 function postListKb() {
   const posts = C.loadPosts();
   const kb = new InlineKeyboard();
   posts.forEach(p => kb.text(p.title.slice(0, 45), `p:v:${p.id}`).row());
+  if (posts.length) kb.text('🔎 Search', 'xsearch:post').row();
   kb.text('➕ New article', 'p:add').row();
   return { text: `📰 <b>${posts.length} articles</b> — tap one:`, kb };
 }
@@ -155,6 +189,7 @@ function postEditKb(id) {
 bot.command('whoami', ctx => ctx.reply(`Your Telegram ID: ${ctx.from.id}`));
 bot.command('cancel', ctx => { sessions.delete(ctx.from.id); ctx.reply('Cancelled. ✅'); });
 bot.callbackQuery('x:cancel', async ctx => { sessions.delete(ctx.from.id); await ctx.answerCallbackQuery({ text: 'Cancelled' }); await ctx.reply('Cancelled. ✅ Use /start for the menu.'); });
+bot.callbackQuery(/^xsearch:(\w+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'search', kind: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '🔎 Type part of the name to search for:'); });
 const MENU_TEXT = '🏔️ <b>Azat Tours admin bot</b>\n\nTap a section below — or type a command (see the “/” menu). /help for details.';
 function mainMenuKb() {
   return new InlineKeyboard()
@@ -326,6 +361,39 @@ bot.callbackQuery(/^t:delyes:(\d+)$/, async ctx => {
   await ctx.reply(`🗑 Deleted ${b(t ? t.name : id)}. Site updated.`, md);
 });
 
+// ---- itinerary handlers ----
+bot.callbackQuery(/^t:itin:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = itineraryView(Number(ctx.match[1])); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^t:day:(\d+):(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = dayView(Number(ctx.match[1]), Number(ctx.match[2])); if (!v) return ctx.reply('Day not found.'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^t:df:(\d+):(\d+):(\w+)$/, async ctx => {
+  const id = Number(ctx.match[1]), idx = Number(ctx.match[2]), field = ctx.match[3]; await ctx.answerCallbackQuery();
+  const t = C.loadTours().find(x => x.id === id); const d = t && t.itinerary && t.itinerary[idx];
+  if (!d) return ctx.reply('Day not found.');
+  sessions.set(ctx.from.id, { mode: 'dayfield', id, idx, field });
+  const cur = field === 'desc' ? (Array.isArray(d.desc) ? d.desc.join('\n\n') : (d.desc || '')) : (d[field] || '');
+  const label = (DAY_FIELDS.find(f => f[0] === field) || [, field])[1];
+  const hint = field === 'desc' ? '\n\n<i>Separate paragraphs with a blank line.</i>' : '';
+  await ask(ctx, `✏️ Day ${d.day || idx + 1} → send the new ${b(label)}:${hint}${cur ? '\n\nCurrent:\n' + esc(cur.slice(0, 400)) : ''}`);
+});
+bot.callbackQuery(/^t:dayadd:(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]); await ctx.answerCallbackQuery();
+  const tours = C.loadTours(); const t = tours.find(x => x.id === id);
+  if (!t) return ctx.reply('Tour not found.');
+  t.itinerary = t.itinerary || [];
+  t.itinerary.push({ day: t.itinerary.length + 1, title: 'New day', desc: [], transfer: '', activity: '', meals: '', overnight: '', wc: '', internet: '' });
+  C.saveTours(tours);
+  const idx = t.itinerary.length - 1; const v = dayView(id, idx); if (v) await ctx.reply('➕ Day added. Now fill it in:\n\n' + v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery(/^t:daydel:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  await ctx.reply(`Delete day ${idx + 1}? This can't be undone.`, { reply_markup: new InlineKeyboard().text('🗑 Yes, delete', `t:daydelyes:${id}:${idx}`).text('« Keep', `t:day:${id}:${idx}`) });
+});
+bot.callbackQuery(/^t:daydelyes:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Deleted' });
+  const tours = C.loadTours(); const t = tours.find(x => x.id === id);
+  if (t && t.itinerary && t.itinerary[idx]) { t.itinerary.splice(idx, 1); t.itinerary.forEach((d, i) => d.day = i + 1); C.saveTours(tours); }
+  const v = itineraryView(id); if (v) await ctx.reply('🗑 Day removed.\n\n' + v.text, { ...md, reply_markup: v.kb });
+});
+
 // ---------- post callbacks ----------
 bot.callbackQuery('p:list', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = postListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.callbackQuery('p:add', async ctx => { await ctx.answerCallbackQuery(); sessions.set(ctx.from.id, { mode: 'addpost', step: 'title', draft: C.blankPost() }); await ctx.reply('🆕 <b>New article</b>\n\nArticle <b>title</b>?', md); });
@@ -428,6 +496,25 @@ bot.on('message:text', async ctx => {
   const txt = ctx.message.text;
   if (txt.startsWith('/')) return;
 
+  // search within a list by name
+  if (s.mode === 'search') {
+    sessions.delete(ctx.from.id);
+    const q = txt.trim().toLowerCase();
+    if (!q) return ctx.reply('Empty search.');
+    const cfg = {
+      tour: { items: C.loadTours(), match: t => t.name, label: t => t.name, prefix: 't:v' },
+      post: { items: C.loadPosts(), match: p => p.title, label: p => p.title, prefix: 'p:v' },
+      guide: { items: C.loadGuides(), match: g => `${g.name} ${g.role}`, label: g => `${g.name} — ${g.role}`, prefix: 'g:v' },
+      review: { items: C.loadReviews(), match: r => `${r.name} ${r.country || ''} ${r.text || ''}`, label: r => `${r.name} · ${placeLabel(r.placement)}`, prefix: 'r:v' }
+    }[s.kind];
+    if (!cfg) return;
+    const hits = cfg.items.filter(x => String(cfg.match(x)).toLowerCase().includes(q)).slice(0, 40);
+    if (!hits.length) return ctx.reply(`No matches for “${esc(txt.trim())}”.`);
+    const kb = new InlineKeyboard();
+    hits.forEach(x => kb.text(String(cfg.label(x)).slice(0, 45), `${cfg.prefix}:${x.id}`).row());
+    return ctx.reply(`🔎 ${hits.length} match(es):`, { ...md, reply_markup: kb });
+  }
+
   // edit a single field on an existing item
   if (s.mode === 'editfield') {
     // Validate before saving so an empty send can't wipe a title, and a bad
@@ -477,6 +564,26 @@ bot.on('message:text', async ctx => {
     return ctx.reply('✅ Saved. Site updated.');
   }
 
+  // edit one field of one itinerary day
+  if (s.mode === 'dayfield') {
+    const val = txt.trim();
+    if (!val && s.field === 'title') return ask(ctx, '⚠️ The day title can\'t be empty. Send a value:');
+    try {
+      const tours = C.loadTours(); const t = tours.find(x => x.id === s.id);
+      const d = t && t.itinerary && t.itinerary[s.idx];
+      if (!d) { sessions.delete(ctx.from.id); return ctx.reply('⚠️ That day no longer exists.'); }
+      if (s.field === 'desc') d.desc = txt.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
+      else d[s.field] = val;
+      C.saveTours(tours);
+    } catch (e) {
+      console.error('dayfield save failed:', e); sessions.delete(ctx.from.id);
+      return ctx.reply('⚠️ Could not save that — nothing was changed. Please try again.');
+    }
+    sessions.delete(ctx.from.id);
+    const v = dayView(s.id, s.idx);
+    return ctx.reply('✅ Saved. Site updated.\n\n' + (v ? v.text : ''), v ? { ...md, reply_markup: v.kb } : md);
+  }
+
   // edit a sight's description
   if (s.mode === 'sightblurb') {
     const sights = C.loadSights(); const st = sights[s.key];
@@ -485,6 +592,28 @@ bot.on('message:text', async ctx => {
     sessions.delete(ctx.from.id);
     const v = sightView(s.key);
     return ctx.reply('✅ Description saved. Site updated.\n\n' + v.text, { ...md, reply_markup: v.kb });
+  }
+  if (s.mode === 'sightadd') {
+    const name = txt.trim();
+    if (!name) return ask(ctx, '⚠️ The name can\'t be empty. Send a name:');
+    const sights = C.loadSights();
+    let key = C.slugify(name), base = key, n = 2;
+    while (sights[key]) key = base + '-' + n++;
+    sights[key] = { name, photo: '', blurb: '' };
+    C.saveSights(sights);
+    sessions.delete(ctx.from.id);
+    const v = sightView(key);
+    return ctx.reply('✅ Place added. Add a photo or description:\n\n' + (v ? v.text : ''), v ? { ...md, reply_markup: v.kb } : md);
+  }
+  if (s.mode === 'sightname') {
+    const name = txt.trim();
+    if (!name) return ask(ctx, '⚠️ The name can\'t be empty. Send a name:');
+    const sights = C.loadSights(); const st = sights[s.key];
+    if (!st) { sessions.delete(ctx.from.id); return ctx.reply('⚠️ That place no longer exists.'); }
+    st.name = name; C.saveSights(sights);
+    sessions.delete(ctx.from.id);
+    const v = sightView(s.key);
+    return ctx.reply('✅ Renamed. Site updated.\n\n' + v.text, { ...md, reply_markup: v.kb });
   }
 
   // addtour wizard
@@ -515,15 +644,6 @@ bot.on('message:text', async ctx => {
     if (s.step === 'name') { s.draft.name = txt.trim(); s.step = 'country'; return ctx.reply('Their <b>country</b>? e.g. Germany', md); }
     if (s.step === 'country') { s.draft.country = txt.trim(); s.step = 'text'; return ctx.reply('Paste the <b>review text</b>:', md); }
     if (s.step === 'text') { s.draft.text = txt.trim(); s.step = 'rating'; const kb = new InlineKeyboard(); [5, 4, 3].forEach(n => kb.text('★'.repeat(n), `rrate:${n}`)); return ctx.reply('Rating?', { reply_markup: kb }); }
-    if (s.step === 'tourslug') { s.draft.placement = 'tour:' + txt.trim(); s.step = 'photo'; return ctx.reply('📷 Optional: send a guest <b>photo</b>, or /done to finish.', md); }
-  }
-
-  // set an existing review to a specific tour page
-  if (s.mode === 'reviewslug') {
-    const rs = C.loadReviews(); const r = rs.find(x => x.id === s.id);
-    if (r) { r.placement = 'tour:' + txt.trim(); C.saveReviews(rs); }
-    sessions.delete(ctx.from.id);
-    return ctx.reply('✅ Now shown on that tour page. Site updated.');
   }
 });
 
@@ -659,6 +779,7 @@ const GUIDE_FIELDS = [['name', 'Name'], ['role', 'Role'], ['languages', 'Languag
 function guideListKb() {
   const gs = C.loadGuides(); const kb = new InlineKeyboard();
   gs.forEach(g => kb.text(`${g.name} — ${g.role}`.slice(0, 45), `g:v:${g.id}`).row());
+  if (gs.length) kb.text('🔎 Search', 'xsearch:guide').row();
   kb.text('➕ New guide', 'g:add');
   return { text: `🧭 <b>${gs.length} guides</b> — tap one:`, kb };
 }
@@ -693,14 +814,22 @@ function placementKb(prefix) {
   const kb = new InlineKeyboard();
   kb.text('🏠 Home', `${prefix}:home`).text('⭐ Reviews page', `${prefix}:reviews`).row();
   C.loadGuides().forEach(g => kb.text('About: ' + g.name, `${prefix}:guide:${g.id}`).row());
-  kb.text('🏔 A specific tour (by slug)', `${prefix}:tour`);
+  kb.text('🏔 A specific tour', `${prefix}:tour`);
+  return kb;
+}
+// pick a tour from a list instead of typing its slug
+function tourPickKb(prefix) {
+  const kb = new InlineKeyboard();
+  C.loadTours().slice(0, 60).forEach(t => kb.text(t.name.slice(0, 40), `${prefix}:${t.slug}`).row());
   return kb;
 }
 function reviewListKb() {
   const rs = C.loadReviews(); const kb = new InlineKeyboard();
   rs.slice(0, 40).forEach(r => kb.text(`${r.name} · ${placeLabel(r.placement)}`.slice(0, 45), `r:v:${r.id}`).row());
+  if (rs.length) kb.text('🔎 Search', 'xsearch:review').row();
   kb.text('➕ New review', 'r:add');
-  return { text: `⭐ <b>${rs.length} reviews</b> — tap one:`, kb };
+  const more = rs.length > 40 ? ` (showing 40 — use 🔎 to find the rest)` : '';
+  return { text: `⭐ <b>${rs.length} reviews</b>${more} — tap one:`, kb };
 }
 function reviewView(id) {
   const r = C.loadReviews().find(x => x.id === id); if (!r) return null;
@@ -724,9 +853,14 @@ bot.callbackQuery(/^r:ef:(\d+):(\w+)$/, async ctx => {
 bot.callbackQuery(/^r:place:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery(); await ctx.reply('Where should this review show?', { reply_markup: placementKb(`rsp:${id}`) }); });
 bot.callbackQuery(/^rsp:(\d+):(.+)$/, async ctx => {
   const id = Number(ctx.match[1]); let val = ctx.match[2]; await ctx.answerCallbackQuery();
-  if (val === 'tour') { sessions.set(ctx.from.id, { mode: 'reviewslug', id }); return ask(ctx, 'Send the <b>tour slug</b> (the part after slug= in the tour URL, e.g. <code>best-of-kyrgyzstan-10-days</code>):'); }
+  if (val === 'tour') return ctx.reply('Pick the tour:', { reply_markup: tourPickKb(`rspt:${id}`) });
   const rs = C.loadReviews(); const r = rs.find(x => x.id === id); if (r) { r.placement = val; C.saveReviews(rs); }
   await ctx.reply(`✅ Now shown on ${esc(placeLabel(val))}. Site updated.`, md);
+});
+bot.callbackQuery(/^rspt:(\d+):(.+)$/, async ctx => {
+  const id = Number(ctx.match[1]); const slug = ctx.match[2]; await ctx.answerCallbackQuery();
+  const rs = C.loadReviews(); const r = rs.find(x => x.id === id); if (r) { r.placement = 'tour:' + slug; C.saveReviews(rs); }
+  await ctx.reply(`✅ Now shown on ${esc(placeLabel('tour:' + slug))}. Site updated.`, md);
 });
 bot.callbackQuery(/^r:del:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery(); await ctx.reply('Delete this review?', { reply_markup: new InlineKeyboard().text('✅ Yes', `r:delyes:${id}`).text('Cancel', `r:v:${id}`) }); });
 bot.callbackQuery(/^r:delyes:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery({ text: 'Deleted' }); const rs = C.loadReviews(); const r = rs.find(x => x.id === id); C.saveReviews(rs.filter(x => x.id !== id)); await ctx.reply(`🗑 Deleted review by ${b(r ? r.name : id)}. Site updated.`, md); });
@@ -741,8 +875,14 @@ bot.callbackQuery(/^rrate:(\d)$/, async ctx => {
 bot.callbackQuery(/^rwp:(.+)$/, async ctx => {
   const s = sessions.get(ctx.from.id); const val = ctx.match[1]; await ctx.answerCallbackQuery();
   if (!s || s.mode !== 'addreview') return;
-  if (val === 'tour') { s.step = 'tourslug'; return ctx.reply('Send the <b>tour slug</b> (e.g. <code>best-of-kyrgyzstan-10-days</code>):', md); }
+  if (val === 'tour') return ctx.reply('Pick the tour:', { reply_markup: tourPickKb('rwpt') });
   s.draft.placement = val; s.step = 'photo';
+  await ctx.reply('📷 Optional: send a guest <b>photo</b>, or /done to finish.', md);
+});
+bot.callbackQuery(/^rwpt:(.+)$/, async ctx => {
+  const s = sessions.get(ctx.from.id); const slug = ctx.match[1]; await ctx.answerCallbackQuery();
+  if (!s || s.mode !== 'addreview') return;
+  s.draft.placement = 'tour:' + slug; s.step = 'photo';
   await ctx.reply('📷 Optional: send a guest <b>photo</b>, or /done to finish.', md);
 });
 
@@ -851,7 +991,8 @@ function sightsListKb() {
     const mark = s.photo && String(s.photo).startsWith('images/') ? '✅' : (s.photo ? '🌐' : '▫️');
     kb.text(`${mark} ${s.name || k}`, `sg:v:${k}`).row();
   });
-  const text = `📍 <b>Sights</b> — ${keys.length} place(s) shown in the “Sights visited on this tour” section of every tour.\n\n✅ = your photo · 🌐 = placeholder · ▫️ = no photo (a tour photo is used).\nTap a place to change its photo or description.`;
+  kb.text('➕ Add place', 'sg:add').row();
+  const text = `📍 <b>Sights</b> — ${keys.length} place(s) shown in the “Sights visited on this tour” section of every tour.\n\n✅ = your photo · 🌐 = placeholder · ▫️ = no photo (a tour photo is used).\nTap a place to edit, or add a new one.`;
   return { text, kb };
 }
 function sightView(key) {
@@ -859,8 +1000,8 @@ function sightView(key) {
   if (!s) return null;
   const kb = new InlineKeyboard()
     .text('📷 Replace photo', `sg:ph:${key}`).row()
-    .text('✏️ Edit description', `sg:bl:${key}`).row()
-    .text('« All sights', 'sg:list').row();
+    .text('✏️ Edit description', `sg:bl:${key}`).text('✏️ Rename', `sg:name:${key}`).row()
+    .text('🗑 Delete place', `sg:del:${key}`).text('« All sights', 'sg:list').row();
   const photoLine = s.photo
     ? (String(s.photo).startsWith('images/') ? `🖼 Your photo is set` : '🌐 Placeholder photo (replace it with your own)')
     : '▫️ No photo yet — a tour photo is shown as a fallback';
@@ -872,6 +1013,15 @@ bot.callbackQuery('sg:list', async ctx => { await ctx.answerCallbackQuery(); con
 bot.callbackQuery(/^sg:v:(.+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = sightView(ctx.match[1]); if (!v) return ctx.reply('Not found.'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
 bot.callbackQuery(/^sg:ph:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightphoto', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new photo for this place.'); });
 bot.callbackQuery(/^sg:bl:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightblurb', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '✏️ Send a short one-line description for this place.'); });
+bot.callbackQuery('sg:add', async ctx => { sessions.set(ctx.from.id, { mode: 'sightadd' }); await ctx.answerCallbackQuery(); await ask(ctx, '➕ What is the <b>name</b> of the place? (e.g. Song-Köl Lake)'); });
+bot.callbackQuery(/^sg:name:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightname', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '✏️ Send the new <b>name</b> for this place:'); });
+bot.callbackQuery(/^sg:del:(.+)$/, async ctx => { const key = ctx.match[1]; await ctx.answerCallbackQuery(); await ctx.reply('Delete this place? This can\'t be undone.', { reply_markup: new InlineKeyboard().text('🗑 Yes, delete', `sg:delyes:${key}`).text('« Keep', `sg:v:${key}`) }); });
+bot.callbackQuery(/^sg:delyes:(.+)$/, async ctx => {
+  const key = ctx.match[1]; await ctx.answerCallbackQuery({ text: 'Deleted' });
+  const sights = C.loadSights(); const s = sights[key];
+  if (s) { if (s.photo && String(s.photo).startsWith('images/')) delFile(s.photo); delete sights[key]; C.saveSights(sights); }
+  const { text, kb } = sightsListKb(); await ctx.reply('🗑 Place removed.\n\n' + text, { ...md, reply_markup: kb });
+});
 
 bot.catch(async (err) => {
   console.error('Bot error:', err);
