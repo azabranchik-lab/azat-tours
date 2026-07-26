@@ -135,7 +135,7 @@ function faqSchema(faqs) {
 function buildSlugMeta(urlPath, slug) {
   try {
     if (urlPath === '/tour.html') {
-      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug);
+      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug && x.status !== 'draft');
       if (!t) return null;
       const desc = ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158);
       const url = ORIGIN + '/tour.html?slug=' + encodeURIComponent(slug);
@@ -156,7 +156,7 @@ function buildSlugMeta(urlPath, slug) {
       };
     }
     if (urlPath === '/post.html') {
-      const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug);
+      const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug && x.status !== 'draft');
       if (!po) return null;
       const desc = String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158);
       const url = ORIGIN + '/post.html?slug=' + encodeURIComponent(slug);

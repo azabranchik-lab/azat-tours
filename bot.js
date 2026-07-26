@@ -43,7 +43,7 @@ bot.use(async (ctx, next) => {
 // stale prompt. /done and /cancel manage the session themselves, so skip them.
 bot.use(async (ctx, next) => {
   const cmd = ctx.message && typeof ctx.message.text === 'string' && ctx.message.text.startsWith('/') && !/^\/(done|cancel)\b/i.test(ctx.message.text);
-  const nav = ctx.callbackQuery && /^(m:|t:list$|p:list$|g:list$|r:list$|sg:list$|l:list$|h:home$)/.test(ctx.callbackQuery.data || '');
+  const nav = ctx.callbackQuery && /^(m:|t:list$|p:list$|g:list$|r:list$|sg:list$|l:list$|dr:list$|h:home$)/.test(ctx.callbackQuery.data || '');
   if ((cmd || nav) && ctx.from) sessions.delete(ctx.from.id);
   return next();
 });
@@ -94,7 +94,7 @@ async function sendAlbum(ctx, images) {
 function tourListKb() {
   const tours = C.loadTours();
   const kb = new InlineKeyboard();
-  tours.slice(0, 40).forEach(t => kb.text(t.name.slice(0, 45), `t:v:${t.id}`).row());
+  tours.slice(0, 40).forEach(t => kb.text(`${t.status === 'draft' ? '📝 ' : ''}${t.name}`.slice(0, 45), `t:v:${t.id}`).row());
   if (tours.length) kb.text('🔎 Search', 'xsearch:tour').row();
   const more = tours.length > 40 ? ` (showing 40 — use 🔎 to find the rest)` : '';
   return { text: `📋 <b>${tours.length} tours</b>${more} — tap one:`, kb };
@@ -163,7 +163,7 @@ function dayView(id, idx) {
 function postListKb() {
   const posts = C.loadPosts();
   const kb = new InlineKeyboard();
-  posts.forEach(p => kb.text(p.title.slice(0, 45), `p:v:${p.id}`).row());
+  posts.forEach(p => kb.text(`${p.status === 'draft' ? '📝 ' : ''}${p.title}`.slice(0, 45), `p:v:${p.id}`).row());
   if (posts.length) kb.text('🔎 Search', 'xsearch:post').row();
   kb.text('➕ New article', 'p:add').row();
   return { text: `📰 <b>${posts.length} articles</b> — tap one:`, kb };
@@ -192,11 +192,14 @@ bot.callbackQuery('x:cancel', async ctx => { sessions.delete(ctx.from.id); await
 bot.callbackQuery(/^xsearch:(\w+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'search', kind: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '🔎 Type part of the name to search for:'); });
 const MENU_TEXT = '🏔️ <b>Azat Tours admin bot</b>\n\nTap a section below — or type a command (see the “/” menu). /help for details.';
 function mainMenuKb() {
-  return new InlineKeyboard()
+  const drafts = C.loadPosts().filter(p => p.status === 'draft').length + C.loadTours().filter(t => t.status === 'draft').length;
+  const kb = new InlineKeyboard()
     .text('🏔 Tours', 't:list').text('📰 Blog', 'p:list').row()
     .text('🧭 Guides', 'g:list').text('⭐ Reviews', 'r:list').row()
-    .text('🏠 Homepage photos', 'h:home').row()
-    .text('📨 Leads', 'm:leads').text('💬 Chats', 'm:chats').row();
+    .text('🏠 Homepage photos', 'h:home').row();
+  if (drafts) kb.text(`📝 Drafts (${drafts})`, 'dr:list').row();
+  kb.text('📨 Leads', 'm:leads').text('💬 Chats', 'm:chats').row();
+  return kb;
 }
 bot.command('start', async ctx => {
   if (!OWNER_ID) { setOwner(ctx.from.id); await ctx.reply(`✅ You are now the admin (ID ${ctx.from.id}).`); }
@@ -293,6 +296,60 @@ function chatsText() {
   }).join('\n\n');
 }
 bot.command('chats', ctx => ctx.reply(chatsText(), md));
+
+// ---------- drafts review queue (content waiting to go live) ----------
+function draftListKb() {
+  const posts = C.loadPosts().filter(p => p.status === 'draft');
+  const tours = C.loadTours().filter(t => t.status === 'draft');
+  const kb = new InlineKeyboard();
+  posts.forEach(p => kb.text(`📰 ${(p.title || 'untitled').slice(0, 40)}`, `dr:v:p:${p.id}`).row());
+  tours.forEach(t => kb.text(`🏔 ${(t.name || 'untitled').slice(0, 40)}`, `dr:v:t:${t.id}`).row());
+  const n = posts.length + tours.length;
+  const text = n
+    ? `📝 <b>${n} draft(s)</b> waiting for your review. Tap one to read it and publish, edit or discard:`
+    : 'No drafts. New posts and tours land here first, so nothing goes live until you publish it.';
+  return { text, kb };
+}
+function draftView(kind, id) {
+  if (kind === 'p') {
+    const p = C.loadPosts().find(x => x.id === id); if (!p || p.status !== 'draft') return null;
+    const body = p.body || '';
+    const text = `📰 <b>DRAFT</b> — ${b(p.title)}\n📂 ${esc(p.category)} · ✍️ ${esc(p.author)}\n\n<i>${esc((p.excerpt || '').slice(0, 200))}</i>\n\n${esc(body.slice(0, 700))}${body.length > 700 ? '…' : ''}`;
+    const kb = new InlineKeyboard().text('✅ Publish', `dr:pub:p:${id}`).text('✏️ Edit', `p:v:${id}`).row().text('🗑 Discard', `dr:disc:p:${id}`).text('« Drafts', 'dr:list').row();
+    return { text, kb };
+  }
+  const t = C.loadTours().find(x => x.id === id); if (!t || t.status !== 'draft') return null;
+  const text = `🏔 <b>DRAFT</b> — ${b(t.name)}\n📂 ${esc((t.cats || []).join(', ') || t.category)} · ⏱ ${esc(t.duration || '—')}\n🗺 ${(t.itinerary || []).length} day(s) · 📷 ${(t.images || []).length} photo(s)\n\n${esc((t.summary || '').slice(0, 600))}`;
+  const kb = new InlineKeyboard().text('✅ Publish', `dr:pub:t:${id}`).text('✏️ Edit', `t:v:${id}`).row().text('🗑 Discard', `dr:disc:t:${id}`).text('« Drafts', 'dr:list').row();
+  return { text, kb };
+}
+bot.command('drafts', ctx => { const { text, kb } = draftListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
+bot.callbackQuery('dr:list', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = draftListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
+bot.callbackQuery(/^dr:v:(p|t):(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = draftView(ctx.match[1], Number(ctx.match[2])); if (!v) return ctx.reply('Draft not found (maybe already published).'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^dr:pub:(p|t):(\d+)$/, async ctx => {
+  const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Published ✅' });
+  if (kind === 'p') {
+    const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
+    if (p) { p.status = 'published'; if (!p.date) p.date = new Date().toISOString().slice(0, 10); C.savePosts(posts); }
+    await ctx.reply(`🎉 Published ${b(p ? p.title : id)}. It's live on the blog now.`, md);
+  } else {
+    const tours = C.loadTours(); const t = tours.find(x => x.id === id);
+    if (t) { t.status = 'published'; C.saveTours(tours); }
+    await ctx.reply(`🎉 Published ${b(t ? t.name : id)}. It's live now.`, md);
+  }
+});
+bot.callbackQuery(/^dr:disc:(p|t):(\d+)$/, async ctx => { const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery(); await ctx.reply('Discard this draft for good? It was never published.', { reply_markup: new InlineKeyboard().text('🗑 Yes, discard', `dr:discyes:${kind}:${id}`).text('« Keep', `dr:v:${kind}:${id}`) }); });
+bot.callbackQuery(/^dr:discyes:(p|t):(\d+)$/, async ctx => {
+  const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Discarded' });
+  if (kind === 'p') {
+    const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
+    if (p) { (p.images || []).forEach(im => { if (String(im).startsWith('images/')) delFile(im); }); if (p.cover && String(p.cover).startsWith('images/')) delFile(p.cover); C.savePosts(posts.filter(x => x.id !== id)); }
+  } else {
+    const tours = C.loadTours(); const t = tours.find(x => x.id === id);
+    if (t) { (t.images || []).forEach(im => { if (String(im).startsWith('images/')) delFile(im); }); C.saveTours(tours.filter(x => x.id !== id)); }
+  }
+  const { text, kb } = draftListKb(); await ctx.reply('🗑 Draft discarded.\n\n' + text, { ...md, reply_markup: kb });
+});
 
 bot.command('addtour', ctx => {
   sessions.set(ctx.from.id, { mode: 'addtour', step: 'name', draft: C.blankTour() });
@@ -778,16 +835,18 @@ bot.on('message:photo', async ctx => {
 async function saveTourDraft(ctx, s) {
   const tours = C.loadTours(); const d = s.draft;
   d.id = C.nextId(tours); if (!d.slug) d.slug = C.uniqueSlug(d.name, tours);
+  d.status = 'draft'; // new content starts as a draft; publish it from 📝 Drafts
   tours.unshift(d); C.saveTours(tours); sessions.delete(ctx.from.id);
-  await ctx.reply(`🎉 <b>Saved!</b> "${esc(d.name)}" is live.\n${d.images.length} photo(s) · ${tours.length} tours total.\n/tours to manage.`, md);
+  await ctx.reply(`📝 <b>Saved as a draft</b> — "${esc(d.name)}" is NOT live yet.\nReview it in 📝 Drafts (/drafts) and tap Publish when it's ready.`, md);
 }
 async function savePostDraft(ctx, s) {
   const posts = C.loadPosts(); const d = s.draft;
   d.id = C.nextPostId(posts); if (!d.slug) d.slug = C.uniquePostSlug(d.title, posts);
   if (!d.date) d.date = new Date().toISOString().slice(0, 10);
   if (!d.cover) d.cover = 'img/hero/hero-1-reflection-1400.jpg';
+  d.status = 'draft'; // new content starts as a draft; publish it from 📝 Drafts
   posts.unshift(d); C.savePosts(posts); sessions.delete(ctx.from.id);
-  await ctx.reply(`🎉 <b>Published!</b> "${esc(d.title)}" is live on the blog.\n${d.images.length} gallery photo(s) · ${posts.length} articles total.\n/posts to manage.`, md);
+  await ctx.reply(`📝 <b>Saved as a draft</b> — "${esc(d.title)}" is NOT live yet.\nReview it in 📝 Drafts (/drafts) and tap Publish when it's ready.`, md);
 }
 
 // ================= GUIDES =================
@@ -1060,6 +1119,7 @@ const BOT_COMMANDS = [
   { command: 'guides', description: 'Manage guides' },
   { command: 'reviews', description: 'Manage reviews' },
   { command: 'sights', description: 'Sights photos & captions' },
+  { command: 'drafts', description: 'Content waiting to publish' },
   { command: 'leads', description: 'Recent enquiries' },
   { command: 'chats', description: 'Website chats' },
   { command: 'help', description: 'Help' },

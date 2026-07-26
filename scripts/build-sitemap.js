@@ -28,8 +28,8 @@ function url(loc, changefreq, priority, lastmod) {
 }
 
 function main() {
-  const tours = content.loadTours();
-  const posts = content.loadPosts();
+  const tours = content.publishedOnly(content.loadTours()); // drafts stay out of the sitemap
+  const posts = content.publishedOnly(content.loadPosts());
 
   const entries = [
     ...STATIC.map(([p, f, pr]) => url(DOMAIN + p, f, pr)),
