@@ -3,7 +3,7 @@
 // Run:  node bot.js
 const fs = require('fs');
 const path = require('path');
-const { Bot, InlineKeyboard } = require('grammy');
+const { Bot, InlineKeyboard, InputFile } = require('grammy');
 const C = require('./lib/content');
 const store = require('./lib/store');
 const { waLink } = require('./lib/lead');
@@ -76,6 +76,20 @@ async function downloadPhoto(ctx, fileId, kind, slug, n) {
 }
 function delFile(rel) { try { fs.unlinkSync(path.join(C.PUBLIC, rel)); } catch (e) {} }
 
+// Show the actual photos (numbered, ⭐ = cover) as an album so the owner isn't
+// managing a gallery blind. Telegram albums hold up to 10; local files go as
+// InputFile, external URLs (placeholders) as-is.
+async function sendAlbum(ctx, images) {
+  const imgs = (images || []).filter(Boolean).slice(0, 10);
+  if (!imgs.length) return;
+  const media = imgs.map((img, i) => ({
+    type: 'photo',
+    media: /^https?:\/\//.test(String(img)) ? String(img) : new InputFile(path.join(C.PUBLIC, img)),
+    caption: i === 0 ? '1 ⭐ cover' : String(i + 1)
+  }));
+  try { await ctx.replyWithMediaGroup(media); } catch (e) { console.error('album send failed:', e.message); }
+}
+
 // ================= TOURS =================
 function tourListKb() {
   const tours = C.loadTours();
@@ -101,12 +115,15 @@ function tourEditKb(id) {
 function tourPhotosView(id) {
   const t = C.loadTours().find(x => x.id === id);
   if (!t) return null;
+  const imgs = t.images || [];
   const kb = new InlineKeyboard();
-  (t.images || []).forEach((img, i) => {
-    kb.text(`${i === 0 ? '⭐' : '🖼'} ${i + 1}`, `t:noop`).text('⭐ main', `t:phmain:${id}:${i}`).text('🗑', `t:phdel:${id}:${i}`).row();
+  imgs.forEach((img, i) => {
+    kb.text(`${i === 0 ? '⭐' : '🖼'} ${i + 1}`, 't:noop')
+      .text('⭐', `t:phmain:${id}:${i}`).text('🔼', `t:phup:${id}:${i}`).text('🔽', `t:phdn:${id}:${i}`).text('🗑', `t:phdel:${id}:${i}`).row();
   });
+  if (imgs.length) kb.text('🔄 Show photos', `t:phshow:${id}`).row();
   kb.text('➕ Add photos', `t:phadd:${id}`).row().text('« Back', `t:v:${id}`);
-  return { text: `🖼 ${b(t.name)} — ${(t.images || []).length} photo(s)\n⭐ = main (shown first). Send new ones with ➕.`, kb };
+  return { text: `🖼 ${b(t.name)} — ${imgs.length} photo(s)\n⭐ = cover (first) · 🔼🔽 reorder · 🗑 delete · ➕ add.`, kb };
 }
 
 // ================= POSTS =================
@@ -270,7 +287,20 @@ bot.callbackQuery(/^t:setcat:(\d+):(.+)$/, async ctx => {
   if (t) { t.category = ctx.match[2]; t.cats = [ctx.match[2]]; C.saveTours(tours); }
   await ctx.reply(`✅ Category set to ${b(ctx.match[2])}. Site updated.`, md);
 });
-bot.callbackQuery(/^t:ph:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = tourPhotosView(Number(ctx.match[1])); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^t:ph:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const id = Number(ctx.match[1]); const t = C.loadTours().find(x => x.id === id); if (t) await sendAlbum(ctx, t.images); const v = tourPhotosView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^t:phshow:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const t = C.loadTours().find(x => x.id === Number(ctx.match[1])); if (t) await sendAlbum(ctx, t.images); });
+bot.callbackQuery(/^t:phup:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), i = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  const tours = C.loadTours(); const t = tours.find(x => x.id === id);
+  if (t && t.images && i > 0 && t.images[i]) { [t.images[i - 1], t.images[i]] = [t.images[i], t.images[i - 1]]; C.saveTours(tours); }
+  const v = tourPhotosView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery(/^t:phdn:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), i = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  const tours = C.loadTours(); const t = tours.find(x => x.id === id);
+  if (t && t.images && i < t.images.length - 1) { [t.images[i + 1], t.images[i]] = [t.images[i], t.images[i + 1]]; C.saveTours(tours); }
+  const v = tourPhotosView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb });
+});
 bot.callbackQuery(/^t:phadd:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'addphotos', kind: 'tour', id }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send photos now, then tap /done.'); });
 bot.callbackQuery(/^t:phdel:(\d+):(\d+)$/, async ctx => {
   const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery();
@@ -316,13 +346,38 @@ bot.callbackQuery(/^p:setcat:(\d+):(.+)$/, async ctx => {
   await ctx.reply(`✅ Category set to ${b(ctx.match[2])}.`, md);
 });
 bot.callbackQuery(/^p:cover:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'setcover', id }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new cover photo.'); });
-bot.callbackQuery(/^p:ph:(\d+)$/, async ctx => {
-  const id = Number(ctx.match[1]); await ctx.answerCallbackQuery();
-  const p = C.loadPosts().find(x => x.id === id); if (!p) return;
+function postGalleryView(id) {
+  const p = C.loadPosts().find(x => x.id === id);
+  if (!p) return null;
+  const imgs = p.images || [];
   const kb = new InlineKeyboard();
-  (p.images || []).forEach((img, i) => kb.text(`🏞 ${i + 1}`, 'p:noop').text('🗑', `p:phdel:${id}:${i}`).row());
+  imgs.forEach((img, i) => {
+    kb.text(`${i === 0 ? '⭐' : '🏞'} ${i + 1}`, 'p:noop')
+      .text('⭐', `p:phmain:${id}:${i}`).text('🔼', `p:phup:${id}:${i}`).text('🔽', `p:phdn:${id}:${i}`).text('🗑', `p:phdel:${id}:${i}`).row();
+  });
+  if (imgs.length) kb.text('🔄 Show photos', `p:phshow:${id}`).row();
   kb.text('➕ Add photos', `p:phadd:${id}`).row().text('« Back', `p:v:${id}`);
-  await ctx.reply(`🏞 ${b(p.title)} — ${(p.images || []).length} gallery photo(s).`, { ...md, reply_markup: kb });
+  return { text: `🏞 ${b(p.title)} — ${imgs.length} gallery photo(s)\n⭐ = first · 🔼🔽 reorder · 🗑 delete · ➕ add.`, kb };
+}
+bot.callbackQuery(/^p:ph:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const id = Number(ctx.match[1]); const p = C.loadPosts().find(x => x.id === id); if (p) await sendAlbum(ctx, p.images); const v = postGalleryView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^p:phshow:(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const p = C.loadPosts().find(x => x.id === Number(ctx.match[1])); if (p) await sendAlbum(ctx, p.images); });
+bot.callbackQuery(/^p:phmain:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), i = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
+  if (p && p.images && p.images[i]) { const [img] = p.images.splice(i, 1); p.images.unshift(img); C.savePosts(posts); }
+  const v = postGalleryView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery(/^p:phup:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), i = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
+  if (p && p.images && i > 0 && p.images[i]) { [p.images[i - 1], p.images[i]] = [p.images[i], p.images[i - 1]]; C.savePosts(posts); }
+  const v = postGalleryView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery(/^p:phdn:(\d+):(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]), i = Number(ctx.match[2]); await ctx.answerCallbackQuery();
+  const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
+  if (p && p.images && i < p.images.length - 1) { [p.images[i + 1], p.images[i]] = [p.images[i], p.images[i + 1]]; C.savePosts(posts); }
+  const v = postGalleryView(id); if (v) await ctx.reply(v.text, { ...md, reply_markup: v.kb });
 });
 bot.callbackQuery('p:noop', ctx => ctx.answerCallbackQuery());
 bot.callbackQuery(/^p:phadd:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); sessions.set(ctx.from.id, { mode: 'addphotos', kind: 'post', id }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send gallery photos, then tap /done.'); });
@@ -334,7 +389,7 @@ bot.callbackQuery(/^p:phdelyes:(\d+):(\d+)$/, async ctx => {
   const id = Number(ctx.match[1]), idx = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Deleted' });
   const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
   if (p && p.images[idx]) { if (p.images[idx].startsWith('images/')) delFile(p.images[idx]); p.images.splice(idx, 1); C.savePosts(posts); }
-  await ctx.reply('🗑 Removed.');
+  const v = postGalleryView(id); if (v) await ctx.reply('🗑 Removed.\n\n' + v.text, { ...md, reply_markup: v.kb });
 });
 bot.callbackQuery(/^p:del:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery(); await ctx.reply('Delete this article for good?', { reply_markup: new InlineKeyboard().text('✅ Yes', `p:delyes:${id}`).text('Cancel', `p:v:${id}`) }); });
 bot.callbackQuery(/^p:delyes:(\d+)$/, async ctx => {
@@ -734,17 +789,31 @@ function igView() {
   const photos = ig.photos || [];
   const kb = new InlineKeyboard();
   photos.forEach((p, i) => {
-    kb.text(`${i === 0 ? '⭐' : '🖼'} ${i + 1}`, 'h:noop').text('⭐ first', `h:igmain:${i}`).text('🗑', `h:igdel:${i}`).row();
+    kb.text(`${i === 0 ? '⭐' : '🖼'} ${i + 1}`, 'h:noop').text('⭐', `h:igmain:${i}`).text('🔼', `h:igup:${i}`).text('🔽', `h:igdn:${i}`).text('🗑', `h:igdel:${i}`).row();
   });
+  if (photos.length) kb.text('🔄 Show photos', 'h:igshow').row();
   kb.text('➕ Add photo', 'h:igadd').row();
   kb.text('✏️ Instagram link', 'h:igurl').text('« Back', 'h:home').row();
-  const text = `📸 <b>Instagram grid</b> — ${photos.length} photo(s)\n🔗 Link: ${ig.url ? esc(ig.url) : '<i>(not set)</i>'}\n\n⭐ = shown first. Add with ➕. These photos appear in the “Follow the journey” block on the homepage.`;
+  const text = `📸 <b>Instagram grid</b> — ${photos.length} photo(s)\n🔗 Link: ${ig.url ? esc(ig.url) : '<i>(not set)</i>'}\n\n⭐ = shown first · 🔼🔽 reorder. Add with ➕. These appear in the “Follow the journey” block on the homepage.`;
   return { text, kb };
 }
 bot.command('home', ctx => ctx.reply('🏠 <b>Homepage photos</b>\n\nManage the images shown on the front page.', { ...md, reply_markup: homeKb() }));
 bot.callbackQuery('h:home', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply('🏠 <b>Homepage photos</b>', { ...md, reply_markup: homeKb() }); });
 bot.callbackQuery('h:noop', ctx => ctx.answerCallbackQuery());
-bot.callbackQuery('h:ig', async ctx => { await ctx.answerCallbackQuery(); const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery('h:ig', async ctx => { await ctx.answerCallbackQuery(); const ig = (C.loadSite().instagram) || {}; await sendAlbum(ctx, ig.photos); const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery('h:igshow', async ctx => { await ctx.answerCallbackQuery(); const ig = (C.loadSite().instagram) || {}; await sendAlbum(ctx, ig.photos); });
+bot.callbackQuery(/^h:igup:(\d+)$/, async ctx => {
+  const i = Number(ctx.match[1]); await ctx.answerCallbackQuery();
+  const site = C.loadSite(); const ph = (site.instagram && site.instagram.photos) || [];
+  if (i > 0 && ph[i]) { [ph[i - 1], ph[i]] = [ph[i], ph[i - 1]]; C.saveSite(site); }
+  const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb });
+});
+bot.callbackQuery(/^h:igdn:(\d+)$/, async ctx => {
+  const i = Number(ctx.match[1]); await ctx.answerCallbackQuery();
+  const site = C.loadSite(); const ph = (site.instagram && site.instagram.photos) || [];
+  if (i < ph.length - 1) { [ph[i + 1], ph[i]] = [ph[i], ph[i + 1]]; C.saveSite(site); }
+  const v = igView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb });
+});
 bot.callbackQuery('h:igadd', async ctx => { sessions.set(ctx.from.id, { mode: 'sitephoto', target: 'instagram' }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the photo(s) for the Instagram grid, then /home.'); });
 bot.callbackQuery('h:igurl', async ctx => { sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'instagram.url' }); await ctx.answerCallbackQuery(); await ask(ctx, '🔗 Send your Instagram link (e.g. <code>https://www.instagram.com/azattourskg/</code>):'); });
 bot.callbackQuery(/^h:igdel:(\d+)$/, async ctx => {
