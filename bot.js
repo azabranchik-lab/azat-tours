@@ -207,10 +207,24 @@ bot.callbackQuery('m:home', async ctx => { await ctx.answerCallbackQuery(); awai
 bot.callbackQuery('m:leads', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = leadListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.callbackQuery('m:chats', async ctx => { await ctx.answerCallbackQuery(); await ctx.reply(chatsText(), md); });
 bot.command('help', ctx => ctx.reply(
-  'TOURS\n/tours — list, view, edit text, manage photos, delete\n/addtour — new tour wizard\n\n' +
-  'BLOG\n/posts — list, view, edit, cover & gallery, delete\n/addpost — new article wizard\n\n' +
-  'Editing: tap a field, then send the new value. Add photos by sending them, then /done.\n' +
-  'Formatting in article body: "## Heading", "- list item", "&gt; quote", "**bold**", "[img:URL|caption]", "[tip:Title|Text]".'
+  '📖 Azat Tours admin — everything you can do:\n\n' +
+  '/start — main menu (buttons for all of the below)\n\n' +
+  'CONTENT\n' +
+  '/tours — tours: edit text, itinerary, photos, delete · /addtour\n' +
+  '/posts — blog: edit, cover, gallery, delete · /addpost\n' +
+  '/guides — guides · /addguide\n' +
+  '/reviews — reviews · /addreview\n' +
+  '/sights — places on tour pages: add, rename, photo, delete\n' +
+  '/home — homepage photos (hero, Instagram, experience cards)\n\n' +
+  'ENQUIRIES\n' +
+  '/leads — website enquiries: reply on WhatsApp, mark handled\n' +
+  '/chats — website chats: reply with "/reply <id> <text>"\n\n' +
+  'TIPS\n' +
+  '• Every list has a 🔎 Search button.\n' +
+  '• Opening photos shows an album; 🔼🔽 reorder, ⭐ = cover.\n' +
+  '• A ✖️ Cancel button is on every prompt (or type /cancel).\n' +
+  '• Add photos by sending them, then /done.\n' +
+  '• Article body: "## Heading", "- list", "> quote", "**bold**", "[img:URL|caption]", "[tip:Title|Text]".'
 ));
 
 bot.command('tours', ctx => { const { text, kb } = tourListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
@@ -358,7 +372,9 @@ bot.callbackQuery(/^t:delyes:(\d+)$/, async ctx => {
   const id = Number(ctx.match[1]); await ctx.answerCallbackQuery({ text: 'Deleted' });
   let tours = C.loadTours(); const t = tours.find(x => x.id === id);
   C.saveTours(tours.filter(x => x.id !== id));
-  await ctx.reply(`🗑 Deleted ${b(t ? t.name : id)}. Site updated.`, md);
+  let moved = 0;
+  if (t) { const rs = C.loadReviews(); rs.forEach(r => { if (r.placement === 'tour:' + t.slug) { r.placement = 'reviews'; moved++; } }); if (moved) C.saveReviews(rs); }
+  await ctx.reply(`🗑 Deleted ${b(t ? t.name : id)}. Site updated.${moved ? `\n${moved} review(s) moved to the Reviews page.` : ''}`, md);
 });
 
 // ---- itinerary handlers ----
@@ -627,7 +643,7 @@ bot.on('message:text', async ctx => {
   if (s.mode === 'addpost') {
     if (s.step === 'title') { s.draft.title = txt.trim(); s.step = 'category'; const kb = new InlineKeyboard(); POST_CATS.forEach((c, i) => { kb.text(c, `pcatnew:${c}`); if (i % 2) kb.row(); }); return ctx.reply('Pick a <b>category</b>:', { ...md, reply_markup: kb }); }
     if (s.step === 'excerpt') { s.draft.excerpt = txt.trim(); s.step = 'cover'; return ctx.reply('📷 Send a <b>cover photo</b> (or type <code>skip</code>):', md); }
-    if (s.step === 'cover' && txt.trim().toLowerCase() === 'skip') { s.draft.cover = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80'; s.step = 'body'; return ctx.reply('✍️ Now send the <b>article body</b>.\n\n<i>Use ## headings, - lists, &gt; quotes, **bold**, [img:URL|caption], [tip:Title|Text]. First paragraph becomes the intro.</i>', md); }
+    if (s.step === 'cover' && txt.trim().toLowerCase() === 'skip') { s.draft.cover = 'img/hero/hero-1-reflection-1400.jpg'; s.step = 'body'; return ctx.reply('✍️ Now send the <b>article body</b>.\n\n<i>Use ## headings, - lists, &gt; quotes, **bold**, [img:URL|caption], [tip:Title|Text]. First paragraph becomes the intro.</i>', md); }
     if (s.step === 'body') { s.draft.body = txt; s.step = 'extra'; return ctx.reply('🏞 Optional: send extra <b>gallery photos</b>, then /done. Or /done to finish now.', md); }
   }
 
@@ -643,7 +659,7 @@ bot.on('message:text', async ctx => {
   if (s.mode === 'addreview') {
     if (s.step === 'name') { s.draft.name = txt.trim(); s.step = 'country'; return ctx.reply('Their <b>country</b>? e.g. Germany', md); }
     if (s.step === 'country') { s.draft.country = txt.trim(); s.step = 'text'; return ctx.reply('Paste the <b>review text</b>:', md); }
-    if (s.step === 'text') { s.draft.text = txt.trim(); s.step = 'rating'; const kb = new InlineKeyboard(); [5, 4, 3].forEach(n => kb.text('★'.repeat(n), `rrate:${n}`)); return ctx.reply('Rating?', { reply_markup: kb }); }
+    if (s.step === 'text') { s.draft.text = txt.trim(); s.step = 'rating'; const kb = new InlineKeyboard(); [5, 4, 3, 2, 1].forEach(n => kb.text('★'.repeat(n) + '☆'.repeat(5 - n), `rrate:${n}`).row()); return ctx.reply('Rating?', { reply_markup: kb }); }
   }
 });
 
@@ -769,7 +785,7 @@ async function savePostDraft(ctx, s) {
   const posts = C.loadPosts(); const d = s.draft;
   d.id = C.nextPostId(posts); if (!d.slug) d.slug = C.uniquePostSlug(d.title, posts);
   if (!d.date) d.date = new Date().toISOString().slice(0, 10);
-  if (!d.cover) d.cover = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80';
+  if (!d.cover) d.cover = 'img/hero/hero-1-reflection-1400.jpg';
   posts.unshift(d); C.savePosts(posts); sessions.delete(ctx.from.id);
   await ctx.reply(`🎉 <b>Published!</b> "${esc(d.title)}" is live on the blog.\n${d.images.length} gallery photo(s) · ${posts.length} articles total.\n/posts to manage.`, md);
 }
@@ -805,7 +821,12 @@ bot.callbackQuery(/^g:ef:(\d+):(\w+)$/, async ctx => {
 });
 bot.callbackQuery(/^g:photo:(\d+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'guidephoto', id: Number(ctx.match[1]) }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new guide photo.'); });
 bot.callbackQuery(/^g:del:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery(); await ctx.reply('Delete this guide?', { reply_markup: new InlineKeyboard().text('✅ Yes', `g:delyes:${id}`).text('Cancel', `g:v:${id}`) }); });
-bot.callbackQuery(/^g:delyes:(\d+)$/, async ctx => { const id = Number(ctx.match[1]); await ctx.answerCallbackQuery({ text: 'Deleted' }); const gs = C.loadGuides(); const g = gs.find(x => x.id === id); C.saveGuides(gs.filter(x => x.id !== id)); await ctx.reply(`🗑 Deleted ${b(g ? g.name : id)}. Site updated.`, md); });
+bot.callbackQuery(/^g:delyes:(\d+)$/, async ctx => {
+  const id = Number(ctx.match[1]); await ctx.answerCallbackQuery({ text: 'Deleted' });
+  const gs = C.loadGuides(); const g = gs.find(x => x.id === id); C.saveGuides(gs.filter(x => x.id !== id));
+  let moved = 0; const rs = C.loadReviews(); rs.forEach(r => { if (r.placement === 'guide:' + id) { r.placement = 'reviews'; moved++; } }); if (moved) C.saveReviews(rs);
+  await ctx.reply(`🗑 Deleted ${b(g ? g.name : id)}. Site updated.${moved ? `\n${moved} review(s) moved to the Reviews page.` : ''}`, md);
+});
 
 // ================= REVIEWS =================
 const REVIEW_FIELDS = [['name', 'Name'], ['country', 'Country'], ['text', 'Text'], ['rating', 'Rating']];
@@ -1048,6 +1069,7 @@ bot.start({
   drop_pending_updates: true, // skip backlog so /start answers instantly after a restart
   onStart: async info => {
     try { await bot.api.setMyCommands(BOT_COMMANDS); } catch (e) { console.error('setMyCommands failed:', e.message); }
+    if (!OWNER_ID) console.warn('⚠️  OWNER_ID is not set — the FIRST person to /start will become admin. Set ownerId in config.json (or OWNER_ID env) before exposing the bot.');
     console.log(`✅ Azat Tours admin bot running as @${info.username}. Owner: ${OWNER_ID || '(unclaimed)'}`);
   }
 });
