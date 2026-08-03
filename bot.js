@@ -9,12 +9,12 @@ const store = require('./lib/store');
 const { waLink } = require('./lib/lead');
 const ai = require('./lib/ai');
 const PREVIEW_KEY = require('./lib/previewkey');
-const ORIGIN = cfg.origin || 'https://azattours.com';
 
 // ---------- config ----------
 const CONFIG_PATH = path.join(__dirname, 'config.json');
 let cfg = {};
 try { cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch (e) {}
+const ORIGIN = cfg.origin || 'https://azattours.com';
 const TOKEN = process.env.BOT_TOKEN || cfg.token;
 let OWNER_ID = Number(process.env.OWNER_ID || cfg.ownerId) || 0;
 function setOwner(id) {
