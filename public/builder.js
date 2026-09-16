@@ -409,14 +409,14 @@
         btn.disabled = false; btn.textContent = orig;
         let er = f.querySelector('.form-err');
         if (!er) { er = document.createElement('p'); er.className = 'form-err'; er.setAttribute('role', 'alert'); btn.insertAdjacentElement('afterend', er); }
-        er.innerHTML = "Couldn't send that just now. Please <a href=\"https://wa.me/996222222011\" target=\"_blank\" rel=\"noopener\">send it on WhatsApp</a> instead.";
+        er.innerHTML = "Couldn't send that just now. Please <a href=\"https://wa.me/996502888001\" target=\"_blank\" rel=\"noopener\">send it on WhatsApp</a> instead.";
       }
     });
   }
   function updateWa() {
     const wa = el('waSend'); if (!wa) return;
     const txt = summaryText() + (S.name ? '\n\nName: ' + S.name : '') + (S.email ? '\nEmail: ' + S.email : '');
-    wa.href = 'https://wa.me/996222222011?text=' + encodeURIComponent(txt);
+    wa.href = 'https://wa.me/996502888001?text=' + encodeURIComponent(txt);
   }
 
   // ---- public API ----

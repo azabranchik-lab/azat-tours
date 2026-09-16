@@ -122,6 +122,6 @@
 
     <div class="article-foot">
       <a href="blog.html">← All articles</a>
-      <a href="https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%20read%20your%20article%20and%20have%20a%20question." target="_blank" rel="noopener">Ask us on WhatsApp</a>
+      <a href="https://wa.me/996502888001?text=Hi%20Azat%20Tours!%20I%20read%20your%20article%20and%20have%20a%20question." target="_blank" rel="noopener">Ask us on WhatsApp</a>
     </div>`;
 })();

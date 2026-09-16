@@ -2,7 +2,7 @@
 // Used on tours.html (full catalog + filters) and index.html (featured grid).
 (function () {
   const TOURS = window.TOURS || [];
-  const waMsg = name => `https://wa.me/996222222011?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + name + " tour.")}`;
+  const waMsg = name => `https://wa.me/996502888001?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + name + " tour.")}`;
   const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   // soft rise-in for a set of cards (stagger capped so long lists don't crawl)
   function riseIn(els) {

@@ -6,7 +6,7 @@
   var page = (document.body && document.body.dataset.page) || '';
   if (!page) return; // pages without data-page (e.g. builder.html) keep their own chrome
 
-  var WA = 'https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%27d%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan.';
+  var WA = 'https://wa.me/996502888001?text=Hi%20Azat%20Tours!%20I%27d%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan.';
   var THEME_BTN = '<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Light / dark"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg></button>';
   var WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.4.3.1.2.1.7-.1 1.4Z"/></svg>';
 
@@ -70,7 +70,7 @@
         '<li><a href="contact.html">Contact</a></li>' +
       '</ul></div>' +
       '<div class="foot-col"><h4>Contact</h4><ul>' +
-        '<li><a href="https://wa.me/996222222011" target="_blank" rel="noopener">WhatsApp</a></li>' +
+        '<li><a href="https://wa.me/996502888001" target="_blank" rel="noopener">WhatsApp</a></li>' +
         '<li><a href="mailto:azatbeyshenaliev1@gmail.com">azatbeyshenaliev1@gmail.com</a></li>' +
         '<li><a href="contact.html">Bishkek, Kyrgyzstan</a></li>' +
       '</ul></div>' +

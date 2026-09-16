@@ -1,7 +1,7 @@
 // On-site chat widget. Visitor messages -> /api/chat -> owner's Telegram.
 // Owner replies in Telegram -> stored -> widget polls and shows them.
 (function () {
-  const WA = "https://wa.me/996222222011?text=Hi%20Azat%20Tours!%20I%20have%20a%20question.";
+  const WA = "https://wa.me/996502888001?text=Hi%20Azat%20Tours!%20I%20have%20a%20question.";
   // Storage can throw or be blocked in in-app WebViews (Instagram/Facebook) and
   // private contexts. Wrap it so a failure never kills chat init or the poll loop;
   // fall back to memory so the session still works for the current page view.
