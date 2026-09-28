@@ -26,13 +26,15 @@ function load() {
     supportWhatsapp: String(p.supportWhatsapp || '+996502888001'),
     photoMaxMb: num(p.photoMaxMb, 10),
     minFreeDiskGb: num(p.minFreeDiskGb, 3),
+    // 60, not 30: tapping through the ~30-step wizard quickly already takes ~30 updates a minute.
+    rateLimitPerMin: num(p.rateLimitPerMin, 60),
     dbFile: path.join(ROOT, 'content', 'partners.db'),
     siteUrl: cfg.origin || 'https://azattours.com'
   };
 
   const errors = [];
   if (!adminIds.length) errors.push('ownerId is not set');
-  for (const k of ['adminChatId', 'commissionPercent', 'photoMaxMb', 'minFreeDiskGb']) {
+  for (const k of ['adminChatId', 'commissionPercent', 'photoMaxMb', 'minFreeDiskGb', 'rateLimitPerMin']) {
     if (!Number.isFinite(out[k])) errors.push(`partners.${k} must be a number`);
   }
   if (errors.length) return { ok: false, reason: errors.join('; ') };

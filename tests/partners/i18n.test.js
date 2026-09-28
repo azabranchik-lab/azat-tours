@@ -22,8 +22,20 @@ test('all i18n keys used in code exist in ru.js', () => {
     for (const m of src.matchAll(/error: '([a-z_]+)'/g)) used.add(m[1]);
   }
   assert.ok(used.size > 10, 'scanner found keys');
-  const missing = [...used].filter(k => !(k in ru));
+  const missing = [...used].filter(k => !k.endsWith('_') && !(k in ru)); // 'q_' + key etc. are checked below
   assert.deepStrictEqual(missing, []);
+});
+
+test('every wizard step has its question, label, enum and preset texts', () => {
+  const { STEPS } = require('../../partners/bot/carWizard/steps');
+  const need = [];
+  for (const s of STEPS) {
+    need.push('q_' + s.key, 'f_' + s.key);
+    for (const o of s.options || []) need.push('enum_' + o);
+    if (s.other) need.push(s.other, s.other + '_ask');
+    if (s.presets && !s.presetsRaw && s.type !== 'int') need.push(...s.presets);
+  }
+  assert.deepStrictEqual(need.filter(k => !(k in ru)), []);
 });
 
 test('t() fills params and leaves unknown placeholders', () => {

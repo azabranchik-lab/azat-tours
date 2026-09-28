@@ -4,6 +4,7 @@
 const config = require('./config');
 const db = require('./db');
 const { createStore } = require('./store');
+const { createCars } = require('./cars');
 const { createBot } = require('./bot/bot');
 
 function start() {
@@ -11,8 +12,8 @@ function start() {
     const loaded = config.load();
     if (!loaded.ok) { console.warn(`[partners] not started: ${loaded.reason}`); return null; }
     const cfg = loaded.config;
-    const store = createStore(db.open(cfg.dbFile));
-    const bot = createBot({ cfg, store });
+    const conn = db.open(cfg.dbFile);
+    const bot = createBot({ cfg, store: createStore(conn), cars: createCars(conn) });
     bot.api.setMyCommands([
       { command: 'start', description: 'Главное меню' },
       { command: 'help', description: 'Помощь' }

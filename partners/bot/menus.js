@@ -31,4 +31,10 @@ function cityKeyboard(t) {
 
 const removeKeyboard = { remove_keyboard: true };
 
-module.exports = { CITIES, mainMenu, menuKey, phoneKeyboard, cityKeyboard, removeKeyboard };
+// grammY keeps empty rows from row() calls; Telegram should never see them.
+function tidy(kb) {
+  kb.inline_keyboard = kb.inline_keyboard.filter(r => r.length);
+  return kb;
+}
+
+module.exports = { CITIES, mainMenu, menuKey, phoneKeyboard, cityKeyboard, removeKeyboard, tidy };

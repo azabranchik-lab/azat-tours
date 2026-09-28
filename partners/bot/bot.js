@@ -6,11 +6,12 @@ const { isRegistered } = require('../store');
 const { mainMenu, menuKey } = require('./menus');
 const reg = require('./registration');
 const profile = require('./profile');
+const wizard = require('./carWizard/handlers');
+const summary = require('./carWizard/summary');
 
-const RATE_LIMIT = 30;          // updates per user…
-const RATE_WINDOW_MS = 60000;   // …per minute (SPEC §8)
+const RATE_WINDOW_MS = 60000;   // per-user limit window (SPEC §8)
 
-function createBot({ cfg, store }) {
+function createBot({ cfg, store, cars }) {
   const bot = new Bot(cfg.token);
   const isAdmin = id => cfg.adminIds.includes(Number(id));
   const baseParams = {
@@ -27,6 +28,7 @@ function createBot({ cfg, store }) {
 
   // Rate limit, in memory: a restart simply resets the counters.
   const hits = new Map();
+  const RATE_LIMIT = cfg.rateLimitPerMin || 60;
   bot.use(async (ctx, next) => {
     const nowMs = Date.now();
     const list = (hits.get(ctx.from.id) || []).filter(ts => nowMs - ts < RATE_WINDOW_MS);
@@ -50,6 +52,7 @@ function createBot({ cfg, store }) {
     ctx.partner = p;
     ctx.cfg = cfg;
     ctx.store = store;
+    ctx.cars = cars;
     ctx.isAdmin = isAdmin(ctx.from.id);
     ctx.t = (key, params) => translate(p.lang, key, { ...baseParams, ...params });
     ctx.setState = state => { store.setState(p.id, state); ctx.partner.state = state; };
@@ -71,7 +74,8 @@ function createBot({ cfg, store }) {
     ctx.setState(null); // a menu tap abandons any half-finished edit
     if (key === 'menu_profile') return profile.show(ctx);
     if (key === 'menu_help') return showHelp(ctx);
-    return ctx.reply(ctx.t('coming_soon'), { reply_markup: mainMenu(ctx.t) }); // menu_add / menu_my: next phases
+    if (key === 'menu_add') return wizard.startAdd(ctx);
+    return ctx.reply(ctx.t('coming_soon'), { reply_markup: mainMenu(ctx.t) }); // menu_my: phase 5
   }
 
   bot.command('start', async ctx => {
@@ -96,17 +100,22 @@ function createBot({ cfg, store }) {
     const key = menuKey(ctx.t, ctx.message.text);
     if (key) return onMenu(ctx, key);
     if (flow(ctx) === 'profile') return profile.onText(ctx);
+    if (flow(ctx) === 'car') return wizard.onText(ctx);
     return ctx.reply(ctx.t('menu_hint'), { reply_markup: mainMenu(ctx.t) });
   });
 
   bot.on('callback_query:data', async ctx => {
-    const [scope, action] = ctx.callbackQuery.data.split(':');
+    const parts = ctx.callbackQuery.data.split(':');
+    const [scope, action] = parts;
     if (scope === 'reg' && action === 'accept') return reg.onAccept(ctx);
     if (!isRegistered(ctx.partner)) {
       await ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
       return reg.start(ctx);
     }
     if (scope === 'prof') return profile.onCallback(ctx, action);
+    if (scope === 'w') return wizard.onCallback(ctx, parts);
+    if (scope === 'add') return wizard.onAddCallback(ctx, action, parts[2]);
+    if (scope === 'sum') return summary.onCallback(ctx, parts);
     return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
   });
 
