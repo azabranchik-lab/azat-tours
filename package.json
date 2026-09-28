@@ -11,7 +11,9 @@
     "regen": "node scripts/regenerate-all.js",
     "build-tours": "node scripts/build-tours.js",
     "build-photos": "node scripts/build-photos.js",
-    "build-image-formats": "node scripts/build-image-formats.js"
+    "build-image-formats": "node scripts/build-image-formats.js",
+    "partners": "node partners/index.js",
+    "test": "node --test \"tests/**/*.test.js\""
   },
   "engines": {
     "node": ">=18"

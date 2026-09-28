@@ -1,5 +1,16 @@
 {
   "_comment": "Copy this file to config.json and fill in your values. config.json is gitignored.",
   "token": "PASTE-YOUR-BOTFATHER-TOKEN-HERE",
-  "ownerId": 123456789
+  "ownerId": 123456789,
+  "somToUsdRate": 87.5,
+  "partners": {
+    "token": "PASTE-PARTNER-BOT-TOKEN-HERE",
+    "adminChatId": 0,
+    "adminIds": [],
+    "commissionPercent": 15,
+    "offerVersion": "2026-09",
+    "supportWhatsapp": "+996502888001",
+    "photoMaxMb": 10,
+    "minFreeDiskGb": 3
+  }
 }
