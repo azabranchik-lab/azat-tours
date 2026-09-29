@@ -51,6 +51,17 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
     return next();
   });
 
+  // Log what reaches the bot from groups (ids and kinds only, no message text), so a
+  // group that "doesn't connect" can be diagnosed from the pm2 log.
+  bot.use(async (ctx, next) => {
+    if (ctx.chat && ctx.chat.type !== 'private') {
+      const kind = Object.keys(ctx.update).filter(k => k !== 'update_id').join(',');
+      const cmd = ctx.message && ctx.message.text && ctx.message.text.startsWith('/') ? ` cmd=${ctx.message.text.split(/\s/)[0]}` : '';
+      console.log(`[partners] group update: chat=${ctx.chat.id} type=${ctx.chat.type} kind=${kind}${cmd} from=${ctx.from ? ctx.from.id : '-'} admin=${ctx.isAdminUser}`);
+    }
+    return next();
+  });
+
   // Setup helper: an admin types /chatid in the moderation group. If no group is
   // connected yet, this one is saved as partners.adminChatId. Silent for everyone else.
   bot.chatType(['group', 'supergroup']).command('chatid', async ctx => {
