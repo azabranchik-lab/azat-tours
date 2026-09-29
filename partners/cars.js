@@ -8,8 +8,10 @@ const CAR_FIELDS = [
   'color', 'plateNumber', 'mileageKm', 'features', 'description', 'rentalModes', 'priceSelfDrive',
   'priceWithDriver', 'longTermDiscount', 'deposit', 'insurance', 'delivery', 'driverRequirements',
   'restrictions', 'availabilityNote', 'city', 'en', 'rejectReason', 'copiedFromId', 'submittedAt',
-  'approvedAt', 'draftStep'
+  'approvedAt', 'draftStep', 'plateOnPhotos'
 ];
+
+const ANGLE_ORDER = ['FRONT', 'BACK', 'LEFT', 'RIGHT', 'INTERIOR_FRONT', 'INTERIOR_BACK', 'TRUNK', 'DASHBOARD', 'EXTRA'];
 
 function createCars(db) {
   const parse = row => {
@@ -52,6 +54,38 @@ function createCars(db) {
 
     latestDraft(partnerId) {
       return parse(db.prepare(`SELECT * FROM cars WHERE partnerId = ? AND status = 'DRAFT' ORDER BY updatedAt DESC LIMIT 1`).get(partnerId));
+    },
+
+    // Last choice for the plate question, to offer it first next time.
+    lastPlateChoice(partnerId) {
+      const r = db.prepare(`SELECT plateOnPhotos FROM cars WHERE partnerId = ? AND plateOnPhotos IS NOT NULL ORDER BY updatedAt DESC LIMIT 1`).get(partnerId);
+      return r ? r.plateOnPhotos : null;
+    },
+
+    // ----- photos -----
+    photos(carId) {
+      return db.prepare('SELECT * FROM car_photos WHERE carId = ?').all(carId)
+        .map(r => ({ ...r }))
+        .sort((a, b) => ANGLE_ORDER.indexOf(a.angle) - ANGLE_ORDER.indexOf(b.angle) || a.sortOrder - b.sortOrder);
+    },
+
+    // `replaceIds`: rows removed in the same transaction (one photo per angle is a unique index).
+    addPhoto(carId, p, replaceIds = []) {
+      const id = newId();
+      db.exec('BEGIN');
+      try {
+      for (const old of replaceIds) db.prepare('DELETE FROM car_photos WHERE id = ?').run(old);
+      db.prepare(`INSERT INTO car_photos (id, carId, angle, telegramFileId, telegramFileUniqueId, path, thumbPath, width, height, sortOrder, createdAt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        .run(id, carId, p.angle, p.telegramFileId, p.telegramFileUniqueId, p.path, p.thumbPath, p.width, p.height, p.sortOrder || 0, now());
+      db.prepare('UPDATE cars SET updatedAt = ? WHERE id = ?').run(now(), carId);
+      db.exec('COMMIT');
+      } catch (e) { db.exec('ROLLBACK'); throw e; }
+      return id;
+    },
+
+    removePhoto(photoId) {
+      db.prepare('DELETE FROM car_photos WHERE id = ?').run(photoId);
     },
 
     // Cars that can serve as a copy template: anything the partner finished at least once.

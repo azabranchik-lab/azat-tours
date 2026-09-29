@@ -22,7 +22,12 @@ function questionKeyboard(ctx, car, s, mode) {
   const kb = new InlineKeyboard();
   const d = `w:${s.index}`;
   if (s.type === 'enum') {
-    s.options.forEach((o, i) => { kb.text(ctx.t('enum_' + o), `${d}:o:${i}`); if (i % 2 === 1) kb.row(); });
+    // Long labels (the plate question) go one per row; the partner's last plate choice comes first.
+    const perRow = s.key === 'plateOnPhotos' ? 1 : 2;
+    let order = s.options.map((o, i) => i);
+    const last = s.key === 'plateOnPhotos' ? ctx.cars.lastPlateChoice(ctx.partner.id) : null;
+    if (last) order = [s.options.indexOf(last), ...order.filter(i => s.options[i] !== last)];
+    order.forEach((i, n) => { kb.text(ctx.t('enum_' + s.options[i]), `${d}:o:${i}`); if ((n + 1) % perRow === 0) kb.row(); });
     kb.row();
   } else if (s.type === 'multi') {
     const sel = car[s.key] || [];
@@ -49,11 +54,21 @@ function counter(ctx, car, key, mode) {
   return n > 0 ? ctx.t('step_counter', { n, total: seq.length }) + '\n' : '';
 }
 
+function questionText(ctx, car, key, mode) {
+  let text = counter(ctx, car, key, mode) + ctx.t('q_' + key);
+  if (key === 'plateOnPhotos') {
+    const last = ctx.cars.lastPlateChoice(ctx.partner.id);
+    if (last) text += '\n\n' + ctx.t('plate_last_time', { choice: ctx.t('enum_' + last) });
+  }
+  return text;
+}
+
 async function ask(ctx, car, key, mode) {
   if (key === 'summary') return require('./summary').show(ctx, car);
+  if (key === 'photos') return require('./photos').ask(ctx, car, mode, { intro: true });
   const s = S.step(key);
   await clearKb(ctx, ctx.partner.state && ctx.partner.state.qmsg);
-  const msg = await ctx.reply(counter(ctx, car, key, mode) + ctx.t('q_' + key), { reply_markup: questionKeyboard(ctx, car, s, mode) });
+  const msg = await ctx.reply(questionText(ctx, car, key, mode), { reply_markup: questionKeyboard(ctx, car, s, mode) });
   if (car.status === 'DRAFT' && mode !== 'edit') ctx.cars.update(car.id, { draftStep: key });
   ctx.setState({ flow: 'car', carId: car.id, step: key, mode, qmsg: msg.message_id });
 }
@@ -113,9 +128,11 @@ async function onAddCallback(ctx, action, id) {
   if (action === 'cont') {
     const key = S.resumeStep(draft);
     const mode = draft.copiedFromId && S.COPY_STEPS.includes(key) ? 'copy' : 'full';
+    if (key === 'summary') return require('./summary').show(ctx, draft, { withPhotos: true });
     return ask(ctx, draft, key, mode);
   }
   if (action === 'new') {
+    await ctx.storage.deleteDir(draft.id);
     ctx.cars.remove(draft.id);
     return offerCopyOrNew(ctx);
   }
@@ -179,6 +196,7 @@ async function onCallback(ctx, parts) {
     await ctx.answerCallbackQuery();
     return ctx.editMessageReplyMarkup({ reply_markup: questionKeyboard(ctx, updated, s, st.mode) }).catch(() => {});
   }
+  if (action === 'd' && s.type === 'photos') return require('./photos').onDone(ctx, car, st.mode);
   if (action === 'd' && s.type === 'multi') {
     const sel = car[s.key] || [];
     if (s.required && !sel.length) return ctx.answerCallbackQuery({ text: ctx.t('multi_min'), show_alert: true });

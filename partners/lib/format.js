@@ -22,9 +22,17 @@ function fieldValue(car, key, t) {
 }
 
 // Every field that applies to this car, description last (it is the longest).
-function carCard(car, t) {
+// `photos` (optional) adds a photo count line.
+function carCard(car, t, photos) {
   const lines = [carTitle(car, t), ''];
   for (const s of STEPS) {
+    if (s.type === 'photos') {
+      if (photos) {
+        const extra = photos.filter(p => p.angle === 'EXTRA').length;
+        lines.push(`${t('f_photos')}: ${t('photos_count', { n: photos.length - extra, extra })}`);
+      }
+      continue;
+    }
     if (s.key === 'description' || (s.when && !s.when(car))) continue;
     lines.push(`${t('f_' + s.key)}: ${fieldValue(car, s.key, t)}`);
   }

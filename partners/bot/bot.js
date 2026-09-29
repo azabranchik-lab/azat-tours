@@ -8,10 +8,19 @@ const reg = require('./registration');
 const profile = require('./profile');
 const wizard = require('./carWizard/handlers');
 const summary = require('./carWizard/summary');
+const photos = require('./carWizard/photos');
+
+// Telegram file -> Buffer (bots can download files up to 20 MB).
+async function downloadFile(bot, token, fileId) {
+  const f = await bot.api.getFile(fileId);
+  const res = await fetch(`https://api.telegram.org/file/bot${token}/${f.file_path}`);
+  if (!res.ok) throw new Error(`file download failed: HTTP ${res.status}`);
+  return Buffer.from(await res.arrayBuffer());
+}
 
 const RATE_WINDOW_MS = 60000;   // per-user limit window (SPEC §8)
 
-function createBot({ cfg, store, cars }) {
+function createBot({ cfg, store, cars, storage, download }) {
   const bot = new Bot(cfg.token);
   const isAdmin = id => cfg.adminIds.includes(Number(id));
   const baseParams = {
@@ -53,6 +62,8 @@ function createBot({ cfg, store, cars }) {
     ctx.cfg = cfg;
     ctx.store = store;
     ctx.cars = cars;
+    ctx.storage = storage;
+    ctx.download = fileId => (download ? download(fileId) : downloadFile(bot, cfg.token, fileId));
     ctx.isAdmin = isAdmin(ctx.from.id);
     ctx.t = (key, params) => translate(p.lang, key, { ...baseParams, ...params });
     ctx.setState = state => { store.setState(p.id, state); ctx.partner.state = state; };
@@ -117,6 +128,11 @@ function createBot({ cfg, store, cars }) {
     if (scope === 'add') return wizard.onAddCallback(ctx, action, parts[2]);
     if (scope === 'sum') return summary.onCallback(ctx, parts);
     return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
+  });
+
+  bot.on(['message:photo', 'message:document'], async (ctx, next) => {
+    if (isRegistered(ctx.partner) && await photos.onPhoto(ctx)) return;
+    return next();
   });
 
   // Photos, stickers, voice… outside a flow that expects them.

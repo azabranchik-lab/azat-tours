@@ -1,23 +1,40 @@
 // Test harness: the real grammY partner bot with the Telegram API faked
 // (no network, no token) and an in-memory SQLite DB.
+const fs = require('fs');
 const db = require('../../partners/db');
 const { createStore } = require('../../partners/store');
 const { createCars } = require('../../partners/cars');
 const { createBot } = require('../../partners/bot/bot');
+const { LocalStorage } = require('../../partners/storage/LocalStorage');
+const os = require('os');
+const path = require('path');
+const sharp = require('sharp');
+
+// A real image buffer (default: a 1200x900 JPEG, big enough for the 600 px check).
+function makeImage(width = 1200, height = 900, format = 'jpeg') {
+  return sharp({ create: { width, height, channels: 3, background: '#6a8f4e' } })[format]().toBuffer();
+}
 
 const OWNER = 913187557;
 const USER = 5550001;
 
 // Pass a previous harness's `conn` to simulate a process restart on the same DB.
-function setup(conn = db.open(':memory:'), extra = {}) {
+// Pass a previous harness's `storage` too, to keep its photo folder.
+function setup(conn = db.open(':memory:'), extra = {}, storage = null) {
   const store = createStore(conn);
   const cars = createCars(conn);
+  storage = storage || new LocalStorage(fs.mkdtempSync(path.join(os.tmpdir(), 'car-photos-')));
+  const files = new Map(); // Telegram file_id -> Buffer, served by the fake download
   const cfg = {
     token: '1:fake', adminIds: [OWNER], adminChatId: 0, commissionPercent: 15, offerVersion: '2026-09',
     supportWhatsapp: '+996502888001', photoMaxMb: 10, minFreeDiskGb: 3, siteUrl: 'https://azattours.com',
-    rateLimitPerMin: 60, ...extra
+    rateLimitPerMin: 1000, albumDebounceMs: 5, ...extra
   };
-  const bot = createBot({ cfg, store, cars });
+  const download = async fileId => {
+    if (!files.has(fileId)) throw new Error('unknown file ' + fileId);
+    return files.get(fileId);
+  };
+  const bot = createBot({ cfg, store, cars, storage, download });
   bot.botInfo = { id: 1, is_bot: true, first_name: 'Partners', username: 'partners_test_bot', can_join_groups: true, can_read_all_group_messages: false, supports_inline_queries: false };
   const calls = [];
   const sent = new Map(); // message_id -> { text, reply_markup }
@@ -52,6 +69,19 @@ function setup(conn = db.open(':memory:'), extra = {}) {
     return bot.handleUpdate({ update_id: uid++, callback_query: { id: String(uid), from: from(), chat_instance: '1', data, message: { message_id: messageId, date: 0, chat: chat(), text: m ? m.text : 'x' } } });
   };
 
+  // Send a photo (or a document when opts.document is set). opts: { buf, groupId, document: { mime, name, size } }
+  let fid = 0;
+  async function sendPhoto(opts = {}) {
+    const buf = opts.buf || await makeImage();
+    const id = 'file' + (++fid);
+    files.set(id, buf);
+    const media = opts.document
+      ? { document: { file_id: id, file_unique_id: 'u' + id, mime_type: opts.document.mime, file_name: opts.document.name, file_size: opts.document.size || buf.length } }
+      : { photo: [{ file_id: 'small' + id, file_unique_id: 's' + id, width: 90, height: 60, file_size: 900 }, { file_id: id, file_unique_id: 'u' + id, width: 1200, height: 900, file_size: buf.length }] };
+    return bot.handleUpdate({ update_id: uid++, message: { message_id: uid, date: 0, chat: chat(), from: from(), ...(opts.groupId ? { media_group_id: opts.groupId } : {}), ...media } });
+  }
+  async function sendPhotos(n, opts) { for (let i = 0; i < n; i++) await sendPhoto(opts); }
+
   const sentList = () => [...sent.entries()];
   const lastText = () => sentList().at(-1)[1].text;
   const texts = () => sentList().map(([, m]) => m.text);
@@ -72,7 +102,7 @@ function setup(conn = db.open(':memory:'), extra = {}) {
     await tap('Принимаю');
   }
 
-  return { conn, store, cars, calls, send, contact, press, tap, hasButton, lastText, texts, lastAnswer, register };
+  return { conn, store, cars, storage, calls, send, contact, press, tap, hasButton, lastText, texts, lastAnswer, register, sendPhoto, sendPhotos };
 }
 
-module.exports = { setup, OWNER, USER };
+module.exports = { setup, makeImage, OWNER, USER };

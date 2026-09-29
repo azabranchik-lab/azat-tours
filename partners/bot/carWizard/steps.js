@@ -15,6 +15,7 @@ const hasMode =(car, mode) => Array.isArray(car.rentalModes) && car.rentalModes.
 //   multi  – several of `options` (toggle buttons + «Готово»)
 //   text   – free text, `min`..`max` chars; `presets` are i18n keys shown as buttons, `other` prompts for text
 //   int    – whole number `min`..`max`; `presets` are numbers shown as buttons
+//   photos – photo upload step (not a car column)
 const STEPS = [
   { key: 'make', type: 'text', min: 2, max: 40, required: true, presets: MAKES, presetsRaw: true, other: 'make_other' },
   { key: 'model', type: 'text', min: 1, max: 60, required: true },
@@ -39,13 +40,16 @@ const STEPS = [
   { key: 'driverRequirements', type: 'text', min: 1, max: 200, required: false, when: car => hasMode(car, 'SELF_DRIVE') },
   { key: 'restrictions', type: 'text', min: 1, max: 500, required: false },
   { key: 'availabilityNote', type: 'text', min: 1, max: 100, required: true, presets: AVAIL_PRESETS, other: 'avail_other' },
+  { key: 'plateOnPhotos', type: 'enum', required: true, options: ['HIDE', 'BLUR', 'SHOW'] },
+  // 8 required angles + up to 5 extras; handled by photos.js, completeness checked via lib/photos.
+  { key: 'photos', type: 'photos', required: true },
   // Not asked by the wizard (copied from the profile), but editable from the summary.
   { key: 'city', type: 'text', min: 2, max: 60, required: true, presets: CITIES, presetsRaw: true, inWizard: false }
 ];
 
 const BY_KEY = Object.fromEntries(STEPS.map((s, i) => [s.key, { ...s, index: i }]));
 // Copying a car re-asks only what differs between two cars of the same model.
-const COPY_STEPS = ['color', 'plateNumber', 'mileageKm'];
+const COPY_STEPS = ['color', 'plateNumber', 'mileageKm', 'photos'];
 const COPY_EXCLUDED = ['color', 'plateNumber', 'mileageKm'];
 
 const step = key => BY_KEY[key] || null;
@@ -82,20 +86,21 @@ function prevStep(car, current, mode = 'full') {
 const isEmpty = v => v === null || v === undefined || v === '' || (Array.isArray(v) && v.length === 0);
 
 function missingRequired(car) {
-  return STEPS.filter(s => s.required && applies(s, car) && isEmpty(car[s.key])).map(s => s.key);
+  return STEPS.filter(s => s.required && s.type !== 'photos' && applies(s, car) && isEmpty(car[s.key])).map(s => s.key);
 }
 
 // Fields that no longer apply (e.g. self-drive price after SELF_DRIVE was
 // removed) are cleared so they never reach the site.
 function inapplicableFields(car) {
   const out = {};
-  for (const s of STEPS) if (!applies(s, car) && !isEmpty(car[s.key])) out[s.key] = null;
+  for (const s of STEPS) if (s.type !== 'photos' && !applies(s, car) && !isEmpty(car[s.key])) out[s.key] = null;
   return out;
 }
 
 // Parse a typed answer. Returns { ok: true, value } or { ok: false, error, params }.
 function parseText(s, input) {
   const raw = String(input == null ? '' : input).replace(/\s+/g, ' ').trim();
+  if (s.type === 'photos') return { ok: false, error: 'send_photo' };
   if (s.type === 'enum' || s.type === 'multi') return { ok: false, error: 'choose_button' };
   if (s.type === 'int') {
     const cleaned = raw.replace(/[\s ]/g, '').replace(/(сом|сомов|som|km|км)\.?$/i, '');
@@ -115,7 +120,7 @@ function parseText(s, input) {
 // A fresh draft copied from an existing car (SPEC §6.3).
 function copyFields(src) {
   const out = {};
-  for (const s of STEPS) if (!COPY_EXCLUDED.includes(s.key)) out[s.key] = src[s.key];
+  for (const s of STEPS) if (s.type !== 'photos' && !COPY_EXCLUDED.includes(s.key)) out[s.key] = src[s.key];
   out.city = src.city;
   out.copiedFromId = src.id;
   return out;

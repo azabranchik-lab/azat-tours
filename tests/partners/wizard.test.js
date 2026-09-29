@@ -6,7 +6,7 @@ const { setup } = require('./helpers');
 // Walks the whole wizard for a self-drive car. Returns the draft.
 async function fillFullCar(s) {
   await s.send('Добавить авто');
-  assert.match(s.lastText(), /Шаг 1 из 22\nМарка/);   // 23 steps minus priceWithDriver (not chosen yet… counted later)
+  assert.match(s.lastText(), /Шаг 1 из 24\nМарка/);   // 25 steps minus priceWithDriver: self-drive assumed until modes are chosen
   await s.tap('Toyota');
   await s.send('Land Cruiser 200');
   await s.send('2019');
@@ -29,6 +29,9 @@ async function fillFullCar(s) {
   await s.send('от 23 лет, стаж от 3 лет');
   await s.tap('Пропустить');                     // restrictions
   await s.tap('Круглый год');
+  await s.tap('Сниму так, чтобы номера не было видно');
+  await s.sendPhotos(8);
+  await s.tap('Готово');                          // no extra photos
   return s.cars.latestDraft(s.store.getByTelegramId(require('./helpers').USER).id);
 }
 
@@ -56,6 +59,8 @@ test('full wizard → summary with every field', async () => {
   assert.match(summary, /Залог, сом: без залога/);
   assert.match(summary, /Пробег: 120\s000 км/);
   assert.ok(!/С водителем, сом/.test(summary));           // not applicable, not shown
+  assert.match(summary, /Номер на фото: Сниму так/);
+  assert.match(summary, /Фото: 8 из 8, доп.: 0/);
 
   await s.tap('Отправить на проверку');
   assert.match(s.lastText(), /в следующем обновлении/);
@@ -126,10 +131,13 @@ test('copy an existing car: only color, plate, mileage are asked', async () => {
   await s.send('Добавить авто');
   await s.tap('Копия: Toyota Land Cruiser 200 2019');
   assert.match(s.texts().at(-2), /Скопировали данные/);
-  assert.match(s.lastText(), /Шаг 1 из 3\nЦвет/);
+  assert.match(s.lastText(), /Шаг 1 из 4\nЦвет/);
   await s.send('чёрный');
   await s.send('01KG 777 AAA');
   await s.tap('Пропустить');
+  assert.match(s.lastText(), /Фото 1\/8: спереди/);        // photos are never copied
+  await s.sendPhotos(8);
+  await s.tap('Готово');
   assert.match(s.lastText(), /^Проверьте анкету/);
   const copy = s.cars.latestDraft(first.partnerId);
   assert.strictEqual(copy.copiedFromId, first.id);

@@ -3,11 +3,11 @@ const test = require('node:test');
 const assert = require('node:assert');
 const S = require('../../partners/bot/carWizard/steps');
 
-test('full sequence: 23 steps, city is not asked', () => {
+test('full sequence: 25 steps ending with plate choice and photos, city is not asked', () => {
   const seq = S.sequence('full');
-  assert.strictEqual(seq.length, 23);
+  assert.strictEqual(seq.length, 25);
   assert.strictEqual(seq[0], 'make');
-  assert.strictEqual(seq.at(-1), 'availabilityNote');
+  assert.deepStrictEqual(seq.slice(-2), ['plateOnPhotos', 'photos']);
   assert.ok(!seq.includes('city'));
 });
 
@@ -29,14 +29,15 @@ test('price and driver steps depend on rental modes', () => {
 
 test('first and last steps; edit mode goes back to the summary', () => {
   assert.strictEqual(S.prevStep({}, 'make'), null);
-  assert.strictEqual(S.nextStep({}, 'availabilityNote'), 'summary');
+  assert.strictEqual(S.nextStep({}, 'photos'), 'summary');
   assert.strictEqual(S.nextStep({}, 'color', 'edit'), 'summary');
 });
 
-test('copy mode asks only color, plate, mileage', () => {
+test('copy mode asks only color, plate, mileage, then photos', () => {
   assert.strictEqual(S.nextStep({}, 'color', 'copy'), 'plateNumber');
   assert.strictEqual(S.nextStep({}, 'plateNumber', 'copy'), 'mileageKm');
-  assert.strictEqual(S.nextStep({}, 'mileageKm', 'copy'), 'summary');
+  assert.strictEqual(S.nextStep({}, 'mileageKm', 'copy'), 'photos');
+  assert.strictEqual(S.nextStep({}, 'photos', 'copy'), 'summary');
   assert.strictEqual(S.prevStep({}, 'color', 'copy'), null);
 });
 
