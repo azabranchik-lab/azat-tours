@@ -32,31 +32,23 @@ test('submit: partner is told, the group gets the album and a full card', async 
   assert.match(card, new RegExp(`#car ${car.id}$`));
 });
 
-test('approve → translation → publish: status, log, site rebuild, partner notified', async () => {
+test('approve publishes at once: status, log, site rebuild, partner notified, card updated', async () => {
   const s = modSetup();
   const car = await readyCar(s);
   await s.tap('Отправить на проверку');
 
   await s.groupTap('Одобрить');
-  const tr = s.groupTexts().at(-1);
-  assert.match(tr, /^Перевод для сайта: Toyota Camry 2019/);
-  assert.match(tr, /Описание:\nEN Чистая ухоженная машина/);
-  assert.match(tr, /Цвет:\nEN белый/);
-  assert.match(tr, /Требования к водителю:\nEN от 25 лет/);
-  assert.ok(!/Ограничения/.test(tr), 'empty fields are not translated');
-  assert.strictEqual(s.cars.get(car.id).status, 'PENDING', 'not public before «Опубликовать»');
-
-  await s.groupTap('Опубликовать');
   const c = s.cars.get(car.id);
   assert.strictEqual(c.status, 'APPROVED');
   assert.ok(c.approvedAt);
-  assert.strictEqual(c.en.color, 'EN белый');
+  assert.strictEqual(c.en, null, 'no translation any more');
   assert.strictEqual(s.changed.length, 1, 'site data rebuilt once');
-  assert.deepStrictEqual(s.cars.moderationLog(car.id).map(r => r.action), ['APPROVE', 'PUBLISH']);
+  assert.deepStrictEqual(s.cars.moderationLog(car.id).map(r => r.action), ['APPROVE']);
   assert.match(partnerTexts(s).at(-1), /Ваше авто Toyota Camry 2019 опубликовано на сайте/);
 
   const edits = s.calls.filter(x => x.method === 'editMessageText' && x.payload.chat_id === GROUP);
-  assert.ok(edits.some(e => e.payload.message_id === c.modMessageId && /Опубликовано: @owner/.test(e.payload.text)));
+  assert.ok(edits.some(e => e.payload.message_id === c.modMessageId && /Одобрено и опубликовано: @owner/.test(e.payload.text)));
+  assert.ok(!s.groupTexts().some(t => /Перевод/.test(t)));
 });
 
 test('someone else in the group cannot moderate; double clicks are harmless', async () => {
@@ -69,9 +61,8 @@ test('someone else in the group cannot moderate; double clicks are harmless', as
   assert.strictEqual(s.cars.moderationLog(car.id).length, 0);
 
   await s.groupTap('Одобрить');
-  await s.groupTap('Опубликовать');
   const modIdx = s.calls.filter(x => x.method === 'answerCallbackQuery').length;
-  await s.bot.handleUpdate({ update_id: 9999, callback_query: { id: 'x', from: { id: 913187557, is_bot: false, first_name: 'Owner' }, chat_instance: '2', data: `mod:pub:${car.id}`, message: { message_id: 1, date: 0, chat: { id: GROUP, type: 'supergroup', title: 'M' }, text: 'x' } } });
+  await s.bot.handleUpdate({ update_id: 9999, callback_query: { id: 'x', from: { id: 913187557, is_bot: false, first_name: 'Owner' }, chat_instance: '2', data: `mod:ok:${car.id}`, message: { message_id: 1, date: 0, chat: { id: GROUP, type: 'supergroup', title: 'M' }, text: 'x' } } });
   assert.strictEqual(s.lastAnswer(), 'Уже обработано');
   assert.ok(s.calls.filter(x => x.method === 'answerCallbackQuery').length > modIdx);
   assert.strictEqual(s.changed.length, 1);
@@ -104,29 +95,6 @@ test('reject with a reason → partner fixes and resubmits → card says "пов
   assert.strictEqual(c.status, 'PENDING');
   assert.match(s.groupTexts().at(-1), /^На проверку повторно: Toyota Camry 2019\nПрошлая причина отклонения: На фото сзади виден номер/);
   assert.deepStrictEqual(s.cars.moderationLog(car.id).map(r => r.action), ['REJECT']);
-});
-
-test('translation failure: admin types the translations, publish waits for all fields', async () => {
-  const s = modSetup({}, { translate: async () => { throw new Error('no API key'); } });
-  const car = await readyCar(s);
-  await s.tap('Отправить на проверку');
-  await s.groupTap('Одобрить');
-  assert.match(s.groupTexts().at(-1), /Автоперевод не получился \(no API key\)/);
-  assert.match(s.groupTexts().at(-1), /Описание:\n\(нет перевода\)/);
-
-  await s.groupTap('Опубликовать');
-  assert.match(s.lastAnswer(), /^Нет перевода: Описание, Цвет, Требования к водителю, Когда свободно$/);
-  assert.strictEqual(s.cars.get(car.id).status, 'PENDING');
-
-  for (const [label, text] of [['Описание', 'Clean, well kept car for city and highway.'], ['Цвет', 'White'], ['Требования к водителю', 'Age 25+'], ['Когда свободно', 'All year']]) {
-    await s.groupTap(`Изменить: ${label}`);
-    await s.groupReply('#tr', text);
-  }
-  assert.match(s.groupTexts().at(-1), /Цвет:\nWhite/);
-  await s.groupTap('Опубликовать');
-  const c = s.cars.get(car.id);
-  assert.strictEqual(c.status, 'APPROVED');
-  assert.deepStrictEqual(c.en, { description: 'Clean, well kept car for city and highway.', color: 'White', driverRequirements: 'Age 25+', availabilityNote: 'All year' });
 });
 
 test('admin replaces a photo (plate blurred) by replying with a picture', async () => {

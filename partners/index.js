@@ -6,7 +6,7 @@ const db = require('./db');
 const { createStore } = require('./store');
 const { createCars } = require('./cars');
 const path = require('path');
-const { createBot } = require('./bot/bot');
+const { createBot, PARTNER_COMMANDS } = require('./bot/bot');
 const { LocalStorage } = require('./storage/LocalStorage');
 const { scheduleCleanup } = require('./cleanup');
 
@@ -19,10 +19,7 @@ function start() {
     const storage = new LocalStorage(path.join(path.dirname(cfg.dbFile), 'car-photos'));
     const bot = createBot({ cfg, store: createStore(conn), cars: createCars(conn), storage, saveAdminChat: config.saveAdminChatId });
     scheduleCleanup(conn, storage);
-    bot.api.setMyCommands([
-      { command: 'start', description: 'Главное меню' },
-      { command: 'help', description: 'Помощь' }
-    ]).catch(e => console.warn('[partners] setMyCommands failed:', e.message));
+    bot.api.setMyCommands(PARTNER_COMMANDS).catch(e => console.warn('[partners] setMyCommands failed:', e.message));
     require('./bot/admin').publishCommands(bot.api, cfg.adminChatId);
     // No drop_pending_updates: messages partners sent during a restart still get handled.
     bot.start({ onStart: me => console.log(`[partners] bot @${me.username} started`) })

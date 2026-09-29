@@ -1,11 +1,9 @@
 // Shared flows for bot tests: a moderation-ready harness and a car submitted/published.
 const { setup, makeImage, USER, GROUP } = require('./helpers');
 
-const fakeTranslate = async fields => Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, 'EN ' + v]));
-
 function modSetup(extra = {}, deps = {}) {
   const changed = [];
-  const s = setup(undefined, { adminChatId: GROUP, ...extra }, null, { translate: fakeTranslate, onCarsChanged: () => changed.push(1), ...deps });
+  const s = setup(undefined, { adminChatId: GROUP, ...extra }, null, { onCarsChanged: () => changed.push(1), ...deps });
   s.changed = changed;
   return s;
 }
@@ -35,8 +33,7 @@ async function publishedCar(s, plate) {
   const car = await readyCar(s, plate);
   await s.tap('Отправить на проверку');
   await s.groupTap('Одобрить');
-  await s.groupTap('Опубликовать');
   return s.cars.get(car.id);
 }
 
-module.exports = { fakeTranslate, modSetup, readyCar, publishedCar };
+module.exports = { modSetup, readyCar, publishedCar };

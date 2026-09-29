@@ -12,7 +12,6 @@ const photos = require('./carWizard/photos');
 const moderation = require('./moderation');
 const myCars = require('./myCars');
 const admin = require('./admin');
-const ai = require('../../lib/ai');
 
 // Telegram file -> Buffer (bots can download files up to 20 MB).
 async function downloadFile(bot, token, fileId) {
@@ -24,9 +23,17 @@ async function downloadFile(bot, token, fileId) {
 
 const RATE_WINDOW_MS = 60000;   // per-user limit window (SPEC §8)
 
-// deps: translate(fields) -> English fields (default: Claude via lib/ai.js);
-// onCarsChanged() rebuilds the site data after a publish (wired in phase 7).
-function createBot({ cfg, store, cars, storage, download, saveAdminChat, translate: tr, onCarsChanged }) {
+// deps: onCarsChanged() rebuilds the site data after a publish (wired in phase 7).
+// Partners' «/» menu: every section of the main menu, plus help.
+const PARTNER_COMMANDS = [
+  { command: 'start', description: 'Главное меню' },
+  { command: 'add', description: 'Добавить авто' },
+  { command: 'mycars', description: 'Мои авто' },
+  { command: 'profile', description: 'Профиль' },
+  { command: 'help', description: 'Помощь' }
+];
+
+function createBot({ cfg, store, cars, storage, download, saveAdminChat, onCarsChanged }) {
   const bot = new Bot(cfg.token);
   const isAdmin = id => cfg.adminIds.includes(Number(id));
   const baseParams = {
@@ -42,10 +49,6 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
     ctx.cars = cars;
     ctx.storage = storage;
     ctx.download = fileId => (download ? download(fileId) : downloadFile(bot, cfg.token, fileId));
-    ctx.translate = tr || (fields => {
-      if (!ai.available()) throw new Error(ai.why());
-      return ai.translateCarFields(fields);
-    });
     ctx.onCarsChanged = async () => { if (onCarsChanged) await onCarsChanged(); };
     ctx.isAdminUser = !!ctx.from && isAdmin(ctx.from.id);
     return next();
@@ -160,6 +163,13 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
 
   bot.command('help', ctx => (isRegistered(ctx.partner) ? showHelp(ctx) : reg.start(ctx)));
 
+  // The «/» menu mirrors the main-menu buttons (PARTNER_COMMANDS).
+  const MENU_BY_COMMAND = { add: 'menu_add', mycars: 'menu_my', profile: 'menu_profile' };
+  bot.command(Object.keys(MENU_BY_COMMAND), ctx => {
+    if (!isRegistered(ctx.partner)) return reg.start(ctx);
+    return onMenu(ctx, MENU_BY_COMMAND[ctx.message.text.split(/[\s@]/)[0].slice(1).toLowerCase()]);
+  });
+
   bot.on('message:contact', async ctx => {
     if (flow(ctx) === 'reg') return reg.onContact(ctx);
     if (flow(ctx) === 'profile') return profile.onContact(ctx);
@@ -223,4 +233,4 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
   return bot;
 }
 
-module.exports = { createBot };
+module.exports = { createBot, PARTNER_COMMANDS };

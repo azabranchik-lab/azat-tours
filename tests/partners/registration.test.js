@@ -100,3 +100,18 @@ test('restart mid-registration: a new bot on the same DB continues the same step
   assert.match(s2.lastText(), /В каком городе/);
   assert.strictEqual(s2.store.getByTelegramId(USER).phone, '+996555111222');
 });
+
+test('«/» menu commands open the same sections as the buttons', async () => {
+  const s = setup();
+  await s.send('/add');
+  assert.match(s.lastText(), /имя или название компании/);   // not registered yet → registration
+  await s.send('Ош Авто'); await s.send('0555 111 222'); await s.send('Бишкек'); await s.press('reg:accept');
+  await s.send('/profile');
+  assert.match(s.lastText(), /^Ваш профиль/);
+  await s.send('/mycars');
+  assert.match(s.lastText(), /пока нет авто/);
+  await s.send('/add');
+  assert.match(s.lastText(), /Марка автомобиля/);
+  const { PARTNER_COMMANDS } = require('../../partners/bot/bot');
+  assert.deepStrictEqual(PARTNER_COMMANDS.map(c => c.command), ['start', 'add', 'mycars', 'profile', 'help']);
+});

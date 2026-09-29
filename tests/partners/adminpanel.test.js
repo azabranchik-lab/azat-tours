@@ -40,7 +40,6 @@ test('pending list opens a fresh moderation card that works', async () => {
   await s.groupTap(`Toyota Camry 2019 · Ош Авто · только что`);
   assert.match(groupReplies(s).at(-1), new RegExp(`#car ${car.id}$`));
   await s.groupTap('Одобрить');
-  await s.groupTap('Опубликовать');
   assert.strictEqual(s.cars.get(car.id).status, 'APPROVED');
 
   await groupCmd(s, '/pending');
