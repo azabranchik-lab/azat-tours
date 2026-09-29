@@ -248,4 +248,4 @@ async function onReply(ctx) {
   return false;
 }
 
-module.exports = { submit, onFix, onCallback, onReply, adminCard, sourceTexts, missingTranslations, TR_FIELDS };
+module.exports = { submit, onFix, onCallback, onReply, adminCard, cardKeyboard, sourceTexts, missingTranslations, TR_FIELDS };

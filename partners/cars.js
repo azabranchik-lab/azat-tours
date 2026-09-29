@@ -97,6 +97,23 @@ function createCars(db) {
       return db.prepare('SELECT * FROM moderation_log WHERE carId = ? ORDER BY createdAt').all(carId).map(r => ({ ...r }));
     },
 
+    countByStatus() {
+      return Object.fromEntries(db.prepare('SELECT status, COUNT(*) AS n FROM cars GROUP BY status').all().map(r => [r.status, r.n]));
+    },
+
+    // Moderation queue: oldest first.
+    listByStatus(status) {
+      return db.prepare('SELECT * FROM cars WHERE status = ? ORDER BY COALESCE(submittedAt, updatedAt)').all(status).map(parse);
+    },
+
+    listAll() {
+      return db.prepare('SELECT * FROM cars ORDER BY createdAt').all().map(parse);
+    },
+
+    listAllByPartner(partnerId) {
+      return db.prepare('SELECT * FROM cars WHERE partnerId = ? ORDER BY updatedAt DESC').all(partnerId).map(parse);
+    },
+
     // «Мои авто»: everything except deleted, newest first.
     listByPartner(partnerId) {
       return db.prepare(`SELECT * FROM cars WHERE partnerId = ? AND status <> 'ARCHIVED' ORDER BY updatedAt DESC`).all(partnerId).map(parse);

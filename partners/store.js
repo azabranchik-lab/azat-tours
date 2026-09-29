@@ -37,6 +37,27 @@ function createStore(db) {
       db.prepare(sql).run(...keys.map(k => fields[k]), now(), id);
     },
 
+    getByPhone(phone) {
+      return parse(db.prepare('SELECT * FROM partners WHERE phone = ? ORDER BY updatedAt DESC LIMIT 1').get(phone));
+    },
+
+    listAll() {
+      return db.prepare('SELECT * FROM partners ORDER BY createdAt').all().map(parse);
+    },
+
+    countRegistered() {
+      return db.prepare('SELECT COUNT(*) AS n FROM partners WHERE offerAcceptedAt IS NOT NULL').get().n;
+    },
+
+    counts() {
+      const r = db.prepare(`SELECT
+        SUM(CASE WHEN offerAcceptedAt IS NOT NULL THEN 1 ELSE 0 END) AS registered,
+        SUM(CASE WHEN offerAcceptedAt IS NULL THEN 1 ELSE 0 END) AS unregistered,
+        SUM(CASE WHEN status = 'BLOCKED' THEN 1 ELSE 0 END) AS blocked
+        FROM partners`).get();
+      return { registered: r.registered || 0, unregistered: r.unregistered || 0, blocked: r.blocked || 0 };
+    },
+
     setState(id, state) {
       setStateStmt.run(state ? JSON.stringify(state) : null, now(), id);
     }

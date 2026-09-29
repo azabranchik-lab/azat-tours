@@ -11,6 +11,7 @@ const summary = require('./carWizard/summary');
 const photos = require('./carWizard/photos');
 const moderation = require('./moderation');
 const myCars = require('./myCars');
+const admin = require('./admin');
 const ai = require('../../lib/ai');
 
 // Telegram file -> Buffer (bots can download files up to 20 MB).
@@ -59,14 +60,31 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
     if (cfg.adminChatId) return ctx.reply(`ID этой группы: ${id}\nСейчас подключена другая группа (${cfg.adminChatId}). Чтобы сменить, впишите новый ID в config.json → partners.adminChatId.`);
     if (saveAdminChat) saveAdminChat(id);
     cfg.adminChatId = id;
+    await admin.publishCommands(ctx.api, id);
     return ctx.reply(`ID этой группы: ${id}\nГруппа подключена: сюда будут приходить авто на проверку.`);
   });
 
-  // Moderation in the admin group: buttons on cards and replies to the bot's prompts.
+  // Moderation and the admin panel live in the connected group only (owner's choice).
   const group = bot.chatType(['group', 'supergroup']);
+  const inAdminGroup = ctx => ctx.chat.id === cfg.adminChatId;
   group.callbackQuery(/^mod:/, ctx => moderation.onCallback(ctx, ctx.callbackQuery.data.split(':')));
+  group.callbackQuery(/^adm:/, async ctx => {
+    if (!ctx.isAdminUser) return ctx.answerCallbackQuery({ text: translate('RU', 'no_access'), show_alert: true });
+    if (!inAdminGroup(ctx)) return ctx.answerCallbackQuery({ text: translate('RU', 'adm_only_here') });
+    return admin.onCallback(ctx, ctx.callbackQuery.data.split(':'));
+  });
+  group.command(admin.COMMANDS.map(c => c.command), async ctx => {
+    if (!ctx.isAdminUser) return; // silent for everyone else
+    if (!inAdminGroup(ctx)) return ctx.reply(translate('RU', 'adm_only_here'));
+    return admin.onCommand(ctx, ctx.message.text.split(/\s+/)[0].slice(1).split('@')[0].toLowerCase(), ctx.match.trim());
+  });
   group.on('message', async ctx => {
-    if (ctx.message.reply_to_message) await moderation.onReply(ctx);
+    const prompt = ctx.message.reply_to_message;
+    if (!prompt) return;
+    if (await moderation.onReply(ctx)) return;
+    if (ctx.isAdminUser && inAdminGroup(ctx) && prompt.from && prompt.from.id === ctx.me.id && /#find\s*$/.test(prompt.text || '')) {
+      return admin.onFindReply(ctx);
+    }
   });
 
   // Partner flows run in private chats only.

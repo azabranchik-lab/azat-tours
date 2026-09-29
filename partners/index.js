@@ -23,6 +23,7 @@ function start() {
       { command: 'start', description: 'Главное меню' },
       { command: 'help', description: 'Помощь' }
     ]).catch(e => console.warn('[partners] setMyCommands failed:', e.message));
+    require('./bot/admin').publishCommands(bot.api, cfg.adminChatId);
     // No drop_pending_updates: messages partners sent during a restart still get handled.
     bot.start({ onStart: me => console.log(`[partners] bot @${me.username} started`) })
       .catch(e => console.error('[partners] bot stopped:', e.message));
