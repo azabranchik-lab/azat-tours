@@ -1,6 +1,8 @@
 // Builds the partner bot: shared deps, the admin group (moderation), then
 // private-chat middleware (rate limit, partner, blocked) and routing.
 const { Bot, InlineKeyboard } = require('grammy');
+const { sequentialize } = require('@grammyjs/runner');
+const { autoRetry } = require('@grammyjs/auto-retry');
 const { t: translate } = require('../i18n');
 const { isRegistered } = require('../store');
 const { mainMenu, menuKey } = require('./menus');
@@ -35,6 +37,18 @@ const PARTNER_COMMANDS = [
 
 function createBot({ cfg, store, cars, storage, download, saveAdminChat, onCarsChanged }) {
   const bot = new Bot(cfg.token);
+  // Telegram flood limits (429) and brief network/5xx errors: wait and retry
+  // instead of failing the user's action. Capped so a handler never hangs.
+  bot.api.config.use(autoRetry({ maxRetryAttempts: 3, maxDelaySeconds: 30 }));
+
+  // The runner handles different users in parallel; updates of one user (and of
+  // one chat) still run strictly in order, which the wizard and albums rely on.
+  bot.use(sequentialize(ctx => {
+    const keys = [];
+    if (ctx.chat) keys.push('c' + ctx.chat.id);
+    if (ctx.from) keys.push('u' + ctx.from.id);
+    return keys;
+  }));
   const isAdmin = id => cfg.adminIds.includes(Number(id));
   const baseParams = {
     percent: cfg.commissionPercent,

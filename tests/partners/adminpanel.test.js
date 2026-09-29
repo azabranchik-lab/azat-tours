@@ -56,7 +56,7 @@ test('stats counts partners and cars by status', async () => {
   assert.match(t, /Фото занимают: \d/);
 });
 
-test('export: two CSV files for Excel (BOM, ";"), with plate and photo links', async () => {
+test('export: two CSV files for Excel (BOM, ";"), with plate and photo files', async () => {
   const s = modSetup();
   const car = await publishedCar(s);
   await groupCmd(s, '/export');
@@ -66,7 +66,7 @@ test('export: two CSV files for Excel (BOM, ";"), with plate and photo links', a
   assert.ok(partners.startsWith('﻿Telegram ID;Username;Имя;Телефон'));
   assert.match(partners, new RegExp(`${USER};@tester;Ош Авто;\\+996555111222;Бишкек;ACTIVE`));
   assert.match(cars, /;01KG 123 ABC;/);
-  assert.match(cars, new RegExp(`https://azattours.com/car-photos/${car.id}/FRONT-`));
+  assert.match(cars, new RegExp(`;${car.id}/FRONT-[\\w-]+\\.webp `));
   assert.match(docs[0].payload.document.filename, /^partners-\d{4}-\d{2}-\d{2}\.csv$/);
 });
 

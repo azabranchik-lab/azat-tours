@@ -1,6 +1,23 @@
 // Photo checks and processing (SPEC §6.4). Pure/async helpers, no Telegram.
 const sharp = require('sharp');
 
+// Several partners may upload at once (the bot handles users in parallel). Keep
+// sharp lean and process at most MAX_PARALLEL images at a time.
+sharp.cache(false);
+sharp.concurrency(2);
+const MAX_PARALLEL = 2;
+let active = 0;
+const waiting = [];
+async function limited(fn) {
+  if (active >= MAX_PARALLEL) await new Promise(resolve => waiting.push(resolve));
+  active++;
+  try { return await fn(); } finally {
+    active--;
+    const next = waiting.shift();
+    if (next) next();
+  }
+}
+
 const REQUIRED_ANGLES = ['FRONT', 'BACK', 'LEFT', 'RIGHT', 'INTERIOR_FRONT', 'INTERIOR_BACK', 'TRUNK', 'DASHBOARD'];
 const MAX_EXTRA = 5;
 const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp'];
@@ -24,7 +41,11 @@ function checkIncoming({ kind, mime, fileName, size }, maxMb) {
 
 // After downloading: check the real content, then produce WebP main + thumb.
 // EXIF/GPS are dropped (sharp strips metadata unless asked to keep it).
-async function processImage(buf) {
+function processImage(buf) {
+  return limited(() => processImageNow(buf));
+}
+
+async function processImageNow(buf) {
   let meta;
   try { meta = await sharp(buf).metadata(); } catch (e) { return { ok: false, error: 'photo_format' }; }
   if (!ALLOWED_FORMATS.includes(meta.format)) return { ok: false, error: 'photo_format' };
