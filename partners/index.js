@@ -1,6 +1,6 @@
-// Car-partners bot (docs/car-partners/SPEC.md). Started from start.js next to the
-// site and the admin bot. Any failure here is logged and swallowed so the site
-// and the admin bot keep running.
+// AZAT TOURS car-partners bot (SPEC.md). A standalone program: its own folder,
+// config.json, data/ and pm2 process; it shares nothing with the website.
+//   npm start            (or: pm2 start ecosystem.config.js)
 const config = require('./config');
 const db = require('./db');
 const { createStore } = require('./store');
@@ -65,7 +65,7 @@ function start() {
     if (!loaded.ok) { console.warn(`[partners] not started: ${loaded.reason}`); return null; }
     const cfg = loaded.config;
     const conn = db.open(cfg.dbFile);
-    const storage = new LocalStorage(path.join(path.dirname(cfg.dbFile), 'car-photos'));
+    const storage = new LocalStorage(cfg.photosDir);
     const bot = createBot({ cfg, store: createStore(conn), cars: createCars(conn), storage, saveAdminChat: config.saveAdminChatId });
     scheduleCleanup(conn, storage);
     bot.api.setMyCommands(PARTNER_COMMANDS).catch(e => console.warn('[partners] setMyCommands failed:', e.message));
@@ -82,8 +82,9 @@ function start() {
 
 module.exports = { start };
 
-// `npm run partners` runs this bot alone (local testing with a separate token,
-// without starting the admin bot that would clash with the server's polling).
 if (require.main === module) {
+  // Own process: a stray rejected promise is logged, not fatal; a real crash exits
+  // and pm2 restarts the bot (restart_delay 5 s).
+  process.on('unhandledRejection', err => console.error('[partners] unhandled rejection:', (err && err.stack) || err));
   if (!start()) process.exit(1);
 }

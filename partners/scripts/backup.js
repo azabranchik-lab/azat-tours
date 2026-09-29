@@ -1,13 +1,13 @@
 // Consistent one-file backup of the car-partners database (SPEC §2 «Бэкап»):
-//   npm run backup-partners  →  backups/partners-YYYY-MM-DD.db
+//   npm run backup  →  data/backups/partners-YYYY-MM-DD.db
 // VACUUM INTO gives a clean copy even while the bot is running (WAL mode).
 // Only the newest backup is kept on the server (25 GB disk): download it elsewhere.
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.join(__dirname, '..');
-const DB = path.join(ROOT, 'content', 'partners.db');
-const DIR = path.join(ROOT, 'backups');
+const { DATA_DIR } = require('../config');
+const DB = path.join(DATA_DIR, 'partners.db');
+const DIR = path.join(DATA_DIR, 'backups');
 
 if (!fs.existsSync(DB)) { console.error('No database yet:', DB); process.exit(1); }
 fs.mkdirSync(DIR, { recursive: true });
@@ -23,4 +23,4 @@ db.close();
 for (const f of fs.readdirSync(DIR)) {
   if (/^partners-\d{4}-\d{2}-\d{2}\.db$/.test(f) && path.join(DIR, f) !== out) fs.unlinkSync(path.join(DIR, f));
 }
-console.log(`Backup: ${out} (${(fs.statSync(out).size / 1024).toFixed(0)} KB). Photos: copy content/car-photos/.`);
+console.log(`Backup: ${out} (${(fs.statSync(out).size / 1024).toFixed(0)} KB). Photos: copy data/car-photos/.`);

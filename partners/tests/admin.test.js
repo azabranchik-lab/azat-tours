@@ -38,20 +38,19 @@ test('/chatid never silently switches to another group', async () => {
   assert.deepStrictEqual(saved, []);
 });
 
-test('saveAdminChatId keeps every other config key', () => {
+test('saveAdminChatId keeps every other config key (and never touches the site config)', () => {
   const fs = require('fs');
+  const os = require('os');
   const path = require('path');
-  const file = path.join(__dirname, '..', '..', 'config.json');
-  const before = fs.readFileSync(file, 'utf8');
-  try {
-    require('../../partners/config').saveAdminChatId(-42);
-    const after = JSON.parse(fs.readFileSync(file, 'utf8'));
-    const orig = JSON.parse(before);
-    assert.strictEqual(after.partners.adminChatId, -42);
-    assert.strictEqual(after.partners.token, orig.partners && orig.partners.token);
-    assert.strictEqual(after.token, orig.token);
-    assert.strictEqual(after.ownerId, orig.ownerId);
-  } finally {
-    fs.writeFileSync(file, before);                      // restore the real config
-  }
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pcfg-')), 'config.json');
+  fs.writeFileSync(file, JSON.stringify({ token: '1:abc', ownerId: 5, adminChatId: 0, siteUrl: 'https://x' }));
+  const config = require('../config');
+  config.saveAdminChatId(-42, file);
+  assert.deepStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { token: '1:abc', ownerId: 5, adminChatId: -42, siteUrl: 'https://x' });
+  const loaded = config.load(file);
+  assert.ok(loaded.ok);
+  assert.strictEqual(loaded.config.adminChatId, -42);
+  assert.deepStrictEqual(loaded.config.adminIds, [5]);
+  assert.ok(loaded.config.dbFile.startsWith(config.DATA_DIR));
+  assert.ok(!/content/.test(loaded.config.dbFile), 'data lives in partners/data, not the site content/');
 });

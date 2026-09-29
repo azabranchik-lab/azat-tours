@@ -4,8 +4,8 @@ const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-const P = require('../../partners/lib/photos');
-const { runCleanup } = require('../../partners/cleanup');
+const P = require('../lib/photos');
+const { runCleanup } = require('../cleanup');
 const { setup, makeImage, USER } = require('./helpers');
 
 // Registers and walks the wizard up to the photo step.
@@ -86,7 +86,7 @@ test('«Готово» before all 8 angles lists what is missing', async () => {
   const s = setup();
   await toPhotos(s);
   await s.sendPhotos(3);
-  const idx = require('../../partners/bot/carWizard/steps').step('photos').index;
+  const idx = require('../bot/carWizard/steps').step('photos').index;
   await s.press(`w:${idx}:d`);                                 // e.g. an old «Готово» button
   assert.match(s.lastAnswer(), /^Нужны ещё фото: справа, салон/);
 });
@@ -97,7 +97,7 @@ test('album of 10: 8 angles + 2 extras, one reply for the whole album', async ()
   const before = s.texts().length;
   await s.sendPhotos(10, { groupId: 'album1', buf: await makeImage() });
   assert.strictEqual(s.texts().length, before, 'no reply per album photo');
-  await require('../../partners/bot/carWizard/photos').flushAlbums();
+  await require('../bot/carWizard/photos').flushAlbums();
   const replies = s.texts().slice(before);
   assert.strictEqual(replies.length, 2);
   assert.match(replies[0], /^Принято: спереди, сзади, слева, справа, салон: передние сиденья и панель, салон: задние сиденья, багажник, приборная панель с пробегом, дополнительное, дополнительное$/);

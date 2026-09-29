@@ -1,4 +1,4 @@
-// StorageDriver backed by a local folder (content/car-photos/ in production).
+// StorageDriver backed by a local folder (partners/data/car-photos/).
 const fs = require('fs');
 const fsp = require('fs/promises');
 const path = require('path');

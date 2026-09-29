@@ -1,0 +1,22 @@
+{
+  "name": "azat-partners-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AZAT TOURS car partners Telegram bot (standalone, independent of the site)",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --no-warnings index.js",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "backup": "node --no-warnings scripts/backup.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "@grammyjs/auto-retry": "^2.0.2",
+    "@grammyjs/runner": "^2.0.3",
+    "grammy": "^1.44.0",
+    "sharp": "^0.35.3"
+  }
+}

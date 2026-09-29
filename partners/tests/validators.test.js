@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const v = require('../../partners/lib/validators');
+const v = require('../lib/validators');
 
 test('phone: Kyrgyz formats normalize to +996XXXXXXXXX', () => {
   for (const input of ['+996 555 123 456', '996555123456', '0555 123 456', '555123456', '+996(555)12-34-56', '00996555123456']) {

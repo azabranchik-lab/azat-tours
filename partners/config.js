@@ -1,20 +1,23 @@
-// Reads the `partners` block of config.json (SPEC §3). Returns null when the
-// partner bot is not configured, so the site and the admin bot keep running.
+// Reads partners/config.json (SPEC §3). The bot is standalone: it never reads the
+// website's config and never sees the admin bot's token.
+// Returns { ok: false, reason } when not configured, so the problem is logged plainly.
 const fs = require('fs');
 const path = require('path');
-const { writeFileAtomic } = require('../lib/fsx');
+const { writeFileAtomic } = require('./lib/fsx');
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = __dirname;
+const CONFIG_FILE = process.env.PARTNERS_CONFIG || path.join(ROOT, 'config.json');
+const DATA_DIR = process.env.PARTNERS_DATA || path.join(ROOT, 'data');
 
-function load() {
-  let cfg = {};
-  try { cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'config.json'), 'utf8')); } catch (e) {}
-  const p = cfg.partners || {};
+function load(file = CONFIG_FILE) {
+  let p = {};
+  try { p = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) {
+    return { ok: false, reason: `cannot read ${file}: ${e.message}` };
+  }
   const token = process.env.PARTNER_BOT_TOKEN || p.token || '';
-  if (!token || token.includes('PASTE-')) return { ok: false, reason: 'no partners.token in config.json (partner bot not started)' };
-  if (token === cfg.token) return { ok: false, reason: 'partners.token must differ from the admin bot token' };
+  if (!token || token.includes('PASTE-')) return { ok: false, reason: `no token in ${file}` };
 
-  const ownerId = Number(process.env.OWNER_ID || cfg.ownerId) || 0;
+  const ownerId = Number(process.env.OWNER_ID || p.ownerId) || 0;
   const adminIds = [ownerId, ...(Array.isArray(p.adminIds) ? p.adminIds : [])].map(Number).filter(Boolean);
   const num = (v, def) => (v === undefined || v === null || v === '' ? def : Number(v));
 
@@ -29,25 +32,25 @@ function load() {
     minFreeDiskGb: num(p.minFreeDiskGb, 3),
     // 60, not 30: tapping through the ~30-step wizard quickly already takes ~30 updates a minute.
     rateLimitPerMin: num(p.rateLimitPerMin, 60),
-    dbFile: path.join(ROOT, 'content', 'partners.db'),
-    siteUrl: cfg.origin || 'https://azattours.com'
+    dbFile: path.join(DATA_DIR, 'partners.db'),
+    photosDir: path.join(DATA_DIR, 'car-photos'),
+    siteUrl: String(p.siteUrl || 'https://azattours.com')
   };
 
   const errors = [];
-  if (!adminIds.length) errors.push('ownerId is not set');
+  if (!ownerId) errors.push('ownerId is not set');
   for (const k of ['adminChatId', 'commissionPercent', 'photoMaxMb', 'minFreeDiskGb', 'rateLimitPerMin']) {
-    if (!Number.isFinite(out[k])) errors.push(`partners.${k} must be a number`);
+    if (!Number.isFinite(out[k])) errors.push(`${k} must be a number`);
   }
   if (errors.length) return { ok: false, reason: errors.join('; ') };
   return { ok: true, config: out };
 }
 
-// Persist partners.adminChatId (set by /chatid). Re-reads the file and keeps every other key.
-function saveAdminChatId(id) {
-  const file = path.join(ROOT, 'config.json');
+// Persist adminChatId (set by /chatid). Re-reads the file and keeps every other key.
+function saveAdminChatId(id, file = CONFIG_FILE) {
   const cur = JSON.parse(fs.readFileSync(file, 'utf8'));
-  cur.partners = { ...(cur.partners || {}), adminChatId: id };
+  cur.adminChatId = id;
   writeFileAtomic(file, JSON.stringify(cur, null, 2) + '\n');
 }
 
-module.exports = { load, saveAdminChatId };
+module.exports = { load, saveAdminChatId, CONFIG_FILE, DATA_DIR };

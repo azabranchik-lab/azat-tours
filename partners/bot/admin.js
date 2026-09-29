@@ -126,7 +126,7 @@ async function exportCsv(ctx) {
     ['Требования к водителю', c => c.driverRequirements], ['Ограничения', c => c.restrictions], ['Когда свободно', c => c.availabilityNote],
     ['Город', c => c.city], ['Свободно', c => c.availability], ['Номер на фото', c => c.plateOnPhotos], ['Описание', c => c.description],
     ['Причина отклонения', c => c.rejectReason], ['Отправлено', c => c.submittedAt], ['Одобрено', c => c.approvedAt],
-    ['Фото (файлы на сервере, content/car-photos/)', c => ctx.cars.photos(c.id).map(p => p.path).join(' ')]
+    ['Фото (файлы на сервере, partners/data/car-photos/)', c => ctx.cars.photos(c.id).map(p => p.path).join(' ')]
   ]);
   const date = new Date().toISOString().slice(0, 10);
   await ctx.replyWithDocument(new InputFile(partnersCsv, `partners-${date}.csv`), { caption: a('adm_export_caption', { date }) });

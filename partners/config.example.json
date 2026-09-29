@@ -1,0 +1,14 @@
+{
+  "_comment": "Copy to config.json (never committed) and fill in. On the server: chmod 600 config.json",
+  "token": "PASTE-PARTNER-BOT-TOKEN-HERE",
+  "ownerId": 123456789,
+  "adminIds": [],
+  "adminChatId": 0,
+  "commissionPercent": 15,
+  "offerVersion": "2026-09",
+  "supportWhatsapp": "+996502888001",
+  "siteUrl": "https://azattours.com",
+  "photoMaxMb": 10,
+  "minFreeDiskGb": 3,
+  "rateLimitPerMin": 60
+}

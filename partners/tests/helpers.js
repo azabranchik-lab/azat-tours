@@ -1,11 +1,11 @@
 // Test harness: the real grammY partner bot with the Telegram API faked
 // (no network, no token) and an in-memory SQLite DB.
 const fs = require('fs');
-const db = require('../../partners/db');
-const { createStore } = require('../../partners/store');
-const { createCars } = require('../../partners/cars');
-const { createBot } = require('../../partners/bot/bot');
-const { LocalStorage } = require('../../partners/storage/LocalStorage');
+const db = require('../db');
+const { createStore } = require('../store');
+const { createCars } = require('../cars');
+const { createBot } = require('../bot/bot');
+const { LocalStorage } = require('../storage/LocalStorage');
 const os = require('os');
 const path = require('path');
 const sharp = require('sharp');

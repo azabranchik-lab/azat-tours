@@ -9,7 +9,6 @@ const store = require('./lib/store');
 const { waLink } = require('./lib/lead');
 const ai = require('./lib/ai');
 const PREVIEW_KEY = require('./lib/previewkey');
-const { writeFileAtomic } = require('./lib/fsx');
 
 // ---------- config ----------
 const CONFIG_PATH = path.join(__dirname, 'config.json');
@@ -18,16 +17,9 @@ try { cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch (e) {}
 const ORIGIN = cfg.origin || 'https://azattours.com';
 const TOKEN = process.env.BOT_TOKEN || cfg.token;
 let OWNER_ID = Number(process.env.OWNER_ID || cfg.ownerId) || 0;
-// Only touch ownerId: re-read the file and keep every other key (origin, anthropicApiKey,
-// partner-bot settings…). Never persist a token that came from env.
 function setOwner(id) {
   OWNER_ID = id;
-  try {
-    let cur = {};
-    try { cur = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch (e) {}
-    cur.ownerId = id;
-    writeFileAtomic(CONFIG_PATH, JSON.stringify(cur, null, 2));
-  } catch (e) {}
+  try { fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token: TOKEN, ownerId: id }, null, 2)); } catch (e) {}
 }
 if (!TOKEN || TOKEN.includes('PASTE-')) {
   console.error('\n⚠️  No bot token. Put it in config.json, then run: node bot.js\n');

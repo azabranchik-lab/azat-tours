@@ -25,6 +25,9 @@ const ALLOWED_FORMATS = ['jpeg', 'png', 'webp'];
 const MIN_SHORT_SIDE = 600;
 const MAIN = { size: 1600, quality: 80, fallbackQuality: 70, maxBytes: 1024 * 1024 };
 const THUMB = { size: 480, quality: 75 };
+// Decompression-bomb guard: a small file that decodes to a gigantic image is refused
+// (50 MP covers any phone camera; sharp's default is 268 MP).
+const SHARP_INPUT = { limitInputPixels: 50_000_000, failOn: 'error' };
 
 // Before downloading: what Telegram tells us about the file.
 // kind: 'photo' (always JPEG from Telegram) or 'document'.
@@ -47,11 +50,12 @@ function processImage(buf) {
 
 async function processImageNow(buf) {
   let meta;
-  try { meta = await sharp(buf).metadata(); } catch (e) { return { ok: false, error: 'photo_format' }; }
+  try { meta = await sharp(buf, SHARP_INPUT).metadata(); } catch (e) { return { ok: false, error: 'photo_format' }; }
+  if ((meta.width || 0) * (meta.height || 0) > SHARP_INPUT.limitInputPixels) return { ok: false, error: 'photo_format' };
   if (!ALLOWED_FORMATS.includes(meta.format)) return { ok: false, error: 'photo_format' };
   if (Math.min(meta.width || 0, meta.height || 0) < MIN_SHORT_SIDE) return { ok: false, error: 'photo_small' };
 
-  const resize = (s, q) => sharp(buf).rotate()
+  const resize = (s, q) => sharp(buf, SHARP_INPUT).rotate()
     .resize({ width: s, height: s, fit: 'inside', withoutEnlargement: true })
     .webp({ quality: q })
     .toBuffer({ resolveWithObject: true });

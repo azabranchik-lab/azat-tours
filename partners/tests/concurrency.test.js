@@ -4,8 +4,8 @@ const test = require('node:test');
 const assert = require('node:assert');
 const { makeImage, USER } = require('./helpers');
 const { modSetup, readyCar } = require('./flows');
-const photos = require('../../partners/bot/carWizard/photos');
-const P = require('../../partners/lib/photos');
+const photos = require('../bot/carWizard/photos');
+const P = require('../lib/photos');
 
 test('an album delivered all at once still fills the angles in order', async () => {
   const s = modSetup({ albumDebounceMs: 200 });

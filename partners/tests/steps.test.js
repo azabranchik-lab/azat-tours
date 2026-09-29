@@ -1,7 +1,7 @@
 // Pure wizard navigation and parsing (SPEC §6.3, §8).
 const test = require('node:test');
 const assert = require('node:assert');
-const S = require('../../partners/bot/carWizard/steps');
+const S = require('../bot/carWizard/steps');
 
 test('full sequence: 25 steps ending with plate choice and photos, city is not asked', () => {
   const seq = S.sequence('full');
