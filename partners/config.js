@@ -2,6 +2,7 @@
 // partner bot is not configured, so the site and the admin bot keep running.
 const fs = require('fs');
 const path = require('path');
+const { writeFileAtomic } = require('../lib/fsx');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -41,4 +42,12 @@ function load() {
   return { ok: true, config: out };
 }
 
-module.exports = { load };
+// Persist partners.adminChatId (set by /chatid). Re-reads the file and keeps every other key.
+function saveAdminChatId(id) {
+  const file = path.join(ROOT, 'config.json');
+  const cur = JSON.parse(fs.readFileSync(file, 'utf8'));
+  cur.partners = { ...(cur.partners || {}), adminChatId: id };
+  writeFileAtomic(file, JSON.stringify(cur, null, 2) + '\n');
+}
+
+module.exports = { load, saveAdminChatId };

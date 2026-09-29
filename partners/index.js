@@ -17,7 +17,7 @@ function start() {
     const cfg = loaded.config;
     const conn = db.open(cfg.dbFile);
     const storage = new LocalStorage(path.join(path.dirname(cfg.dbFile), 'car-photos'));
-    const bot = createBot({ cfg, store: createStore(conn), cars: createCars(conn), storage });
+    const bot = createBot({ cfg, store: createStore(conn), cars: createCars(conn), storage, saveAdminChat: config.saveAdminChatId });
     scheduleCleanup(conn, storage);
     bot.api.setMyCommands([
       { command: 'start', description: 'Главное меню' },

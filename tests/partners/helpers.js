@@ -20,7 +20,7 @@ const USER = 5550001;
 
 // Pass a previous harness's `conn` to simulate a process restart on the same DB.
 // Pass a previous harness's `storage` too, to keep its photo folder.
-function setup(conn = db.open(':memory:'), extra = {}, storage = null) {
+function setup(conn = db.open(':memory:'), extra = {}, storage = null, deps = {}) {
   const store = createStore(conn);
   const cars = createCars(conn);
   storage = storage || new LocalStorage(fs.mkdtempSync(path.join(os.tmpdir(), 'car-photos-')));
@@ -34,7 +34,7 @@ function setup(conn = db.open(':memory:'), extra = {}, storage = null) {
     if (!files.has(fileId)) throw new Error('unknown file ' + fileId);
     return files.get(fileId);
   };
-  const bot = createBot({ cfg, store, cars, storage, download });
+  const bot = createBot({ cfg, store, cars, storage, download, ...deps });
   bot.botInfo = { id: 1, is_bot: true, first_name: 'Partners', username: 'partners_test_bot', can_join_groups: true, can_read_all_group_messages: false, supports_inline_queries: false };
   const calls = [];
   const sent = new Map(); // message_id -> { text, reply_markup }

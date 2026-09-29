@@ -20,7 +20,7 @@ async function downloadFile(bot, token, fileId) {
 
 const RATE_WINDOW_MS = 60000;   // per-user limit window (SPEC §8)
 
-function createBot({ cfg, store, cars, storage, download }) {
+function createBot({ cfg, store, cars, storage, download, saveAdminChat }) {
   const bot = new Bot(cfg.token);
   const isAdmin = id => cfg.adminIds.includes(Number(id));
   const baseParams = {
@@ -29,14 +29,16 @@ function createBot({ cfg, store, cars, storage, download }) {
     site: cfg.siteUrl.replace(/^https?:\/\//, '')
   };
 
-  // Setup helper: an admin types /chatid in the moderation group to learn the
-  // id for partners.adminChatId. Silent for everyone else.
+  // Setup helper: an admin types /chatid in the moderation group. If no group is
+  // connected yet, this one is saved as partners.adminChatId. Silent for everyone else.
   bot.chatType(['group', 'supergroup']).command('chatid', async ctx => {
     if (!ctx.from || !isAdmin(ctx.from.id)) return;
-    const configured = cfg.adminChatId === ctx.chat.id;
-    return ctx.reply(`ID этой группы: ${ctx.chat.id}\n${configured
-      ? 'Уже прописан в config.json, модерация будет приходить сюда.'
-      : 'Впишите его в config.json → partners.adminChatId и перезапустите бота.'}`);
+    const id = ctx.chat.id;
+    if (cfg.adminChatId === id) return ctx.reply(`ID этой группы: ${id}\nГруппа уже подключена, модерация приходит сюда.`);
+    if (cfg.adminChatId) return ctx.reply(`ID этой группы: ${id}\nСейчас подключена другая группа (${cfg.adminChatId}). Чтобы сменить, впишите новый ID в config.json → partners.adminChatId.`);
+    if (saveAdminChat) saveAdminChat(id);
+    cfg.adminChatId = id;
+    return ctx.reply(`ID этой группы: ${id}\nГруппа подключена: сюда будут приходить авто на проверку.`);
   });
 
   // Partner flows run in private chats only.
