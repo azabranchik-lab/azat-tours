@@ -302,5 +302,8 @@ module.exports = {
   adm_cant_block_admin: 'Админа заблокировать нельзя.',
   adm_usage_block: 'Напишите так: /block <Telegram ID>',
   adm_usage_partner: 'Напишите так: /partner <телефон или Telegram ID>',
+  btn_site_files: 'Файлы для сайта',
+  btn_site_files_of: 'Файлы для сайта: {car}',
+  adm_site_files: 'Фото для сайта: {n} шт. (файлами, без сжатия). Данные авто:',
   adm_only_here: 'Админ-команды работают только в подключённой группе модерации.'
 };

@@ -79,9 +79,9 @@ async function notifyPartner(ctx, car, key, params, kb) {
 
 // ----- admin side -----
 
-async function setCardStatus(ctx, car, line) {
+async function setCardStatus(ctx, car, line, kb = { inline_keyboard: [] }) {
   if (!car.modMessageId) return;
-  await ctx.api.editMessageText(ctx.cfg.adminChatId, car.modMessageId, `${adminCard(ctx, car)}\n\n${line}`, { reply_markup: { inline_keyboard: [] } }).catch(() => {});
+  await ctx.api.editMessageText(ctx.cfg.adminChatId, car.modMessageId, `${adminCard(ctx, car)}\n\n${line}`, { reply_markup: kb }).catch(() => {});
 }
 
 function logAction(ctx, car, action, comment) {
@@ -89,17 +89,20 @@ function logAction(ctx, car, action, comment) {
 }
 
 // Update the card that was pressed, and the group card if that was another message.
-async function markDone(ctx, car, line) {
+async function markDone(ctx, car, line, kb = { inline_keyboard: [] }) {
   const pressed = ctx.callbackQuery && ctx.callbackQuery.message;
-  if (pressed) await ctx.editMessageText(`${adminCard(ctx, car)}\n\n${line}`, { reply_markup: { inline_keyboard: [] } }).catch(() => {});
-  if (!pressed || pressed.message_id !== car.modMessageId || pressed.chat.id !== ctx.cfg.adminChatId) await setCardStatus(ctx, car, line);
+  if (pressed) await ctx.editMessageText(`${adminCard(ctx, car)}\n\n${line}`, { reply_markup: kb }).catch(() => {});
+  if (!pressed || pressed.message_id !== car.modMessageId || pressed.chat.id !== ctx.cfg.adminChatId) await setCardStatus(ctx, car, line, kb);
 }
+
+// On an approved card: get everything needed to add the car to the site by hand.
+const filesKeyboard = car => new InlineKeyboard().text(a('btn_site_files'), `adm:files:${car.id}`);
 
 async function approve(ctx, car) {
   await ctx.answerCallbackQuery();
   const updated = ctx.cars.update(car.id, { status: 'APPROVED', approvedAt: new Date().toISOString(), rejectReason: null });
   logAction(ctx, updated, 'APPROVE');
-  await markDone(ctx, updated, a('mod_status_approved', { admin: who(ctx.from), time: when() }));
+  await markDone(ctx, updated, a('mod_status_approved', { admin: who(ctx.from), time: when() }), filesKeyboard(updated));
   await ctx.onCarsChanged();
   return notifyPartner(ctx, updated, 'approved');
 }

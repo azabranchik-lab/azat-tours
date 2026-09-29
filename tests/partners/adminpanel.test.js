@@ -114,3 +114,20 @@ test('private chats never see admin commands', async () => {
   await s.send('/stats');
   assert.doesNotMatch(s.lastText(), /Статистика/);
 });
+
+test('«Файлы для сайта»: full-quality JPEG files named for the site, plus the data', async () => {
+  const s = modSetup();
+  const car = await publishedCar(s);
+  await s.groupTap('Файлы для сайта');                    // button stays on the approved card
+  const groups = s.calls.filter(c => c.method === 'sendMediaGroup' && c.payload.chat_id === GROUP && c.payload.media[0].type === 'document');
+  assert.strictEqual(groups.length, 1);
+  const names = groups[0].payload.media.map(m => m.media.filename);
+  assert.strictEqual(names.length, 8);
+  assert.strictEqual(names[0], 'toyota-camry-2019-01-front.jpg');
+  assert.strictEqual(names[7], 'toyota-camry-2019-08-dashboard.jpg');
+  assert.match(groupReplies(s).at(-1), /^Фото для сайта: 8 шт\..*\n\nToyota Camry 2019\n/s);
+
+  await groupCmd(s, `/partner ${USER}`);                   // also reachable later from the partner card
+  assert.ok(s.hasButton('Файлы для сайта: Toyota Camry 2019'));
+  assert.ok(car);
+});

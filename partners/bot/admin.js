@@ -4,7 +4,8 @@
 //
 // /panel posts a panel [На проверке][Статистика][Выгрузка CSV][Найти партнёра];
 // the same actions exist as commands: /pending /stats /export /partner /block /unblock.
-const { InlineKeyboard, InputFile } = require('grammy');
+const { InlineKeyboard, InputFile, InputMediaBuilder } = require('grammy');
+const sharp = require('sharp');
 const { t: translate } = require('../i18n');
 const { carTitle } = require('../lib/format');
 const { toCsv } = require('../lib/csv');
@@ -74,6 +75,25 @@ async function openCar(ctx, id) {
   ctx.cars.update(car.id, { modMessageId: msg.message_id });
 }
 
+// «Файлы для сайта»: every photo as a full-quality JPEG file (documents, so Telegram
+// does not recompress them), named for the site, plus the car's data as text.
+const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+async function siteFiles(ctx, id) {
+  const car = ctx.cars.get(id);
+  if (!car || car.status === 'ARCHIVED') return ctx.reply(a('already_done'));
+  const base = slug([car.make, car.model, car.year].join(' ')) || car.id;
+  const photos = ctx.cars.photos(car.id);
+  const media = [];
+  for (const [i, p] of photos.entries()) {
+    const jpg = await sharp(await ctx.storage.read(p.path)).jpeg({ quality: 90 }).toBuffer();
+    media.push(InputMediaBuilder.document(new InputFile(jpg, `${base}-${String(i + 1).padStart(2, '0')}-${p.angle.toLowerCase()}.jpg`)));
+  }
+  for (let i = 0; i < media.length; i += 10) await ctx.replyWithMediaGroup(media.slice(i, i + 10));
+  const { carCard } = require('../lib/format');
+  return ctx.reply(`${a('adm_site_files', { n: photos.length })}\n\n${carCard(car, a)}`);
+}
+
 async function stats(ctx) {
   const c = ctx.cars.countByStatus();
   const s = ctx.store.counts();
@@ -127,7 +147,11 @@ function findPartner(ctx, q) {
 async function showPartner(ctx, p) {
   const cars = ctx.cars.listAllByPartner(p.id);
   const lines = cars.map(c => `• ${carTitle(c, a)} · ${a('status_' + c.status)}`).join('\n') || a('adm_partner_nocars');
-  const kb = new InlineKeyboard().text(
+  const kb = new InlineKeyboard();
+  for (const c of cars.filter(c => c.status === 'APPROVED' || c.status === 'PAUSED')) {
+    kb.text(a('btn_site_files_of', { car: carTitle(c, a) }), `adm:files:${c.id}`).row();
+  }
+  kb.text(
     p.status === 'BLOCKED' ? a('adm_btn_unblock') : a('adm_btn_block'),
     p.status === 'BLOCKED' ? `adm:unb:${p.id}` : `adm:blk:${p.id}`
   );
@@ -177,6 +201,7 @@ async function onCallback(ctx, parts) {
     return ctx.reply(`${a('adm_find_ask')}\n#find`, { reply_markup: { force_reply: true } });
   }
   if (action === 'car') { await ctx.answerCallbackQuery(); return openCar(ctx, id); }
+  if (action === 'files') { await ctx.answerCallbackQuery(); return siteFiles(ctx, id); }
   if (action === 'keep') { await ctx.answerCallbackQuery(); return ctx.deleteMessage().catch(() => {}); }
 
   const p = id ? ctx.store.getById(id) : null;
