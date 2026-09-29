@@ -22,9 +22,9 @@ function fieldValue(car, key, t) {
 }
 
 // Every field that applies to this car, description last (it is the longest).
-// `photos` (optional) adds a photo count line.
-function carCard(car, t, photos) {
-  const lines = [carTitle(car, t), ''];
+// `photos` (optional) adds a photo count line; title: false when the caller has its own heading.
+function carCard(car, t, photos, { title = true } = {}) {
+  const lines = title ? [carTitle(car, t), ''] : [];
   for (const s of STEPS) {
     if (s.type === 'photos') {
       if (photos) {

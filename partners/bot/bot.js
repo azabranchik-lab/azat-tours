@@ -1,5 +1,5 @@
-// Builds the partner bot: middleware (partner, blocked, rate limit) and routing.
-// Admin-group handling (moderation) arrives in a later phase.
+// Builds the partner bot: shared deps, the admin group (moderation), then
+// private-chat middleware (rate limit, partner, blocked) and routing.
 const { Bot, InlineKeyboard } = require('grammy');
 const { t: translate } = require('../i18n');
 const { isRegistered } = require('../store');
@@ -9,6 +9,8 @@ const profile = require('./profile');
 const wizard = require('./carWizard/handlers');
 const summary = require('./carWizard/summary');
 const photos = require('./carWizard/photos');
+const moderation = require('./moderation');
+const ai = require('../../lib/ai');
 
 // Telegram file -> Buffer (bots can download files up to 20 MB).
 async function downloadFile(bot, token, fileId) {
@@ -20,7 +22,9 @@ async function downloadFile(bot, token, fileId) {
 
 const RATE_WINDOW_MS = 60000;   // per-user limit window (SPEC §8)
 
-function createBot({ cfg, store, cars, storage, download, saveAdminChat }) {
+// deps: translate(fields) -> English fields (default: Claude via lib/ai.js);
+// onCarsChanged() rebuilds the site data after a publish (wired in phase 7).
+function createBot({ cfg, store, cars, storage, download, saveAdminChat, translate: tr, onCarsChanged }) {
   const bot = new Bot(cfg.token);
   const isAdmin = id => cfg.adminIds.includes(Number(id));
   const baseParams = {
@@ -28,6 +32,22 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat }) {
     whatsapp: cfg.supportWhatsapp,
     site: cfg.siteUrl.replace(/^https?:\/\//, '')
   };
+
+  // Shared deps for every update (private chats and the admin group).
+  bot.use(async (ctx, next) => {
+    ctx.cfg = cfg;
+    ctx.store = store;
+    ctx.cars = cars;
+    ctx.storage = storage;
+    ctx.download = fileId => (download ? download(fileId) : downloadFile(bot, cfg.token, fileId));
+    ctx.translate = tr || (fields => {
+      if (!ai.available()) throw new Error(ai.why());
+      return ai.translateCarFields(fields);
+    });
+    ctx.onCarsChanged = async () => { if (onCarsChanged) await onCarsChanged(); };
+    ctx.isAdminUser = !!ctx.from && isAdmin(ctx.from.id);
+    return next();
+  });
 
   // Setup helper: an admin types /chatid in the moderation group. If no group is
   // connected yet, this one is saved as partners.adminChatId. Silent for everyone else.
@@ -39,6 +59,13 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat }) {
     if (saveAdminChat) saveAdminChat(id);
     cfg.adminChatId = id;
     return ctx.reply(`ID этой группы: ${id}\nГруппа подключена: сюда будут приходить авто на проверку.`);
+  });
+
+  // Moderation in the admin group: buttons on cards and replies to the bot's prompts.
+  const group = bot.chatType(['group', 'supergroup']);
+  group.callbackQuery(/^mod:/, ctx => moderation.onCallback(ctx, ctx.callbackQuery.data.split(':')));
+  group.on('message', async ctx => {
+    if (ctx.message.reply_to_message) await moderation.onReply(ctx);
   });
 
   // Partner flows run in private chats only.
@@ -71,12 +98,6 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat }) {
       p = store.getById(p.id);
     }
     ctx.partner = p;
-    ctx.cfg = cfg;
-    ctx.store = store;
-    ctx.cars = cars;
-    ctx.storage = storage;
-    ctx.download = fileId => (download ? download(fileId) : downloadFile(bot, cfg.token, fileId));
-    ctx.isAdmin = isAdmin(ctx.from.id);
     ctx.t = (key, params) => translate(p.lang, key, { ...baseParams, ...params });
     ctx.setState = state => { store.setState(p.id, state); ctx.partner.state = state; };
     if (p.status === 'BLOCKED') {
@@ -139,6 +160,7 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat }) {
     if (scope === 'w') return wizard.onCallback(ctx, parts);
     if (scope === 'add') return wizard.onAddCallback(ctx, action, parts[2]);
     if (scope === 'sum') return summary.onCallback(ctx, parts);
+    if (scope === 'fix') return moderation.onFix(ctx, parts[1]);
     return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
   });
 

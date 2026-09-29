@@ -10,10 +10,11 @@ const clearKb = (ctx, msgId) => (msgId
   ? ctx.api.editMessageReplyMarkup(ctx.chat.id, msgId, { reply_markup: { inline_keyboard: [] } }).catch(() => {})
   : Promise.resolve());
 
-// The car must belong to this partner and still be a draft.
+// The car must belong to this partner and still be editable: a draft, or a
+// rejected car being fixed before it is sent again.
 function ownDraft(ctx, id) {
   const car = ctx.cars.get(id);
-  return car && car.partnerId === ctx.partner.id && car.status === 'DRAFT' ? car : null;
+  return car && car.partnerId === ctx.partner.id && (car.status === 'DRAFT' || car.status === 'REJECTED') ? car : null;
 }
 
 function presetLabel(ctx, s, p) { return s.presetsRaw || typeof p === 'number' ? String(p) : ctx.t(p); }

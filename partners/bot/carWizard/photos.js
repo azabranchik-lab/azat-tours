@@ -187,4 +187,4 @@ async function clearExtras(ctx, car) {
 // For tests: wait until debounced album replies have been sent.
 const flushAlbums = () => Promise.all([...pending.values()].map(p => p.done));
 
-module.exports = { ask, onPhoto, onDone, clearExtras, flushAlbums };
+module.exports = { ask, onPhoto, onDone, clearExtras, flushAlbums, incoming, store };

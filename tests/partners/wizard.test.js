@@ -63,7 +63,7 @@ test('full wizard → summary with every field', async () => {
   assert.match(summary, /Фото: 8 из 8, доп.: 0/);
 
   await s.tap('Отправить на проверку');
-  assert.match(s.lastText(), /в следующем обновлении/);
+  assert.match(s.lastText(), /отправлено на проверку/);
 });
 
 test('wrong input re-asks; buttons-only step rejects text; back and cancel keep the draft', async () => {

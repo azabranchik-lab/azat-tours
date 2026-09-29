@@ -1,7 +1,7 @@
 // Summary of a draft (SPEC §6.5): card + «Отправить на проверку» / «Изменить» /
-// «Удалить черновик». Photos and the actual submit arrive in phases 3-4.
-const { InlineKeyboard, InputFile, InputMediaBuilder } = require('grammy');
-const sharp = require('sharp');
+// «Удалить черновик». A REJECTED car is fixed through the same summary.
+const { InlineKeyboard } = require('grammy');
+const { sendAlbum } = require('../../lib/album');
 const P = require('../../lib/photos');
 const S = require('./steps');
 const { carCard, carTitle } = require('../../lib/format');
@@ -30,24 +30,13 @@ function photosKeyboard(ctx, car) {
   return tidy(kb.row().text(ctx.t('btn_extras_redo'), `sum:px:${car.id}`).row().text(ctx.t('btn_back'), `sum:edit:${car.id}`));
 }
 
-// Album built from the processed files (exactly what the site will show), sent as
-// JPEG so it also works for photos that arrived as documents. 10 per album max.
-async function sendAlbum(ctx, photos) {
-  const media = [];
-  for (const p of photos) {
-    const jpg = await sharp(await ctx.storage.read(p.path)).jpeg({ quality: 80 }).toBuffer();
-    media.push(InputMediaBuilder.photo(new InputFile(jpg, `${p.angle}.jpg`)));
-  }
-  for (let i = 0; i < media.length; i += 10) await ctx.replyWithMediaGroup(media.slice(i, i + 10));
-}
-
 async function show(ctx, car, { withPhotos = false } = {}) {
   const { clearKb } = require('./handlers');
   await clearKb(ctx, ctx.partner.state && ctx.partner.state.qmsg);
   ctx.cars.update(car.id, { draftStep: 'summary' });
   const photos = ctx.cars.photos(car.id);
   if (withPhotos && photos.length) {
-    try { await sendAlbum(ctx, photos); } catch (e) { console.error('[partners] summary album failed:', e.message); }
+    try { await sendAlbum(ctx.api, ctx.chat.id, ctx.storage, photos); } catch (e) { console.error('[partners] summary album failed:', e.message); }
   }
   const msg = await ctx.reply(`${ctx.t('summary_title')}\n\n${carCard(car, ctx.t, photos)}`, { reply_markup: summaryKeyboard(ctx, car) });
   ctx.setState({ flow: 'car', carId: car.id, step: 'summary', mode: 'full', qmsg: msg.message_id });
@@ -118,7 +107,7 @@ async function onCallback(ctx, parts) {
     if (missing.length) return ctx.reply(ctx.t('missing_fields', { fields: missing.map(k => ctx.t('f_' + k)).join(', ') }));
     const noPhoto = P.missingAngles(ctx.cars.photos(car.id));
     if (noPhoto.length) return ctx.reply(ctx.t('photos_missing', { angles: noPhoto.map(a => ctx.t('angle_' + a)).join(', ') }));
-    return ctx.reply(ctx.t('photos_next_phase'));
+    return require('../moderation').submit(ctx, car);
   }
   return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
 }

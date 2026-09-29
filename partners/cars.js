@@ -8,7 +8,7 @@ const CAR_FIELDS = [
   'color', 'plateNumber', 'mileageKm', 'features', 'description', 'rentalModes', 'priceSelfDrive',
   'priceWithDriver', 'longTermDiscount', 'deposit', 'insurance', 'delivery', 'driverRequirements',
   'restrictions', 'availabilityNote', 'city', 'en', 'rejectReason', 'copiedFromId', 'submittedAt',
-  'approvedAt', 'draftStep', 'plateOnPhotos'
+  'approvedAt', 'draftStep', 'plateOnPhotos', 'modMessageId'
 ];
 
 const ANGLE_ORDER = ['FRONT', 'BACK', 'LEFT', 'RIGHT', 'INTERIOR_FRONT', 'INTERIOR_BACK', 'TRUNK', 'DASHBOARD', 'EXTRA'];
@@ -86,6 +86,15 @@ function createCars(db) {
 
     removePhoto(photoId) {
       db.prepare('DELETE FROM car_photos WHERE id = ?').run(photoId);
+    },
+
+    logModeration(carId, adminTelegramId, action, comment = null) {
+      db.prepare('INSERT INTO moderation_log (id, carId, adminTelegramId, action, comment, createdAt) VALUES (?, ?, ?, ?, ?, ?)')
+        .run(newId(), carId, adminTelegramId, action, comment, now());
+    },
+
+    moderationLog(carId) {
+      return db.prepare('SELECT * FROM moderation_log WHERE carId = ? ORDER BY createdAt').all(carId).map(r => ({ ...r }));
     },
 
     // Cars that can serve as a copy template: anything the partner finished at least once.

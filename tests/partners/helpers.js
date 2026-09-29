@@ -17,6 +17,7 @@ function makeImage(width = 1200, height = 900, format = 'jpeg') {
 
 const OWNER = 913187557;
 const USER = 5550001;
+const GROUP = -1001234567890;
 
 // Pass a previous harness's `conn` to simulate a process restart on the same DB.
 // Pass a previous harness's `storage` too, to keep its photo folder.
@@ -46,7 +47,7 @@ function setup(conn = db.open(':memory:'), extra = {}, storage = null, deps = {}
     if (rows) for (const b of rows.flat()) if (b.callback_data && Buffer.byteLength(b.callback_data) > 64) throw new Error(`callback_data > 64 bytes: ${b.callback_data}`);
     if (method === 'sendMessage') {
       const id = ++mid;
-      sent.set(id, { text: payload.text, reply_markup: payload.reply_markup });
+      sent.set(id, { chat: payload.chat_id, text: payload.text, reply_markup: payload.reply_markup });
       return { ok: true, result: { message_id: id, date: 0, chat: { id: payload.chat_id, type: 'private' }, text: payload.text } };
     }
     if (method === 'editMessageReplyMarkup' || method === 'editMessageText') {
@@ -82,6 +83,34 @@ function setup(conn = db.open(':memory:'), extra = {}, storage = null, deps = {}
   }
   async function sendPhotos(n, opts) { for (let i = 0; i < n; i++) await sendPhoto(opts); }
 
+  // ----- admin group -----
+  const admin = () => ({ id: OWNER, is_bot: false, first_name: 'Owner', username: 'owner' });
+  const groupChat = () => ({ id: GROUP, type: 'supergroup', title: 'Модерация' });
+  const inGroup = () => [...sent.entries()].filter(([, m]) => m.chat === GROUP);
+  // Press a button (by label) on the newest group message showing it.
+  function groupTap(label, fromUser = admin()) {
+    for (const [id, m] of inGroup().reverse()) {
+      const b = buttons(m).find(x => x.text === label);
+      if (b) return bot.handleUpdate({ update_id: uid++, callback_query: { id: String(uid), from: fromUser, chat_instance: '2', data: b.callback_data, message: { message_id: id, date: 0, chat: groupChat(), text: m.text } } });
+    }
+    throw new Error(`no group button "${label}"`);
+  }
+  // Reply (text or photo) to the newest group prompt containing `tag`.
+  async function groupReply(tag, content, fromUser = admin()) {
+    const found = inGroup().reverse().find(([, m]) => m.text.includes(tag));
+    if (!found) throw new Error('no group prompt with ' + tag);
+    const [id, m] = found;
+    const reply_to_message = { message_id: id, date: 0, chat: groupChat(), from: { id: 1, is_bot: true, first_name: 'Partners', username: 'partners_test_bot' }, text: m.text };
+    let body = { text: content };
+    if (content && content.photo) {
+      const fileId = 'adm' + (++fid);
+      files.set(fileId, content.photo);
+      body = { photo: [{ file_id: fileId, file_unique_id: 'u' + fileId, width: 1200, height: 900, file_size: content.photo.length }] };
+    }
+    return bot.handleUpdate({ update_id: uid++, message: { message_id: uid, date: 0, chat: groupChat(), from: fromUser, reply_to_message, ...body } });
+  }
+  const groupTexts = () => inGroup().map(([, m]) => m.text);
+
   const sentList = () => [...sent.entries()];
   const lastText = () => sentList().at(-1)[1].text;
   const texts = () => sentList().map(([, m]) => m.text);
@@ -102,7 +131,7 @@ function setup(conn = db.open(':memory:'), extra = {}, storage = null, deps = {}
     await tap('Принимаю');
   }
 
-  return { bot, conn, store, cars, storage, calls, send, contact, press, tap, hasButton, lastText, texts, lastAnswer, register, sendPhoto, sendPhotos };
+  return { groupTap, groupReply, groupTexts, bot, conn, store, cars, storage, calls, send, contact, press, tap, hasButton, lastText, texts, lastAnswer, register, sendPhoto, sendPhotos };
 }
 
-module.exports = { setup, makeImage, OWNER, USER };
+module.exports = { setup, makeImage, OWNER, USER, GROUP };
