@@ -29,6 +29,16 @@ function createBot({ cfg, store, cars, storage, download }) {
     site: cfg.siteUrl.replace(/^https?:\/\//, '')
   };
 
+  // Setup helper: an admin types /chatid in the moderation group to learn the
+  // id for partners.adminChatId. Silent for everyone else.
+  bot.chatType(['group', 'supergroup']).command('chatid', async ctx => {
+    if (!ctx.from || !isAdmin(ctx.from.id)) return;
+    const configured = cfg.adminChatId === ctx.chat.id;
+    return ctx.reply(`ID этой группы: ${ctx.chat.id}\n${configured
+      ? 'Уже прописан в config.json, модерация будет приходить сюда.'
+      : 'Впишите его в config.json → partners.adminChatId и перезапустите бота.'}`);
+  });
+
   // Partner flows run in private chats only.
   bot.use(async (ctx, next) => {
     if (!ctx.from || !ctx.chat || ctx.chat.type !== 'private') return;

@@ -102,7 +102,7 @@ function setup(conn = db.open(':memory:'), extra = {}, storage = null) {
     await tap('Принимаю');
   }
 
-  return { conn, store, cars, storage, calls, send, contact, press, tap, hasButton, lastText, texts, lastAnswer, register, sendPhoto, sendPhotos };
+  return { bot, conn, store, cars, storage, calls, send, contact, press, tap, hasButton, lastText, texts, lastAnswer, register, sendPhoto, sendPhotos };
 }
 
 module.exports = { setup, makeImage, OWNER, USER };
