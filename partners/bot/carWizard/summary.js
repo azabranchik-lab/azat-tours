@@ -92,13 +92,9 @@ async function onCallback(ctx, parts) {
     await ctx.answerCallbackQuery();
     await ctx.editMessageReplyMarkup({ reply_markup: { inline_keyboard: [] } }).catch(() => {});
     const st = ctx.partner.state;
-    if (st && st.carId === car.id) {
-      const { clearKb } = require('./handlers');
-      await clearKb(ctx, st.qmsg);
-      ctx.setState(null);
-    }
-    await ctx.storage.deleteDir(car.id);
-    ctx.cars.remove(car.id);
+    if (st && st.carId === car.id) await require('./handlers').clearKb(ctx, st.qmsg);
+    // Same rule as «Мои авто»: a car that was ever sent or published is archived, not erased.
+    await require('../myCars').removeCar(ctx, car);
     return ctx.reply(ctx.t('draft_deleted'), { reply_markup: mainMenu(ctx.t) });
   }
   if (action === 'send') {

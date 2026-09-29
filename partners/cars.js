@@ -97,6 +97,11 @@ function createCars(db) {
       return db.prepare('SELECT * FROM moderation_log WHERE carId = ? ORDER BY createdAt').all(carId).map(r => ({ ...r }));
     },
 
+    // «Мои авто»: everything except deleted, newest first.
+    listByPartner(partnerId) {
+      return db.prepare(`SELECT * FROM cars WHERE partnerId = ? AND status <> 'ARCHIVED' ORDER BY updatedAt DESC`).all(partnerId).map(parse);
+    },
+
     // Cars that can serve as a copy template: anything the partner finished at least once.
     copySources(partnerId, limit = 5) {
       return db.prepare(`SELECT * FROM cars WHERE partnerId = ? AND status NOT IN ('DRAFT', 'ARCHIVED') ORDER BY updatedAt DESC LIMIT ?`)

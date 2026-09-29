@@ -25,7 +25,7 @@ const STEPS = [
   { key: 'drive', type: 'enum', required: true, options: ['AWD', 'FWD', 'RWD'] },
   { key: 'fuel', type: 'enum', required: true, options: ['PETROL', 'DIESEL', 'GAS_PETROL', 'HYBRID', 'ELECTRIC'] },
   { key: 'seats', type: 'int', min: 1, max: 30, required: true, presets: SEATS },
-  { key: 'color', type: 'text', min: 2, max: 30, required: true },
+  { key: 'color', type: 'text', min: 2, max: 30, required: false }, // optional since 2026-09-29 (owner)
   { key: 'plateNumber', type: 'text', min: 4, max: 12, required: true, normalize: s => s.toUpperCase() },
   { key: 'mileageKm', type: 'int', min: 0, max: 2000000, required: false },
   { key: 'features', type: 'multi', required: false, options: ['AC', 'SEAT_HEATING', 'REAR_CAMERA', 'NAVIGATION', 'CHILD_SEAT', 'ROOF_RACK', 'WINTER_TIRES'] },

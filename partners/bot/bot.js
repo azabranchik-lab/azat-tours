@@ -10,6 +10,7 @@ const wizard = require('./carWizard/handlers');
 const summary = require('./carWizard/summary');
 const photos = require('./carWizard/photos');
 const moderation = require('./moderation');
+const myCars = require('./myCars');
 const ai = require('../../lib/ai');
 
 // Telegram file -> Buffer (bots can download files up to 20 MB).
@@ -119,7 +120,7 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
     if (key === 'menu_profile') return profile.show(ctx);
     if (key === 'menu_help') return showHelp(ctx);
     if (key === 'menu_add') return wizard.startAdd(ctx);
-    return ctx.reply(ctx.t('coming_soon'), { reply_markup: mainMenu(ctx.t) }); // menu_my: phase 5
+    return myCars.showList(ctx);
   }
 
   bot.command('start', async ctx => {
@@ -145,6 +146,7 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
     if (key) return onMenu(ctx, key);
     if (flow(ctx) === 'profile') return profile.onText(ctx);
     if (flow(ctx) === 'car') return wizard.onText(ctx);
+    if (flow(ctx) === 'myprice') return myCars.onText(ctx);
     return ctx.reply(ctx.t('menu_hint'), { reply_markup: mainMenu(ctx.t) });
   });
 
@@ -161,6 +163,7 @@ function createBot({ cfg, store, cars, storage, download, saveAdminChat, transla
     if (scope === 'add') return wizard.onAddCallback(ctx, action, parts[2]);
     if (scope === 'sum') return summary.onCallback(ctx, parts);
     if (scope === 'fix') return moderation.onFix(ctx, parts[1]);
+    if (scope === 'my') return myCars.onCallback(ctx, parts);
     return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
   });
 

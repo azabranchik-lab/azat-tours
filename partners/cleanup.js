@@ -14,7 +14,8 @@ async function runCleanup(conn, storage, nowMs = Date.now()) {
     conn.prepare('DELETE FROM car_photos WHERE carId = ?').run(id);
   }
 
-  const drafts = conn.prepare(`SELECT id FROM cars WHERE status = 'DRAFT' AND updatedAt < ?`).all(iso(DRAFT_DAYS));
+  // A draft that was published before (being edited) is never auto-deleted.
+  const drafts = conn.prepare(`SELECT id FROM cars WHERE status = 'DRAFT' AND approvedAt IS NULL AND updatedAt < ?`).all(iso(DRAFT_DAYS));
   for (const { id } of drafts) {
     await storage.deleteDir(id);
     conn.prepare('DELETE FROM cars WHERE id = ?').run(id); // photos go with it (ON DELETE CASCADE)

@@ -38,7 +38,7 @@ function adminCard(ctx, car) {
   const partner = ctx.store.getById(car.partnerId);
   const title = car.rejectReason
     ? a('mod_title_again', { car: carTitle(car, a), reason: car.rejectReason })
-    : a('mod_title_new', { car: carTitle(car, a) });
+    : a(car.approvedAt ? 'mod_title_edit' : 'mod_title_new', { car: carTitle(car, a) });
   return [
     title,
     a('mod_partner', { name: partner.name, phone: partner.phone, username: partner.username ? '@' + partner.username : '-' }),
