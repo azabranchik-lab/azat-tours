@@ -21,7 +21,12 @@
 {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
-  "name": "Azat Tours Kyrgyzstan",
+  "@id": "https://azattours.com/#organization",
+  "name": "Azat Tours",
+  "alternateName": "Azat Tours Kyrgyzstan",
+  "foundingDate": "2019",
+  "founder": {"@type": "Person", "name": "Azat", "jobTitle": "Founder and guide"},
+  "contactPoint": {"@type": "ContactPoint", "contactType": "reservations", "telephone": "+996502888001", "email": "azatbeyshenaliev1@gmail.com", "url": "https://wa.me/996502888001"},
   "description": "Small-group and tailor-made adventure tours across Kyrgyzstan, trekking, horse treks, yurt stays and Issyk-Kul culture trips, run by local guides.",
   "url": "https://azattours.com",
   "telephone": "+996502888001",
@@ -56,7 +61,7 @@
 </head>
 <body data-page="home">
 
-<!-- header + mobile menu injected by nav.js -->
+<!-- header + mobile menu: put here by the server (lib/pages.js, markup from nav.js) -->
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
@@ -323,11 +328,13 @@
             <label for="tour">Interested in</label>
             <select id="tour" name="tour">
               <option value="" selected>Not sure yet, advise me</option>
-              <option>Ala-Kul Lake Trek</option>
-              <option>Song-Kul Horse Trek</option>
-              <option>Issyk-Kul & Nomad Culture</option>
-              <option>Tian Shan Expedition</option>
-              <option>Day tours from Bishkek</option>
+              <option>Horse trek</option>
+              <option>Road trip</option>
+              <option>Ride and trek combined</option>
+              <option>Off-the-beaten-path trip</option>
+              <option>Winter trip</option>
+              <option>Family trip</option>
+              <option>A custom route</option>
             </select>
           </div>
           <div class="field">
@@ -356,14 +363,12 @@
   </div>
 </section>
 
-<!-- footer + floating CTAs injected by nav.js -->
+<!-- footer + floating CTAs: put here by the server (lib/pages.js, markup from nav.js) -->
 
-<script src="/tours-data.js"></script>
 <script src="/reviews-data.js"></script>
 <script src="/site-data.js"></script>
 <script src="/nav.js"></script>
 <script src="/script.js"></script>
-<script src="/cards.js"></script>
 <script src="/tours-render.js"></script>
 <script src="/reviews-render.js"></script>
 <script src="/home-media.js"></script>

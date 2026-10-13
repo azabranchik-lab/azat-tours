@@ -47,6 +47,17 @@
       </a>`;
   }
 
+  // Home page pick: a varied six (long combined trips, a horse trip, a short one).
+  // A slug that no longer exists is skipped and the longest tours fill the gap.
+  const FEATURED = ['kyrgyzstan-grand-tour-10-days', 'song-kul-horse-trek-ala-kul-hike-7-days', 'two-lakes-kok-bulak-horse-trek-7-days', 'kok-kiya-kel-suu-road-trip-8-days', 'song-kul-horse-trek-3-days', 'issyk-kul-altyn-arashan-4-days'];
+  function featuredTours(tours) {
+    const pick = [];
+    const byDays = [...tours].sort((a, b) => b.days - a.days);
+    FEATURED.forEach(s => { const t = tours.find(x => x.slug === s); if (t) pick.push(t); });
+    while (pick.length < 6 && byDays.length) { const t = byDays.shift(); if (!pick.includes(t)) pick.push(t); }
+    return pick.slice(0, 6);
+  }
+
   function postFeatured(p) {
     return `<a href="${postUrl(p.slug)}" class="blog-feature reveal in" style="cursor:pointer">
       <div class="img"><img src="${asset(p.cover)}" alt="${esc(p.title)}"></div>
@@ -65,5 +76,5 @@
       <h3>${esc(p.title)}</h3><span class="more">Read more</span></div></a>`;
   }
 
-  return { esc, asset, tourUrl, postUrl, dateStr, FALLBACK_IMG, tourCard, postFeatured, postCard };
+  return { esc, asset, tourUrl, postUrl, dateStr, FALLBACK_IMG, tourCard, featuredTours, postFeatured, postCard };
 });

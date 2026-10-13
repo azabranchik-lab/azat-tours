@@ -47,6 +47,9 @@ async function main() {
   if (!/Sitemap:\s*https:\/\/azattours\.com\/sitemap\.xml/.test(robots)) bad('/robots.txt', 'no Sitemap line');
   if (/^Disallow:\s*\/\s*$/m.test(robots)) bad('/robots.txt', 'site is closed to crawlers');
 
+  const llms = await get(BASE + '/llms.txt');
+  if (llms.status !== 200 || !/^# Azat Tours/.test(await llms.text())) bad('/llms.txt', 'missing or malformed');
+
   const titles = new Map(), descs = new Map(), links = new Map();
   let tours = 0, posts = 0;
   for (const { loc } of entries) {
@@ -71,6 +74,8 @@ async function main() {
     if (pathName === '/' && !types.includes('TravelAgency')) bad(pathName, 'no TravelAgency JSON-LD');
     if (pathName === '/tours/' && (html.match(/<a class="tour" href="\/tours\//g) || []).length < 1) bad(pathName, 'tour list missing from HTML');
     if (pathName === '/blog/' && !/href="\/blog\/[a-z0-9-]+\/"/.test(html)) bad(pathName, 'post list missing from HTML');
+    if (!/<header id="header"/.test(html) || !/<footer>/.test(html)) bad(pathName, 'navigation or footer missing from HTML');
+    if (isTour || isPost) { const md = await get(BASE + pathName.replace(/\/$/, '.md')); if (md.status !== 200 || !/^# /.test(await md.text())) bad(pathName, 'no Markdown version'); }
     for (const m of html.matchAll(/<img\b[^>]*>/g)) if (!/\salt="/.test(m[0])) bad(pathName, 'img without alt: ' + m[0].slice(0, 80));
     for (const m of html.matchAll(/\s(?:href|src)="([^"]+)"/g)) {
       let h = unescape(m[1]);

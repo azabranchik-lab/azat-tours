@@ -35,11 +35,28 @@ function fixBlurbs() {
   console.log(n + ' blurb(s) updated');
 }
 
+// Near-identical length variants: both pages stay, search engines get the longer one.
+function setCanonicals() {
+  const pairs = {
+    'tash-rabat-kel-suu-ala-kul-11-days': 'complete-kyrgyzstan-adventure-12-days',
+    'tash-rabat-kel-suu-road-trip-11-days': 'grand-kyrgyzstan-road-trip-12-days',
+  };
+  const tours = content.loadTours();
+  let n = 0;
+  for (const [slug, main] of Object.entries(pairs)) {
+    const t = tours.find(x => x.slug === slug);
+    if (t && tours.some(x => x.slug === main) && t.canonical !== main) { t.canonical = main; n++; }
+  }
+  if (n) content.saveTours(tours);
+  console.log(n + ' canonical(s) set');
+}
+
 const MIGRATIONS = [
   ['2026-10-13-rename-tours', [run('rename-tours.js')]],
   ['2026-10-13-summaries', [run('merge-summaries.js')]],
   ['2026-10-13-blurb-fixes', [fixBlurbs]],
   ['2026-10-14-lake-spelling', [run('unify-spelling.js')]],
+  ['2026-10-14-canonical-pairs', [setCanonicals]],
 ];
 
 function main() {

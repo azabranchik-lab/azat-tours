@@ -1,8 +1,9 @@
-// Renders tour cards from window.TOURS (loaded via tours-data.js).
+// Behaviour for the tour lists. The server sends the cards in the HTML
+// (lib/pages.js + cards.js); this script adds filters, sorting and the rise-in.
+// Everything is read from the cards themselves (data-cats / data-tags / data-days),
+// so the page does not need the tours data file.
 // Used on /tours/ (full catalog + filters) and the home page (featured grid).
 (function () {
-  const TOURS = window.TOURS || [];
-  const waMsg = name => `https://wa.me/996502888001?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + name + " tour.")}`;
   const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   // soft rise-in for a set of cards (stagger capped so long lists don't crawl)
   function riseIn(els) {
@@ -12,35 +13,24 @@
     els.forEach((c, i) => { c.style.animationDelay = (Math.min(i, 8) * 35) + 'ms'; c.classList.add('animate-in'); });
   }
 
-  const card = window.Cards.tourCard;   // shared with the server render (cards.js)
-
-  // ---- FEATURED (index.html) ----
+  // ---- FEATURED (home) ----
   const featured = document.getElementById('featuredGrid');
-  if (featured) {
-    // a varied pick: a few long combined trips + a horse trip + a short one
-    const pick = [];
-    const byDays = [...TOURS].sort((a, b) => b.days - a.days);
-    const want = ['kyrgyzstan-grand-tour-10-days', 'song-kul-horse-trek-ala-kul-hike-7-days', 'two-lakes-kok-bulak-horse-trek-7-days', 'kok-kiya-kel-suu-road-trip-8-days', 'song-kul-horse-trek-3-days', 'issyk-kul-altyn-arashan-4-days'];
-    want.forEach(s => { const t = TOURS.find(x => x.slug === s); if (t) pick.push(t); });
-    while (pick.length < 6 && byDays.length) { const t = byDays.shift(); if (!pick.includes(t)) pick.push(t); }
-    featured.innerHTML = pick.slice(0, 6).map(card).join('');
-    riseIn([...featured.querySelectorAll('.tour')]);
-  }
+  if (featured) riseIn([...featured.querySelectorAll('.tour')]);
 
   // ---- CATALOG (tours.html) ----
   const grid = document.getElementById('toursGrid');
   if (grid) {
-    // the server already sent the full list in the HTML; only fill an empty grid
-    if (!grid.children.length) grid.innerHTML = TOURS.map(card).join('');
-    document.getElementById('tourCount') && (document.getElementById('tourCount').textContent = TOURS.length);
-
     const cards = [...grid.querySelectorAll('.tour')];
+    const TOTAL = cards.length;
+    const catsOf = c => (c.dataset.cats || '').split('|');
+    const tagsOf = c => (c.dataset.tags || '').split('|');
+    const catCount = cat => cards.filter(c => catsOf(c).includes(cat)).length;
     const noRes = document.querySelector('.no-result');
     const bar = document.getElementById('filterBar');
 
     // category chips (single-select, top row)
     const order = ['Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
-    const present = order.filter(c => TOURS.some(t => t.cats.includes(c)));
+    const present = order.filter(c => catCount(c) > 0);
 
     // tag chips (multi-select, second row), activity / duration / season, in a sensible order
     const TAG_ORDER = [
@@ -48,7 +38,7 @@
       ['short', 'Up to 4 days'], ['week', '1 week'], ['long', '9+ days'],
       ['summer', 'Summer'], ['winter', 'Winter'], ['all-year', 'All year'],
     ];
-    const tagCount = tag => TOURS.filter(t => (t.tags || []).includes(tag)).length;
+    const tagCount = tag => cards.filter(c => tagsOf(c).includes(tag)).length;
     const presentTags = TAG_ORDER.filter(([k]) => tagCount(k) > 0);
 
     let activeCat = 'all';
@@ -73,8 +63,8 @@
 
       // category chips (desktop row + mobile swipe row)
       bar.innerHTML =
-        `<button class="chip active" data-f="all">All <span style="opacity:.6">${TOURS.length}</span></button>` +
-        present.map(c => `<button class="chip" data-f="${c}">${c} <span style="opacity:.6">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
+        `<button class="chip active" data-f="all">All <span style="opacity:.6">${TOTAL}</span></button>` +
+        present.map(c => `<button class="chip" data-f="${c}">${c} <span style="opacity:.6">${catCount(c)}</span></button>`).join('');
 
       // shared "filters" icon (same on the desktop All-filters button, below)
       const FIC = '<svg class="dfb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="10" cy="8" r="2.4" fill="var(--surface)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--surface)"/></svg>';
@@ -82,12 +72,12 @@
       // badge span so the .has active-state hook still works; count shown in the toolbar line.
       const mBtn = document.createElement('button');
       mBtn.id = 'mFilterBtn'; mBtn.className = 'mfilter-btn'; mBtn.type = 'button';
-      mBtn.innerHTML = `${FIC}<span>All filters</span><span class="mfilter-badge" hidden>${TOURS.length}</span>`;
+      mBtn.innerHTML = `${FIC}<span>All filters</span><span class="mfilter-badge" hidden>${TOTAL}</span>`;
 
       // mobile bottom-sheet: Type (categories, single-select) + tag filters, grouped
       const GROUPS = [['Activity', ['trekking', 'horseback', 'road-trip', 'off-road']], ['Duration', ['short', 'week', 'long']], ['Season', ['summer', 'winter', 'all-year']]];
-      const sheetCats = `<button class="chip chip-tag" type="button" data-f="all">All <span class="chip-n">${TOURS.length}</span></button>` +
-        present.map(c => `<button class="chip chip-tag" type="button" data-f="${c}">${c} <span class="chip-n">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
+      const sheetCats = `<button class="chip chip-tag" type="button" data-f="all">All <span class="chip-n">${TOTAL}</span></button>` +
+        present.map(c => `<button class="chip chip-tag" type="button" data-f="${c}">${c} <span class="chip-n">${catCount(c)}</span></button>`).join('');
       const sheet = document.createElement('div');
       sheet.id = 'filterSheet'; sheet.className = 'filter-sheet';
       // Sort now lives in a visible segment in the mobile toolbar (below), not in the sheet.
@@ -109,8 +99,8 @@
 
       // ---- desktop toolbar: Filters button (left, opens a popover) + category pills ----
       // Own markup; reuses only the shared data-f/data-t engine, so syncUI keeps it in sync.
-      const catBtns = `<button class="chip active" data-f="all">All <span class="chip-n">${TOURS.length}</span></button>` +
-        present.map(c => `<button class="chip" data-f="${c}">${c} <span class="chip-n">${TOURS.filter(t => t.cats.includes(c)).length}</span></button>`).join('');
+      const catBtns = `<button class="chip active" data-f="all">All <span class="chip-n">${TOTAL}</span></button>` +
+        present.map(c => `<button class="chip" data-f="${c}">${c} <span class="chip-n">${catCount(c)}</span></button>`).join('');
       const popGroups = GROUPS.map(([g, keys]) => {
         const ks = keys.filter(k => tagCount(k) > 0);
         return ks.length ? `<div class="dpop-group"><div class="dpop-gtitle">${g}</div><div class="dpop-chips">` +
@@ -134,7 +124,7 @@
       const mtb = document.createElement('div');
       mtb.className = 'mtoolbar';
       const mCount = document.createElement('span');
-      mCount.className = 'mcount'; mCount.textContent = TOURS.length + ' tours';
+      mCount.className = 'mcount'; mCount.textContent = TOTAL + ' tours';
       // visible sort segment (Recommended / Shortest / Longest) — same data-fsort engine as before
       const mSort = document.createElement('div');
       mSort.className = 'msort-seg'; mSort.id = 'mSortSeg';

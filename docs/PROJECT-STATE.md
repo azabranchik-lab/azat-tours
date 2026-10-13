@@ -81,6 +81,28 @@
   nginx менять не нужно. После деплоя: `node scripts/check-site.js https://azattours.com`.
   Если сервер не сможет прочитать `content/*.json` во время работы, он возьмёт данные из `*-data.js` и напишет
   об этом в лог pm2 (раньше молча ставил noindex).
+- **Пакет «SEO + AI» (2026-10-14):**
+  - Меню, мобильное меню, футер и плавающая кнопка теперь в HTML от сервера: `nav.js` стал модулем
+    (`render(page)`), `withChrome` в `lib/pages.js` вставляет разметку во ВСЕ страницы, включая статические
+    (`staticPage`) и 404. В браузере `nav.js` вставляет её сам только если её нет.
+  - Подборка туров на главной тоже в HTML (`Cards.featuredTours`, список slug'ов живёт в `public/cards.js`).
+  - `tours-render.js` считает фильтры по `data-cats/data-tags` карточек; главная и каталог больше не грузят
+    `tours-data.js` (380 КБ). Файл по-прежнему нужен конструктору (`builder.html`).
+  - Для AI-ассистентов: `/llms.txt`, `/llms-full.txt`, `/tours/<slug>.md`, `/blog/<slug>.md`
+    (`lib/text-pages.js`; у .md стоит `X-Robots-Tag: noindex`, в HTML есть `<link rel="alternate" type="text/markdown">`).
+    В `robots.txt` явно разрешены GPTBot, ClaudeBot, PerplexityBot, Google-Extended и др.
+  - JSON-LD: `ItemList` на `/tours/` и `/blog/`; организация с `@id` `https://azattours.com/#organization`,
+    на неё ссылаются туры и статьи.
+  - Два 11-дневных тура (почти копии 12-дневных) получили поле `canonical` (slug главного тура): страницы
+    остались, canonical ведёт на 12-дневные, в sitemap их нет. Миграция `2026-10-14-canonical-pairs`.
+  - Заголовки ответа: HSTS, `X-Content-Type-Options`, `Referrer-Policy`. `www` редиректит на основной домен.
+  - Список «Interested in» в формах (главная, контакты) теперь из реальных видов поездок.
+  - `check-site.js` дополнительно проверяет меню в HTML, `/llms.txt` и .md-версии.
+- **Не сделано, ждёт владельца:** расширение трёх коротких статей (нужны факты), рерайт `highlights` туров
+  (сейчас формулировки от импорта), цены или «от …» на страницах (AI-агенты их ищут), отзывы и профили на
+  внешних площадках.
+- **Push в main из сессии Claude заблокирован защитой:** владелец пушит сам
+  (`git checkout main && git merge --ff-only seo/clean-urls && git push origin main`).
 - **Дальше:** этап 4 (фото: alt, имена файлов, srcset), этап 5 (README, статьи из Markdown).
   Открыто: в текстах маршрутов осталось написание Song-Kol / Ysyk-Kol, а в названиях Song-Kul / Issyk-Kul.
 

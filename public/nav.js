@@ -1,10 +1,15 @@
-// Shared header + mobile menu + footer + floating CTAs, injected from ONE source.
+// Shared header + mobile menu + footer + floating CTAs, built from ONE source.
 // Per-page config via <body data-page="home|tours|tour|about|blog|post|contact|reviews|plan">.
+// The server puts this markup into the HTML it sends (lib/pages.js requires this
+// file), so the navigation links exist without JavaScript. In the browser the
+// script only injects when the markup is not there yet (a page opened as a file).
 // Must load BEFORE script.js (which binds #burger/#header/#mobileMenu synchronously).
-// builder.html intentionally omits this (it has its own minimal top bar).
-(function () {
-  var page = (document.body && document.body.dataset.page) || '';
-  if (!page) return; // pages without data-page (e.g. builder.html) keep their own chrome
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else factory().mount();
+})(typeof self !== 'undefined' ? self : this, function () {
+ function render(page) {
+  if (!page) return null; // pages without data-page keep their own chrome
 
   var WA = 'https://wa.me/996502888001?text=Hi%20Azat%20Tours!%20I%27d%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan.';
   var THEME_BTN = '<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Light / dark"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg></button>';
@@ -80,6 +85,15 @@
   var floatWa = '<a href="' + WA + '" target="_blank" rel="noopener" class="float-wa" data-wa aria-label="Chat on WhatsApp">' + WA_SVG + '</a>';
   /* mobile bottom bar (WhatsApp us / Tours) removed 2026-07-10 by owner decision — kino-panel hero redesign */
 
-  document.body.insertAdjacentHTML('afterbegin', header + mobile);
-  document.body.insertAdjacentHTML('beforeend', footer + floatWa);
-})();
+  return { top: header + mobile, bottom: footer + floatWa };
+ }
+
+ function mount() {
+  var chrome = render((document.body && document.body.dataset.page) || '');
+  if (!chrome || document.getElementById('header')) return;   // nothing to do, or already in the HTML
+  document.body.insertAdjacentHTML('afterbegin', chrome.top);
+  document.body.insertAdjacentHTML('beforeend', chrome.bottom);
+ }
+
+ return { render: render, mount: mount };
+});

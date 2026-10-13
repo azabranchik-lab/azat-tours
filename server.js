@@ -72,10 +72,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Branded 404 page (falls back to a bare heading if the file is missing).
 function send404(res) {
-  fs.readFile(path.join(PUBLIC, '404.html'), (e, d) => {
-    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(e ? '<h1>404 Not Found</h1>' : d);
-  });
+  let body = null;
+  try { body = pages.staticPage('404.html'); } catch (e) { console.error('404 page failed', e.message); }
+  res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+  res.end(body || '<h1>404 Not Found</h1>');
 }
 
 // Permanent redirect. Cached for an hour only, so a wrong mapping can still be fixed.
@@ -108,6 +108,7 @@ function sendPage(req, res, body, key, opts) {
   if (body == null) return send404(res);
   const type = (opts && opts.type) || 'text/html; charset=utf-8';
   const headers = { 'Content-Type': type, 'Cache-Control': 'no-cache' };
+  if (opts && opts.robots) headers['X-Robots-Tag'] = opts.robots;
   if (opts && opts.preview) { headers['Cache-Control'] = 'no-store'; headers['X-Robots-Tag'] = 'noindex'; }
   else {
     headers.ETag = '"' + pages.version() + '-' + key + '"';
@@ -145,6 +146,19 @@ function routePage(req, res, u, urlPath) {
   if (u.pathname === '/index.html') { redirect(res, '/' + u.search); return true; }
   if (urlPath === '/sitemap.xml') { sendPage(req, res, pages.sitemapXml(), 'sitemap', { type: 'application/xml; charset=utf-8' }); return true; }
 
+  // Plain-text versions for AI assistants (lib/text-pages.js). The Markdown copies
+  // of single pages are kept out of search indexes: the HTML page is the one to rank.
+  const TEXT = { type: 'text/plain; charset=utf-8' };
+  const MD = { type: 'text/markdown; charset=utf-8', robots: 'noindex' };
+  if (urlPath === '/llms.txt') { sendPage(req, res, pages.llmsTxt(), 'llms', TEXT); return true; }
+  if (urlPath === '/llms-full.txt') { sendPage(req, res, pages.llmsFullTxt(), 'llms-full', TEXT); return true; }
+  const md = urlPath.match(/^\/(tours|blog)\/([a-z0-9-]+)\.md$/);
+  if (md) { sendPage(req, res, md[1] === 'tours' ? pages.tourMarkdown(md[2]) : pages.postMarkdown(md[2]), 'md-' + md[2], MD); return true; }
+
+  // Every other page of the site: navigation (and the home page's tour picks) in the HTML.
+  const file = urlPath.match(/^\/([a-z0-9-]+\.html)$/);
+  if (file) { const html = pages.staticPage(file[1]); if (html != null) { sendPage(req, res, html, 'static-' + file[1]); return true; } }
+
   const m = urlPath.match(/^\/(tours|blog)(?:\/([^/]*)(\/?))?$/);
   if (!m) return false;
   const [, section, item, slash] = m;
@@ -173,6 +187,11 @@ const server = http.createServer(async (req, res) => {
   let u;
   try { u = new URL(req.url, `http://localhost:${PORT}`); }
   catch { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Bad request'); }   // e.g. "GET //"
+
+  // Browsers that have seen the site over HTTPS keep using it; no MIME sniffing.
+  res.setHeader('Strict-Transport-Security', 'max-age=15552000');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   // One host: www.azattours.com serves the same pages, so send it to the canonical one.
   if (/^www\.azattours\.com(:\d+)?$/i.test(req.headers.host || '')) return redirect(res, 'https://azattours.com' + req.url);
