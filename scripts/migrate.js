@@ -61,6 +61,17 @@ function setHighlights() {
   console.log(n + ' tour(s) got new highlights');
 }
 
+// Replace one post's text with a reviewed source file (scripts/_post-*.js).
+const setPost = file => () => {
+  const src = require(file);
+  const posts = content.loadPosts();
+  const p = posts.find(x => x.slug === src.slug);
+  if (!p) { console.log('post not found: ' + src.slug); return; }
+  Object.assign(p, { title: src.title, excerpt: src.excerpt, body: src.body, faq: src.faq });
+  content.savePosts(posts);
+  console.log('post updated: ' + src.slug);
+};
+
 const MIGRATIONS = [
   ['2026-10-13-rename-tours', [run('rename-tours.js')]],
   ['2026-10-13-summaries', [run('merge-summaries.js')]],
@@ -68,6 +79,7 @@ const MIGRATIONS = [
   ['2026-10-14-lake-spelling', [run('unify-spelling.js')]],
   ['2026-10-14-canonical-pairs', [setCanonicals]],
   ['2026-10-15-highlights', [setHighlights]],
+  ['2026-10-15-ala-kul-guide', [setPost('./_post-ala-kul.js')]],
 ];
 
 function main() {
