@@ -84,6 +84,11 @@ function redirect(res, location) {
   res.end();
 }
 
+// If-None-Match may carry a weak prefix (a proxy that compresses adds W/) or a list.
+function etagMatches(req, etag) {
+  return String(req.headers['if-none-match'] || '').split(',').some(t => t.trim().replace(/^W\//, '') === etag);
+}
+
 // Send a body with optional gzip.
 function respond(req, res, data, headers, type) {
   const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
@@ -106,7 +111,7 @@ function sendPage(req, res, body, key, opts) {
   if (opts && opts.preview) { headers['Cache-Control'] = 'no-store'; headers['X-Robots-Tag'] = 'noindex'; }
   else {
     headers.ETag = '"' + pages.version() + '-' + key + '"';
-    if (req.headers['if-none-match'] === headers.ETag) { res.writeHead(304, headers); return res.end(); }
+    if (etagMatches(req, headers.ETag)) { res.writeHead(304, headers); return res.end(); }
   }
   respond(req, res, Buffer.from(body, 'utf8'), headers, type);
 }
@@ -125,7 +130,7 @@ function routePage(req, res, u, urlPath) {
     if (preview && slug) { sendPage(req, res, pages.tourPage(slug, { preview: true }), '', { preview: true }); return true; }
     const id = u.searchParams.get('id');
     if (!slug && !id) { redirect(res, '/tours/'); return true; }
-    const target = slug ? pages.resolveTourSlug(slug) : pages.tourIdSlug(id);
+    const target = slug ? (pages.hasTour(slug) ? slug : pages.resolveTourSlug(slug)) : pages.tourIdSlug(id);
     if (target && pages.hasTour(target)) redirect(res, '/tours/' + target + '/'); else send404(res);
     return true;
   }
@@ -143,13 +148,17 @@ function routePage(req, res, u, urlPath) {
   const m = urlPath.match(/^\/(tours|blog)(?:\/([^/]*)(\/?))?$/);
   if (!m) return false;
   const [, section, item, slash] = m;
+  if (item === '' && slash) { send404(res); return true; }                                                // "/tours//"
   if (item === undefined) { redirect(res, '/' + section + '/' + u.search); return true; }               // /tours -> /tours/
   if (item === '') { sendPage(req, res, section === 'tours' ? pages.toursIndex() : pages.blogIndex(), section); return true; }
   if (!/^[a-z0-9-]+$/.test(item)) { send404(res); return true; }
   if (section === 'tours') {
-    const target = pages.resolveTourSlug(item);                                                          // renamed or retired tour
-    if (target !== item) { if (pages.hasTour(target)) redirect(res, '/tours/' + target + '/'); else send404(res); return true; }
-    if (!pages.hasTour(item)) { send404(res); return true; }
+    // A live tour always wins; the rename map is only for addresses that no longer exist.
+    if (!pages.hasTour(item)) {
+      const target = pages.resolveTourSlug(item);                                                        // renamed or retired tour
+      if (target !== item && pages.hasTour(target)) redirect(res, '/tours/' + target + '/'); else send404(res);
+      return true;
+    }
     if (!slash) { redirect(res, '/tours/' + item + '/'); return true; }
     sendPage(req, res, pages.tourPage(item), 'tour-' + item);
     return true;
@@ -161,7 +170,12 @@ function routePage(req, res, u, urlPath) {
 }
 
 const server = http.createServer(async (req, res) => {
-  const u = new URL(req.url, `http://localhost:${PORT}`);
+  let u;
+  try { u = new URL(req.url, `http://localhost:${PORT}`); }
+  catch { res.writeHead(400, { 'Content-Type': 'text/plain' }); return res.end('Bad request'); }   // e.g. "GET //"
+
+  // One host: www.azattours.com serves the same pages, so send it to the canonical one.
+  if (/^www\.azattours\.com(:\d+)?$/i.test(req.headers.host || '')) return redirect(res, 'https://azattours.com' + req.url);
   const p = u.pathname;
 
   // ---------- API ----------
@@ -288,7 +302,7 @@ const server = http.createServer(async (req, res) => {
     };
     // Negotiable image URLs vary by Accept so shared caches key avif/webp/jpeg apart.
     if (negotiable) headers['Vary'] = 'Accept';
-    if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); return res.end(); }
+    if (etagMatches(req, etag)) { res.writeHead(304, headers); return res.end(); }
     fs.readFile(served, (e, data) => {
       if (e) { return send404(res); }
       respond(req, res, data, headers, type);

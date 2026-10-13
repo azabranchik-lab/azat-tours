@@ -22,7 +22,9 @@ const RULES = [
   [/\bAla[- ]K[oö]l\b/g, 'Ala-Kul'],
 ];
 const SKIP = new Set(['slug', 'series', 'url', 'images', 'cover', 'photo', 'authorImg', 'id']);
-const fix = s => RULES.reduce((acc, [re, to]) => acc.replace(re, to), s);
+// a value that is itself a path or URL (site.json photo lists etc.) is never text
+const isPath = s => /^(https?:|\/|img\/|images\/)/.test(s) || /\.(jpe?g|png|webp|avif|svg)$/i.test(s);
+const fix = s => isPath(s) ? s : RULES.reduce((acc, [re, to]) => acc.replace(re, to), s);
 
 let changed = 0;
 function walk(node) {

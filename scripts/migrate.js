@@ -37,7 +37,8 @@ function fixBlurbs() {
 
 const MIGRATIONS = [
   ['2026-10-13-rename-tours', [run('rename-tours.js')]],
-  ['2026-10-13-summaries', [run('merge-summaries.js'), fixBlurbs]],
+  ['2026-10-13-summaries', [run('merge-summaries.js')]],
+  ['2026-10-13-blurb-fixes', [fixBlurbs]],
   ['2026-10-14-lake-spelling', [run('unify-spelling.js')]],
 ];
 
@@ -52,6 +53,16 @@ function main() {
   if (!pending.length) { console.log('migrations: nothing pending'); return; }
   // An unreadable content folder must stop the deploy here, not publish an empty site.
   if (!content.loadTours().length) { console.error('migrations: content/tours.json is missing or empty, aborting'); process.exit(1); }
+  // Keep the content as it was before this batch (content/ is not in git).
+  const snap = path.join(content.ROOT, 'content', 'before-' + pending[0][0]);
+  if (!fs.existsSync(snap)) {
+    fs.mkdirSync(snap, { recursive: true });
+    for (const f of ['tours.json', 'posts.json', 'sights.json', 'site.json']) {
+      const src = path.join(content.ROOT, 'content', f);
+      if (fs.existsSync(src)) fs.copyFileSync(src, path.join(snap, f));
+    }
+    console.log('content snapshot: ' + snap);
+  }
   for (const [id, steps] of pending) {
     console.log('→ migration ' + id);
     steps.forEach(step => step());

@@ -53,7 +53,11 @@ jobs:
             echo "→ installing prod deps"
             npm ci --omit=dev
             echo "→ one-time content migrations (renames, text fixes)"
-            node scripts/migrate.js
+            # A failed migration must not leave the old process running against the new
+            # files: the site also works on unmigrated content, so carry on with the
+            # reload and fail the run at the very end so the problem is visible.
+            MIGRATE_FAILED=""
+            node scripts/migrate.js || MIGRATE_FAILED=1
             echo "→ regenerating public/*-data.js from content/*.json"
             node scripts/regenerate-all.js
             echo "→ pm2 reload"
@@ -62,4 +66,5 @@ jobs:
             echo "→ health check"
             PORT=$(node -e "try{console.log(JSON.parse(require('fs').readFileSync('config.json')).port||5173)}catch(e){console.log(5173)}")
             curl -sfL "http://127.0.0.1:$PORT/" > /dev/null || (echo 'site down after reload'; pm2 logs azat-tours --lines 30 --nostream; exit 1)
+            if [ -n "$MIGRATE_FAILED" ]; then echo "site is up, but a content migration failed: see the log above"; exit 1; fi
             echo "✓ deploy done"

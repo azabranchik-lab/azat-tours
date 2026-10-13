@@ -97,7 +97,7 @@ async function sendAlbum(ctx, images) {
 function tourListKb() {
   const tours = C.loadTours();
   const kb = new InlineKeyboard();
-  tours.slice(0, 40).forEach(t => kb.text(`${t.status === 'draft' ? '📝 ' : ''}${t.name}`.slice(0, 45), `t:v:${t.id}`).row());
+  tours.slice(0, 40).forEach(t => kb.text(`${t.status === 'draft' ? '📝 ' : t.status === 'hidden' ? '🚫 ' : ''}${t.name}`.slice(0, 45), `t:v:${t.id}`).row());
   if (tours.length) kb.text('🔎 Search', 'xsearch:tour').row();
   kb.text('✍️ New tour with Claude', 'ai:tour').row();
   const more = tours.length > 40 ? ` (showing 40 — use 🔎 to find the rest)` : '';
