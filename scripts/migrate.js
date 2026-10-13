@@ -51,12 +51,23 @@ function setCanonicals() {
   console.log(n + ' canonical(s) set');
 }
 
+// Highlights written from each tour's own itinerary (the imported ones were copied wording).
+function setHighlights() {
+  const src = require('./_highlights.json');
+  const tours = content.loadTours();
+  let n = 0;
+  for (const t of tours) if (Array.isArray(src[t.slug]) && JSON.stringify(t.highlights) !== JSON.stringify(src[t.slug])) { t.highlights = src[t.slug]; n++; }
+  if (n) content.saveTours(tours);
+  console.log(n + ' tour(s) got new highlights');
+}
+
 const MIGRATIONS = [
   ['2026-10-13-rename-tours', [run('rename-tours.js')]],
   ['2026-10-13-summaries', [run('merge-summaries.js')]],
   ['2026-10-13-blurb-fixes', [fixBlurbs]],
   ['2026-10-14-lake-spelling', [run('unify-spelling.js')]],
   ['2026-10-14-canonical-pairs', [setCanonicals]],
+  ['2026-10-15-highlights', [setHighlights]],
 ];
 
 function main() {
