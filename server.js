@@ -5,7 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const store = require('./lib/store');
-const content = require('./lib/content'); // read-only here: per-slug meta for tour.html/post.html
+const content = require('./lib/content'); // read-only here: draft-inclusive data for the bot's preview
+const pages = require('./lib/pages');     // server-rendered tour/post/list pages + sitemap
 const { waLink } = require('./lib/lead'); // "Reply on WhatsApp" button on the lead notification
 const PREVIEW_KEY = require('./lib/previewkey'); // secret gate for previewing drafts on the live site
 
@@ -69,148 +70,94 @@ function cleanLead(b) {
 }
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// ---- per-slug <head> meta for tour.html / post.html ----
-// WhatsApp/Facebook/Telegram scrapers don't run JS, so the og tags that
-// tour-detail.js / post-render.js set client-side never reach link previews.
-// Mirror the same title/description/og formulas into the served HTML.
-// Returns null when the slug is unknown or content JSON is unavailable
-// (caller then serves the file unmodified).
-// tours.json is ~800KB; don't re-parse it on every tour.html hit.
-// mtime-keyed cache stays fresh when the bot edits content live.
-const _contentCache = {};
-function cachedLoad(jsonPath, loader) {
-  const mtime = fs.statSync(jsonPath).mtimeMs;
-  const c = _contentCache[jsonPath];
-  if (c && c.mtime === mtime) return c.data;
-  const data = loader() || [];
-  _contentCache[jsonPath] = { mtime, data };
-  return data;
-}
-// Make a possibly site-relative image path absolute (social scrapers + JSON-LD need it).
-const ORIGIN = 'https://azattours.com';
-const abs = u => u ? (/^https?:\/\//.test(u) ? u : ORIGIN + '/' + String(u).replace(/^\/+/, '')) : '';
-
-// SEO <title> builders. Names are already clean (scripts/normalize-tour-names.js),
-// so we only avoid a double "Kyrgyzstan"/redundant suffix and keep titles ≤60:
-// priority is the keyword-rich name > country hint > brand.
-function tourTitle(name) {
-  let base = name;
-  if (!/kyrgyzstan/i.test(base) && base.length + 12 <= 60) base += ', Kyrgyzstan';
-  const withBrand = base + ' | Azat Tours';
-  return withBrand.length <= 60 ? withBrand : base;
-}
-function postTitle(title) { return title + ' | Azat Tours'; } // was " | Azat Tours Kyrgyzstan" (too long)
-
-// Per-tour FAQ from real fields. KEEP IN SYNC with tour-detail.js tourFaqs() —
-// this feeds the SSR FAQPage schema and must match the visible copy the client renders.
-function fmtActivities(a) {
-  return String(a).split(',').map(s => {
-    const m = s.match(/(.+?)\s*-\s*(\d+)\s*days?/i);
-    return m ? m[2] + ' days ' + m[1].trim() : s.trim();
-  }).join(' and ');
-}
-function tourFaqs(t) {
-  const out = [];
-  const dur = t.duration || (t.days ? t.days + ' days' : '');
-  const start = t.start_from || 'Bishkek';
-  if (dur) out.push(['How long is this tour?', 'It runs ' + dur + ', starting and ending in ' + start + '.']);
-  if (t.season) out.push(['When is the best time to go?', 'The season runs ' + t.season + '. June to September brings the warmest days, and the high-pasture yurt camps are open.']);
-  const pace = t.tour_speed ? t.tour_speed.charAt(0).toLowerCase() + t.tour_speed.slice(1) : '';
-  if (pace || t.activities) {
-    let a = "It's " + (pace || 'an active trip');
-    if (t.activities) a += ', with ' + fmtActivities(t.activities);
-    a += '. Good general fitness is enough, and there is no technical climbing.';
-    out.push(['How fit do I need to be?', a]);
-  }
-  if ((t.tags || []).indexOf('horseback') >= 0 || /horse|combined/i.test(t.category || '')) {
-    out.push(['Do I need horse-riding experience?', 'No. Our guides match each horse to your level and keep the first day gentle, so complete beginners ride this route every season.']);
-  }
-  if (t.accommodations) out.push(['Where will I stay?', 'A mix over the trip: ' + t.accommodations + '.']);
-  return out;
-}
-function faqSchema(faqs) {
-  return { '@context': 'https://schema.org', '@type': 'FAQPage',
-    mainEntity: faqs.map(f => ({ '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } })) };
-}
-
-function buildSlugMeta(urlPath, slug, includeDrafts) {
-  try {
-    if (urlPath === '/tour.html') {
-      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug && x.status !== 'hidden' && (includeDrafts || x.status !== 'draft'));
-      if (!t) return null;
-      const desc = ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158);
-      const url = ORIGIN + '/tour.html?slug=' + encodeURIComponent(slug);
-      const image = abs((t.images && t.images[0]) || '');
-      return {
-        key: 'tour-' + slug, title: tourTitle(t.name),
-        desc, ogType: 'website', image, url,
-        jsonld: [
-          { '@context': 'https://schema.org', '@type': 'TouristTrip', name: t.name, description: t.summary || desc,
-            image: image || undefined, touristType: t.cats,
-            itinerary: { '@type': 'ItemList', numberOfItems: (t.itinerary || []).length, itemListElement: (t.itinerary || []).map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.title })) },
-            provider: { '@type': 'TravelAgency', name: 'Azat Tours Kyrgyzstan', url: ORIGIN } },
-          { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
-            { '@type': 'ListItem', position: 2, name: 'Tours', item: ORIGIN + '/tours.html' },
-            { '@type': 'ListItem', position: 3, name: t.name, item: url } ] }
-        ].concat(tourFaqs(t).length ? [faqSchema(tourFaqs(t))] : [])
-      };
-    }
-    if (urlPath === '/post.html') {
-      const po = cachedLoad(content.POSTS_JSON, content.loadPosts).find(x => x.slug === slug && (includeDrafts || x.status !== 'draft'));
-      if (!po) return null;
-      const desc = String(po.excerpt || po.body || '').replace(/\s+/g, ' ').trim().slice(0, 158);
-      const url = ORIGIN + '/post.html?slug=' + encodeURIComponent(slug);
-      const image = abs(po.cover || '');
-      return {
-        key: 'post-' + slug, title: postTitle(po.title),
-        desc, ogType: 'article', image, url,
-        jsonld: [
-          { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: po.title, description: desc,
-            image: image || undefined, datePublished: po.date || undefined,
-            author: { '@type': 'Person', name: po.author },
-            publisher: { '@type': 'TravelAgency', name: 'Azat Tours Kyrgyzstan', url: ORIGIN },
-            mainEntityOfPage: url },
-          { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
-            { '@type': 'ListItem', position: 2, name: 'Blog', item: ORIGIN + '/blog.html' },
-            { '@type': 'ListItem', position: 3, name: po.title, item: url } ] }
-        ]
-      };
-    }
-  } catch (e) { /* content/*.json missing or malformed -> serve unmodified */ }
-  return null;
-}
-function injectSlugMeta(html, m) {
-  // A tour/post page reached without a valid slug is a thin duplicate of the first
-  // item — keep it out of the index instead of serving a generic indexable page.
-  if (m.noindex) return html.replace('</head>', '<meta name="robots" content="noindex">\n</head>');
-  const at = s => esc(s).replace(/"/g, '&quot;'); // attribute context needs quotes escaped too
-  // JSON-LD for bots that don't run JS; escape "<" so a value can't close the script tag.
-  const ld = m.jsonld
-    ? `<script type="application/ld+json" data-ssr="1">${JSON.stringify(m.jsonld).replace(/</g, '\\u003c')}</script>\n`
-    : '';
-  const tags =
-    `<meta name="description" content="${at(m.desc)}">\n` +
-    `<meta property="og:type" content="${m.ogType}">\n` +
-    `<meta property="og:title" content="${at(m.title)}">\n` +
-    `<meta property="og:description" content="${at(m.desc)}">\n` +
-    (m.image ? `<meta property="og:image" content="${at(m.image)}">\n` : '') +
-    `<meta property="og:url" content="${at(m.url)}">\n` +
-    `<meta name="twitter:card" content="summary_large_image">\n` +
-    `<link rel="canonical" href="${at(m.url)}">\n` + ld;
-  return html
-    .replace(/<title>[^<]*<\/title>/, `<title>${esc(m.title)}</title>`)
-    .replace(/<meta name="description"[^>]*>\s*/i, '') // drop the shared static one; injected tag replaces it
-    .replace('</head>', tags + '</head>');
-}
-
 // Branded 404 page (falls back to a bare heading if the file is missing).
 function send404(res) {
   fs.readFile(path.join(PUBLIC, '404.html'), (e, d) => {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(e ? '<h1>404 Not Found</h1>' : d);
   });
+}
+
+// Permanent redirect. Cached for an hour only, so a wrong mapping can still be fixed.
+function redirect(res, location) {
+  res.writeHead(301, { Location: location, 'Cache-Control': 'public, max-age=3600' });
+  res.end();
+}
+
+// Send a body with optional gzip.
+function respond(req, res, data, headers, type) {
+  const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+  const compressible = /text\/|javascript|json|svg|xml/.test(type);
+  if (acceptsGzip && compressible && data.length > 1024) {
+    zlib.gzip(data, (ge, gz) => {
+      if (ge) { res.writeHead(200, headers); return res.end(data); }
+      res.writeHead(200, Object.assign({ 'Content-Encoding': 'gzip', 'Vary': 'Accept-Encoding' }, headers));
+      res.end(gz);
+    });
+  } else { res.writeHead(200, headers); res.end(data); }
+}
+
+// Send a server-rendered page (lib/pages.js). The ETag follows the content and
+// template versions, so bot edits and deploys show immediately.
+function sendPage(req, res, body, key, opts) {
+  if (body == null) return send404(res);
+  const type = (opts && opts.type) || 'text/html; charset=utf-8';
+  const headers = { 'Content-Type': type, 'Cache-Control': 'no-cache' };
+  if (opts && opts.preview) { headers['Cache-Control'] = 'no-store'; headers['X-Robots-Tag'] = 'noindex'; }
+  else {
+    headers.ETag = '"' + pages.version() + '-' + key + '"';
+    if (req.headers['if-none-match'] === headers.ETag) { res.writeHead(304, headers); return res.end(); }
+  }
+  respond(req, res, Buffer.from(body, 'utf8'), headers, type);
+}
+
+// Clean URLs, plus 301s from every old address:
+//   /tours/  /tours/<slug>/  /blog/  /blog/<slug>/  /sitemap.xml
+//   tour.html?slug=OLD -> /tours/NEW/   post.html?slug=X -> /blog/X/
+//   tours.html -> /tours/   blog.html -> /blog/   index.html -> /
+// Returns true when the request was handled.
+function routePage(req, res, u, urlPath) {
+  const preview = !!(PREVIEW_KEY && u.searchParams.get('preview') === PREVIEW_KEY);
+  const slug = u.searchParams.get('slug');
+
+  if (urlPath === '/tour.html') {
+    // the bot's "Preview on site" link for a draft (secret key, never indexed)
+    if (preview && slug) { sendPage(req, res, pages.tourPage(slug, { preview: true }), '', { preview: true }); return true; }
+    const id = u.searchParams.get('id');
+    if (!slug && !id) { redirect(res, '/tours/'); return true; }
+    const target = slug ? pages.resolveTourSlug(slug) : pages.tourIdSlug(id);
+    if (target && pages.hasTour(target)) redirect(res, '/tours/' + target + '/'); else send404(res);
+    return true;
+  }
+  if (urlPath === '/post.html') {
+    if (preview && slug) { sendPage(req, res, pages.postPage(slug, { preview: true }), '', { preview: true }); return true; }
+    if (!slug) { redirect(res, '/blog/'); return true; }
+    if (pages.hasPost(slug)) redirect(res, '/blog/' + slug + '/'); else send404(res);
+    return true;
+  }
+  if (urlPath === '/tours.html') { redirect(res, '/tours/' + u.search); return true; }
+  if (urlPath === '/blog.html') { redirect(res, '/blog/' + u.search); return true; }
+  if (u.pathname === '/index.html') { redirect(res, '/' + u.search); return true; }
+  if (urlPath === '/sitemap.xml') { sendPage(req, res, pages.sitemapXml(), 'sitemap', { type: 'application/xml; charset=utf-8' }); return true; }
+
+  const m = urlPath.match(/^\/(tours|blog)(?:\/([^/]*)(\/?))?$/);
+  if (!m) return false;
+  const [, section, item, slash] = m;
+  if (item === undefined) { redirect(res, '/' + section + '/' + u.search); return true; }               // /tours -> /tours/
+  if (item === '') { sendPage(req, res, section === 'tours' ? pages.toursIndex() : pages.blogIndex(), section); return true; }
+  if (!/^[a-z0-9-]+$/.test(item)) { send404(res); return true; }
+  if (section === 'tours') {
+    const target = pages.resolveTourSlug(item);                                                          // renamed or retired tour
+    if (target !== item) { if (pages.hasTour(target)) redirect(res, '/tours/' + target + '/'); else send404(res); return true; }
+    if (!pages.hasTour(item)) { send404(res); return true; }
+    if (!slash) { redirect(res, '/tours/' + item + '/'); return true; }
+    sendPage(req, res, pages.tourPage(item), 'tour-' + item);
+    return true;
+  }
+  if (!pages.hasPost(item)) { send404(res); return true; }
+  if (!slash) { redirect(res, '/blog/' + item + '/'); return true; }
+  sendPage(req, res, pages.postPage(item), 'post-' + item);
+  return true;
 }
 
 const server = http.createServer(async (req, res) => {
@@ -302,6 +249,9 @@ const server = http.createServer(async (req, res) => {
     return res.end(body);
   }
 
+  try { if (routePage(req, res, u, urlPath)) return; }
+  catch (e) { console.error('page render failed', urlPath, e); res.writeHead(500, { 'Content-Type': 'text/plain' }); return res.end('Server error'); }
+
   const filePath = path.join(PUBLIC, urlPath);
   if (!filePath.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.stat(filePath, (err, st) => {
@@ -328,16 +278,7 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    // per-slug meta for tour/post pages: without the slug in the ETag a 304
-    // could confirm another slug's cached <head>
-    const slug = u.searchParams.get('slug');
-    const preview = !!(PREVIEW_KEY && u.searchParams.get('preview') === PREVIEW_KEY);
-    const isItemPage = urlPath === '/tour.html' || urlPath === '/post.html';
-    let slugMeta = slug ? buildSlugMeta(urlPath, slug, preview) : null;
-    // tour/post page with no valid slug (bare or unknown) → noindex, not a generic dupe
-    if (isItemPage && !slugMeta) slugMeta = { noindex: true, key: 'noindex' };
-    if (preview) slugMeta = Object.assign({ noindex: true, key: 'noindex' }, slugMeta || {}, { noindex: true, key: (slugMeta && slugMeta.key || 'pv') + '-pv' });
-    const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + (slugMeta ? '-' + slugMeta.key : '') + (preview ? '-pv' : '') + '"';
+    const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + '"';
     const headers = {
       'Content-Type': type,
       'ETag': etag,
@@ -350,18 +291,7 @@ const server = http.createServer(async (req, res) => {
     if (req.headers['if-none-match'] === etag) { res.writeHead(304, headers); return res.end(); }
     fs.readFile(served, (e, data) => {
       if (e) { return send404(res); }
-      if (slugMeta) data = Buffer.from(injectSlugMeta(data.toString('utf8'), slugMeta), 'utf8');
-      // preview mode: point the page at the draft-inclusive data (key-gated)
-      if (preview && ext0 === '.html') data = Buffer.from(data.toString('utf8').replace(/(src=")(posts-data\.js|tours-data\.js)(")/g, `$1$2?key=${PREVIEW_KEY}$3`), 'utf8');
-      const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
-      const compressible = /text\/|javascript|json|svg/.test(type);
-      if (acceptsGzip && compressible && data.length > 1024) {
-        zlib.gzip(data, (ge, gz) => {
-          if (ge) { res.writeHead(200, headers); return res.end(data); }
-          res.writeHead(200, Object.assign({ 'Content-Encoding': 'gzip', 'Vary': 'Accept-Encoding' }, headers));
-          res.end(gz);
-        });
-      } else { res.writeHead(200, headers); res.end(data); }
+      respond(req, res, data, headers, type);
     });
   });
 });

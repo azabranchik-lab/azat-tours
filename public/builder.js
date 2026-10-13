@@ -293,8 +293,8 @@
             <div class="big"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg></div><h3>Trip request sent!</h3>
             <p style="color:var(--ink-soft)" id="bSuccessLine">A local expert will email you within 24 hours with a tailored plan.</p>
             <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
-              <a href="tours.html" class="btn btn-primary">Browse tours while you wait</a>
-              <a href="plan-trip.html" class="btn btn-dark">Read the travel guide</a>
+              <a href="/tours/" class="btn btn-primary">Browse tours while you wait</a>
+              <a href="/plan-trip.html" class="btn btn-dark">Read the travel guide</a>
             </div>
           </div>
         </div>` +

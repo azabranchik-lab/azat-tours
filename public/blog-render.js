@@ -1,36 +1,20 @@
-// Renders the blog index from window.POSTS (posts-data.js).
+// Blog index behaviour. The server sends the full list in the HTML (lib/pages.js);
+// this script adds the category chips and re-renders the list when one is picked.
 (function () {
   const POSTS = (window.POSTS || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const dateStr = d => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-  const link = p => `post.html?slug=${encodeURIComponent(p.slug)}`;
+  const { esc, postFeatured: featured, postCard: card } = window.Cards;   // shared with the server render (cards.js)
 
   const featEl = document.getElementById('blogFeatured');
   const gridEl = document.getElementById('blogGrid');
   if (!gridEl) return;
 
-  function featured(p) {
-    return `<a href="${link(p)}" class="blog-feature reveal in" style="cursor:pointer">
-      <div class="img"><img src="${p.cover}" alt="${esc(p.title)}"></div>
-      <div class="body">
-        <div class="post-meta"><span class="tag">${esc(p.category)}</span><span>${dateStr(p.date)}</span></div>
-        <h2>${esc(p.title)}</h2>
-        <p>${esc(p.excerpt)}</p>
-        <span class="btn btn-dark" style="align-self:flex-start">Read the guide</span>
-      </div></a>`;
-  }
-  function card(p) {
-    return `<a href="${link(p)}" class="post reveal in" data-cat="${esc(p.category)}">
-      <div class="img"><img loading="lazy" src="${p.cover}" alt="${esc(p.title)}"></div>
-      <div class="body"><div class="post-meta"><span class="tag">${esc(p.category)}</span></div>
-      <h3>${esc(p.title)}</h3><span class="more">Read more</span></div></a>`;
-  }
-
-  if (!POSTS.length) { gridEl.innerHTML = '<p>No articles yet.</p>'; return; }
+  if (!POSTS.length) { if (!gridEl.children.length) gridEl.innerHTML = '<p>No articles yet.</p>'; return; }
 
   const [first, ...rest] = POSTS;
-  if (featEl) featEl.innerHTML = featured(first);
-  gridEl.innerHTML = rest.map(card).join('');
+  if (!gridEl.children.length) {   // only fill an empty page; normally the list is already there
+    if (featEl) featEl.innerHTML = featured(first);
+    gridEl.innerHTML = rest.map(card).join('');
+  }
 
   // category chips
   const cats = [...new Set(POSTS.map(p => p.category))];

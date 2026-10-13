@@ -1,5 +1,5 @@
 // Renders tour cards from window.TOURS (loaded via tours-data.js).
-// Used on tours.html (full catalog + filters) and index.html (featured grid).
+// Used on /tours/ (full catalog + filters) and the home page (featured grid).
 (function () {
   const TOURS = window.TOURS || [];
   const waMsg = name => `https://wa.me/996502888001?text=${encodeURIComponent("Hi Azat Tours! I'm interested in the " + name + " tour.")}`;
@@ -12,40 +12,7 @@
     els.forEach((c, i) => { c.style.animationDelay = (Math.min(i, 8) * 35) + 'ms'; c.classList.add('animate-in'); });
   }
 
-  const ARROW = '';
-  function card(t) {
-    const img = t.images && t.images[0] ? t.images[0] : 'img/hero/hero-1-reflection-1400.jpg';
-    const hl = (t.highlights && t.highlights.length ? t.highlights : t.itinerary.map(d => d.title))
-      .slice(0, 3).map(h => `<li>${h}</li>`).join('');
-    const b = t.blurb;
-    const body = (b && b.text)
-      ? `${b.hook ? `<p class="tour-hook">${b.hook}</p>` : ''}<p class="tour-blurb">${b.text}</p>`
-      : `<ul>${hl}</ul>`;   // fallback: tours without a blurb show highlight bullets
-    const link = `tour.html?slug=${encodeURIComponent(t.slug)}`;
-    // compact meta chips (shown on mobile cards only, hidden on desktop via CSS)
-    const meta = '<div class="tour-meta">' +
-      `<span class="tm tm-cat">${t.cats[0] || t.category}</span>` +
-      (t.duration ? `<span class="tm">${t.duration}</span>` : '') +
-      (t.tour_speed ? `<span class="tm">${t.tour_speed.replace(/[\s-]*paced$/i, '').replace(/^Moderately$/i, 'Moderate').trim()}</span>` : '') +
-      '</div>';
-    return `
-      <a class="tour" href="${link}" data-cats="${t.cats.join('|')}" data-tags="${(t.tags || []).join('|')}" data-days="${t.days || 0}">
-        <div class="tour-img">
-          <img loading="lazy" src="${img}" alt="${t.name}" />
-          <span class="tour-badge">${t.cats[0] || t.category}</span>
-          ${t.duration ? `<span class="tour-dur">${t.duration}</span>` : ''}
-        </div>
-        <div class="tour-body">
-          <h3>${t.name}</h3>
-          ${meta}
-          ${body}
-          <div class="tour-foot">
-            <span class="tour-tag">${t.tour_speed || 'Small group'}</span>
-            <span class="tour-cta">View details ${ARROW}</span>
-          </div>
-        </div>
-      </a>`;
-  }
+  const card = window.Cards.tourCard;   // shared with the server render (cards.js)
 
   // ---- FEATURED (index.html) ----
   const featured = document.getElementById('featuredGrid');
@@ -63,7 +30,8 @@
   // ---- CATALOG (tours.html) ----
   const grid = document.getElementById('toursGrid');
   if (grid) {
-    grid.innerHTML = TOURS.map(card).join('');
+    // the server already sent the full list in the HTML; only fill an empty grid
+    if (!grid.children.length) grid.innerHTML = TOURS.map(card).join('');
     document.getElementById('tourCount') && (document.getElementById('tourCount').textContent = TOURS.length);
 
     const cards = [...grid.querySelectorAll('.tour')];

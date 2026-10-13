@@ -7,7 +7,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tours.html</loc>
+    <loc>https://azattours.com/tours/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -19,7 +19,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/blog.html</loc>
+    <loc>https://azattours.com/blog/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -37,283 +37,283 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=complete-kyrgyzstan-adventure-12-days</loc>
+    <loc>https://azattours.com/tours/complete-kyrgyzstan-adventure-12-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=grand-kyrgyzstan-road-trip-12-days</loc>
+    <loc>https://azattours.com/tours/grand-kyrgyzstan-road-trip-12-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=tash-rabat-kel-suu-road-trip-11-days</loc>
+    <loc>https://azattours.com/tours/tash-rabat-kel-suu-road-trip-11-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=tash-rabat-kel-suu-ala-kul-11-days</loc>
+    <loc>https://azattours.com/tours/tash-rabat-kel-suu-ala-kul-11-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kyrgyzstan-grand-tour-10-days</loc>
+    <loc>https://azattours.com/tours/kyrgyzstan-grand-tour-10-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-to-ala-kul-on-horseback-10-days</loc>
+    <loc>https://azattours.com/tours/song-kul-to-ala-kul-on-horseback-10-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=slow-ride-trek-to-ala-kul-10-days</loc>
+    <loc>https://azattours.com/tours/slow-ride-trek-to-ala-kul-10-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kel-suu-chong-kemin-road-trip-10-days</loc>
+    <loc>https://azattours.com/tours/kel-suu-chong-kemin-road-trip-10-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-kok-kiya-kel-suu-9-days</loc>
+    <loc>https://azattours.com/tours/song-kul-kok-kiya-kel-suu-9-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-kel-suu-road-trip-9-days</loc>
+    <loc>https://azattours.com/tours/song-kul-kel-suu-road-trip-9-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kok-kiya-kel-suu-road-trip-8-days</loc>
+    <loc>https://azattours.com/tours/kok-kiya-kel-suu-road-trip-8-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=talas-to-issyk-kul-backroads-8-days</loc>
+    <loc>https://azattours.com/tours/talas-to-issyk-kul-backroads-8-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-kel-suu-altyn-arashan-8-days</loc>
+    <loc>https://azattours.com/tours/song-kul-kel-suu-altyn-arashan-8-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kyzyl-oi-song-kul-chong-kemin-8-days</loc>
+    <loc>https://azattours.com/tours/kyzyl-oi-song-kul-chong-kemin-8-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kol-ukok-to-song-kul-horse-trek-7-days</loc>
+    <loc>https://azattours.com/tours/kol-ukok-to-song-kul-horse-trek-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kyrgyzstan-overland-road-trip-7-days</loc>
+    <loc>https://azattours.com/tours/kyrgyzstan-overland-road-trip-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=two-lakes-kok-bulak-horse-trek-7-days</loc>
+    <loc>https://azattours.com/tours/two-lakes-kok-bulak-horse-trek-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-horse-trek-ala-kul-hike-7-days</loc>
+    <loc>https://azattours.com/tours/song-kul-horse-trek-ala-kul-hike-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=easy-week-song-kul-issyk-kul-7-days</loc>
+    <loc>https://azattours.com/tours/easy-week-song-kul-issyk-kul-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=talas-to-song-kul-backroads-7-days</loc>
+    <loc>https://azattours.com/tours/talas-to-song-kul-backroads-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-kel-suu-in-a-week-7-days</loc>
+    <loc>https://azattours.com/tours/song-kul-kel-suu-in-a-week-7-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=ichke-tor-lake-horse-trek-6-days</loc>
+    <loc>https://azattours.com/tours/ichke-tor-lake-horse-trek-6-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kilemche-song-kul-altyn-arashan-6-days</loc>
+    <loc>https://azattours.com/tours/kilemche-song-kul-altyn-arashan-6-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=two-lakes-west-shore-horse-trek-6-days</loc>
+    <loc>https://azattours.com/tours/two-lakes-west-shore-horse-trek-6-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-ride-altyn-arashan-trek-5-days</loc>
+    <loc>https://azattours.com/tours/song-kul-ride-altyn-arashan-trek-5-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kel-suu-issyk-kul-express-5-days</loc>
+    <loc>https://azattours.com/tours/kel-suu-issyk-kul-express-5-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=mai-tor-pastures-horse-trek-5-days</loc>
+    <loc>https://azattours.com/tours/mai-tor-pastures-horse-trek-5-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=two-lakes-horse-trek-5-days</loc>
+    <loc>https://azattours.com/tours/two-lakes-horse-trek-5-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-issyk-kul-road-trip-5-days</loc>
+    <loc>https://azattours.com/tours/song-kul-issyk-kul-road-trip-5-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=kel-suu-lake-express-4-days</loc>
+    <loc>https://azattours.com/tours/kel-suu-lake-express-4-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=issyk-kul-altyn-arashan-4-days</loc>
+    <loc>https://azattours.com/tours/issyk-kul-altyn-arashan-4-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-shoreline-horse-trek-4-days</loc>
+    <loc>https://azattours.com/tours/song-kul-shoreline-horse-trek-4-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=family-tour-lakes-eagles-yurts-4-days</loc>
+    <loc>https://azattours.com/tours/family-tour-lakes-eagles-yurts-4-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=issyk-kul-karakol-canyons-3-days</loc>
+    <loc>https://azattours.com/tours/issyk-kul-karakol-canyons-3-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=winter-horse-trek-to-song-kul-3-days</loc>
+    <loc>https://azattours.com/tours/winter-horse-trek-to-song-kul-3-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=issyk-kul-song-kul-weekend-3-days</loc>
+    <loc>https://azattours.com/tours/issyk-kul-song-kul-weekend-3-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-horse-trek-3-days</loc>
+    <loc>https://azattours.com/tours/song-kul-horse-trek-3-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/tour.html?slug=song-kul-overnight-horse-trek-2-days</loc>
+    <loc>https://azattours.com/tours/song-kul-overnight-horse-trek-2-days/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=ala-kol-trek-guide</loc>
+    <loc>https://azattours.com/blog/ala-kol-trek-guide/</loc>
     <lastmod>2026-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=best-time-to-visit-kyrgyzstan</loc>
+    <loc>https://azattours.com/blog/best-time-to-visit-kyrgyzstan/</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=yurt-culture-etiquette</loc>
+    <loc>https://azattours.com/blog/yurt-culture-etiquette/</loc>
     <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=real-local-guides</loc>
+    <loc>https://azattours.com/blog/real-local-guides/</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=tailor-made-trips</loc>
+    <loc>https://azattours.com/blog/tailor-made-trips/</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=safety-in-the-mountains</loc>
+    <loc>https://azattours.com/blog/safety-in-the-mountains/</loc>
     <lastmod>2026-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=community-tourism</loc>
+    <loc>https://azattours.com/blog/community-tourism/</loc>
     <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=easy-from-abroad</loc>
+    <loc>https://azattours.com/blog/easy-from-abroad/</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://azattours.com/post.html?slug=fair-honest-pricing</loc>
+    <loc>https://azattours.com/blog/fair-honest-pricing/</loc>
     <lastmod>2026-04-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
