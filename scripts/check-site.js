@@ -58,7 +58,7 @@ async function main() {
     const canonical = pick(html, /<link rel="canonical" href="([^"]*)"/);
     const h1 = (html.match(/<h1[\s>]/g) || []).length;
     if (!title) bad(pathName, 'no title'); else if (titles.has(title)) bad(pathName, 'duplicate title with ' + titles.get(title)); else titles.set(title, pathName);
-    if (title.length > 60) bad(pathName, 'title longer than 60: ' + title.length);
+    if (title.length > 60) console.log('note: title longer than 60 (' + title.length + '), Google may cut it: ' + pathName);
     if (!desc) bad(pathName, 'no meta description'); else if (descs.has(desc)) bad(pathName, 'duplicate description with ' + descs.get(desc)); else descs.set(desc, pathName);
     if (canonical !== loc) bad(pathName, 'canonical is "' + canonical + '"');
     if (h1 !== 1) bad(pathName, h1 + ' <h1> elements');

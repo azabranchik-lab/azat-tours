@@ -47,8 +47,35 @@
 - **ДЕПЛОЙ-НЮАНС:** на сервере после распаковки один раз выполнить `node scripts/rename-tours.js`, потом
   `node scripts/build-sitemap.js`, потом `pm2 restart`. Без этого серверный `content/tours.json` вернёт старые slug'и.
 - Локальные копии до переименования: `content/tours.pre-rename.json`, `content/posts.pre-rename.json`.
-- **Дальше:** этап 3 (пререндер, `/tours/<slug>/`, 301, JSON-LD, sitemap), этап 4 (фото), этап 5 (README, Markdown).
-  Открыто: тексты `summary` туров взяты с сайта-источника и местами называют старые серии, нужен рерайт.
+- **Этап 3 сделан (индексация и чистые URL):**
+  - Страницы туров, статей и списков теперь рендерит СЕРВЕР: `lib/pages.js` (шаблон `public/*.html` + данные),
+    `lib/tour-page.js`, `lib/post-page.js`. Рендер по запросу с кэшем в памяти, ключ кэша включает mtime
+    `content/*.json` и шаблонов. Собирать страницы руками не нужно, правка в боте видна сразу.
+  - Адреса: `/tours/`, `/tours/<slug>/`, `/blog/`, `/blog/<slug>/`. Файлы `tour.html`, `post.html`, `tours.html`,
+    `blog.html` остались только как ШАБЛОНЫ, напрямую не отдаются.
+  - 301 в `server.js` (`routePage`): `tour.html?slug=СТАРЫЙ|НОВЫЙ`, `tour.html?id=`, `post.html?slug=`, `tours.html`,
+    `blog.html`, `index.html`, адрес без слэша, старый slug в `/tours/<slug>/`. Карта старых slug'ов:
+    `scripts/_tour-renames.json` (цепочки переименований поддерживаются). Неизвестный slug отдаёт настоящий 404.
+  - Предпросмотр черновиков из бота работает по старой ссылке `tour.html?slug=..&preview=KEY` (сервер рендерит
+    черновик, noindex, no-store).
+  - `public/cards.js`: общая разметка карточек для сервера и браузера (`window.Cards`). `tour-detail.js` теперь
+    только поведение (аккордеон, вкладки, FAQ). `post-render.js` удалён. Страница тура больше не грузит
+    `tours-data.js` (800 КБ).
+  - Все пути в `public/*.html` и `nav.js` стали абсолютными от корня (`/styles.css`, `/tours/`).
+  - `sitemap.xml` сервер строит на лету из контента, `lastmod` берётся из нового поля `updatedAt`
+    (`stampUpdated` в `lib/content.js` ставит дату при реальном изменении тура или статьи).
+  - Поле `url` (сайт-источник) больше не попадает в публичный `tours-data.js`.
+  - `summary` всех 38 туров переписаны по маршруту: `scripts/_summaries.json` + `scripts/merge-summaries.js`.
+    В трёх blurb'ах убраны старые названия серий и упоминание чужого YouTube-видео.
+  - Проверка: `node scripts/check-site.js [https://azattours.com]` (title, description, canonical, H1, JSON-LD,
+    noindex, битые ссылки). Локально: 53 URL, 401 ссылка, всё чисто.
+- **ДЕПЛОЙ этапов 2 и 3 (на сервере после распаковки, по порядку):**
+  `node scripts/rename-tours.js` → `node scripts/merge-blurbs.js` → `node scripts/merge-summaries.js` →
+  `pm2 restart <имя>` → `node scripts/check-site.js https://azattours.com`.
+  nginx менять не нужно. Если сервер не сможет прочитать `content/*.json`, он возьмёт данные из `*-data.js`
+  и напишет об этом в лог pm2 (раньше молча ставил noindex).
+- **Дальше:** этап 4 (фото: alt, имена файлов, srcset), этап 5 (README, статьи из Markdown).
+  Открыто: в текстах маршрутов осталось написание Song-Kol / Ysyk-Kol, а в названиях Song-Kul / Issyk-Kul.
 
 ## Бот партнёров (@azattours_partners_bot) — АКТУАЛЬНО на 2026-09-29
 
