@@ -1152,7 +1152,7 @@ bot.callbackQuery('sg:list', async ctx => { await ctx.answerCallbackQuery(); con
 bot.callbackQuery(/^sg:v:(.+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = sightView(ctx.match[1]); if (!v) return ctx.reply('Not found.'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
 bot.callbackQuery(/^sg:ph:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightphoto', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '📷 Send the new photo for this place.'); });
 bot.callbackQuery(/^sg:bl:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightblurb', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '✏️ Send a short one-line description for this place.'); });
-bot.callbackQuery('sg:add', async ctx => { sessions.set(ctx.from.id, { mode: 'sightadd' }); await ctx.answerCallbackQuery(); await ask(ctx, '➕ What is the <b>name</b> of the place? (e.g. Song-Köl Lake)'); });
+bot.callbackQuery('sg:add', async ctx => { sessions.set(ctx.from.id, { mode: 'sightadd' }); await ctx.answerCallbackQuery(); await ask(ctx, '➕ What is the <b>name</b> of the place? (e.g. Song-Kul Lake)'); });
 bot.callbackQuery(/^sg:name:(.+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'sightname', key: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '✏️ Send the new <b>name</b> for this place:'); });
 bot.callbackQuery(/^sg:del:(.+)$/, async ctx => { const key = ctx.match[1]; await ctx.answerCallbackQuery(); await ctx.reply('Delete this place? This can\'t be undone.', { reply_markup: new InlineKeyboard().text('🗑 Yes, delete', `sg:delyes:${key}`).text('« Keep', `sg:v:${key}`) }); });
 bot.callbackQuery(/^sg:delyes:(.+)$/, async ctx => {

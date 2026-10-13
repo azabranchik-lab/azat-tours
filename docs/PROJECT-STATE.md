@@ -69,11 +69,18 @@
     В трёх blurb'ах убраны старые названия серий и упоминание чужого YouTube-видео.
   - Проверка: `node scripts/check-site.js [https://azattours.com]` (title, description, canonical, H1, JSON-LD,
     noindex, битые ссылки). Локально: 53 URL, 401 ссылка, всё чисто.
-- **ДЕПЛОЙ этапов 2 и 3 (на сервере после распаковки, по порядку):**
-  `node scripts/rename-tours.js` → `node scripts/merge-blurbs.js` → `node scripts/merge-summaries.js` →
-  `pm2 restart <имя>` → `node scripts/check-site.js https://azattours.com`.
-  nginx менять не нужно. Если сервер не сможет прочитать `content/*.json`, он возьмёт данные из `*-data.js`
-  и напишет об этом в лог pm2 (раньше молча ставил noindex).
+- **Написание озёр унифицировано:** везде Song-Kul, Issyk-Kul, Ala-Kul (`scripts/unify-spelling.js` для контента,
+  исходники `scripts/_*`, статические страницы). Slug'и статей и имена файлов не менялись. Ключи `sights.json`
+  прежние (`song-kol`, `issyk-kol`, `ala-kol`): `normSight` в `lib/tour-page.js` сводит любое написание к ним.
+  Заодно починилась карточка Issyk-Kul в блоке «Sights»: раньше ключ не совпадал и она шла без своего фото.
+- **ДЕПЛОЙ = push в main** (владелец подтвердил 2026-10-13). Workflow `.github/workflows/deploy.yml` теперь
+  запускает `node scripts/migrate.js` перед регенерацией данных. Это одноразовые миграции серверного контента
+  (переименование туров, summary, написание озёр); применённые записываются в `content/.migrations.json` и
+  повторно не выполняются, поэтому правки из бота после деплоя не затираются. Новую миграцию добавлять в конец
+  списка `MIGRATIONS`. Если `content/tours.json` на сервере не читается, миграция останавливает деплой.
+  nginx менять не нужно. После деплоя: `node scripts/check-site.js https://azattours.com`.
+  Если сервер не сможет прочитать `content/*.json` во время работы, он возьмёт данные из `*-data.js` и напишет
+  об этом в лог pm2 (раньше молча ставил noindex).
 - **Дальше:** этап 4 (фото: alt, имена файлов, srcset), этап 5 (README, статьи из Markdown).
   Открыто: в текстах маршрутов осталось написание Song-Kol / Ysyk-Kol, а в названиях Song-Kul / Issyk-Kul.
 

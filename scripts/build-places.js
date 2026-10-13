@@ -17,12 +17,12 @@ const ROOT = path.join(__dirname, '..');
 // the common eastern Karakol cluster). pat = case-insensitive match in titles.
 const GAZ = [
   { key: 'bishkek',       name: 'Bishkek',           lat: 42.875, lng: 74.59,  dir: 'left',   pat: /Bishkek/i },
-  { key: 'song-kol',      name: 'Song-Köl Lake',     lat: 41.84,  lng: 75.13,  dir: 'bottom', pat: /Song[-\s]?K[oö]l|Son-Kol/i },
-  { key: 'issyk-kol',     name: 'Lake Issyk-Köl',    lat: 42.20,  lng: 77.20,  dir: 'top',    pat: /[YI]ssyk[-\s]?K[oö]l|Ysyk[-\s]?K[oö]l/i },
+  { key: 'song-kol',      name: 'Song-Kul Lake',     lat: 41.84,  lng: 75.13,  dir: 'bottom', pat: /Song[-\s]?K[oöu]l|Son-Kol/i },
+  { key: 'issyk-kol',     name: 'Lake Issyk-Kul',    lat: 42.20,  lng: 77.20,  dir: 'top',    pat: /[YI]ssyk[-\s]?K[oöu]l|Ysyk[-\s]?K[oöu]l/i },
   { key: 'kel-suu',       name: 'Kel-Suu Lake',      lat: 40.687, lng: 76.394, dir: 'top',    pat: /Kel[-\s]?Suu|K[oö]l[-\s]?Suu/i },
   { key: 'karakol',       name: 'Karakol',           lat: 42.49,  lng: 78.394, dir: 'top',    pat: /Karakol/i },
   { key: 'altyn-arashan', name: 'Altyn-Arashan',     lat: 42.37,  lng: 78.66,  dir: 'right',  pat: /Altyn[-\s]?Arashan/i },
-  { key: 'ala-kol',       name: 'Ala-Köl Lake',      lat: 42.33,  lng: 78.55,  dir: 'bottom', pat: /Ala[-\s]?K[oö]l/i },
+  { key: 'ala-kol',       name: 'Ala-Kul Lake',      lat: 42.33,  lng: 78.55,  dir: 'bottom', pat: /Ala[-\s]?K[oöu]l/i },
   { key: 'skazka',        name: 'Fairy-Tale Canyon', lat: 42.136, lng: 77.438, dir: 'bottom', pat: /Fairy[-\s]?Tale|Skazka/i },
   { key: 'naryn',         name: 'Naryn',             lat: 41.43,  lng: 75.99,  dir: 'bottom', pat: /\bNaryn\b/i },
   { key: 'kochkor',       name: 'Kochkor',           lat: 42.21,  lng: 75.75,  dir: 'left',   pat: /Kochkor/i },

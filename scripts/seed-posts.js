@@ -7,15 +7,15 @@ const U = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=
 
 const posts = [
   {
-    id: 1003, slug: 'ala-kol-trek-guide', title: 'The complete guide to the Ala-Köl trek',
+    id: 1003, slug: 'ala-kol-trek-guide', title: 'The complete guide to the Ala-Kul trek',
     category: 'Travel guide', excerpt: "Route, difficulty, altitude, packing and tips for Kyrgyzstan's most famous trek — by local guides.",
     author: 'Azamat, lead guide', authorImg: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80',
     date: '2026-06-02', cover: 'img/blog/ala-kol-trek-guide.jpg', images: [],
-    body: `Ask any traveller what they remember most about Kyrgyzstan and there's a good chance they'll say one word: Ala-Köl. This glacier-fed lake glows an unreal turquoise at 3,560 m, and reaching it is the country's most loved multi-day trek. Here's everything you need to walk it well.
+    body: `Ask any traveller what they remember most about Kyrgyzstan and there's a good chance they'll say one word: Ala-Kul. This glacier-fed lake glows an unreal turquoise at 3,560 m, and reaching it is the country's most loved multi-day trek. Here's everything you need to walk it well.
 
-## Where is Ala-Köl and why go?
+## Where is Ala-Kul and why go?
 
-Ala-Köl sits high in the Terskey Ala-Too range above Karakol, on the eastern side of Lake Issyk-Köl. The classic route climbs through pine forest and alpine meadow, crosses a 3,900 m pass with jaw-dropping views, then drops to the lake and on to the natural hot springs of Altyn-Arashan.
+Ala-Kul sits high in the Terskey Ala-Too range above Karakol, on the eastern side of Lake Issyk-Kul. The classic route climbs through pine forest and alpine meadow, crosses a 3,900 m pass with jaw-dropping views, then drops to the lake and on to the natural hot springs of Altyn-Arashan.
 
 [img:img/blog/body/ala-kol-pass.jpg|The pass day rewards every step with a panorama over the Tian Shan.]
 
@@ -24,7 +24,7 @@ Ala-Köl sits high in the Terskey Ala-Too range above Karakol, on the eastern si
 Honestly? It's a proper trek — moderate to hard. You don't need technical skills, but you do need reasonable fitness and the willingness to spend a long day above 3,500 m.
 
 - Distance: ~40–50 km over 3–4 trekking days
-- Max altitude: 3,900 m (Ala-Köl Pass)
+- Max altitude: 3,900 m (Ala-Kul Pass)
 - Nights: mountain camps and a cosy guesthouse in Altyn-Arashan
 
 ## The best time to walk it
@@ -50,7 +50,7 @@ You can, and some do. But weather windows, river crossings and the pass demand r
 
 This is prime time. High passes are open, the jailoo (summer pastures) are green and dotted with yurts, and herder families move up into the mountains.
 
-- Best for: trekking, horse treks, yurt stays, Issyk-Köl, Kel-Suu
+- Best for: trekking, horse treks, yurt stays, Issyk-Kul, Kel-Suu
 - Weather: warm days, cold nights; afternoon showers possible
 - Note: July–August are busiest — book ahead
 
@@ -58,13 +58,13 @@ This is prime time. High passes are open, the jailoo (summer pastures) are green
 
 ## Spring & autumn (April–May, October)
 
-The shoulder seasons are underrated. High passes may still be snowy, but the lower valleys, Issyk-Köl shore and cultural sights are beautiful and far quieter.
+The shoulder seasons are underrated. High passes may still be snowy, but the lower valleys, Issyk-Kul shore and cultural sights are beautiful and far quieter.
 
 [tip:Sweet spot|Early September is many guides' favourite — summer access, warm lakes, golden colours and fewer people.]
 
 ## Winter (November–March): snow & silence
 
-Winter is for a different kind of traveller. Trekking passes close, but you can ski quiet powder and ride horses to a frozen Song-Köl.
+Winter is for a different kind of traveller. Trekking passes close, but you can ski quiet powder and ride horses to a frozen Song-Kul.
 
 - Best for: skiing, winter yurt stays, photography
 - Note: some mountain roads close`

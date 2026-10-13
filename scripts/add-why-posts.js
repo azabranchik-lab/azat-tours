@@ -54,7 +54,7 @@ That kind of knowledge does not come from a training course. It comes from movin
 
 ## A day with a guide, hour by hour
 
-Say we are riding toward Song-Kol. Before breakfast your guide has already looked at the sky, felt the wind and decided whether today is the day for the pass or the day for the lakeshore. Over tea he tells you the plan, and why. On the trail he rides where he can see everyone, adjusts stirrups, swaps horses if a pairing is not working. At the river he goes first. In the evening he is the one talking with the host family in Kyrgyz, which is why dinner can end in stories and laughter around the stove, not with a bill.
+Say we are riding toward Song-Kul. Before breakfast your guide has already looked at the sky, felt the wind and decided whether today is the day for the pass or the day for the lakeshore. Over tea he tells you the plan, and why. On the trail he rides where he can see everyone, adjusts stirrups, swaps horses if a pairing is not working. At the river he goes first. In the evening he is the one talking with the host family in Kyrgyz, which is why dinner can end in stories and laughter around the stove, not with a bill.
 
 None of that shows up on an itinerary PDF. All of it is the trip.
 
@@ -80,7 +80,7 @@ This is the whole idea behind Azat Tours. "Azat" means free in Kyrgyz, and we wa
 
 ## Meet them on the trail
 
-Our guides shine brightest on the long rides: a full week in the saddle on the [horseback riding tour (7 days)](tour.html?slug=two-lakes-kok-bulak-horse-trek-7-days), far off the map on the [untouched mountains ride (6 days)](tour.html?slug=ichke-tor-lake-horse-trek-6-days), or the big mix of riding and trekking from [Song-Kol to Ala-Kol (7 days)](tour.html?slug=song-kul-horse-trek-ala-kul-hike-7-days).`
+Our guides shine brightest on the long rides: a full week in the saddle on the [horseback riding tour (7 days)](tour.html?slug=two-lakes-kok-bulak-horse-trek-7-days), far off the map on the [untouched mountains ride (6 days)](tour.html?slug=ichke-tor-lake-horse-trek-6-days), or the big mix of riding and trekking from [Song-Kul to Ala-Kul (7 days)](tour.html?slug=song-kul-horse-trek-ala-kul-hike-7-days).`
   },
   {
     id: 1008, slug: 'tailor-made-trips', category: CAT, date: '2026-04-26',
@@ -106,11 +106,11 @@ A family with kids, a couple who want long days in the saddle, a photographer ch
 
 ## Say you have nine days
 
-Here is how the thinking goes. Nine days in July with two riders who want saddle time: we build around Song-Kol, ride camp to camp for the middle stretch, and keep the first and last days light for arrival and the flight home. The same nine days with two kids under ten becomes a different trip: shorter drives, guesthouses with warm showers, a gentle one-day ride instead of a five-day trek, more time at the Issyk-Kul shore. Same country, same length, built around different people.
+Here is how the thinking goes. Nine days in July with two riders who want saddle time: we build around Song-Kul, ride camp to camp for the middle stretch, and keep the first and last days light for arrival and the flight home. The same nine days with two kids under ten becomes a different trip: shorter drives, guesthouses with warm showers, a gentle one-day ride instead of a five-day trek, more time at the Issyk-Kul shore. Same country, same length, built around different people.
 
 ## What we can change, and what we cannot
 
-Honesty works both ways, so here is the other side. We can shape pace, comfort level, activities and route order almost endlessly. We cannot change the mountains: high passes open roughly June to September, Song-Kol yurt camps fold in early October, and some drives are simply long because Kyrgyzstan is big. If your dates fall outside the season for the thing you want most, we will say so and offer the honest alternative. The full season picture is in [when to visit](post.html?slug=best-time-to-visit-kyrgyzstan).
+Honesty works both ways, so here is the other side. We can shape pace, comfort level, activities and route order almost endlessly. We cannot change the mountains: high passes open roughly June to September, Song-Kul yurt camps fold in early October, and some drives are simply long because Kyrgyzstan is big. If your dates fall outside the season for the thing you want most, we will say so and offer the honest alternative. The full season picture is in [when to visit](post.html?slug=best-time-to-visit-kyrgyzstan).
 
 ## Changes on the ground
 
@@ -167,7 +167,7 @@ The cheapest place to fix a problem is before it exists. When we design your rou
 
 ## Altitude, respected
 
-Much of what you came to see sits above 3,000 m: Song-Kol's pastures, Ala-Kol's turquoise water at 3,560 m, passes near 3,900 m. Altitude is not something to fear, it is something to respect with time. Our higher routes climb gradually, first days stay moderate, and your guide watches how everyone feels. Your part: drink more water than feels necessary, tell your guide early if your head aches, and do not treat day one as a race. The full health picture, including why travel insurance with mountain cover is required on our tours, is in the [guide](plan-trip.html#health).
+Much of what you came to see sits above 3,000 m: Song-Kul's pastures, Ala-Kul's turquoise water at 3,560 m, passes near 3,900 m. Altitude is not something to fear, it is something to respect with time. Our higher routes climb gradually, first days stay moderate, and your guide watches how everyone feels. Your part: drink more water than feels necessary, tell your guide early if your head aches, and do not treat day one as a race. The full health picture, including why travel insurance with mountain cover is required on our tours, is in the [guide](plan-trip.html#health).
 
 ## Rivers and horses
 
@@ -192,7 +192,7 @@ Safety is a partnership, so we ask a few things in return: be honest about fitne
 
 ## Comfortable first steps
 
-If you want the mountains with a soft landing, the [family tour (4 days)](tour.html?slug=family-tour-lakes-eagles-yurts-4-days) and the gentle [easy week by road (7 days)](tour.html?slug=easy-week-song-kul-issyk-kul-7-days) keep the wild scenery and skip the hard passes. Ready for the classic high trek instead? Read the [complete Ala-Kol guide](post.html?slug=ala-kol-trek-guide) first.`
+If you want the mountains with a soft landing, the [family tour (4 days)](tour.html?slug=family-tour-lakes-eagles-yurts-4-days) and the gentle [easy week by road (7 days)](tour.html?slug=easy-week-song-kul-issyk-kul-7-days) keep the wild scenery and skip the hard passes. Ready for the classic high trek instead? Read the [complete Ala-Kul guide](post.html?slug=ala-kol-trek-guide) first.`
   },
   {
     id: 1006, slug: 'community-tourism', category: CAT, date: '2026-04-22',
@@ -203,7 +203,7 @@ If you want the mountains with a soft landing, the [family tour (4 days)](tour.h
 
 ## Who you actually stay with
 
-When you sleep in a yurt by Song-Kol or eat a home-cooked dinner in a village, that's a real family's home and livelihood, not a chain. We work with herder families and village hosts directly.
+When you sleep in a yurt by Song-Kul or eat a home-cooked dinner in a village, that's a real family's home and livelihood, not a chain. We work with herder families and village hosts directly.
 
 The rhythm behind it is old. Every May, families move their animals up to the jailoo, the high summer pastures, and set up camp; every September they come back down. Hosting a few travellers fits into that life without replacing it. The horses you ride are working horses, the milk in your tea came from the herd outside, and the family's year still turns around the animals, not around tourism.
 
@@ -244,13 +244,13 @@ A yurt camp can host a handful of guests without changing what it is. A bus cann
 
 ## When to come
 
-The full jailoo experience runs May to September, while families are up on the pastures; July and August are the liveliest. September is quieter and golden, and the last camps at Song-Kol fold in early October. The season-by-season picture is in [when to visit](post.html?slug=best-time-to-visit-kyrgyzstan).
+The full jailoo experience runs May to September, while families are up on the pastures; July and August are the liveliest. September is quieter and golden, and the last camps at Song-Kul fold in early October. The season-by-season picture is in [when to visit](post.html?slug=best-time-to-visit-kyrgyzstan).
 
 > "A guest brings happiness," goes the Kyrgyz saying. Travel here in a way that leaves the place better, and you'll feel the difference both ways.
 
 ## Trips built around local homes
 
-The [authentic road trip (8 days)](tour.html?slug=talas-to-issyk-kul-backroads-8-days) sleeps in family guesthouses and nomad camps most tours never reach, the [untouched mountains ride (6 days)](tour.html?slug=ichke-tor-lake-horse-trek-6-days) stays with herders the whole way, and the short [Song-Kol on horseback (3 days)](tour.html?slug=song-kul-horse-trek-3-days) is the classic first taste of jailoo life.`
+The [authentic road trip (8 days)](tour.html?slug=talas-to-issyk-kul-backroads-8-days) sleeps in family guesthouses and nomad camps most tours never reach, the [untouched mountains ride (6 days)](tour.html?slug=ichke-tor-lake-horse-trek-6-days) stays with herders the whole way, and the short [Song-Kul on horseback (3 days)](tour.html?slug=song-kul-horse-trek-3-days) is the classic first taste of jailoo life.`
   },
   {
     id: 1005, slug: 'easy-from-abroad', category: CAT, date: '2026-04-20',
@@ -365,7 +365,7 @@ Because every trip is custom, the price reflects your group size, season and cho
 
 ## See it in practice
 
-Every tour page lists exactly what's included, day by day: compare the [Song-Kol and Kel-Suu road trip (9 days)](tour.html?slug=song-kul-kel-suu-road-trip-9-days) with the compact [Song-Kol ride and Altyn-Arashan trek (5 days)](tour.html?slug=song-kul-ride-altyn-arashan-trek-5-days) and you'll see the same open approach on both.`
+Every tour page lists exactly what's included, day by day: compare the [Song-Kul and Kel-Suu road trip (9 days)](tour.html?slug=song-kul-kel-suu-road-trip-9-days) with the compact [Song-Kul ride and Altyn-Arashan trek (5 days)](tour.html?slug=song-kul-ride-altyn-arashan-trek-5-days) and you'll see the same open approach on both.`
   },
 ];
 

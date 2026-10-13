@@ -3,7 +3,7 @@
     "day": 1,
     "title": "Drive to Kyzart & ride to Kilemche",
     "desc": [
-      "Your trip starts with a drive to Kyzart Village, tucked in the hills below Song-Kol. A homemade lunch at a family homestay sets you up for the day, and your guide takes you through the basics in the saddle before you head out.",
+      "Your trip starts with a drive to Kyzart Village, tucked in the hills below Song-Kul. A homemade lunch at a family homestay sets you up for the day, and your guide takes you through the basics in the saddle before you head out.",
       "From there you ride along the Chaar-Archa River, through wide valleys that ease you into the rhythm of the trail. By evening you reach a herder family's yurt camp at Kilemche, time to settle in with your horse, wander the hillsides, and watch the quiet of nomad life before dinner."
     ],
     "transfer": "280 km · 4 h",
@@ -15,9 +15,9 @@
   },
   {
     "day": 2,
-    "title": "Over Jalgyz-Karagai Pass to Song-Kol",
+    "title": "Over Jalgyz-Karagai Pass to Song-Kul",
     "desc": [
-      "Today the trail climbs. After breakfast you work your way up toward the Jalgyz-Karagai Pass at 3300 m, a steady effort that pays off at the top, where Song-Kol opens up far below for the first time.",
+      "Today the trail climbs. After breakfast you work your way up toward the Jalgyz-Karagai Pass at 3300 m, a steady effort that pays off at the top, where Song-Kul opens up far below for the first time.",
       "You drop down toward the lake past grazing herds and scattered yurts, reaching the Tuz-Ashuu pasture in the afternoon. The evening is yours to rest by the water, and once the sun sets the sky here fills with stars."
     ],
     "transfer": "",
@@ -29,9 +29,9 @@
   },
   {
     "day": 3,
-    "title": "Along Song-Kol to the western shore",
+    "title": "Along Song-Kul to the western shore",
     "desc": [
-      "An easier day in the saddle, riding the open shore of Song-Kol. With two days behind you, your guide may pick up the pace to a canter across the smooth lakeside grass.",
+      "An easier day in the saddle, riding the open shore of Song-Kul. With two days behind you, your guide may pick up the pace to a canter across the smooth lakeside grass.",
       "By midday you reach the Ozbek-Ashuu pasture on the western shore, where a nomad family hosts you for the night. The afternoon is free, walk the shoreline or take a short ride into the nearby hills before dinner."
     ],
     "transfer": "",
@@ -43,10 +43,10 @@
   },
   {
     "day": 4,
-    "title": "Ride to Kyzart, then drive to Ysyk-Kol",
+    "title": "Ride to Kyzart, then drive to Issyk-Kul",
     "desc": [
-      "You say goodbye to your hosts and ride back over the Ozbek-Ashuu Pass at 3300 m, with one last look down over Song-Kol before the trail drops to Kyzart. There's lunch and a chance to freshen up in the village.",
-      "In the afternoon you swap the saddle for the road and drive to the southern shore of Ysyk-Kol. There may be time to catch the sunset over the Fairy-Tale Canyons before you reach your guesthouse near Bokonbaev for the night."
+      "You say goodbye to your hosts and ride back over the Ozbek-Ashuu Pass at 3300 m, with one last look down over Song-Kul before the trail drops to Kyzart. There's lunch and a chance to freshen up in the village.",
+      "In the afternoon you swap the saddle for the road and drive to the southern shore of Issyk-Kul. There may be time to catch the sunset over the Fairy-Tale Canyons before you reach your guesthouse near Bokonbaev for the night."
     ],
     "transfer": "200 km · 3-4 h",
     "activity": "Horse riding · 20 km · 4-5 h",
@@ -59,7 +59,7 @@
     "day": 5,
     "title": "Ride to Boz-Salkyn & Shatyly viewpoint",
     "desc": [
-      "Back in the saddle, you ride out of the village and up into the Boz-Salkyn summer pastures. A traditional lunch waits in a yurt before you carry on to the Shatyly viewpoint, where the whole sweep of Ysyk-Kol spreads out between the peaks and canyons.",
+      "Back in the saddle, you ride out of the village and up into the Boz-Salkyn summer pastures. A traditional lunch waits in a yurt before you carry on to the Shatyly viewpoint, where the whole sweep of Issyk-Kul spreads out between the peaks and canyons.",
       "You return by a different trail to the Boz-Salkyn pasture, where a herder family hosts you for the night."
     ],
     "transfer": "",
@@ -73,7 +73,7 @@
     "day": 6,
     "title": "Ride over Karaly-Archa Pass to Kok-Bulak",
     "desc": [
-      "A demanding day climbing through alpine forest to the Karaly-Archa Pass at 2900 m, where the view widens out over Ysyk-Kol and the Terskey-Ala-Too range behind it.",
+      "A demanding day climbing through alpine forest to the Karaly-Archa Pass at 2900 m, where the view widens out over Issyk-Kul and the Terskey-Ala-Too range behind it.",
       "On the way down you stop for a picnic beside the Tuura-Suu River, then ride on through the afternoon to reach the Kok-Bulak yurt camp by evening."
     ],
     "transfer": "",
@@ -88,7 +88,7 @@
     "title": "Ride to Bokonbaev, eagle hunter & drive to Karakol",
     "desc": [
       "An easy downhill ride through a scenic gorge brings you back to Bokonbaev. There you meet local eagle hunters, who share an old Kyrgyz tradition and let you see, and photograph, a trained eagle up close on horseback. Lunch follows at the guesthouse.",
-      "In the afternoon you drive to Karakol along the southern shore of Ysyk-Kol, with a stop at the Fairy-Tale Canyons along the way. You arrive in the evening for dinner and a comfortable hotel bed."
+      "In the afternoon you drive to Karakol along the southern shore of Issyk-Kul, with a stop at the Fairy-Tale Canyons along the way. You arrive in the evening for dinner and a comfortable hotel bed."
     ],
     "transfer": "150 km · 3-4 h",
     "activity": "Horse riding · 14 km · 3-4 h",
@@ -113,9 +113,9 @@
   },
   {
     "day": 9,
-    "title": "Ride & hike to alpine Ala-Kol Lake",
+    "title": "Ride & hike to alpine Ala-Kul Lake",
     "desc": [
-      "The big day. You ride out from Altyn-Arashan, crossing rivers and weaving through alpine forest to the Keldike Gorge. There you leave the horses and tackle the final climb on foot, a challenging push up to the Ala-Kol Pass at 3900 m, where the turquoise lake and its glaciers open out below.",
+      "The big day. You ride out from Altyn-Arashan, crossing rivers and weaving through alpine forest to the Keldike Gorge. There you leave the horses and tackle the final climb on foot, a challenging push up to the Ala-Kul Pass at 3900 m, where the turquoise lake and its glaciers open out below.",
       "After a picnic and time to take it all in, you return to the horses and ride back down to Altyn-Arashan. The hot springs are waiting at the end of a long day, followed by dinner at the guesthouse."
     ],
     "transfer": "",
@@ -130,7 +130,7 @@
     "title": "Ride out to Ak-Suu & drive to Bishkek",
     "desc": [
       "A final ride back down the river trail to Ak-Suu, one last morning in the saddle and a last lungful of mountain air. From there you drive to Karakol for lunch and a moment to look back on the week.",
-      "The long drive home runs along the northern shore of Ysyk-Kol, reaching Bishkek by evening, around 8-9 pm, the close of a trip built on horseback days, high passes, and nomad hospitality."
+      "The long drive home runs along the northern shore of Issyk-Kul, reaching Bishkek by evening, around 8-9 pm, the close of a trip built on horseback days, high passes, and nomad hospitality."
     ],
     "transfer": "420 km · 6 h",
     "activity": "Horse riding · 16 km · 3-4 h",

@@ -52,6 +52,8 @@ jobs:
             git reset --hard origin/main
             echo "→ installing prod deps"
             npm ci --omit=dev
+            echo "→ one-time content migrations (renames, text fixes)"
+            node scripts/migrate.js
             echo "→ regenerating public/*-data.js from content/*.json"
             node scripts/regenerate-all.js
             echo "→ pm2 reload"
