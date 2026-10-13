@@ -80,7 +80,7 @@ This is the whole idea behind Azat Tours. "Azat" means free in Kyrgyz, and we wa
 
 ## Meet them on the trail
 
-Our guides shine brightest on the long rides: a full week in the saddle on the [horseback riding tour (7 days)](tour.html?slug=kyrgyzstan-horseback-riding-tour-7-days), far off the map on the [untouched mountains ride (6 days)](tour.html?slug=untouched-mountain-horse-riding-tour-6-days), or the big mix of riding and trekking from [Song-Kol to Ala-Kol (7 days)](tour.html?slug=song-kol-to-ala-kol-horse-riding-trekking-7-days).`
+Our guides shine brightest on the long rides: a full week in the saddle on the [horseback riding tour (7 days)](tour.html?slug=two-lakes-kok-bulak-horse-trek-7-days), far off the map on the [untouched mountains ride (6 days)](tour.html?slug=ichke-tor-lake-horse-trek-6-days), or the big mix of riding and trekking from [Song-Kol to Ala-Kol (7 days)](tour.html?slug=song-kul-horse-trek-ala-kul-hike-7-days).`
   },
   {
     id: 1008, slug: 'tailor-made-trips', category: CAT, date: '2026-04-26',
@@ -132,7 +132,7 @@ Send us a rough idea and we'll turn it into a real plan within 24 hours.
 
 ## Start shaping yours
 
-Use the [trip builder](builder.html) to sketch your dates and interests, or take a base like the [Best of Kyrgyzstan (12 days)](tour.html?slug=best-of-kyrgyzstan-12-days) and bend it to fit. Short on time? [Kyrgyzstan in a week (7 days)](tour.html?slug=kyrgyzstan-in-a-week-7-days) packs the icons into seven days, and most of our routes exist in several lengths, so the days can flex too.`
+Use the [trip builder](builder.html) to sketch your dates and interests, or take a base like the [Complete Kyrgyzstan Adventure (12 days)](tour.html?slug=complete-kyrgyzstan-adventure-12-days) and bend it to fit. Short on time? [Kyrgyzstan in a week (7 days)](tour.html?slug=song-kul-kel-suu-in-a-week-7-days) packs the icons into seven days, and most of our routes exist in several lengths, so the days can flex too.`
   },
   {
     id: 1007, slug: 'safety-in-the-mountains', category: CAT, date: '2026-04-24',
@@ -192,7 +192,7 @@ Safety is a partnership, so we ask a few things in return: be honest about fitne
 
 ## Comfortable first steps
 
-If you want the mountains with a soft landing, the [family tour (4 days)](tour.html?slug=kyrgyzstan-family-tour-4-days) and the gentle [Discover Kyrgyzstan road trip (7 days)](tour.html?slug=discover-kyrgyzstan-7-days) keep the wild scenery and skip the hard passes. Ready for the classic high trek instead? Read the [complete Ala-Kol guide](post.html?slug=ala-kol-trek-guide) first.`
+If you want the mountains with a soft landing, the [family tour (4 days)](tour.html?slug=family-tour-lakes-eagles-yurts-4-days) and the gentle [easy week by road (7 days)](tour.html?slug=easy-week-song-kul-issyk-kul-7-days) keep the wild scenery and skip the hard passes. Ready for the classic high trek instead? Read the [complete Ala-Kol guide](post.html?slug=ala-kol-trek-guide) first.`
   },
   {
     id: 1006, slug: 'community-tourism', category: CAT, date: '2026-04-22',
@@ -250,7 +250,7 @@ The full jailoo experience runs May to September, while families are up on the p
 
 ## Trips built around local homes
 
-The [authentic road trip (8 days)](tour.html?slug=authentic-road-trip-tour-8-days) sleeps in family guesthouses and nomad camps most tours never reach, the [untouched mountains ride (6 days)](tour.html?slug=untouched-mountain-horse-riding-tour-6-days) stays with herders the whole way, and the short [Song-Kol on horseback (3 days)](tour.html?slug=song-kol-lake-on-horseback-3-days) is the classic first taste of jailoo life.`
+The [authentic road trip (8 days)](tour.html?slug=talas-to-issyk-kul-backroads-8-days) sleeps in family guesthouses and nomad camps most tours never reach, the [untouched mountains ride (6 days)](tour.html?slug=ichke-tor-lake-horse-trek-6-days) stays with herders the whole way, and the short [Song-Kol on horseback (3 days)](tour.html?slug=song-kul-horse-trek-3-days) is the classic first taste of jailoo life.`
   },
   {
     id: 1005, slug: 'easy-from-abroad', category: CAT, date: '2026-04-20',
@@ -315,7 +315,7 @@ June to September is the headline season, when the high country is open. If your
 
 ## Land, ride, done
 
-Both of these start and end in Bishkek and pack the country into one simple loop: [Kyrgyzstan in a week (7 days)](tour.html?slug=kyrgyzstan-in-a-week-7-days) and the faster [express tour (5 days)](tour.html?slug=kyrgyzstan-express-tour-5-days). Questions first? The full [Kyrgyzstan travel guide](plan-trip.html) answers the eight most common ones.`
+Both of these start and end in Bishkek and pack the country into one simple loop: [Kyrgyzstan in a week (7 days)](tour.html?slug=song-kul-kel-suu-in-a-week-7-days) and the faster [express tour (5 days)](tour.html?slug=kel-suu-issyk-kul-express-5-days). Questions first? The full [Kyrgyzstan travel guide](plan-trip.html) answers the eight most common ones.`
   },
   {
     id: 1004, slug: 'fair-honest-pricing', category: CAT, date: '2026-04-18',
@@ -347,7 +347,7 @@ No mystery. A trip is transport (vehicle, fuel, driver days), guiding, nights (g
 
 ## Tell us your budget, really
 
-The most useful sentence in trip planning is an honest budget. For us it is not a negotiating position, it is a design constraint. Tight budget? September dates, guesthouses over camps, or a shorter variant of the same route, most of our routes exist in several lengths, the [ultimate road trip](tour.html?slug=kyrgyzstan-ultimate-road-trip-7-days) alone runs from 7 to 12 days. Room to spare? We will tell you where extra money genuinely buys a better trip, a rest day, a more comfortable vehicle for the long drives, and where it would just buy padding.
+The most useful sentence in trip planning is an honest budget. For us it is not a negotiating position, it is a design constraint. Tight budget? September dates, guesthouses over camps, or a shorter variant of the same route, most of our routes exist in several lengths, the [overland road trip](tour.html?slug=kyrgyzstan-overland-road-trip-7-days) alone runs from 7 to 12 days. Room to spare? We will tell you where extra money genuinely buys a better trip, a rest day, a more comfortable vehicle for the long drives, and where it would just buy padding.
 
 ## What "no hidden extras" means in practice
 
@@ -365,7 +365,7 @@ Because every trip is custom, the price reflects your group size, season and cho
 
 ## See it in practice
 
-Every tour page lists exactly what's included, day by day: compare the [ultimate road trip (9 days)](tour.html?slug=kyrgyzstan-ultimate-road-trip-9-days) with the compact [Active Kyrgyzstan (5 days)](tour.html?slug=active-kyrgyzstan-5-days) and you'll see the same open approach on both.`
+Every tour page lists exactly what's included, day by day: compare the [Song-Kol and Kel-Suu road trip (9 days)](tour.html?slug=song-kul-kel-suu-road-trip-9-days) with the compact [Song-Kol ride and Altyn-Arashan trek (5 days)](tour.html?slug=song-kul-ride-altyn-arashan-trek-5-days) and you'll see the same open approach on both.`
   },
 ];
 

@@ -53,7 +53,7 @@
     // a varied pick: a few long combined trips + a horse trip + a short one
     const pick = [];
     const byDays = [...TOURS].sort((a, b) => b.days - a.days);
-    const want = ['best-of-kyrgyzstan-10-days', 'song-kol-to-ala-kol-horse-riding-trekking-7-days', 'kyrgyzstan-horseback-riding-tour-7-days', 'kyrgyzstan-ultimate-road-trip-8-days', 'song-kol-lake-on-horseback-3-days', 'ysyk-kol-lake-road-trip-4-days'];
+    const want = ['kyrgyzstan-grand-tour-10-days', 'song-kul-horse-trek-ala-kul-hike-7-days', 'two-lakes-kok-bulak-horse-trek-7-days', 'kok-kiya-kel-suu-road-trip-8-days', 'song-kul-horse-trek-3-days', 'issyk-kul-altyn-arashan-4-days'];
     want.forEach(s => { const t = TOURS.find(x => x.slug === s); if (t) pick.push(t); });
     while (pick.length < 6 && byDays.length) { const t = byDays.shift(); if (!pick.includes(t)) pick.push(t); }
     featured.innerHTML = pick.slice(0, 6).map(card).join('');

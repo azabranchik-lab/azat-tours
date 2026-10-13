@@ -1,0 +1,59 @@
+{
+  "renames": {
+    "kyrgyzstan-in-a-week-7-days": { "slug": "song-kul-kel-suu-in-a-week-7-days", "name": "Song-Kul & Kel-Suu in a Week - 7 Days" },
+    "best-of-kyrgyzstan-tour-8-days": { "slug": "song-kul-kel-suu-altyn-arashan-8-days", "name": "Song-Kul, Kel-Suu & Altyn-Arashan - 8 Days" },
+    "best-of-kyrgyzstan-9-days": { "slug": "song-kul-kok-kiya-kel-suu-9-days", "name": "Song-Kul, Kok-Kiya & Kel-Suu - 9 Days" },
+    "best-of-kyrgyzstan-10-days": { "slug": "kyrgyzstan-grand-tour-10-days", "name": "Kyrgyzstan Grand Tour - 10 Days" },
+    "best-of-kyrgyzstan-11-days": { "slug": "tash-rabat-kel-suu-ala-kul-11-days", "name": "Tash-Rabat, Kel-Suu & Ala-Kul - 11 Days" },
+    "best-of-kyrgyzstan-12-days": { "slug": "complete-kyrgyzstan-adventure-12-days", "name": "Complete Kyrgyzstan Adventure - 12 Days" },
+
+    "active-kyrgyzstan-5-days": { "slug": "song-kul-ride-altyn-arashan-trek-5-days", "name": "Song-Kul Ride & Altyn-Arashan Trek - 5 Days" },
+    "active-kyrgyzstan-6-days": { "slug": "kilemche-song-kul-altyn-arashan-6-days", "name": "Kilemche, Song-Kul & Altyn-Arashan - 6 Days" },
+    "elena-tabers-tour-7-days": { "hide": true, "redirect": "kyzyl-oi-song-kul-chong-kemin-8-days" },
+    "active-kyrgyzstan-tour-8-days": { "slug": "kyzyl-oi-song-kul-chong-kemin-8-days", "name": "Kyzyl-Oi, Song-Kul & Chong-Kemin - 8 Days" },
+    "kyrgyzstan-active-tour-10-days": { "slug": "slow-ride-trek-to-ala-kul-10-days", "name": "Slow Ride & Trek to Ala-Kul - 10 Days" },
+    "song-kol-to-ala-kol-horse-riding-trekking-7-days": { "slug": "song-kul-horse-trek-ala-kul-hike-7-days", "name": "Song-Kul Horse Trek & Ala-Kul Hike - 7 Days" },
+
+    "kyrgyzstan-ultimate-road-trip-7-days": { "slug": "kyrgyzstan-overland-road-trip-7-days", "name": "Kyrgyzstan Overland Road Trip - 7 Days" },
+    "kyrgyzstan-ultimate-road-trip-8-days": { "slug": "kok-kiya-kel-suu-road-trip-8-days", "name": "Kok-Kiya & Kel-Suu Road Trip - 8 Days" },
+    "kyrgyzstan-ultimate-road-trip-9-days": { "slug": "song-kul-kel-suu-road-trip-9-days", "name": "Song-Kul & Kel-Suu Road Trip - 9 Days" },
+    "kyrgyzstan-ultimate-road-trip-10-days": { "slug": "kel-suu-chong-kemin-road-trip-10-days", "name": "Kel-Suu to Chong-Kemin Road Trip - 10 Days" },
+    "kyrgyzstan-ultimate-road-trip-11-days": { "slug": "tash-rabat-kel-suu-road-trip-11-days", "name": "Tash-Rabat & Kel-Suu Road Trip - 11 Days", "days": 11, "duration": "11 days" },
+    "kyrgyzstan-ultimate-road-trip-12-days": { "slug": "grand-kyrgyzstan-road-trip-12-days", "name": "Grand Kyrgyzstan Road Trip - 12 Days" },
+
+    "discover-kyrgyzstan-5days": { "slug": "song-kul-issyk-kul-road-trip-5-days", "name": "Song-Kul & Issyk-Kul Road Trip - 5 Days" },
+    "discover-kyrgyzstan-7-days": { "slug": "easy-week-song-kul-issyk-kul-7-days", "name": "Easy Week: Song-Kul & Issyk-Kul - 7 Days" },
+    "kyrgyzstan-express-tour-4-days": { "slug": "kel-suu-lake-express-4-days", "name": "Kel-Suu Lake Express - 4 Days" },
+    "kyrgyzstan-express-tour-5-days": { "slug": "kel-suu-issyk-kul-express-5-days", "name": "Kel-Suu & Issyk-Kul Express - 5 Days" },
+    "kyrgyzstan-family-tour-4-days": { "slug": "family-tour-lakes-eagles-yurts-4-days", "name": "Family Tour: Lakes, Eagles & Yurts - 4 Days" },
+    "ysyk-kol-lakesong-kol-lake-road-trip-3-days": { "slug": "issyk-kul-song-kul-weekend-3-days", "name": "Issyk-Kul & Song-Kul Weekend - 3 Days" },
+    "ysyk-kol-lake-lake-road-trip-3-days": { "slug": "issyk-kul-karakol-canyons-3-days", "name": "Issyk-Kul, Karakol & Canyons - 3 Days" },
+    "ysyk-kol-lake-road-trip-4-days": { "slug": "issyk-kul-altyn-arashan-4-days", "name": "Issyk-Kul & Altyn-Arashan - 4 Days" },
+
+    "authentic-kyrgyzstan-road-trip-7-days": { "slug": "talas-to-song-kul-backroads-7-days", "name": "Talas to Song-Kul Backroads - 7 Days" },
+    "authentic-road-trip-tour-8-days": { "slug": "talas-to-issyk-kul-backroads-8-days", "name": "Talas to Issyk-Kul Backroads - 8 Days" },
+
+    "kyrgyzstan-horseback-riding-tour-5-days": { "slug": "two-lakes-horse-trek-5-days", "name": "Two Lakes Horse Trek - 5 Days" },
+    "kyrgyzstan-horseback-riding-tour-6-days": { "slug": "two-lakes-west-shore-horse-trek-6-days", "name": "Two Lakes & West Shore Horse Trek - 6 Days" },
+    "kyrgyzstan-horseback-riding-tour-7-days": { "slug": "two-lakes-kok-bulak-horse-trek-7-days", "name": "Two Lakes & Kok-Bulak Horse Trek - 7 Days" },
+    "kyrgyzstan-horseback-riding-tour-10-days": { "slug": "song-kul-to-ala-kul-on-horseback-10-days", "name": "Song-Kul to Ala-Kul on Horseback - 10 Days" },
+
+    "song-kol-lake-on-horseback-2-days": { "slug": "song-kul-overnight-horse-trek-2-days", "name": "Song-Kul Overnight Horse Trek - 2 Days" },
+    "song-kol-lake-on-horseback-3-days": { "slug": "song-kul-horse-trek-3-days", "name": "Song-Kul Horse Trek - 3 Days" },
+    "song-kol-lake-on-horseback-4-days": { "slug": "song-kul-shoreline-horse-trek-4-days", "name": "Song-Kul Shoreline Horse Trek - 4 Days" },
+    "winter-horse-back-riding-to-song-kol-lake-3-days": { "slug": "winter-horse-trek-to-song-kul-3-days", "name": "Winter Horse Trek to Song-Kul - 3 Days" },
+
+    "authentic-horseback-riding-tour-5-days": { "slug": "mai-tor-pastures-horse-trek-5-days", "name": "Mai-Tor Pastures Horse Trek - 5 Days" },
+    "untouched-mountain-horse-riding-tour-6-days": { "slug": "ichke-tor-lake-horse-trek-6-days", "name": "Ichke-Tor Lake Horse Trek - 6 Days" },
+    "hidden-trails-horseback-riding-tour-7-days": { "slug": "kol-ukok-to-song-kul-horse-trek-7-days", "name": "Kol-Ukok to Song-Kul Horse Trek - 7 Days" }
+  },
+  "anchors": {
+    "Best of Kyrgyzstan (10 days)": "Kyrgyzstan Grand Tour (10 days)",
+    "Best of Kyrgyzstan (12 days)": "Complete Kyrgyzstan Adventure (12 days)",
+    "Active Kyrgyzstan (6 days)": "Kilemche and Song-Kol ride with a trek (6 days)",
+    "Active Kyrgyzstan (5 days)": "Song-Kol ride and Altyn-Arashan trek (5 days)",
+    "Discover Kyrgyzstan road trip (7 days)": "easy week by road (7 days)",
+    "ultimate road trip": "overland road trip",
+    "ultimate road trip (9 days)": "Song-Kol and Kel-Suu road trip (9 days)"
+  }
+}

@@ -294,10 +294,11 @@
   // separate tours). Linking them turns duration clones that compete for the same
   // query into one cluster, and lets people pick by time budget. Day count comes
   // from the NAME suffix, not t.days (one tour's days field is off by one).
-  const seriesBase = n => n.replace(/\s*-\s*\d+\s*Days?\s*$/i, '').trim();
+  // Tours renamed to unique names keep their grouping in the `series` field.
+  const seriesBase = x => x.series || x.name.replace(/\s*-\s*\d+\s*Days?\s*$/i, '').trim();
   const seriesDays = n => { const m = n.match(/-\s*(\d+)\s*Days?\s*$/i); return m ? +m[1] : 0; };
   const variants = seriesDays(t.name)
-    ? TOURS.filter(x => x.slug !== t.slug && seriesDays(x.name) && seriesBase(x.name) === seriesBase(t.name))
+    ? TOURS.filter(x => x.slug !== t.slug && seriesDays(x.name) && seriesBase(x) === seriesBase(t))
         .sort((a, b) => seriesDays(a.name) - seriesDays(b.name))
     : [];
   const variantHTML = variants.length ? `

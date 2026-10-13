@@ -30,6 +30,26 @@
 
 ---
 
+## Сессия 2026-10-13 — SEO-миграция, ветка `seo/clean-urls` (НЕ в main, НЕ задеплоено)
+План целиком: `~/.claude/plans/pasted-content-id-b4d8-modular-snail.md`. Выгрузка туров: `tours-export.md` (не в git).
+- **Найдено на проде:** `tour.html?slug=` и `post.html?slug=` отдают noindex для ВСЕХ туров и статей. Это поломка:
+  `server.js` buildSlugMeta возвращает null (скорее всего сервер не читает `content/*.json`), срабатывает запасная
+  ветка noindex. Проверить на сервере `ls -la content/` и блок `location` в nginx.
+- **Этап 2 сделан (переименование):** 38 туров получили уникальные названия и slug'и (написание Issyk-Kul, Song-Kul,
+  Ala-Kul; длина до 44 символов, на мобильном не больше 2 строк). Карта: `scripts/_tour-renames.json`
+  (она же источник будущих 301). Скрипт: `scripts/rename-tours.js` (идемпотентный, `--dry`).
+- `elena-tabers-tour-7-days` получил `status: 'hidden'` (почти дубль, имя реального человека). Данные не удалены.
+  `publishedOnly` в `lib/content.js` теперь отсекает и `hidden`.
+- Новое поле тура `series` (ключ из старого названия): по нему `tour-detail.js` собирает блок «Also available as».
+- Исправлено `days: 12 → 11` у тура Tash-Rabat & Kel-Suu Road Trip.
+- Старые slug'и заменены в `_post-links.json`, `add-why-posts.js`, `_blurbs.json`, `_highlights.json`, `_itin/*`,
+  `build-places.js`, featured-списке в `tours-render.js`. В статьях переписаны анкоры со старыми названиями.
+- **ДЕПЛОЙ-НЮАНС:** на сервере после распаковки один раз выполнить `node scripts/rename-tours.js`, потом
+  `node scripts/build-sitemap.js`, потом `pm2 restart`. Без этого серверный `content/tours.json` вернёт старые slug'и.
+- Локальные копии до переименования: `content/tours.pre-rename.json`, `content/posts.pre-rename.json`.
+- **Дальше:** этап 3 (пререндер, `/tours/<slug>/`, 301, JSON-LD, sitemap), этап 4 (фото), этап 5 (README, Markdown).
+  Открыто: тексты `summary` туров взяты с сайта-источника и местами называют старые серии, нужен рерайт.
+
 ## Бот партнёров (@azattours_partners_bot) — АКТУАЛЬНО на 2026-09-29
 
 **Это отдельная самостоятельная программа в папке `partners/`** (решение владельца 2026-09-29): свой package.json,

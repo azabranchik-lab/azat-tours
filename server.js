@@ -136,7 +136,7 @@ function faqSchema(faqs) {
 function buildSlugMeta(urlPath, slug, includeDrafts) {
   try {
     if (urlPath === '/tour.html') {
-      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug && (includeDrafts || x.status !== 'draft'));
+      const t = cachedLoad(content.TOURS_JSON, content.loadTours).find(x => x.slug === slug && x.status !== 'hidden' && (includeDrafts || x.status !== 'draft'));
       if (!t) return null;
       const desc = ((t.blurb && t.blurb.text) || t.summary || '').slice(0, 158);
       const url = ORIGIN + '/tour.html?slug=' + encodeURIComponent(slug);

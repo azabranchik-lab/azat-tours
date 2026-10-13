@@ -48,7 +48,7 @@ const p = path.join(ROOT, 'content', 'tours.json');
 const data = JSON.parse(fs.readFileSync(p, 'utf8'));
 
 // hand-tuned tours to preserve (do not overwrite their places on re-runs)
-const MANUAL = new Set(['best-of-kyrgyzstan-10-days']);
+const MANUAL = new Set(['kyrgyzstan-grand-tour-10-days']);
 
 let changed = 0; const low = []; const skipped = [];
 for (const t of data) {
