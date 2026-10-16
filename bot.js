@@ -9,6 +9,7 @@ const store = require('./lib/store');
 const { waLink } = require('./lib/lead');
 const ai = require('./lib/ai');
 const PREVIEW_KEY = require('./lib/previewkey');
+const Images = require('./lib/images');
 
 // ---------- config ----------
 const CONFIG_PATH = path.join(__dirname, 'config.json');
@@ -46,7 +47,7 @@ bot.use(async (ctx, next) => {
 // stale prompt. /done and /cancel manage the session themselves, so skip them.
 bot.use(async (ctx, next) => {
   const cmd = ctx.message && typeof ctx.message.text === 'string' && ctx.message.text.startsWith('/') && !/^\/(done|cancel)\b/i.test(ctx.message.text);
-  const nav = ctx.callbackQuery && /^(m:|t:list$|p:list$|g:list$|r:list$|sg:list$|l:list$|dr:list$|h:home$)/.test(ctx.callbackQuery.data || '');
+  const nav = ctx.callbackQuery && /^(m:|t:list$|p:list$|g:list$|r:list$|sg:list$|l:list$|dr:list$|c:list$|h:home$)/.test(ctx.callbackQuery.data || '');
   if ((cmd || nav) && ctx.from) sessions.delete(ctx.from.id);
   return next();
 });
@@ -72,12 +73,15 @@ async function downloadPhoto(ctx, fileId, kind, slug, n) {
   const buf = Buffer.from(await (await fetch(url)).arrayBuffer());
   const ext = path.extname(file.file_path) || '.jpg';
   C.ensureDirs();
-  const dir = { post: 'posts', guide: 'guides', review: 'reviews', site: 'site', sights: 'sights' }[kind] || 'tours';
-  const rel = `images/${dir}/${slug}-${n}-${Date.now().toString().slice(-5)}${ext}`;
-  fs.writeFileSync(path.join(C.PUBLIC, rel), buf);
-  return rel;
+  const dir = { post: 'posts', guide: 'guides', review: 'reviews', site: 'site', sights: 'sights', car: 'cars' }[kind] || 'tours';
+  const relBase = `images/${dir}/${slug}-${n}-${Date.now().toString().slice(-5)}`;
+  // lib/images.js writes a light main file + 480 px preview + WebP copies; on any
+  // failure it saves the original bytes, so the photo is never lost.
+  const out = await Images.save(buf, path.join(C.PUBLIC, relBase), ext);
+  return `images/${dir}/${out.file}`;
 }
-function delFile(rel) { try { fs.unlinkSync(path.join(C.PUBLIC, rel)); } catch (e) {} }
+// Removes the photo and the preview/WebP copies made from it.
+function delFile(rel) { Images.remove(path.join(C.PUBLIC, rel)); }
 
 // Show the actual photos (numbered, ⭐ = cover) as an album so the owner isn't
 // managing a gallery blind. Telegram albums hold up to 10; local files go as
@@ -92,6 +96,10 @@ async function sendAlbum(ctx, images) {
   }));
   try { await ctx.replyWithMediaGroup(media); } catch (e) { console.error('album send failed:', e.message); }
 }
+
+// ================= CARS (lib/bot-cars.js) =================
+// Registered here, before the text/photo routers below, so /cars and /addcar fire.
+const cars = require('./lib/bot-cars')(bot, { C, sessions, md, esc, b, ask, cancelKb, sendAlbum, delFile, downloadPhoto, InlineKeyboard });
 
 // ================= TOURS =================
 function tourListKb() {
@@ -196,11 +204,11 @@ bot.callbackQuery('x:cancel', async ctx => { sessions.delete(ctx.from.id); await
 bot.callbackQuery(/^xsearch:(\w+)$/, async ctx => { sessions.set(ctx.from.id, { mode: 'search', kind: ctx.match[1] }); await ctx.answerCallbackQuery(); await ask(ctx, '🔎 Type part of the name to search for:'); });
 const MENU_TEXT = '🏔️ <b>Azat Tours admin bot</b>\n\nTap a section below — or type a command (see the “/” menu). /help for details.';
 function mainMenuKb() {
-  const drafts = C.loadPosts().filter(p => p.status === 'draft').length + C.loadTours().filter(t => t.status === 'draft').length;
+  const drafts = C.loadPosts().filter(p => p.status === 'draft').length + C.loadTours().filter(t => t.status === 'draft').length + cars.drafts().length;
   const kb = new InlineKeyboard()
     .text('🏔 Tours', 't:list').text('📰 Blog', 'p:list').row()
     .text('🧭 Guides', 'g:list').text('⭐ Reviews', 'r:list').row()
-    .text('🏠 Homepage photos', 'h:home').row();
+    .text('🚗 Cars', 'c:list').text('🏠 Homepage photos', 'h:home').row();
   if (drafts) kb.text(`📝 Drafts (${drafts})`, 'dr:list').row();
   kb.text('📨 Leads', 'm:leads').text('💬 Chats', 'm:chats').row();
   return kb;
@@ -222,6 +230,7 @@ bot.command('help', ctx => ctx.reply(
   '/guides — guides · /addguide\n' +
   '/reviews — reviews · /addreview\n' +
   '/sights — places on tour pages: add, rename, photo, delete\n' +
+  '/cars — rental cars: prices, photos, available/booked · /addcar\n' +
   '/home — homepage photos (hero, Instagram, experience cards)\n\n' +
   'ENQUIRIES\n' +
   '/leads — website enquiries: reply on WhatsApp, mark handled\n' +
@@ -308,13 +317,16 @@ function draftListKb() {
   const kb = new InlineKeyboard();
   posts.forEach(p => kb.text(`📰 ${(p.title || 'untitled').slice(0, 40)}`, `dr:v:p:${p.id}`).row());
   tours.forEach(t => kb.text(`🏔 ${(t.name || 'untitled').slice(0, 40)}`, `dr:v:t:${t.id}`).row());
-  const n = posts.length + tours.length;
+  const carDrafts = cars.drafts();
+  carDrafts.forEach(c => kb.text(`🚗 ${(c.name || 'untitled').slice(0, 40)}`, `dr:v:c:${c.id}`).row());
+  const n = posts.length + tours.length + carDrafts.length;
   const text = n
     ? `📝 <b>${n} draft(s)</b> waiting for your review. Tap one to read it and publish, edit or discard:`
     : 'No drafts. New posts and tours land here first, so nothing goes live until you publish it.';
   return { text, kb };
 }
 function draftView(kind, id) {
+  if (kind === 'c') return cars.draftView(id);
   if (kind === 'p') {
     const p = C.loadPosts().find(x => x.id === id); if (!p || p.status !== 'draft') return null;
     const body = p.body || '';
@@ -333,9 +345,16 @@ function draftView(kind, id) {
 }
 bot.command('drafts', ctx => { const { text, kb } = draftListKb(); ctx.reply(text, { ...md, reply_markup: kb }); });
 bot.callbackQuery('dr:list', async ctx => { await ctx.answerCallbackQuery(); const { text, kb } = draftListKb(); await ctx.reply(text, { ...md, reply_markup: kb }); });
-bot.callbackQuery(/^dr:v:(p|t):(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = draftView(ctx.match[1], Number(ctx.match[2])); if (!v) return ctx.reply('Draft not found (maybe already published).'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
-bot.callbackQuery(/^dr:pub:(p|t):(\d+)$/, async ctx => {
-  const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Published ✅' });
+bot.callbackQuery(/^dr:v:(p|t|c):(\d+)$/, async ctx => { await ctx.answerCallbackQuery(); const v = draftView(ctx.match[1], Number(ctx.match[2])); if (!v) return ctx.reply('Draft not found (maybe already published).'); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^dr:pub:(p|t|c):(\d+)$/, async ctx => {
+  const kind = ctx.match[1], id = Number(ctx.match[2]);
+  if (kind === 'c') {
+    // a car goes live only with specs, a price and a photo
+    const r = cars.publish(id);
+    await ctx.answerCallbackQuery(r.ok ? { text: 'Published ✅' } : {});
+    return ctx.reply(r.ok ? `🎉 Published ${b(r.car.name)}. It's on the website now.` : cars.missingText(r.missing), md);
+  }
+  await ctx.answerCallbackQuery({ text: 'Published ✅' });
   if (kind === 'p') {
     const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
     if (p) { p.status = 'published'; if (!p.date) p.date = new Date().toISOString().slice(0, 10); C.savePosts(posts); }
@@ -346,10 +365,13 @@ bot.callbackQuery(/^dr:pub:(p|t):(\d+)$/, async ctx => {
     await ctx.reply(`🎉 Published ${b(t ? t.name : id)}. It's live now.`, md);
   }
 });
-bot.callbackQuery(/^dr:disc:(p|t):(\d+)$/, async ctx => { const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery(); await ctx.reply('Discard this draft for good? It was never published.', { reply_markup: new InlineKeyboard().text('🗑 Yes, discard', `dr:discyes:${kind}:${id}`).text('« Keep', `dr:v:${kind}:${id}`) }); });
-bot.callbackQuery(/^dr:discyes:(p|t):(\d+)$/, async ctx => {
+bot.callbackQuery(/^dr:disc:(p|t|c):(\d+)$/, async ctx => { const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery(); await ctx.reply('Discard this draft for good? It was never published.', { reply_markup: new InlineKeyboard().text('🗑 Yes, discard', `dr:discyes:${kind}:${id}`).text('« Keep', `dr:v:${kind}:${id}`) }); });
+bot.callbackQuery(/^dr:discyes:(p|t|c):(\d+)$/, async ctx => {
   const kind = ctx.match[1], id = Number(ctx.match[2]); await ctx.answerCallbackQuery({ text: 'Discarded' });
-  if (kind === 'p') {
+  if (kind === 'c') {
+    const c = C.loadCars().find(x => x.id === id);
+    if (c && c.status === 'draft') cars.discard(id);
+  } else if (kind === 'p') {
     const posts = C.loadPosts(); const p = posts.find(x => x.id === id);
     if (p) { (p.images || []).forEach(im => { if (String(im).startsWith('images/')) delFile(im); }); if (p.cover && String(p.cover).startsWith('images/')) delFile(p.cover); C.savePosts(posts.filter(x => x.id !== id)); }
   } else {
@@ -415,6 +437,7 @@ bot.command('addpost', ctx => {
 bot.command('done', async ctx => {
   const s = sessions.get(ctx.from.id);
   if (!s) return;
+  if (await cars.onDone(ctx, s)) return;
   if (s.mode === 'addtour' && s.step === 'photos') return saveTourDraft(ctx, s);
   if (s.mode === 'addpost' && s.step === 'extra') return savePostDraft(ctx, s);
   if (s.mode === 'addguide' && s.step === 'photo') return saveGuideDraft(ctx, s);
@@ -609,7 +632,12 @@ bot.callbackQuery(/^pcatnew:(.+)$/, async ctx => {
 });
 
 // ---------- text routing ----------
-bot.on('message:text', async ctx => {
+bot.on('message:text', async (ctx, next) => {
+  // Commands registered further down (/guides, /reviews, /home, /sights...) only
+  // run if this router passes them on with next(); returning here silently ate them.
+  const txt = ctx.message.text;
+  if (txt.startsWith('/')) return next();
+
   // owner answering an on-site chat by replying to its notification
   const rt = ctx.message.reply_to_message;
   if (rt && rt.text) {
@@ -619,8 +647,7 @@ bot.on('message:text', async ctx => {
 
   const s = sessions.get(ctx.from.id);
   if (!s) return;
-  const txt = ctx.message.text;
-  if (txt.startsWith('/')) return;
+  if (await cars.onText(ctx, s)) return;
 
   // collecting a brief for an AI draft (accumulate messages until /done)
   if (s.mode === 'aibrief') {
@@ -637,7 +664,8 @@ bot.on('message:text', async ctx => {
       tour: { items: C.loadTours(), match: t => t.name, label: t => t.name, prefix: 't:v' },
       post: { items: C.loadPosts(), match: p => p.title, label: p => p.title, prefix: 'p:v' },
       guide: { items: C.loadGuides(), match: g => `${g.name} ${g.role}`, label: g => `${g.name} — ${g.role}`, prefix: 'g:v' },
-      review: { items: C.loadReviews(), match: r => `${r.name} ${r.country || ''} ${r.text || ''}`, label: r => `${r.name} · ${placeLabel(r.placement)}`, prefix: 'r:v' }
+      review: { items: C.loadReviews(), match: r => `${r.name} ${r.country || ''} ${r.text || ''}`, label: r => `${r.name} · ${placeLabel(r.placement)}`, prefix: 'r:v' },
+      car: { ...cars.search, items: cars.search.items() }
     }[s.kind];
     if (!cfg) return;
     const hits = cfg.items.filter(x => String(cfg.match(x)).toLowerCase().includes(q)).slice(0, 40);
@@ -789,6 +817,7 @@ bot.on('message:photo', async ctx => {
     // with NO await in between. That keeps read-modify-write synchronous, so two
     // photos sent back-to-back can't interleave and lose each other's edit.
     const n = Date.now().toString().slice(-5);
+    if (await cars.onPhoto(ctx, s, fileId, n)) return;
 
     // adding to existing item
     if (s.mode === 'addphotos') {
@@ -1178,6 +1207,8 @@ const BOT_COMMANDS = [
   { command: 'guides', description: 'Manage guides' },
   { command: 'reviews', description: 'Manage reviews' },
   { command: 'sights', description: 'Sights photos & captions' },
+  { command: 'cars', description: 'Rental cars' },
+  { command: 'addcar', description: 'Add a rental car' },
   { command: 'drafts', description: 'Content waiting to publish' },
   { command: 'leads', description: 'Recent enquiries' },
   { command: 'chats', description: 'Website chats' },
