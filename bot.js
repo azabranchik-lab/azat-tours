@@ -99,7 +99,7 @@ async function sendAlbum(ctx, images) {
 
 // ================= CARS (lib/bot-cars.js) =================
 // Registered here, before the text/photo routers below, so /cars and /addcar fire.
-const cars = require('./lib/bot-cars')(bot, { C, sessions, md, esc, b, ask, cancelKb, sendAlbum, delFile, downloadPhoto, InlineKeyboard });
+const cars = require('./lib/bot-cars')(bot, { C, sessions, md, esc, b, ask, cancelKb, sendAlbum, delFile, downloadPhoto, InlineKeyboard, ORIGIN, PREVIEW_KEY });
 
 // ================= TOURS =================
 function tourListKb() {

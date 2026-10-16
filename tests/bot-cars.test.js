@@ -36,7 +36,7 @@ function setup() {
   const albums = [];
   const sendAlbum = async (ctx, images) => { albums.push(images.slice()); };
 
-  const cars = registerCars(bot, { C, sessions, md, esc, b, ask, cancelKb, sendAlbum, delFile, downloadPhoto, InlineKeyboard });
+  const cars = registerCars(bot, { C, sessions, md, esc, b, ask, cancelKb, sendAlbum, delFile, downloadPhoto, InlineKeyboard, ORIGIN: 'https://azattours.com', PREVIEW_KEY: 'KEY' });
   bot.command('cancel', ctx => { sessions.delete(ctx.from.id); return ctx.reply('Cancelled.'); });
   bot.command('done', async ctx => { const s = sessions.get(ctx.from.id); if (s) await cars.onDone(ctx, s); });
   bot.on('message:text', async (ctx, next) => {
@@ -79,7 +79,8 @@ function setup() {
   const press = data => bot.handleUpdate({ update_id: uid++, callback_query: { id: String(uid), from, chat_instance: '1', data, message: { message_id: 1, date: 0, chat, text: 'x' } } });
   const lastText = () => [...sent.values()].at(-1).text;
   const texts = () => [...sent.values()].map(m => m.text);
-  return { bot, cars, sessions, send, tap, press, photo, lastText, texts, albums };
+  const urls = () => [...sent.values()].flatMap(m => buttons(m)).filter(k => k.url).map(k => k.url);
+  return { bot, cars, sessions, send, tap, press, photo, lastText, texts, urls, albums };
 }
 
 async function addCar(h, name = 'Toyota Land Cruiser Prado 2019') {
@@ -234,4 +235,12 @@ test('old buttons do nothing harmful', async () => {
   await h.press('cw:type:1');
   assert.strictEqual(h.sessions.get(OWNER).step, 'transmission');
   assert.strictEqual(h.sessions.get(OWNER).draft.type, 'SUV');
+});
+
+test('a draft links to the secret preview, a published car to its page', async () => {
+  const h = setup();
+  await addCar(h);
+  assert.ok(h.urls().includes('https://azattours.com/car.html?slug=toyota-land-cruiser-prado-2019&preview=KEY'));
+  await h.tap('✅ Publish');
+  assert.ok(h.urls().includes('https://azattours.com/cars/toyota-land-cruiser-prado-2019/'));
 });
