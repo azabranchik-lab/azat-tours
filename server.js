@@ -141,6 +141,17 @@ function routePage(req, res, u, urlPath) {
     if (pages.hasPost(slug)) redirect(res, '/blog/' + slug + '/'); else send404(res);
     return true;
   }
+  // Rental cars. car.html / cars.html are templates; the bot's "Preview on site"
+  // link for a draft uses car.html?slug=..&preview=KEY. While no car is published
+  // the whole section answers 404 (owner decision: no empty showroom).
+  if (urlPath === '/car.html') {
+    if (preview && slug) { sendPage(req, res, pages.carPage(slug, { preview: true }), '', { preview: true }); return true; }
+    if (slug && pages.hasCar(slug)) redirect(res, '/cars/' + slug + '/');
+    else if (!slug && pages.hasCars()) redirect(res, '/cars/');
+    else send404(res);
+    return true;
+  }
+  if (urlPath === '/cars.html') { if (pages.hasCars()) redirect(res, '/cars/' + u.search); else send404(res); return true; }
   if (urlPath === '/tours.html') { redirect(res, '/tours/' + u.search); return true; }
   if (urlPath === '/blog.html') { redirect(res, '/blog/' + u.search); return true; }
   if (u.pathname === '/index.html') { redirect(res, '/' + u.search); return true; }
@@ -152,16 +163,25 @@ function routePage(req, res, u, urlPath) {
   const MD = { type: 'text/markdown; charset=utf-8', robots: 'noindex' };
   if (urlPath === '/llms.txt') { sendPage(req, res, pages.llmsTxt(), 'llms', TEXT); return true; }
   if (urlPath === '/llms-full.txt') { sendPage(req, res, pages.llmsFullTxt(), 'llms-full', TEXT); return true; }
-  const md = urlPath.match(/^\/(tours|blog)\/([a-z0-9-]+)\.md$/);
-  if (md) { sendPage(req, res, md[1] === 'tours' ? pages.tourMarkdown(md[2]) : pages.postMarkdown(md[2]), 'md-' + md[2], MD); return true; }
+  const md = urlPath.match(/^\/(tours|blog|cars)\/([a-z0-9-]+)\.md$/);
+  if (md) { sendPage(req, res, { tours: pages.tourMarkdown, blog: pages.postMarkdown, cars: pages.carMarkdown }[md[1]](md[2]), 'md-' + md[1] + '-' + md[2], MD); return true; }
 
   // Every other page of the site: navigation (and the home page's tour picks) in the HTML.
   const file = urlPath.match(/^\/([a-z0-9-]+\.html)$/);
   if (file) { const html = pages.staticPage(file[1]); if (html != null) { sendPage(req, res, html, 'static-' + file[1]); return true; } }
 
-  const m = urlPath.match(/^\/(tours|blog)(?:\/([^/]*)(\/?))?$/);
+  const m = urlPath.match(/^\/(tours|blog|cars)(?:\/([^/]*)(\/?))?$/);
   if (!m) return false;
   const [, section, item, slash] = m;
+  if (section === 'cars') {
+    if (!pages.hasCars() || (item === '' && slash)) { send404(res); return true; }                  // no published car yet, or "/cars//"
+    if (item === undefined) { redirect(res, '/cars/' + u.search); return true; }
+    if (item === '') { sendPage(req, res, pages.carsIndex(), 'cars'); return true; }
+    if (!/^[a-z0-9-]+$/.test(item) || !pages.hasCar(item)) { send404(res); return true; }
+    if (!slash) { redirect(res, '/cars/' + item + '/'); return true; }
+    sendPage(req, res, pages.carPage(item), 'car-' + item);
+    return true;
+  }
   if (item === '' && slash) { send404(res); return true; }                                                // "/tours//"
   if (item === undefined) { redirect(res, '/' + section + '/' + u.search); return true; }               // /tours -> /tours/
   if (item === '') { sendPage(req, res, section === 'tours' ? pages.toursIndex() : pages.blogIndex(), section); return true; }

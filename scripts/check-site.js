@@ -31,6 +31,7 @@ function ldTypes(html, url) {
       types.push(node['@type']);
       if (node['@type'] === 'TouristTrip' && !(node.name && node.description && node.itinerary && node.provider)) bad(url, 'TouristTrip misses name/description/itinerary/provider');
       if (node['@type'] === 'BlogPosting' && !(node.headline && node.description && node.image && node.datePublished && node.dateModified && node.author && node.publisher)) bad(url, 'BlogPosting misses a required field');
+      if (node['@type'] === 'Product' && !(node.name && node.image && node.offers && [].concat(node.offers).every(o => o.price > 0 && o.priceCurrency))) bad(url, 'Product misses name/image/offers with a price');
       if (node['@type'] === 'BreadcrumbList' && !(node.itemListElement || []).every(i => i.name && i.item)) bad(url, 'BreadcrumbList item without name/item');
       if (node['@type'] === 'FAQPage' && !(node.mainEntity || []).every(q => q.name && q.acceptedAnswer && q.acceptedAnswer.text)) bad(url, 'FAQPage question without answer');
     }
@@ -51,7 +52,7 @@ async function main() {
   if (llms.status !== 200 || !/^# Azat Tours/.test(await llms.text())) bad('/llms.txt', 'missing or malformed');
 
   const titles = new Map(), descs = new Map(), links = new Map();
-  let tours = 0, posts = 0;
+  let tours = 0, posts = 0, cars = 0;
   for (const { loc } of entries) {
     const pathName = loc.replace(ORIGIN, '');
     const res = await get(BASE + pathName);
@@ -68,14 +69,16 @@ async function main() {
     if (/<meta name="robots" content="[^"]*noindex/.test(html) || /noindex/.test(res.headers.get('x-robots-tag') || '')) bad(pathName, 'noindex');
     if (!/<meta property="og:image" content="https:\/\/[^"]+"/.test(html)) bad(pathName, 'no absolute og:image');
     const types = ldTypes(html, pathName);
-    const isTour = /^\/tours\/[^/]+\/$/.test(pathName), isPost = /^\/blog\/[^/]+\/$/.test(pathName);
+    const isTour = /^\/tours\/[^/]+\/$/.test(pathName), isPost = /^\/blog\/[^/]+\/$/.test(pathName), isCar = /^\/cars\/[^/]+\/$/.test(pathName);
+    if (isCar) { cars++; ['Product', 'BreadcrumbList'].forEach(t => types.includes(t) || bad(pathName, 'no ' + t + ' JSON-LD')); if (!/id="leadForm"/.test(html)) bad(pathName, 'request form missing from HTML'); }
+    if (pathName === '/cars/' && !/<a class="tour car-card" href="\/cars\//.test(html)) bad(pathName, 'car list missing from HTML');
     if (isTour) { tours++; ['TouristTrip', 'BreadcrumbList'].forEach(t => types.includes(t) || bad(pathName, 'no ' + t + ' JSON-LD')); if (!/class="timeline"/.test(html)) bad(pathName, 'itinerary missing from HTML'); }
     if (isPost) { posts++; ['BlogPosting', 'BreadcrumbList'].forEach(t => types.includes(t) || bad(pathName, 'no ' + t + ' JSON-LD')); if (!/<article class="article">\s*<[a-z]/.test(html)) bad(pathName, 'article text missing from HTML'); }
     if (pathName === '/' && !types.includes('TravelAgency')) bad(pathName, 'no TravelAgency JSON-LD');
     if (pathName === '/tours/' && (html.match(/<a class="tour" href="\/tours\//g) || []).length < 1) bad(pathName, 'tour list missing from HTML');
     if (pathName === '/blog/' && !/href="\/blog\/[a-z0-9-]+\/"/.test(html)) bad(pathName, 'post list missing from HTML');
     if (!/<header id="header"/.test(html) || !/<footer>/.test(html)) bad(pathName, 'navigation or footer missing from HTML');
-    if (isTour || isPost) { const md = await get(BASE + pathName.replace(/\/$/, '.md')); if (md.status !== 200 || !/^# /.test(await md.text())) bad(pathName, 'no Markdown version'); }
+    if (isTour || isPost || isCar) { const md = await get(BASE + pathName.replace(/\/$/, '.md')); if (md.status !== 200 || !/^# /.test(await md.text())) bad(pathName, 'no Markdown version'); }
     for (const m of html.matchAll(/<img\b[^>]*>/g)) if (!/\salt="/.test(m[0])) bad(pathName, 'img without alt: ' + m[0].slice(0, 80));
     for (const m of html.matchAll(/\s(?:href|src)="([^"]+)"/g)) {
       let h = unescape(m[1]);
@@ -92,7 +95,7 @@ async function main() {
     if (res.status !== 200) bad(h, 'status ' + res.status + (res.headers.get('location') ? ' -> ' + res.headers.get('location') : '') + ' (linked from ' + from + ')');
   }
 
-  console.log(`${entries.length} sitemap URLs (${tours} tours, ${posts} posts), ${links.size} internal links and assets checked on ${BASE}`);
+  console.log(`${entries.length} sitemap URLs (${tours} tours, ${posts} posts, ${cars} cars), ${links.size} internal links and assets checked on ${BASE}`);
   if (problems.length) { console.log('\n' + problems.length + ' problem(s):\n' + problems.join('\n')); process.exit(1); }
   console.log('All good.');
 }

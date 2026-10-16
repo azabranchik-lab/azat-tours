@@ -1475,3 +1475,46 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
 /* mobile category chip strip removed (owner, 2026-07-10): the same Type filter
    lives inside the "Filters & sort" sheet; #filterBar stays hidden at <=680px
    via the display:none rule above. Desktop uses .dcats, untouched. */
+
+/* ===================== Car rental (/cars/, /cars/<slug>/) =====================
+   Cards reuse the .tour atom; the car page reuses the tour page (hero, factbar,
+   book-grid, FAQ). Owner pick 2026-10-16 (mockup A): on phones the car card keeps
+   the big photo on top (tours turn into compact rows there), because a car is
+   chosen by how it looks. Soft Alpine: gradient surfaces + soft ring, no hard lines. */
+.car-card .tour-meta{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 16px}
+.car-card .tour-meta .tm{font-size:.74rem;padding:3px 9px;border-radius:7px;background:var(--paper-2);color:var(--ink-soft);white-space:nowrap}
+.car-card .tour-meta .tm-cat{background:rgba(18,122,111,.12);color:var(--lake-deep);font-weight:600}
+[data-theme="dark"] .car-card .tour-meta .tm-cat{color:var(--lake-bright)}
+.car-card .tour-tag{font-size:.9rem;color:var(--ink-soft);font-weight:500}
+.car-card .tour-tag b{font-family:var(--font-display);font-size:1.15rem;font-weight:600;color:var(--ink)}
+.car-specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.car-specs .cs{background:var(--grad-surface);box-shadow:0 1px 2px rgba(12,40,36,.05),0 0 0 1px var(--line);border-radius:14px;padding:12px 14px}
+.car-specs .cs span{display:block;font-size:.78rem;color:var(--ink-soft)}
+.car-specs .cs b{font-family:var(--font-display);font-size:1.08rem;font-weight:600}
+.car-prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:560px}
+.car-prices .cp{background:var(--grad-surface);box-shadow:var(--soft-shadow),0 0 0 1px var(--line);border-radius:16px;padding:16px 18px}
+.car-prices .cp span{display:block;font-size:.8rem;color:var(--ink-soft)}
+.car-prices .cp b{display:block;font-family:var(--font-display);font-size:1.9rem;font-weight:600;line-height:1.15}
+.car-prices .cp em{font-style:normal;font-size:.82rem;color:var(--ink-soft)}
+.car-note{margin-top:14px;color:var(--ink-soft);font-size:.94rem}
+.car-note a{color:var(--lake);font-weight:600}
+.gallery.car-strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}
+.gallery.car-strip::-webkit-scrollbar{display:none}   /* swipe strip: no system scrollbar line (Soft Alpine: no hard lines) */
+.gallery.car-strip a{flex:0 0 auto;width:240px;aspect-ratio:4/3;scroll-snap-align:start}
+.incl-grid.one{grid-template-columns:1fr}
+@media(max-width:680px){
+  .car-card{flex-direction:column}
+  .car-card .tour-img{flex:none;max-width:none;min-width:0;aspect-ratio:4/3}
+  .car-card .tour-dur{display:inline-block}
+  .car-card .tour-body{padding:14px 16px 16px}
+  .car-card h3{font-size:1.12rem}
+  .car-card .tour-meta{margin-bottom:10px}
+  .car-card .tour-meta .tm{font-size:.74rem}
+  .car-card .tour-foot .tour-tag{display:inline}
+  .car-card .tour-badge{top:12px;left:12px;font-size:.66rem;padding:.35em .7em}
+  .car-specs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gallery.car-strip a{width:68vw;max-width:280px}
+  .car-prices{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}   /* both prices side by side, as in the approved mockup */
+  .car-prices .cp{padding:14px}
+  .car-prices .cp b{font-size:1.6rem}
+}

@@ -1,7 +1,7 @@
 // Behaviour for a tour page. The server renders the whole page (lib/tour-page.js);
 // this script only binds the accordion, FAQ and tab interactions.
 (function () {
-  const root = document.getElementById('tourRoot');
+  const root = document.getElementById('tourRoot') || document.getElementById('carRoot');   // car pages reuse the FAQ accordion
   if (!root) return;
 
   // floating WhatsApp button carries the tour-specific message (same link as the form's)

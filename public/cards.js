@@ -76,5 +76,39 @@
       <h3>${esc(p.title)}</h3><span class="more">Read more</span></div></a>`;
   }
 
-  return { esc, asset, tourUrl, postUrl, dateStr, FALLBACK_IMG, tourCard, featuredTours, postFeatured, postCard };
+  // ---------- rental cars (content/cars.json, added through the admin bot) ----------
+  const carUrl = slug => '/cars/' + encodeURIComponent(slug) + '/';
+  // Bot uploads (images/...) have a 480 px preview next to them: foo.jpg -> foo-t.jpg
+  const thumbUrl = u => (/^\/?images\//.test(u || '') ? asset(u).replace(/(\.[a-z0-9]+)$/i, '-t$1') : asset(u));
+  const seatsText = n => (n >= 8 ? '8+' : String(n));
+  // lowest daily price on offer (0 = not offered)
+  const carFrom = c => Math.min(...[c.priceSelf, c.priceDriver].filter(p => p > 0));
+  function carCard(c) {
+    const img = (c.images && c.images[0]) ? thumbUrl(c.images[0]) : asset(FALLBACK_IMG);
+    const chips = [
+      c.type && `<span class="tm tm-cat">${esc(c.type)}</span>`,
+      c.transmission && `<span class="tm">${esc(c.transmission)}</span>`,
+      c.seats && `<span class="tm">${seatsText(c.seats)} seats</span>`,
+      c.fuel && `<span class="tm">${esc(c.fuel)}</span>`
+    ].filter(Boolean).join('');
+    const from = carFrom(c);
+    return `
+      <a class="tour car-card" href="${carUrl(c.slug)}">
+        <div class="tour-img">
+          <img loading="lazy" src="${img}" alt="${esc(c.name)} for rent in Kyrgyzstan" />
+          ${c.drive ? `<span class="tour-badge">${esc(c.drive)}</span>` : ''}
+          ${c.available === false ? '<span class="tour-dur">Booked now</span>' : ''}
+        </div>
+        <div class="tour-body">
+          <h3>${esc(c.name)}</h3>
+          ${chips ? `<div class="tour-meta">${chips}</div>` : ''}
+          <div class="tour-foot">
+            <span class="tour-tag">${isFinite(from) ? `<b>from $${from}</b> / day` : 'Price on request'}</span>
+            <span class="tour-cta">View details </span>
+          </div>
+        </div>
+      </a>`;
+  }
+
+  return { esc, asset, tourUrl, postUrl, dateStr, FALLBACK_IMG, tourCard, featuredTours, postFeatured, postCard, carUrl, thumbUrl, seatsText, carFrom, carCard };
 });

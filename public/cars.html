@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#103b39" />
+<title>Car Rental in Kyrgyzstan | Azat Tours</title>
+<meta name="description" content="Rent a car in Kyrgyzstan from our local team in Bishkek, self-drive or with a driver. Daily price on every car, availability confirmed within 24 hours." />
+<link rel="canonical" href="https://azattours.com/cars/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Car Rental in Kyrgyzstan | Azat Tours" />
+<meta property="og:description" content="Self-drive or with a driver. Daily price on every car, availability confirmed within 24 hours." />
+<meta property="og:image" content="https://azattours.com/img/page/tours.jpg" />
+<meta property="og:url" content="https://azattours.com/cars/" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<script>/* theme: set before paint (no flash) + toggle; inlined so it costs no render-blocking request */(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light")t=(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";document.documentElement.setAttribute("data-theme",t);}catch(e){}window.toggleTheme=function(){var cur=document.documentElement.getAttribute("data-theme")==="dark"?"dark":"light";var next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);try{localStorage.setItem("theme",next);}catch(e){}var mm=document.getElementById("mobileMenu");if(mm)mm.classList.remove("open");};})();</script>
+<script src="/analytics.js" defer></script>
+</head>
+<body data-page="cars">
+
+<!-- ============ PAGE HERO ============ -->
+<section class="page-hero">
+  <div class="bg"><img src="/img/page/tours.jpg" fetchpriority="high" alt="A mountain road through the Kyrgyz highlands" /></div>
+  <div class="wrap">
+    <p class="crumb reveal"><a href="/">Home</a> / Car rental</p>
+    <h1 class="reveal" data-delay="1">Car rental in Kyrgyzstan</h1>
+    <p class="reveal" data-delay="2">Drive it yourself or with a local driver. Every car shows its daily price. Send your dates and we confirm availability within 24 hours.</p>
+  </div>
+</section>
+
+<!-- ============ CARS GRID (rendered by the server, lib/pages.js carsIndex) ============ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="catalog">
+      <div class="catalog-main">
+        <h2 class="sr-only">All cars</h2>
+        <p class="eyebrow reveal in" style="margin-bottom:18px"><span id="carCount">0 cars</span> · self-drive or with a driver</p>
+        <div class="tours-grid" id="carsGrid"></div>
+        <div class="catalog-note reveal in">
+          <p>Prices are per day. Renting for a week or longer? Ask us for a weekly price. Open any car to see its photos, specs and rental terms, then send your dates from that page or on WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MID CTA ============ -->
+<section class="pad how">
+  <div class="wrap" style="text-align:center;max-width:680px;margin-inline:auto">
+    <p class="eyebrow reveal" style="color:var(--gold)">Rather not drive?</p>
+    <h2 class="reveal" data-delay="1" style="font-size:clamp(2rem,4vw,3rem);color:#fff;margin:14px 0 16px">Let a local guide take the wheel</h2>
+    <p class="reveal" data-delay="2" style="color:rgba(246,242,233,.75);margin-bottom:28px">Our tours include transport and a local guide who knows the mountain roads. Pick a route or tell us your dates.</p>
+    <div class="reveal" data-delay="3" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="/tours/" class="btn btn-primary">See tours</a>
+      <a href="https://wa.me/996502888001?text=Hi%20Azat%20Tours!%20I'd%20like%20to%20rent%20a%20car%20in%20Kyrgyzstan." target="_blank" rel="noopener" class="btn btn-ghost" style="border-color:rgba(255,255,255,.4)">WhatsApp us</a>
+    </div>
+  </div>
+</section>
+
+<script src="/nav.js"></script>
+<script src="/script.js"></script>
+<script src="/chat.js"></script>
+</body>
+</html>

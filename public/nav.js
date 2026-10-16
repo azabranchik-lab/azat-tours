@@ -8,8 +8,11 @@
   if (typeof module === 'object' && module.exports) module.exports = factory();
   else factory().mount();
 })(typeof self !== 'undefined' ? self : this, function () {
- function render(page) {
+ // opts.cars: true while at least one rental car is published (the server knows;
+ // the browser fallback below has no data and simply leaves the link out).
+ function render(page, opts) {
   if (!page) return null; // pages without data-page keep their own chrome
+  var hasCars = !!(opts && opts.cars);
 
   var WA = 'https://wa.me/996502888001?text=Hi%20Azat%20Tours!%20I%27d%20like%20to%20plan%20a%20trip%20to%20Kyrgyzstan.';
   var THEME_BTN = '<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Light / dark"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg></button>';
@@ -17,6 +20,7 @@
 
   // nav links: [activeKey, label, href]
   var NAV = [['tours', 'Tours', '/tours/'], ['about', 'About', '/about.html'], ['blog', 'Blog', '/blog/'], ['contact', 'Contact', '/contact.html'], ['plan', 'Plan your trip', '/plan-trip.html']];
+  if (hasCars) NAV.splice(1, 0, ['cars', 'Car rental', '/cars/']);   /* owner decision 2026-10-16: right after Tours, only when a car is published */
 
   // per-page: which nav link is active, the CTA, header style
   var CFG = {
@@ -30,6 +34,8 @@
     plan:       { active: 'plan',    cta: ['Build your trip', '/builder.html'], solid: true },  /* no self-link: plan page's CTA drives to the builder */
     tour:       { active: 'tours',   cta: ['Request this tour', '#book'],     solid: true },
     builder:    { active: '',        cta: null,                              solid: true },  /* the step flow has its own sticky Continue; a second primary here would compete */
+    cars:       { active: 'cars',    cta: ['Plan your trip', '/plan-trip.html'], solid: true },
+    car:        { active: 'cars',    cta: ['Request this car', '#book'],      solid: true },
   };
   var cfg = CFG[page] || CFG.tours;
 
@@ -69,6 +75,7 @@
         '<p class="blurb">Azat means &ldquo;free&rdquo;. Small-group adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
       '</div>' +
       '<div class="foot-col"><h4>Explore</h4><ul>' +
+        (hasCars ? '<li><a href="/cars/">Car rental</a></li>' : '') +
         '<li><a href="/about.html">About us</a></li>' +
         '<li><a href="/blog/">Blog</a></li>' +
         '<li><a href="/plan-trip.html">Plan your trip</a></li>' +
