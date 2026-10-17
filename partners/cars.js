@@ -8,7 +8,7 @@ const CAR_FIELDS = [
   'color', 'plateNumber', 'mileageKm', 'features', 'description', 'rentalModes', 'priceSelfDrive',
   'priceWithDriver', 'longTermDiscount', 'deposit', 'insurance', 'delivery', 'driverRequirements',
   'restrictions', 'availabilityNote', 'city', 'en', 'rejectReason', 'copiedFromId', 'submittedAt',
-  'approvedAt', 'draftStep', 'plateOnPhotos', 'modMessageId'
+  'approvedAt', 'draftStep', 'plateOnPhotos', 'modMessageId', 'minRentalDays'
 ];
 
 const ANGLE_ORDER = ['FRONT', 'BACK', 'LEFT', 'RIGHT', 'INTERIOR_FRONT', 'INTERIOR_BACK', 'TRUNK', 'DASHBOARD', 'EXTRA'];
@@ -56,12 +56,6 @@ function createCars(db) {
       return parse(db.prepare(`SELECT * FROM cars WHERE partnerId = ? AND status = 'DRAFT' ORDER BY updatedAt DESC LIMIT 1`).get(partnerId));
     },
 
-    // Last choice for the plate question, to offer it first next time.
-    lastPlateChoice(partnerId) {
-      const r = db.prepare(`SELECT plateOnPhotos FROM cars WHERE partnerId = ? AND plateOnPhotos IS NOT NULL ORDER BY updatedAt DESC LIMIT 1`).get(partnerId);
-      return r ? r.plateOnPhotos : null;
-    },
-
     // ----- photos -----
     photos(carId) {
       return db.prepare('SELECT * FROM car_photos WHERE carId = ?').all(carId)
@@ -82,6 +76,17 @@ function createCars(db) {
       db.exec('COMMIT');
       } catch (e) { db.exec('ROLLBACK'); throw e; }
       return id;
+    },
+
+    // New photo order (ids, first = cover). Angle photos of older cars become plain
+    // ordered photos, so any of them can be the cover.
+    setPhotoOrder(carId, ids) {
+      db.exec('BEGIN');
+      try {
+        ids.forEach((id, i) => db.prepare("UPDATE car_photos SET angle = 'EXTRA', sortOrder = ? WHERE id = ? AND carId = ?").run(i, id, carId));
+        db.prepare('UPDATE cars SET updatedAt = ? WHERE id = ?').run(now(), carId);
+        db.exec('COMMIT');
+      } catch (e) { db.exec('ROLLBACK'); throw e; }
     },
 
     removePhoto(photoId) {

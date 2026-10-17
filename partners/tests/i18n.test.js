@@ -30,7 +30,8 @@ test('every wizard step has its question, label, enum and preset texts', () => {
   const { STEPS } = require('../bot/carWizard/steps');
   const need = [];
   for (const s of STEPS) {
-    need.push('q_' + s.key, 'f_' + s.key);
+    need.push('q_' + s.key);
+    if (!s.fields) need.push('f_' + s.key);   // title/group steps show their fields' labels
     for (const o of s.options || []) need.push('enum_' + o);
     if (s.other) need.push(s.other, s.other + '_ask');
     if (s.presets && !s.presetsRaw && s.type !== 'int') need.push(...s.presets);

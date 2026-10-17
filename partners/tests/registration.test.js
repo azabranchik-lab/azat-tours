@@ -111,7 +111,7 @@ test('«/» menu commands open the same sections as the buttons', async () => {
   await s.send('/mycars');
   assert.match(s.lastText(), /пока нет авто/);
   await s.send('/add');
-  assert.match(s.lastText(), /Марка автомобиля/);
+  assert.match(s.lastText(), /Марка, модель и год/);
   const { PARTNER_COMMANDS } = require('../bot/bot');
   assert.deepStrictEqual(PARTNER_COMMANDS.map(c => c.command), ['start', 'add', 'mycars', 'profile', 'help']);
 });

@@ -9,13 +9,23 @@ function carTitle(car, t) {
 
 const num = n => Number(n).toLocaleString('ru-RU');
 
+// Russian plural: 1 день, 2 дня, 5 дней.
+function days(n, t) {
+  const m10 = n % 10, m100 = n % 100;
+  const form = m10 === 1 && m100 !== 11 ? 'one' : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 'few' : 'many';
+  return t('days_' + form, { n });
+}
+
+const isEmpty = v => v === null || v === undefined || v === '' || (Array.isArray(v) && !v.length);
+
 function fieldValue(car, key, t) {
   const v = car[key];
   const s = STEPS.find(x => x.key === key);
-  if (v === null || v === undefined || v === '' || (Array.isArray(v) && !v.length)) return t('not_set');
-  if (s && (s.type === 'enum')) return t('enum_' + v);
+  if (isEmpty(v)) return t('not_set');
+  if (s && s.type === 'enum') return Array.isArray(v) ? v.map(x => t('enum_' + x)).join(', ') : t('enum_' + v);
   if (s && s.type === 'multi') return v.map(x => t('enum_' + x)).join(', ');
   if (key === 'mileageKm') return t('km', { n: num(v) });
+  if (key === 'minRentalDays') return days(v, t);
   if (key === 'deposit') return v === 0 ? t('deposit_none') : num(v);
   if (key === 'priceSelfDrive' || key === 'priceWithDriver') return num(v);
   return String(v);
@@ -27,13 +37,12 @@ function carCard(car, t, photos, { title = true } = {}) {
   const lines = title ? [carTitle(car, t), ''] : [];
   for (const s of STEPS) {
     if (s.type === 'photos') {
-      if (photos) {
-        const extra = photos.filter(p => p.angle === 'EXTRA').length;
-        lines.push(`${t('f_photos')}: ${t('photos_count', { n: photos.length - extra, extra })}`);
-      }
+      if (photos) lines.push(`${t('f_photos')}: ${t('photos_count', { n: photos.length })}`);
       continue;
     }
-    if (s.key === 'description' || (s.when && !s.when(car))) continue;
+    if (s.fields || s.key === 'description' || (s.when && !s.when(car))) continue;
+    // Optional fields the wizard does not ask (color, mileage) appear only once filled in.
+    if (s.inWizard === false && !s.required && isEmpty(car[s.key])) continue;
     lines.push(`${t('f_' + s.key)}: ${fieldValue(car, s.key, t)}`);
   }
   lines.push('', `${t('f_description')}:`, fieldValue(car, 'description', t));

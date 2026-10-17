@@ -3,7 +3,7 @@
 // State: { flow: 'car', carId, step, mode: 'full' | 'copy' | 'edit', qmsg }.
 const { InlineKeyboard } = require('grammy');
 const S = require('./steps');
-const { carTitle } = require('../../lib/format');
+const { carTitle, fieldValue } = require('../../lib/format');
 const { mainMenu, tidy } = require('../menus');
 
 const clearKb = (ctx, msgId) => (msgId
@@ -17,18 +17,37 @@ function ownDraft(ctx, id) {
   return car && car.partnerId === ctx.partner.id && (car.status === 'DRAFT' || car.status === 'REJECTED') ? car : null;
 }
 
-function presetLabel(ctx, s, p) { return s.presetsRaw || typeof p === 'number' ? String(p) : ctx.t(p); }
+// Number presets read like the card («2 дня»); text presets are i18n keys unless raw.
+function presetLabel(ctx, s, p) {
+  if (typeof p === 'number') return fieldValue({ [s.key]: p }, s.key, ctx.t);
+  return s.presetsRaw ? String(p) : ctx.t(p);
+}
+
+// A group step: one block of buttons per field, the chosen one ticked.
+// callback_data: w:<stepIndex>:g:<fieldNo>:<optionNo>
+function groupButtons(ctx, car, s, kb) {
+  const d = `w:${s.index}`;
+  s.fields.forEach((key, fi) => {
+    const f = S.step(key);
+    const opts = f.type === 'enum' ? f.options : f.presets;
+    const perRow = f.perRow || (f.type === 'int' ? 5 : 2);
+    opts.forEach((o, i) => {
+      const label = f.type === 'enum' ? ctx.t('enum_' + o) : presetLabel(ctx, f, o);
+      kb.text(`${car[key] === o ? '✓ ' : ''}${label}`, `${d}:g:${fi}:${i}`);
+      if ((i + 1) % perRow === 0) kb.row();
+    });
+    kb.row();
+  });
+  kb.text(ctx.t('btn_done'), `${d}:d`).row();
+}
 
 function questionKeyboard(ctx, car, s, mode) {
   const kb = new InlineKeyboard();
   const d = `w:${s.index}`;
+  if (s.type === 'group') groupButtons(ctx, car, s, kb);
   if (s.type === 'enum') {
-    // Long labels (the plate question) go one per row; the partner's last plate choice comes first.
-    const perRow = s.key === 'plateOnPhotos' ? 1 : 2;
-    let order = s.options.map((o, i) => i);
-    const last = s.key === 'plateOnPhotos' ? ctx.cars.lastPlateChoice(ctx.partner.id) : null;
-    if (last) order = [s.options.indexOf(last), ...order.filter(i => s.options[i] !== last)];
-    order.forEach((i, n) => { kb.text(ctx.t('enum_' + s.options[i]), `${d}:o:${i}`); if ((n + 1) % perRow === 0) kb.row(); });
+    const perRow = s.perRow || 2; // long labels go one per row
+    s.options.forEach((o, i) => { kb.text(ctx.t('enum_' + o), `${d}:o:${i}`); if ((i + 1) % perRow === 0) kb.row(); });
     kb.row();
   } else if (s.type === 'multi') {
     const sel = car[s.key] || [];
@@ -41,7 +60,7 @@ function questionKeyboard(ctx, car, s, mode) {
     if (s.other) kb.text(ctx.t(s.other), `${d}:x`).row();
   }
   if (mode === 'edit' || S.prevStep(car, s.key, mode)) kb.text(ctx.t('btn_back'), `${d}:b`);
-  if (!s.required) kb.text(ctx.t('btn_skip'), `${d}:s`);
+  if (!s.required && !S.isCompound(s)) kb.text(ctx.t('btn_skip'), `${d}:s`);
   kb.text(ctx.t('btn_cancel'), `${d}:c`);
   return tidy(kb);
 }
@@ -57,16 +76,14 @@ function counter(ctx, car, key, mode) {
 
 function questionText(ctx, car, key, mode) {
   let text = counter(ctx, car, key, mode) + ctx.t('q_' + key);
-  if (key === 'plateOnPhotos') {
-    const last = ctx.cars.lastPlateChoice(ctx.partner.id);
-    if (last) text += '\n\n' + ctx.t('plate_last_time', { choice: ctx.t('enum_' + last) });
-  }
+  const s = S.step(key);
+  if (s.type === 'group') text += '\n\n' + s.fields.map(k => `${ctx.t('f_' + k)}: ${S.isEmpty(car[k]) ? ctx.t('not_chosen') : fieldValue(car, k, ctx.t)}`).join('\n');
   return text;
 }
 
 async function ask(ctx, car, key, mode) {
   if (key === 'summary') return require('./summary').show(ctx, car);
-  if (key === 'photos') return require('./photos').ask(ctx, car, mode, { intro: true });
+  if (key === 'photos') return require('./photos').ask(ctx, car, mode);
   const s = S.step(key);
   await clearKb(ctx, ctx.partner.state && ctx.partner.state.qmsg);
   const msg = await ctx.reply(questionText(ctx, car, key, mode), { reply_markup: questionKeyboard(ctx, car, s, mode) });
@@ -74,10 +91,11 @@ async function ask(ctx, car, key, mode) {
   ctx.setState({ flow: 'car', carId: car.id, step: key, mode, qmsg: msg.message_id });
 }
 
-// Store an answer, then move on.
+// Store an answer, then move on. A title/group step's value is { field: value, … }.
 async function save(ctx, car, key, value, mode) {
-  const merged = { ...car, [key]: value };
-  const updated = ctx.cars.update(car.id, { [key]: value, ...S.inapplicableFields(merged) });
+  const fields = S.isCompound(S.step(key)) ? value : { [key]: value };
+  const merged = { ...car, ...fields };
+  const updated = ctx.cars.update(car.id, { ...fields, ...S.inapplicableFields(merged) });
   let next;
   if (mode === 'edit') next = S.missingRequired(updated)[0] || 'summary'; // an edit can make a field required
   else next = S.nextStep(updated, key, mode);
@@ -106,8 +124,10 @@ async function offerCopyOrNew(ctx) {
 }
 
 async function createBlank(ctx) {
-  const car = ctx.cars.create(ctx.partner.id, { city: ctx.partner.city });
-  return ask(ctx, car, 'make', 'full');
+  // Not asked (2026-10-17, owner): we blur the plate on photos ourselves, and a car is
+  // available all year unless the partner changes it in the summary.
+  const car = ctx.cars.create(ctx.partner.id, { city: ctx.partner.city, plateOnPhotos: 'BLUR', availabilityNote: ctx.t('avail_year') });
+  return ask(ctx, car, S.sequence('full')[0], 'full');
 }
 
 async function onAddCallback(ctx, action, id) {
@@ -118,7 +138,7 @@ async function onAddCallback(ctx, action, id) {
     const src = ctx.cars.get(id);
     if (!src || src.partnerId !== ctx.partner.id) return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
     await ctx.answerCallbackQuery(); await done();
-    const car = ctx.cars.create(ctx.partner.id, S.copyFields(src));
+    const car = ctx.cars.create(ctx.partner.id, { ...S.copyFields(src), plateOnPhotos: 'BLUR' });
     await ctx.reply(ctx.t('copy_started', { car: carTitle(src, ctx.t) }));
     return ask(ctx, car, S.COPY_STEPS[0], 'copy');
   }
@@ -158,6 +178,15 @@ async function onText(ctx) {
     if (r.error === 'choose_button') return ask(ctx, car, s.key, st.mode); // bring the buttons back down
     return;
   }
+  if (s.type === 'group') {
+    // A typed number (seats) fills its row; the screen stays until «Готово».
+    const updated = ctx.cars.update(car.id, r.value);
+    return ask(ctx, updated, s.key, st.mode);
+  }
+  if (s.type === 'title') {
+    // Show how the line was read, so a wrong split is noticed right away.
+    await ctx.reply(ctx.t('title_saved', r.value));
+  }
   return save(ctx, car, s.key, r.value, st.mode);
 }
 
@@ -173,10 +202,30 @@ async function onCallback(ctx, parts) {
   const freeze = label => ctx.editMessageText(`${msg.text}\n→ ${label}`, { reply_markup: { inline_keyboard: [] } }).catch(() => {});
 
   if (action === 'o' && s.type === 'enum' && s.options[arg] !== undefined) {
-    const value = s.options[arg];
-    await ctx.answerCallbackQuery(); await freeze(ctx.t('enum_' + value));
+    const o = s.options[arg];
+    await ctx.answerCallbackQuery(); await freeze(ctx.t('enum_' + o));
     ctx.partner.state.qmsg = null;
-    return save(ctx, car, s.key, value, st.mode);
+    return save(ctx, car, s.key, s.toValue ? s.toValue(o) : o, st.mode);
+  }
+  if (action === 'g' && s.type === 'group') {
+    const f = S.step(s.fields[Number(arg)]);
+    const opts = f && (f.type === 'enum' ? f.options : f.presets);
+    const o = opts && opts[Number(parts[4])];
+    if (o === undefined) return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
+    const updated = ctx.cars.update(car.id, { [f.key]: o });
+    await ctx.answerCallbackQuery();
+    return ctx.editMessageText(questionText(ctx, updated, s.key, st.mode), { reply_markup: questionKeyboard(ctx, updated, s, st.mode) }).catch(() => {});
+  }
+  if (action === 'd' && s.type === 'group') {
+    const missing = S.groupMissing(s, car);
+    if (missing.length) {
+      return ctx.answerCallbackQuery({ text: ctx.t('group_missing', { fields: missing.map(k => ctx.t('f_' + k)).join(', ') }), show_alert: true });
+    }
+    await ctx.answerCallbackQuery();
+    // Freeze the screen as the list of chosen values.
+    await ctx.editMessageText(questionText(ctx, car, s.key, st.mode), { reply_markup: { inline_keyboard: [] } }).catch(() => {});
+    ctx.partner.state.qmsg = null;
+    return save(ctx, car, s.key, {}, st.mode);
   }
   if (action === 'p' && s.presets && s.presets[arg] !== undefined) {
     const p = s.presets[arg];
@@ -227,4 +276,4 @@ async function onCallback(ctx, parts) {
   return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
 }
 
-module.exports = { startAdd, onAddCallback, onText, onCallback, ask, ownDraft, clearKb };
+module.exports = { startAdd, onAddCallback, onText, onCallback, ask, ownDraft, clearKb, counter };

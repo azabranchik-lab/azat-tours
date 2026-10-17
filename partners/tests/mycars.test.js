@@ -97,10 +97,10 @@ test('delete: published car is archived (soft), never-sent draft is erased', asy
   assert.match(s.lastText(), /пока нет авто/);
 
   await s.send('Добавить авто');                           // nothing left to copy from: straight to a new car
-  await s.tap('Kia'); await s.send('Rio');
+  await s.send('Kia Rio 2018');
   const draft = s.cars.latestDraft(pid(s));
   await s.send('Мои авто');
-  await s.tap('Kia Rio · Черновик');
+  await s.tap('Kia Rio 2018 · Черновик');
   assert.ok(s.hasButton('Продолжить заполнение'));
   await s.tap('Удалить');
   await s.tap('Да, удалить');
@@ -113,9 +113,7 @@ test('copy from «Мои авто» and continue a draft from the list', async (
   await s.send('Мои авто');
   await s.tap('Toyota Camry 2019 · Опубликовано');
   await s.tap('Сделать копию');
-  assert.match(s.lastText(), /Шаг 1 из 4\nЦвет/);
-  await s.tap('Пропустить');                               // colour is optional now
-  assert.match(s.lastText(), /Госномер/);
+  assert.match(s.lastText(), /Шаг 1 из 2\nГосномер/);      // a copy asks only the plate and photos
   const copy = s.cars.latestDraft(car.partnerId);
   assert.strictEqual(copy.copiedFromId, car.id);
 
@@ -142,14 +140,14 @@ test('rejected car shows the reason and «Исправить»; someone else\'s 
   assert.ok(car);
 });
 
-test('colour is optional in the wizard', async () => {
+test('colour and mileage are not asked, but can be added from the summary', async () => {
   const s = modSetup();
-  await s.register();
-  await s.send('Добавить авто');
-  await s.tap('Kia'); await s.send('Rio'); await s.send('2018');
-  await s.tap('Седан'); await s.tap('Автомат'); await s.tap('Передний'); await s.tap('Бензин'); await s.tap('5');
-  assert.match(s.lastText(), /Цвет автомобиля/);
-  await s.tap('Пропустить');
-  assert.match(s.lastText(), /Госномер/);
+  const car = await readyCar(s);
+  assert.strictEqual(car.color, null);
+  assert.ok(!/Цвет|Пробег/.test(s.lastText()));            // empty optional extras stay out of the card
+  await s.tap('Изменить');
+  await s.tap('Цвет');
+  await s.send('белый');
+  assert.match(s.lastText(), /Цвет: белый/);
   assert.ok(makeImage);
 });

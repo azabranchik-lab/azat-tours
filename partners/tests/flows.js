@@ -8,32 +8,41 @@ function modSetup(extra = {}, deps = {}) {
   return s;
 }
 
-// Registered partner with a complete draft at the summary.
-async function readyCar(s, plate = 'Замажьте номер за меня') {
+// The «Характеристики» screen: one button per row, then «Готово».
+async function specs(s, body = 'Седан', drive = 'Передний', seats = '5') {
+  await s.tap(body); await s.tap('Автомат'); await s.tap(drive); await s.tap('Бензин'); await s.tap(seats);
+  await s.tap('Готово');
+}
+
+// The «Страховка, доставка и срок» screen.
+async function insDelivery(s, insurance = 'ОСАГО (обязательная)', delivery = 'Да, за доплату', days = '2 дня') {
+  await s.tap(insurance); await s.tap(delivery); await s.tap(days); await s.tap('Готово');
+}
+
+// Registered partner with a complete draft at the summary (4 photos).
+async function readyCar(s, nPhotos = 4) {
   if (!s.store.getByTelegramId(USER) || !s.store.getByTelegramId(USER).offerAcceptedAt) await s.register();
   await s.send('Добавить авто');
-  await s.tap('Toyota'); await s.send('Camry'); await s.send('2019');
-  await s.tap('Седан'); await s.tap('Автомат'); await s.tap('Передний'); await s.tap('Бензин'); await s.tap('5');
-  await s.send('белый'); await s.send('01KG 123 ABC'); await s.send('80000');
+  await s.send('Toyota Camry 2019');
+  await specs(s);
+  await s.send('01KG 123 ABC');
   await s.tap('Кондиционер'); await s.tap('Готово');
   await s.send('Чистая ухоженная машина, для города и трассы.');
-  await s.tap('Без водителя'); await s.tap('Готово'); await s.send('3500');
-  await s.tap('Пропустить'); await s.send('10000');
-  await s.tap('ОСАГО (обязательная)'); await s.tap('Да, за доплату');
-  await s.send('от 25 лет'); await s.tap('Пропустить');
-  await s.tap('Круглый год');
-  await s.tap(plate);
-  await s.sendPhotos(8, { buf: await makeImage() });
-  await s.tap('Готово');
+  await s.tap('Без водителя'); await s.send('3500');
+  await s.send('10000');
+  await insDelivery(s);
+  await s.send('от 25 лет');
+  await s.sendPhotos(nPhotos, { buf: await makeImage() });
+  if (nPhotos < 6) await s.tap('Готово');         // 6 photos go straight to the summary
   return s.cars.latestDraft(s.store.getByTelegramId(USER).id);
 }
 
 // Submit a ready car and publish it through the group.
-async function publishedCar(s, plate) {
-  const car = await readyCar(s, plate);
+async function publishedCar(s, nPhotos) {
+  const car = await readyCar(s, nPhotos);
   await s.tap('Отправить на проверку');
   await s.groupTap('Одобрить');
   return s.cars.get(car.id);
 }
 
-module.exports = { modSetup, readyCar, publishedCar };
+module.exports = { modSetup, readyCar, publishedCar, specs, insDelivery };

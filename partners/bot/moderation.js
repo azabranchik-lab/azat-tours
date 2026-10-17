@@ -37,9 +37,10 @@ const cardKeyboard = car => new InlineKeyboard()
   .text(a('btn_approve'), `mod:ok:${car.id}`).text(a('btn_reject'), `mod:no:${car.id}`).row()
   .text(a('btn_replace_photo'), `mod:ph:${car.id}`);
 
-function angleKeyboard(car) {
+// Which photo to replace: numbered as in the album above the card.
+function photoKeyboard(ctx, car) {
   const kb = new InlineKeyboard();
-  P.REQUIRED_ANGLES.forEach((ang, i) => { kb.text(a('angle_' + ang), `mod:pa:${car.id}:${i}`); if (i % 2 === 1) kb.row(); });
+  ctx.cars.photos(car.id).forEach((p, i) => { kb.text(String(i + 1), `mod:pa:${car.id}:${i}`); if (i % 3 === 2) kb.row(); });
   return tidy(kb.row().text(a('btn_back'), `mod:bk:${car.id}`));
 }
 
@@ -128,18 +129,18 @@ async function onCallback(ctx, parts) {
   }
   if (action === 'ph') {
     await ctx.answerCallbackQuery();
-    return ctx.editMessageReplyMarkup({ reply_markup: angleKeyboard(car) }).catch(() => {});
+    return ctx.editMessageReplyMarkup({ reply_markup: photoKeyboard(ctx, car) }).catch(() => {});
   }
   if (action === 'bk') {
     await ctx.answerCallbackQuery();
     return ctx.editMessageReplyMarkup({ reply_markup: cardKeyboard(car) }).catch(() => {});
   }
   if (action === 'pa') {
-    const angle = P.REQUIRED_ANGLES[Number(arg)];
-    if (!angle) return ctx.answerCallbackQuery({ text: a('stale_button') });
+    const photo = ctx.cars.photos(car.id)[Number(arg)];
+    if (!photo) return ctx.answerCallbackQuery({ text: a('stale_button') });
     await ctx.answerCallbackQuery();
     await ctx.editMessageReplyMarkup({ reply_markup: cardKeyboard(car) }).catch(() => {});
-    return askReply(ctx, `${a('mod_ask_photo', { angle: a('angle_' + angle), car: title })}\n#photo ${car.id} ${angle}`);
+    return askReply(ctx, `${a('mod_ask_photo', { n: Number(arg) + 1, car: title })}\n#photo ${car.id} ${photo.id}`);
   }
   return ctx.answerCallbackQuery({ text: a('stale_button') });
 }
@@ -148,7 +149,7 @@ async function onCallback(ctx, parts) {
 async function onReply(ctx) {
   const prompt = ctx.message.reply_to_message;
   if (!prompt || !prompt.from || prompt.from.id !== ctx.me.id || !prompt.text) return false;
-  const m = prompt.text.match(/#(reason|photo) ([\w-]+)(?: (\w+))?\s*$/);
+  const m = prompt.text.match(/#(reason|photo) ([\w-]+)(?: ([\w-]+))?\s*$/);
   if (!m) return false;
   if (!ctx.isAdminUser) return true;
   const [, kind, id, extra] = m;
@@ -167,15 +168,18 @@ async function onReply(ctx) {
     return true;
   }
 
-  if (kind === 'photo' && P.REQUIRED_ANGLES.includes(extra)) {
+  // `extra` is the photo id (an angle name in prompts sent before 2026-10-17).
+  const photos = kind === 'photo' ? ctx.cars.photos(car.id) : [];
+  const old = photos.find(p => p.id === extra) || photos.find(p => p.angle === extra && p.angle !== 'EXTRA');
+  if (kind === 'photo' && old) {
     if (!ctx.message.photo && !ctx.message.document) return true;
     const file = require('./carWizard/photos').incoming(ctx.message);
     const check = P.checkIncoming(file, ctx.cfg.photoMaxMb);
     if (!check.ok) { await ctx.reply(a(check.error, { mb: ctx.cfg.photoMaxMb })); return true; }
     const img = await P.processImage(await ctx.download(file.fileId));
     if (!img.ok) { await ctx.reply(a(img.error)); return true; }
-    await require('./carWizard/photos').store(ctx, car, extra, file, img);
-    await ctx.reply(a('mod_photo_saved', { angle: a('angle_' + extra) }));
+    await require('./carWizard/photos').store(ctx, car, file, img, old);
+    await ctx.reply(a('mod_photo_saved', { n: photos.indexOf(old) + 1 }));
     return true;
   }
   return false;

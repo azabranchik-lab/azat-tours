@@ -18,8 +18,11 @@ async function limited(fn) {
   }
 }
 
-const REQUIRED_ANGLES = ['FRONT', 'BACK', 'LEFT', 'RIGHT', 'INTERIOR_FRONT', 'INTERIOR_BACK', 'TRUNK', 'DASHBOARD'];
-const MAX_EXTRA = 5;
+// Since 2026-10-17 (owner): 4 to 6 photos in any order, the first one is the cover.
+// They are stored with angle 'EXTRA' and ordered by sortOrder; cars from before keep
+// their angle photos (FRONT … DASHBOARD sort first).
+const MIN_PHOTOS = 4;
+const MAX_PHOTOS = 6;
 const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp'];
 const ALLOWED_FORMATS = ['jpeg', 'png', 'webp'];
 const MIN_SHORT_SIDE = 600;
@@ -66,16 +69,10 @@ async function processImageNow(buf) {
   return { ok: true, main: main.data, thumb: thumb.data, width: main.info.width, height: main.info.height };
 }
 
-// Next required angle without a photo, or null when all 8 are in.
-function nextMissingAngle(photos) {
-  const have = new Set(photos.map(p => p.angle));
-  return REQUIRED_ANGLES.find(a => !have.has(a)) || null;
-}
-
-const missingAngles = photos => REQUIRED_ANGLES.filter(a => !photos.some(p => p.angle === a));
-const extraCount = photos => photos.filter(p => p.angle === 'EXTRA').length;
+// How many more photos a car needs before it can be sent (0 when enough).
+const photosNeeded = photos => Math.max(0, MIN_PHOTOS - photos.length);
 
 module.exports = {
-  REQUIRED_ANGLES, MAX_EXTRA, ALLOWED_MIME,
-  checkIncoming, processImage, nextMissingAngle, missingAngles, extraCount
+  MIN_PHOTOS, MAX_PHOTOS, ALLOWED_MIME,
+  checkIncoming, processImage, photosNeeded
 };

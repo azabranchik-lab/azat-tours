@@ -21,14 +21,15 @@ test('submit: partner is told, the group gets the album and a full card', async 
 
   const album = s.calls.find(x => x.method === 'sendMediaGroup' && x.payload.chat_id === GROUP);
   assert.ok(album, 'album sent to the group');
-  assert.strictEqual(album.payload.media.length, 8);
+  assert.strictEqual(album.payload.media.length, 4);
 
   const card = s.groupTexts().at(-1);
   assert.match(card, /^На проверку: Toyota Camry 2019/);
   assert.match(card, /Партнёр: Ош Авто\nТелефон: \+996555111222\nTelegram: @tester/);
   assert.strictEqual(card.match(/Госномер: 01KG 123 ABC/g).length, 1);
   assert.strictEqual(card.match(/Toyota Camry 2019/g).length, 1);
-  assert.match(card, /просит замазать номер/);
+  assert.match(card, /Номер на фото замазываем мы/);
+  assert.match(card, /Минимальный срок: 2 дня/);
   assert.match(card, new RegExp(`#car ${car.id}$`));
 });
 
@@ -87,8 +88,10 @@ test('reject with a reason → partner fixes and resubmits → card says "пов
 
   await s.tap('Исправить');
   assert.match(s.lastText(), /^Проверьте анкету/);
-  await s.tap('Изменить'); await s.tap('Фото'); await s.tap('сзади');
+  await s.tap('Изменить'); await s.tap('Фото'); await s.tap('Добавить фото');
   await s.sendPhoto({ buf: await makeImage() });
+  assert.match(s.lastText(), /Принято фото: 5 из 6/);
+  await s.tap('Готово');
   await s.tap('Отправить на проверку');
 
   c = s.cars.get(car.id);
@@ -101,17 +104,18 @@ test('admin replaces a photo (plate blurred) by replying with a picture', async 
   const s = modSetup();
   const car = await readyCar(s);
   await s.tap('Отправить на проверку');
-  const oldBack = s.cars.photos(car.id).find(p => p.angle === 'BACK');
+  const before = s.cars.photos(car.id);
 
   await s.groupTap('Заменить фото');
-  await s.groupTap('сзади');
-  assert.match(s.groupTexts().at(-1), /Пришлите исправленное фото \(сзади\)/);
+  await s.groupTap('2');                                   // photos are numbered as in the album
+  assert.match(s.groupTexts().at(-1), /Пришлите исправленное фото 2: Toyota Camry 2019/);
   await s.groupReply('#photo', { photo: await makeImage() });
-  assert.match(s.groupTexts().at(-1), /Фото «сзади» заменено/);
+  assert.match(s.groupTexts().at(-1), /Фото 2 заменено/);
 
-  const photos = s.cars.photos(car.id);
-  assert.strictEqual(photos.length, 8);
-  assert.notStrictEqual(photos.find(p => p.angle === 'BACK').id, oldBack.id);
+  const after = s.cars.photos(car.id);
+  assert.strictEqual(after.length, 4);
+  assert.notStrictEqual(after[1].id, before[1].id);        // same place, new file
+  assert.deepStrictEqual([after[0].id, after[2].id, after[3].id], [before[0].id, before[2].id, before[3].id]);
 });
 
 test('no admin group connected: submit still works, nothing is lost', async () => {

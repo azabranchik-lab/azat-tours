@@ -87,7 +87,7 @@ async function siteFiles(ctx, id) {
   const media = [];
   for (const [i, p] of photos.entries()) {
     const jpg = await sharp(await ctx.storage.read(p.path)).jpeg({ quality: 90 }).toBuffer();
-    media.push(InputMediaBuilder.document(new InputFile(jpg, `${base}-${String(i + 1).padStart(2, '0')}-${p.angle.toLowerCase()}.jpg`)));
+    media.push(InputMediaBuilder.document(new InputFile(jpg, `${base}-${String(i + 1).padStart(2, '0')}.jpg`)));
   }
   for (let i = 0; i < media.length; i += 10) await ctx.replyWithMediaGroup(media.slice(i, i + 10));
   const { carCard } = require('../lib/format');
@@ -121,10 +121,10 @@ async function exportCsv(ctx) {
     ['Марка', c => c.make], ['Модель', c => c.model], ['Год', c => c.year], ['Кузов', c => c.bodyType], ['Коробка', c => c.transmission],
     ['Привод', c => c.drive], ['Топливо', c => c.fuel], ['Мест', c => c.seats], ['Цвет', c => c.color], ['Госномер', c => c.plateNumber],
     ['Пробег', c => c.mileageKm], ['Оснащение', c => c.features], ['Формат аренды', c => c.rentalModes],
-    ['Без водителя, сом', c => c.priceSelfDrive], ['С водителем, сом', c => c.priceWithDriver], ['Скидка', c => c.longTermDiscount],
+    ['Без водителя, сом', c => c.priceSelfDrive], ['С водителем, сом', c => c.priceWithDriver],
     ['Залог, сом', c => c.deposit], ['Страховка', c => c.insurance], ['Доставка', c => c.delivery],
-    ['Требования к водителю', c => c.driverRequirements], ['Ограничения', c => c.restrictions], ['Когда свободно', c => c.availabilityNote],
-    ['Город', c => c.city], ['Свободно', c => c.availability], ['Номер на фото', c => c.plateOnPhotos], ['Описание', c => c.description],
+    ['Условия аренды', c => c.restrictions], ['Когда свободно', c => c.availabilityNote],
+    ['Мин. срок, дней', c => c.minRentalDays], ['Город', c => c.city], ['Свободно', c => c.availability], ['Номер на фото', c => c.plateOnPhotos], ['Описание', c => c.description],
     ['Причина отклонения', c => c.rejectReason], ['Отправлено', c => c.submittedAt], ['Одобрено', c => c.approvedAt],
     ['Фото (файлы на сервере, partners/data/car-photos/)', c => ctx.cars.photos(c.id).map(p => p.path).join(' ')]
   ]);

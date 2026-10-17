@@ -3,30 +3,32 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const { makeImage, USER } = require('./helpers');
-const { modSetup, readyCar } = require('./flows');
+const { modSetup, readyCar, specs, insDelivery } = require('./flows');
 const photos = require('../bot/carWizard/photos');
 const P = require('../lib/photos');
 
-test('an album delivered all at once still fills the angles in order', async () => {
+test('an album of 10 delivered all at once: 6 photos kept in order, one message about the rest', async () => {
   const s = modSetup({ albumDebounceMs: 200 });
-  const car = await readyCar(s);                     // already has 8 photos → go replace them via a fresh car
+  const car = await readyCar(s);                     // already has photos → go on with a fresh car
   await s.tap('Удалить черновик'); await s.tap('Да, удалить');
   await s.send('Добавить авто');
-  const draftFlow = ['Kia', 'Rio'];
-  await s.tap(draftFlow[0]); await s.send(draftFlow[1]); await s.send('2018');
-  await s.tap('Седан'); await s.tap('Автомат'); await s.tap('Передний'); await s.tap('Бензин'); await s.tap('5');
-  await s.tap('Пропустить'); await s.send('01KG 999 ZZZ'); await s.tap('Пропустить'); await s.tap('Готово');
+  await s.send('Kia Rio 2018');
+  await specs(s);
+  await s.send('01KG 999 ZZZ'); await s.tap('Готово');
   await s.send('Экономичный седан для города, свежее ТО, чистый салон.');
-  await s.tap('С водителем'); await s.tap('Готово'); await s.send('3000');
-  await s.tap('Пропустить'); await s.tap('Пропустить'); await s.tap('КАСКО'); await s.tap('Да, бесплатно');
-  await s.tap('Пропустить'); await s.tap('Круглый год'); await s.tap('Номер можно показывать');
+  await s.tap('С водителем'); await s.send('3000');
+  await s.tap('Пропустить'); await insDelivery(s, 'КАСКО', 'Да, бесплатно');
+  await s.tap('Пропустить');
 
   const buf = await makeImage();
   await Promise.all(Array.from({ length: 10 }, () => s.sendPhoto({ groupId: 'burst', buf })));   // concurrent
   await photos.flushAlbums();
   const draft = s.cars.latestDraft(s.store.getByTelegramId(USER).id);
-  const got = s.cars.photos(draft.id).map(p => p.angle);
-  assert.deepStrictEqual(got, [...P.REQUIRED_ANGLES, 'EXTRA', 'EXTRA']);
+  const got = s.cars.photos(draft.id);
+  assert.deepStrictEqual(got.map(p => p.sortOrder), [0, 1, 2, 3, 4, 5]);
+  assert.strictEqual(got.length, P.MAX_PHOTOS);
+  assert.ok(s.texts().some(t => /лишние \(4\) не сохранили/.test(t)));
+  assert.match(s.lastText(), /^Проверьте анкету/);
   assert.ok(car);
 });
 

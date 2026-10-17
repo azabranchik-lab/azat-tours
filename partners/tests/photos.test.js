@@ -1,4 +1,4 @@
-// Photos (SPEC §6.4): checks, processing, album, replace, plate choice, disk guard, cleanup.
+// Photos (SPEC §6.4): checks, processing, 4 to 6 photos as an album, cover, disk guard, cleanup.
 const test = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
@@ -7,25 +7,25 @@ const sharp = require('sharp');
 const P = require('../lib/photos');
 const { runCleanup } = require('../cleanup');
 const { setup, makeImage, USER } = require('./helpers');
+const { specs, insDelivery } = require('./flows');
 
 // Registers and walks the wizard up to the photo step.
-async function toPhotos(s, plate = 'Сниму так, чтобы номера не было видно') {
+async function toPhotos(s) {
   await s.register();
   await s.send('Добавить авто');
-  await s.tap('Kia'); await s.send('Sportage'); await s.send('2020');
-  await s.tap('Кроссовер'); await s.tap('Автомат'); await s.tap('Передний'); await s.tap('Бензин'); await s.tap('5');
-  await s.send('серый'); await s.send('01KG 555 BBB'); await s.tap('Пропустить');
+  await s.send('Kia Sportage 2020');
+  await specs(s, 'Кроссовер');
+  await s.send('01KG 555 BBB');
   await s.tap('Готово');
   await s.send('Экономичный кроссовер для города и трассы, всё обслужено.');
-  await s.tap('С водителем'); await s.tap('Готово'); await s.send('5000');
-  await s.tap('Пропустить'); await s.tap('Пропустить');
-  await s.tap('КАСКО'); await s.tap('Да, бесплатно'); await s.tap('Пропустить');
-  await s.tap('Только летом (июнь-сентябрь)');
-  await s.tap(plate);
+  await s.tap('С водителем'); await s.send('5000');
+  await s.tap('Пропустить');
+  await insDelivery(s, 'КАСКО', 'Да, бесплатно'); await s.tap('Пропустить');
   return s.cars.latestDraft(s.store.getByTelegramId(USER).id);
 }
 
 const carDir = (s, car) => path.join(s.storage.root, car.id);
+
 
 test('checkIncoming: formats and size before download', () => {
   assert.deepStrictEqual(P.checkIncoming({ kind: 'photo', size: 1000 }, 10), { ok: true });
@@ -57,52 +57,61 @@ test('processImage: WebP output, resized, no EXIF, real format checked', async (
   assert.ok((await P.processImage(await makeImage(1200, 900, 'png'))).ok);
 });
 
-test('one by one: 8 angles in order with the plate hint on front/back, then extras', async () => {
+test('one by one: «Готово» appears from 4 photos, the 6th goes straight to the summary', async () => {
   const s = setup();
   const car = await toPhotos(s);
-  assert.match(s.texts().at(-2), /Теперь фото/);
-  assert.match(s.lastText(), /Фото 1\/8: спереди\nНомер не должен попасть в кадр/);
+  assert.match(s.lastText(), /^Шаг 11 из 11\nФото: выберите в галерее сразу от 4 до 6 снимков/);
+  assert.match(s.lastText(), /мы замажем его сами/);
+  assert.ok(!s.hasButton('Готово'));
   await s.sendPhoto();
-  assert.match(s.texts().at(-2), /Принято: спереди/);
-  assert.match(s.lastText(), /Фото 2\/8: сзади\nНомер не должен/);
-  await s.sendPhoto();
-  assert.match(s.lastText(), /^Фото 3\/8: слева$/);            // no plate hint on the sides
-  await s.sendPhotos(6);
-  assert.match(s.lastText(), /Дополнительные фото \(до 5\).*Сейчас: 0/s);
+  assert.match(s.lastText(), /^Принято фото: 1\. Нужно ещё хотя бы 3\.$/);
+  await s.sendPhotos(3);
+  assert.match(s.lastText(), /^Принято фото: 4 из 6\. Можно отправить ещё 2 или нажать «Готово»\.$/);
+  assert.ok(s.hasButton('Готово'));
   await s.sendPhotos(2);
-  assert.match(s.lastText(), /Сейчас: 2/);
+  assert.match(s.lastText(), /^Проверьте анкету/);
+  assert.match(s.lastText(), /Фото: 6, главное первое/);
+  assert.ok(s.calls.some(c => c.method === 'sendMediaGroup'), 'album sent with the summary');
 
   const photos = s.cars.photos(car.id);
-  assert.deepStrictEqual(photos.map(p => p.angle), [...P.REQUIRED_ANGLES, 'EXTRA', 'EXTRA']);
-  assert.strictEqual(fs.readdirSync(carDir(s, car)).length, 20); // main + thumb each
+  assert.deepStrictEqual(photos.map(p => p.angle), Array(6).fill('EXTRA'));
+  assert.deepStrictEqual(photos.map(p => p.sortOrder), [0, 1, 2, 3, 4, 5]);
+  assert.strictEqual(fs.readdirSync(carDir(s, car)).length, 12); // main + thumb each
   assert.ok(photos.every(p => p.path.endsWith('.webp') && p.thumbPath.endsWith('-thumb.webp')));
-
-  await s.tap('Готово');
-  assert.match(s.lastText(), /^Проверьте анкету/);
-  assert.ok(s.calls.some(c => c.method === 'sendMediaGroup'), 'album sent with the summary');
 });
 
-test('«Готово» before all 8 angles lists what is missing', async () => {
+test('«Готово» with fewer than 4 photos says how many are missing', async () => {
   const s = setup();
   await toPhotos(s);
-  await s.sendPhotos(3);
+  await s.sendPhotos(2);
   const idx = require('../bot/carWizard/steps').step('photos').index;
   await s.press(`w:${idx}:d`);                                 // e.g. an old «Готово» button
-  assert.match(s.lastAnswer(), /^Нужны ещё фото: справа, салон/);
+  assert.match(s.lastAnswer(), /^Нужно ещё фото: хотя бы 2\./);
 });
 
-test('album of 10: 8 angles + 2 extras, one reply for the whole album', async () => {
+test('album of 5: one reply for the whole album, then «Готово»', async () => {
   const s = setup(undefined, { albumDebounceMs: 300 });   // photos arrive back to back, like a real album
   const car = await toPhotos(s);
   const before = s.texts().length;
-  await s.sendPhotos(10, { groupId: 'album1', buf: await makeImage() });
+  await s.sendPhotos(5, { groupId: 'album1', buf: await makeImage() });
   assert.strictEqual(s.texts().length, before, 'no reply per album photo');
   await require('../bot/carWizard/photos').flushAlbums();
   const replies = s.texts().slice(before);
-  assert.strictEqual(replies.length, 2);
-  assert.match(replies[0], /^Принято: спереди, сзади, слева, справа, салон: передние сиденья и панель, салон: задние сиденья, багажник, приборная панель с пробегом, дополнительное, дополнительное$/);
-  assert.match(replies[1], /Сейчас: 2/);
-  assert.strictEqual(s.cars.photos(car.id).length, 10);
+  assert.deepStrictEqual(replies, ['Принято фото: 5 из 6. Можно отправить ещё 1 или нажать «Готово».']);
+  assert.strictEqual(s.cars.photos(car.id).length, 5);
+  await s.tap('Готово');
+  assert.match(s.lastText(), /^Проверьте анкету/);
+});
+
+test('a single photo after 6 is refused', async () => {
+  const s = setup();
+  const car = await toPhotos(s);
+  await s.sendPhotos(6);
+  const st = s.store.getByTelegramId(USER).state;
+  s.store.setState(s.store.getByTelegramId(USER).id, { ...st, step: 'photos' });   // still on the photo step
+  await s.sendPhoto();
+  assert.match(s.lastText(), /Уже 6 фото, больше не нужно/);
+  assert.strictEqual(s.cars.photos(car.id).length, 6);
 });
 
 test('rejected inputs: HEIC file, huge file, small photo, photo at the wrong step', async () => {
@@ -121,37 +130,62 @@ test('rejected inputs: HEIC file, huge file, small photo, photo at the wrong ste
   await s2.sendPhoto({ buf: await makeImage(700, 400) });
   assert.match(s2.lastText(), /слишком маленькое/);
   await s2.sendPhoto({ document: { mime: 'image/png', name: 'front.png' }, buf: await makeImage(1200, 900, 'png') });
-  assert.match(s2.lastText(), /Фото 2\/8/);                    // PNG file accepted
+  assert.match(s2.lastText(), /Принято фото: 1/);              // PNG file accepted
   assert.strictEqual(s2.cars.photos(car.id).length, 1);
 });
 
-test('replace one angle from the summary: old files deleted, back to summary', async () => {
+test('summary: choose the cover, add a photo, upload all again', async () => {
   const s = setup();
   const car = await toPhotos(s);
-  await s.sendPhotos(8);
+  await s.sendPhotos(4);
   await s.tap('Готово');
-  const oldLeft = s.cars.photos(car.id).find(p => p.angle === 'LEFT');
+  const before = s.cars.photos(car.id);
 
   await s.tap('Изменить');
   await s.tap('Фото');
-  await s.tap('слева');
-  assert.match(s.lastText(), /Отправьте новое фото: слева/);
-  await s.sendPhoto();
-  assert.ok(s.texts().includes('Фото заменено.'));
+  await s.tap('Выбрать главное фото');
+  await s.tap('3');
+  assert.ok(s.texts().includes('Главным стало фото 3.'));
   assert.match(s.lastText(), /^Проверьте анкету/);
+  assert.deepStrictEqual(s.cars.photos(car.id).map(p => p.id), [before[2], before[0], before[1], before[3]].map(p => p.id));
 
-  const photos = s.cars.photos(car.id);
-  assert.strictEqual(photos.length, 8);
-  const newLeft = photos.find(p => p.angle === 'LEFT');
-  assert.notStrictEqual(newLeft.id, oldLeft.id);
-  assert.ok(!fs.existsSync(path.join(s.storage.root, oldLeft.path)));
-  assert.ok(fs.existsSync(path.join(s.storage.root, newLeft.path)));
+  await s.tap('Изменить');
+  await s.tap('Фото');
+  await s.tap('Добавить фото');
+  await s.sendPhoto();
+  assert.match(s.lastText(), /Принято фото: 5 из 6/);
+  await s.tap('Готово');
+  assert.strictEqual(s.cars.photos(car.id).length, 5);
+
+  await s.tap('Изменить');
+  await s.tap('Фото');
+  await s.tap('Загрузить фото заново');
+  assert.match(s.lastText(), /^Фото: выберите в галерее/);
+  assert.deepStrictEqual(s.cars.photos(car.id), []);
+  for (const p of before) assert.ok(!fs.existsSync(path.join(s.storage.root, p.path)));
+  await s.sendPhotos(4);
+  await s.tap('Готово');
+  assert.match(s.lastText(), /^Проверьте анкету/);
+  assert.strictEqual(s.cars.photos(car.id).length, 4);
+});
+
+test('cover choice also works for a car with the old angle photos', async () => {
+  const s = setup();
+  const car = await toPhotos(s);
+  for (const angle of ['FRONT', 'BACK', 'LEFT', 'RIGHT', 'INTERIOR_FRONT']) {
+    s.cars.addPhoto(car.id, { angle, telegramFileId: 'f', telegramFileUniqueId: 'u', path: `${car.id}/${angle}.webp`, thumbPath: `${car.id}/${angle}-t.webp`, width: 1, height: 1 });
+  }
+  const old = s.cars.photos(car.id);
+  s.cars.setPhotoOrder(car.id, [old[4].id, old[0].id, old[1].id, old[2].id, old[3].id]);
+  const now = s.cars.photos(car.id);
+  assert.strictEqual(now[0].id, old[4].id);
+  assert.ok(now.every(p => p.angle === 'EXTRA'));
 });
 
 test('delete draft removes its photo folder', async () => {
   const s = setup();
   const car = await toPhotos(s);
-  await s.sendPhotos(8);
+  await s.sendPhotos(4);
   await s.tap('Готово');
   assert.ok(fs.existsSync(carDir(s, car)));
   await s.tap('Удалить черновик');
@@ -160,25 +194,11 @@ test('delete draft removes its photo folder', async () => {
   assert.deepStrictEqual(s.cars.photos(car.id), []);
 });
 
-test('plate choice: stored, and offered first next time', async () => {
+test('plate on photos is not asked: every new car is blurred by us', async () => {
   const s = setup();
-  const car = await toPhotos(s, 'Замажьте номер за меня');
+  const car = await toPhotos(s);
   assert.strictEqual(s.cars.get(car.id).plateOnPhotos, 'BLUR');
-  assert.match(s.lastText(), /^Фото 1\/8: спереди$/);           // no "hide it yourself" hint for BLUR
-  await s.sendPhotos(8); await s.tap('Готово');
-  s.cars.update(car.id, { status: 'PENDING' });
-
-  await s.send('Добавить авто');
-  await s.tap('Новое авто');
-  await s.tap('Kia'); await s.send('Rio'); await s.send('2018');
-  await s.tap('Седан'); await s.tap('Автомат'); await s.tap('Передний'); await s.tap('Бензин'); await s.tap('5');
-  await s.send('белый'); await s.send('01KG 111 CCC'); await s.tap('Пропустить'); await s.tap('Готово');
-  await s.send('Надёжный седан для города, чистый салон, свежее ТО.');
-  await s.tap('С водителем'); await s.tap('Готово'); await s.send('3000');
-  await s.tap('Пропустить'); await s.tap('Пропустить');
-  await s.tap('КАСКО'); await s.tap('Да, бесплатно'); await s.tap('Пропустить');
-  await s.tap('Круглый год');
-  assert.match(s.lastText(), /В прошлый раз вы выбрали: Замажьте номер за меня/);
+  assert.ok(!s.texts().some(t => /Госномер на фото/.test(t)));
 });
 
 test('low disk: photos refused, partner gets a calm message', async () => {
@@ -193,7 +213,7 @@ test('low disk: photos refused, partner gets a calm message', async () => {
 test('cleanup: archived photos after 30 days, drafts after 90 days', async () => {
   const s = setup();
   const car = await toPhotos(s);
-  await s.sendPhotos(8); await s.tap('Готово');
+  await s.sendPhotos(4); await s.tap('Готово');
   const day = 24 * 60 * 60 * 1000;
 
   // Fresh: nothing to do.

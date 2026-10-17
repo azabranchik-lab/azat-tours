@@ -66,7 +66,8 @@ test('export: two CSV files for Excel (BOM, ";"), with plate and photo files', a
   assert.ok(partners.startsWith('﻿Telegram ID;Username;Имя;Телефон'));
   assert.match(partners, new RegExp(`${USER};@tester;Ош Авто;\\+996555111222;Бишкек;ACTIVE`));
   assert.match(cars, /;01KG 123 ABC;/);
-  assert.match(cars, new RegExp(`;${car.id}/FRONT-[\\w-]+\\.webp `));
+  assert.match(cars, new RegExp(`;${car.id}/EXTRA-[\\w-]+\\.webp `));
+  assert.match(cars, /;Мин\. срок, дней;/);
   assert.match(docs[0].payload.document.filename, /^partners-\d{4}-\d{2}-\d{2}\.csv$/);
 });
 
@@ -122,10 +123,10 @@ test('«Файлы для сайта»: full-quality JPEG files named for the si
   const groups = s.calls.filter(c => c.method === 'sendMediaGroup' && c.payload.chat_id === GROUP && c.payload.media[0].type === 'document');
   assert.strictEqual(groups.length, 1);
   const names = groups[0].payload.media.map(m => m.media.filename);
-  assert.strictEqual(names.length, 8);
-  assert.strictEqual(names[0], 'toyota-camry-2019-01-front.jpg');
-  assert.strictEqual(names[7], 'toyota-camry-2019-08-dashboard.jpg');
-  assert.match(groupReplies(s).at(-1), /^Фото для сайта: 8 шт\..*\n\nToyota Camry 2019\n/s);
+  assert.strictEqual(names.length, 4);
+  assert.strictEqual(names[0], 'toyota-camry-2019-01.jpg');
+  assert.strictEqual(names[3], 'toyota-camry-2019-04.jpg');
+  assert.match(groupReplies(s).at(-1), /^Фото для сайта: 4 шт\..*\n\nToyota Camry 2019\n/s);
 
   await groupCmd(s, `/partner ${USER}`);                   // also reachable later from the partner card
   assert.ok(s.hasButton('Файлы для сайта: Toyota Camry 2019'));

@@ -6,9 +6,9 @@ const { InputFile, InputMediaBuilder } = require('grammy');
 
 async function sendAlbum(api, chatId, storage, photos, other = {}) {
   const media = [];
-  for (const p of photos) {
+  for (const [i, p] of photos.entries()) {
     const jpg = await sharp(await storage.read(p.path)).jpeg({ quality: 80 }).toBuffer();
-    media.push(InputMediaBuilder.photo(new InputFile(jpg, `${p.angle}.jpg`)));
+    media.push(InputMediaBuilder.photo(new InputFile(jpg, `photo-${i + 1}.jpg`)));
   }
   for (let i = 0; i < media.length; i += 10) await api.sendMediaGroup(chatId, media.slice(i, i + 10), other);
 }

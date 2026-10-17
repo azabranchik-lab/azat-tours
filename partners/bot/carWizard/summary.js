@@ -16,7 +16,7 @@ function summaryKeyboard(ctx, car) {
 
 function fieldsKeyboard(ctx, car) {
   const kb = new InlineKeyboard();
-  const fields = S.STEPS.filter(s => S.applies(s, car));
+  const fields = S.STEPS.filter(s => !S.isCompound(s) && S.applies(s, car));
   fields.forEach((s, i) => {
     kb.text(ctx.t('f_' + s.key), s.type === 'photos' ? `sum:ph:${car.id}` : `sum:f:${car.id}:${S.step(s.key).index}`);
     if (i % 2 === 1) kb.row();
@@ -24,10 +24,20 @@ function fieldsKeyboard(ctx, car) {
   return tidy(kb.row().text(ctx.t('btn_back'), `sum:show:${car.id}`));
 }
 
+// «Фото» in «Изменить»: add more (up to the max), upload all again, pick the cover.
 function photosKeyboard(ctx, car) {
   const kb = new InlineKeyboard();
-  P.REQUIRED_ANGLES.forEach((a, i) => { kb.text(ctx.t('angle_' + a), `sum:pa:${car.id}:${i}`); if (i % 2 === 1) kb.row(); });
-  return tidy(kb.row().text(ctx.t('btn_extras_redo'), `sum:px:${car.id}`).row().text(ctx.t('btn_back'), `sum:edit:${car.id}`));
+  if (ctx.cars.photos(car.id).length < P.MAX_PHOTOS) kb.text(ctx.t('btn_photos_add'), `sum:pa:${car.id}`).row();
+  kb.text(ctx.t('btn_photos_redo'), `sum:px:${car.id}`).row();
+  kb.text(ctx.t('btn_cover'), `sum:pc:${car.id}`).row();
+  return kb.text(ctx.t('btn_back'), `sum:edit:${car.id}`);
+}
+
+// Cover choice: one button per photo, numbered as in the album above the summary.
+function coverKeyboard(ctx, car) {
+  const kb = new InlineKeyboard();
+  ctx.cars.photos(car.id).forEach((p, i) => { kb.text(String(i + 1), `sum:cv:${car.id}:${i}`); if (i % 3 === 2) kb.row(); });
+  return tidy(kb.row().text(ctx.t('btn_back'), `sum:ph:${car.id}`));
 }
 
 async function show(ctx, car, { withPhotos = false } = {}) {
@@ -68,16 +78,27 @@ async function onCallback(ctx, parts) {
     return ctx.editMessageReplyMarkup({ reply_markup: photosKeyboard(ctx, car) }).catch(() => {});
   }
   if (action === 'pa') {
-    const angle = P.REQUIRED_ANGLES[Number(arg)];
-    if (!angle) return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
     await ctx.answerCallbackQuery();
-    return require('./photos').ask(ctx, car, 'edit', { replaceAngle: angle });
+    return require('./photos').ask(ctx, car, 'edit');
   }
   if (action === 'px') {
     await ctx.answerCallbackQuery();
     const photos = require('./photos');
-    await photos.clearExtras(ctx, car);
+    await photos.clearAll(ctx, car);
     return photos.ask(ctx, car, 'edit');
+  }
+  if (action === 'pc') {
+    await ctx.answerCallbackQuery();
+    return ctx.editMessageReplyMarkup({ reply_markup: coverKeyboard(ctx, car) }).catch(() => {});
+  }
+  if (action === 'cv') {
+    const photos = ctx.cars.photos(car.id);
+    const chosen = photos[Number(arg)];
+    if (!chosen) return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
+    await ctx.answerCallbackQuery();
+    ctx.cars.setPhotoOrder(car.id, [chosen.id, ...photos.filter(p => p !== chosen).map(p => p.id)]);
+    await ctx.reply(ctx.t('cover_saved', { n: Number(arg) + 1 }));
+    return show(ctx, ctx.cars.get(car.id), { withPhotos: true });
   }
   if (action === 'del') {
     await ctx.answerCallbackQuery();
@@ -101,8 +122,8 @@ async function onCallback(ctx, parts) {
     await ctx.answerCallbackQuery();
     const missing = S.missingRequired(car);
     if (missing.length) return ctx.reply(ctx.t('missing_fields', { fields: missing.map(k => ctx.t('f_' + k)).join(', ') }));
-    const noPhoto = P.missingAngles(ctx.cars.photos(car.id));
-    if (noPhoto.length) return ctx.reply(ctx.t('photos_missing', { angles: noPhoto.map(a => ctx.t('angle_' + a)).join(', ') }));
+    const need = P.photosNeeded(ctx.cars.photos(car.id));
+    if (need) return ctx.reply(ctx.t('photos_missing', { n: need }));
     return require('../moderation').submit(ctx, car);
   }
   return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
