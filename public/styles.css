@@ -804,6 +804,15 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .opt-card .tx span{font-size:.84rem;color:var(--ink-soft)}
 .opt-card .tick{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);display:grid;place-items:center;color:transparent;font-weight:800;transition:.2s;z-index:2}
 .opt-card.sel .tick{background:var(--lake-fill);border-color:var(--lake);color:#fff}
+/* "Not sure yet": the quiet way out under the style grid (no photo, same pick behaviour) */
+.opt-slim{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:14px 18px;border-radius:18px;border:2px solid transparent;background:var(--surface);box-shadow:var(--shadow);color:var(--ink);text-align:left;cursor:pointer;transition:border-color .25s}
+.opt-slim .ic{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:12px;background:var(--paper-2);color:var(--lake)}
+.opt-slim .ic .gico{width:1.35rem;height:1.35rem}
+.opt-slim .tx b{display:block;font-size:1.02rem}
+.opt-slim .tx span{font-size:.84rem;color:var(--ink-soft)}
+.opt-slim .tick{order:2;margin-left:auto;width:28px;height:28px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);display:grid;place-items:center;color:transparent;flex:none;transition:.2s}
+.opt-slim.sel{border-color:var(--lake)}
+.opt-slim.sel .tick{background:var(--lake-fill);border-color:var(--lake);color:#fff}
 
 /* simple choice cards (no image) */
 .choice-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -821,7 +830,7 @@ footer .blurb{font-size:.92rem;max-width:34ch;line-height:1.7}
 .b-chip.sel{background:var(--lake-fill);color:#fff;border-color:var(--lake)}
 /* unanswered required group: point at what to tap instead of blocking the button */
 .needs-pick{border-radius:16px;box-shadow:0 0 0 3px rgba(194,80,58,.14);padding:8px;margin:-8px}
-.needs-pick .opt-card,.needs-pick .b-chip{border-color:var(--clay)}
+.needs-pick .opt-card,.needs-pick .opt-slim,.needs-pick .b-chip{border-color:var(--clay)}
 .field-group{margin-bottom:28px}
 .field-group > label{display:block;font-weight:700;margin-bottom:12px;font-size:1.02rem}
 
@@ -1349,6 +1358,17 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .opt-card.sel .tick{box-shadow:inset 0 0 0 7px var(--lake)}
   .opt-card.sel .tick .gico{display:none}
   .opt-card.sel .tx b{font-weight:700}
+  /* "Not sure yet" keeps the row shape (radio dot left) but no photo and a quieter surface */
+  .opt-slim{margin-top:10px;padding:8px;gap:12px;border:0;border-radius:16px;background:transparent;box-shadow:0 0 0 1px var(--line);transition:box-shadow .22s}
+  .opt-slim .ic{width:54px;height:40px;border-radius:11px}
+  .opt-slim .tx{min-width:0}
+  .opt-slim .tx b{font-size:.98rem;line-height:1.2}
+  .opt-slim .tx span{display:block;font-size:.82rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .opt-slim .tick{order:-1;margin:0;width:22px;height:22px;border:0;background:none;box-shadow:inset 0 0 0 2px var(--line);color:transparent}
+  .opt-slim.sel{box-shadow:0 0 0 2px var(--lake)}
+  .opt-slim.sel .tick{background:none;box-shadow:inset 0 0 0 7px var(--lake)}
+  .opt-slim.sel .tick .gico{display:none}
+  .opt-slim.sel .tx b{font-weight:700}
 
   /* --- step 2: chips on the Soft Alpine pill recipe + full-width steppers --- */
   .b-chips{gap:8px}

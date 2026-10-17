@@ -3,7 +3,7 @@
   const TOURS = window.TOURS || [];
   const LS = 'alatoo_builder';
 
-  const blank = { style: '', nights: 7, whenMode: 'months', months: [], anyMonth: false, dateFrom: '', dateTo: '', adults: 2, children: 0, effort: '', riding: '', comfort: '', base: '', name: '', email: '', whatsapp: '' };
+  const blank = { style: '', nights: 7, dayCount: 1, whenMode: 'months', months: [], anyMonth: false, dateFrom: '', dateTo: '', adults: 2, children: 0, effort: '', riding: '', comfort: '', base: '', name: '', email: '', whatsapp: '' };
   let S = Object.assign({}, blank);
   try {
     const saved = JSON.parse(localStorage.getItem(LS));
@@ -13,6 +13,7 @@
   // rather than let a string land where the render now expects an array
   if (!Array.isArray(S.months)) S.months = [];
   if (typeof S.nights !== 'number' || !isFinite(S.nights)) S.nights = 7;
+  if (typeof S.dayCount !== 'number' || !isFinite(S.dayCount)) S.dayCount = 1;
   delete S.month; delete S.duration;
   const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
 
@@ -49,8 +50,12 @@
     { id: 'Road trip', t: 'Road trip & comfort', d: 'Scenic drives, less effort', img: '1454496522488-7a8e488e8606' },
     { id: 'Off-the-beaten-path', t: 'Off the beaten path', d: 'Remote valleys, real nomad life', img: '1519681393784-d120267933ba' },
     { id: 'Winter tours', t: 'Winter adventure', d: 'Snowy passes & frozen lakes', img: '1551632811-561732d1e306' },
+    // owner 2026-10-17 (variant B): day trips are a style of their own; the card shows only while
+    // the catalogue has day trips, like the car rental section
+    { id: 'Day trips', t: 'Day trips', d: 'From Bishkek, back by evening', img: '1506905925346-21bda4d32df4' },
     { id: 'notsure', t: 'Not sure yet', d: 'Help me choose, surprise me!', img: '1506905925346-21bda4d32df4' }
-  ];
+  ].filter(s => s.id !== 'Day trips' || TOURS.some(t => (t.cats || []).includes('Day trips')));
+  const dayMode = () => S.style === 'Day trips';   // step 2 then asks for days, not nights
   // 12 months forward, always labelled with the year: "July" alone is ambiguous in December.
   // Built from today, so the list never offers a month that has already passed.
   const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -136,11 +141,17 @@
   function matchTours() {
     // nights are a number now. The old version compared band ids and returned true for anything it
     // did not recognise, so a numeric value would have silently matched every tour in the catalogue.
-    const want = tripNights();
+    // day trips last one day each, however many days the traveller has
+    const want = dayMode() ? 1 : tripNights();
     const inRange = d => !want ? true : Math.abs(d - want) <= 2;
+    const winter = winterTrip();
+    const isWinter = t => (t.cats || []).includes('Winter tours') || (t.tags || []).includes('winter');
     const scored = TOURS.map(t => {
       let s = 0;
       if (S.style && S.style !== 'notsure' && t.cats.includes(S.style)) s += 2;
+      // a winter trip puts the winter tours first (owner 2026-10-17); the rest stay in the list,
+      // people book summer tours months ahead
+      if (winter && isWinter(t)) s += 4;
       if (S.style === 'Combined' && /trekking|horse/i.test(t.activities)) s += 1;
       if (inRange(t.days)) s += 2;
       // effort and comfort used to be collected and then ignored; they steer the shortlist now
@@ -159,8 +170,22 @@
       // a traveller who would rather not ride should not be shown horse-first routes
       if (S.riding === 'norides' && /horse/i.test((t.activities || '') + t.cats.join(' '))) s -= 2;
       return { t, s };
-    }).sort((a, b) => b.s - a.s);
-    return scored.filter(x => x.s > 0).slice(0, 3).map(x => x.t);
+    // equal scores: the trip length closest to the one asked for first
+    }).sort((a, b) => b.s - a.s || Math.abs(a.t.days - want) - Math.abs(b.t.days - want));
+    const fit = scored.filter(x => x.s > 0);
+    if (!winter) return fit.slice(0, 3).map(x => x.t);
+    // winter: two winter tours on top, and the third place kept for the best other tour
+    const w = fit.filter(x => isWinter(x.t)), o = fit.filter(x => !isWinter(x.t));
+    const pick = o.length ? w.slice(0, 2).concat(o.slice(0, 1)) : w.slice(0, 3);
+    return pick.concat(fit.filter(x => !pick.includes(x))).slice(0, 3).map(x => x.t);
+  }
+  // a winter trip: the Winter style, or every picked month (or the arrival date) from November to March
+  const WINTER_MONTHS = [11, 12, 1, 2, 3];
+  function winterTrip() {
+    if (S.style === 'Winter tours') return true;
+    if (S.whenMode === 'exact' && S.dateFrom) return WINTER_MONTHS.includes(new Date(S.dateFrom).getMonth() + 1);
+    if (S.anyMonth || !S.months.length) return false;
+    return S.months.every(id => WINTER_MONTHS.includes(Number(id.slice(5, 7))));
   }
 
   // ---- render ----
@@ -198,10 +223,16 @@
     if (step === 0) {
       a.innerHTML = header('Trip style', "What kind of adventure?", "Pick the vibe that excites you most. Not sure? Choose “Not sure yet” and we'll suggest.") +
         askLine('style') +
-        `<div class="opt-cards${flag('style')}">${STYLES.map(s => `
+        // the photo styles fill an even grid; "Not sure yet" is the way out, a quieter row under it
+        `<div class="opt-pick${flag('style')}"><div class="opt-cards">${STYLES.filter(s => s.id !== 'notsure').map(s => `
           <button class="opt-card ${S.style === s.id ? 'sel' : ''}" onclick="BUILDER.set('style','${s.id}')">
             <span class="tick"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></span>
             <span class="im"><img loading="lazy" src="${styleImg(s)}" alt="${s.t}"></span>
+            <span class="tx"><b>${s.t}</b><span>${s.d}</span></span>
+          </button>`).join('')}</div>${STYLES.filter(s => s.id === 'notsure').map(s => `
+          <button class="opt-slim ${S.style === s.id ? 'sel' : ''}" onclick="BUILDER.set('style','${s.id}')">
+            <span class="tick"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17 19 7"/></svg></span>
+            <span class="ic"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.4"/><path d="M12 16.8v.2"/></svg></span>
             <span class="tx"><b>${s.t}</b><span>${s.d}</span></span>
           </button>`).join('')}</div>` + navBtns(false);
     }
@@ -215,7 +246,18 @@
         </div>`;
       // nights as a stepper, the same control as the traveller counts, plus a real numeric field so
       // a 14-night traveller types instead of tapping thirteen times
-      const nightsRow = `<div class="stepper nights-row">
+      // day trips: the same stepper counts days (one trip a day, back in Bishkek every evening)
+      const dm = dayMode(), days = tripDays();
+      const nightsRow = dm ? `<div class="stepper nights-row">
+          <div class="lab"><b>Days</b><span>${exact ? 'From your dates' : 'One trip a day, you sleep in Bishkek'}</span></div>
+          <div class="ctrl">
+            <button type="button" tabindex="-1" aria-label="One day fewer" onclick="BUILDER.bump('dayCount',-1)">−</button>
+            <input class="val" id="vNights" type="text" inputmode="numeric" pattern="[0-9]*" role="spinbutton"
+              aria-label="Number of days" aria-valuenow="${days}" aria-valuemin="1" aria-valuemax="14"
+              value="${days}" ${exact ? 'readonly' : ''} oninput="BUILDER.typeDays(this.value)">
+            <button type="button" tabindex="-1" aria-label="One day more" onclick="BUILDER.bump('dayCount',1)">+</button>
+          </div>
+        </div>` : `<div class="stepper nights-row">
           <div class="lab"><b>Nights</b><span>${exact ? 'From your dates' : "Roughly, we'll fine-tune"}</span></div>
           <div class="ctrl">
             <button type="button" tabindex="-1" aria-label="One night fewer" onclick="BUILDER.bump('nights',-1)">−</button>
@@ -242,12 +284,12 @@
             <div class="field"><label for="dFrom">Arrive</label><input id="dFrom" type="date" value="${S.dateFrom}" onchange="BUILDER.setDate('dateFrom',this.value)"></div>
             <div class="field"><label for="dTo">Leave</label><input id="dTo" type="date" value="${S.dateTo}" onchange="BUILDER.setDate('dateTo',this.value)"></div>
           </div>
-          ${S.dateFrom && S.dateTo && nights > 0 ? `<p class="date-note">${nights} nights, we'll build the route around these dates</p>` : ''}
+          ${S.dateFrom && S.dateTo && nights > 0 ? `<p class="date-note">${dm ? days + ' days' : nights + ' nights'}, we'll build the ${dm ? 'plan' : 'route'} around these dates</p>` : ''}
           ${askLine('when')}
         </div>`;
       a.innerHTML = header('When & who', "When would you like to go?", "Rough answers are fine, everything is tailor-made around you.") +
         tabs +
-        `<div class="field-group"><label>How many nights?</label><div class="steppers">${nightsRow}</div></div>` +
+        `<div class="field-group"><label>${dm ? 'How many days?' : 'How many nights?'}</label><div class="steppers">${nightsRow}</div></div>` +
         (exact ? exactBlock : monthsBlock) +
         `<div class="field-group"><label>Who's coming?</label><div class="steppers">
            <div class="stepper"><div class="lab"><b>Adults</b><span>13+ years</span></div><div class="ctrl"><button type="button" aria-label="One adult fewer" onclick="BUILDER.bump('adults',-1)">−</button><span class="val" id="vAdults">${S.adults}</span><button type="button" aria-label="One adult more" onclick="BUILDER.bump('adults',1)">+</button></div></div>
@@ -306,7 +348,12 @@
   const label = (list, id) => (list.find(o => o.id === id) || {}).t || id;
   const travellers = () => S.adults + ' adult(s)' + (S.children ? ', ' + S.children + ' child(ren)' : '');
   const tripNights = () => (S.whenMode === 'exact' && S.dateFrom && S.dateTo) ? nightsBetween(S.dateFrom, S.dateTo) : S.nights;
-  const nightsText = () => { const n = tripNights(); return n ? n + ' nights' : ''; };
+  // day trips are counted in days: by exact dates both ends count (arrive 3rd, leave 5th = 3 days)
+  const tripDays = () => (S.whenMode === 'exact' && S.dateFrom && S.dateTo) ? nightsBetween(S.dateFrom, S.dateTo) + 1 : S.dayCount;
+  const nightsText = () => {
+    if (dayMode()) { const d = tripDays(); return d ? d + (d === 1 ? ' day' : ' days') + ' of day trips' : ''; }
+    const n = tripNights(); return n ? n + ' nights' : '';
+  };
 
   function summaryText() {
     const lines = [];
@@ -429,8 +476,8 @@
       render();
     },
     bump(k, d) {
-      const floor = k === 'adults' ? 1 : k === 'nights' ? 1 : 0;
-      const ceil = k === 'nights' ? 30 : 20;
+      const floor = k === 'adults' || k === 'nights' || k === 'dayCount' ? 1 : 0;
+      const ceil = k === 'nights' ? 30 : k === 'dayCount' ? 14 : 20;
       S[k] = Math.max(floor, Math.min(ceil, (Number(S[k]) || 0) + d));
       if (k === 'nights') invalid = invalid.filter(x => x !== 'when');
       render();
@@ -440,6 +487,12 @@
       const n = parseInt(String(v).replace(/\D/g, ''), 10);
       if (!isFinite(n)) return;
       S.nights = Math.max(1, Math.min(30, n));
+      save(); renderSummary();
+    },
+    typeDays(v) {
+      const n = parseInt(String(v).replace(/\D/g, ''), 10);
+      if (!isFinite(n)) return;
+      S.dayCount = Math.max(1, Math.min(14, n));
       save(); renderSummary();
     },
     setWhenMode(mode) { S.whenMode = mode; invalid = invalid.filter(x => x !== 'when'); render(); },
