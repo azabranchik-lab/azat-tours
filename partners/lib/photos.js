@@ -69,10 +69,16 @@ async function processImageNow(buf) {
   return { ok: true, main: main.data, thumb: thumb.data, width: main.info.width, height: main.info.height };
 }
 
+// A stored WebP re-encoded as JPEG for Telegram (albums, «Файлы для сайта»), under the
+// same concurrency limit as uploads, so several albums at once cannot overload the server.
+function toJpeg(buf, quality) {
+  return limited(() => sharp(buf, SHARP_INPUT).jpeg({ quality }).toBuffer());
+}
+
 // How many more photos a car needs before it can be sent (0 when enough).
 const photosNeeded = photos => Math.max(0, MIN_PHOTOS - photos.length);
 
 module.exports = {
   MIN_PHOTOS, MAX_PHOTOS, ALLOWED_MIME,
-  checkIncoming, processImage, photosNeeded
+  checkIncoming, processImage, photosNeeded, toJpeg
 };

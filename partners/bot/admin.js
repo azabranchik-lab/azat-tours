@@ -5,7 +5,7 @@
 // /panel posts a panel [На проверке][Статистика][Выгрузка CSV][Найти партнёра];
 // the same actions exist as commands: /pending /stats /export /partner /block /unblock.
 const { InlineKeyboard, InputFile, InputMediaBuilder } = require('grammy');
-const sharp = require('sharp');
+const { toJpeg } = require('../lib/photos');
 const { t: translate } = require('../i18n');
 const { carTitle } = require('../lib/format');
 const { toCsv } = require('../lib/csv');
@@ -86,7 +86,7 @@ async function siteFiles(ctx, id) {
   const photos = ctx.cars.photos(car.id);
   const media = [];
   for (const [i, p] of photos.entries()) {
-    const jpg = await sharp(await ctx.storage.read(p.path)).jpeg({ quality: 90 }).toBuffer();
+    const jpg = await toJpeg(await ctx.storage.read(p.path), 90);
     media.push(InputMediaBuilder.document(new InputFile(jpg, `${base}-${String(i + 1).padStart(2, '0')}.jpg`)));
   }
   for (let i = 0; i < media.length; i += 10) await ctx.replyWithMediaGroup(media.slice(i, i + 10));

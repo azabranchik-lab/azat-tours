@@ -81,9 +81,10 @@ function createCars(db) {
     // New photo order (ids, first = cover). Angle photos of older cars become plain
     // ordered photos, so any of them can be the cover.
     setPhotoOrder(carId, ids) {
+      const move = db.prepare("UPDATE car_photos SET angle = 'EXTRA', sortOrder = ? WHERE id = ? AND carId = ?");
       db.exec('BEGIN');
       try {
-        ids.forEach((id, i) => db.prepare("UPDATE car_photos SET angle = 'EXTRA', sortOrder = ? WHERE id = ? AND carId = ?").run(i, id, carId));
+        ids.forEach((id, i) => move.run(i, id, carId));
         db.prepare('UPDATE cars SET updatedAt = ? WHERE id = ?').run(now(), carId);
         db.exec('COMMIT');
       } catch (e) { db.exec('ROLLBACK'); throw e; }
