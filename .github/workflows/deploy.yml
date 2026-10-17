@@ -52,14 +52,20 @@ jobs:
             git reset --hard origin/main
             echo "→ installing prod deps"
             npm ci --omit=dev
-            echo "→ one-time content migrations (renames, text fixes)"
-            # A failed migration must not leave the old process running against the new
-            # files: the site also works on unmigrated content, so carry on with the
-            # reload and fail the run at the very end so the problem is visible.
             MIGRATE_FAILED=""
-            node scripts/migrate.js || MIGRATE_FAILED=1
-            echo "→ regenerating public/*-data.js from content/*.json"
-            node scripts/regenerate-all.js
+            # Without content/*.json, regenerating would overwrite the committed
+            # public/*-data.js with empty data and the site would lose all tours.
+            if [ -s content/tours.json ]; then
+              echo "→ one-time content migrations (renames, text fixes)"
+              # A failed migration must not leave the old process running against the new
+              # files: the site also works on unmigrated content, so carry on with the
+              # reload and fail the run at the very end so the problem is visible.
+              node scripts/migrate.js || MIGRATE_FAILED=1
+              echo "→ regenerating public/*-data.js from content/*.json"
+              node scripts/regenerate-all.js
+            else
+              echo "→ content/tours.json missing: skipping migrations and regen, serving committed public/*-data.js"
+            fi
             echo "→ pm2 reload"
             pm2 startOrReload ecosystem.config.js --update-env
             sleep 2
