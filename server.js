@@ -89,12 +89,28 @@ function etagMatches(req, etag) {
   return String(req.headers['if-none-match'] || '').split(',').some(t => t.trim().replace(/^W\//, '') === etag);
 }
 
-// Send a body with optional gzip.
-function respond(req, res, data, headers, type) {
+// Gzipped bodies, kept by a key that changes with the content (page ETag, or file path + ETag),
+// so a busy page is compressed once, not on every request (load test 2026-10-17: compressing
+// every response capped the site at ~420 pages/s). Oldest entries go first; ~10-30 KB each.
+const GZ_CACHE = new Map(), GZ_CACHE_MAX = 600;
+function gzCached(key, data, done) {
+  const hit = key && GZ_CACHE.get(key);
+  if (hit) return done(null, hit);
+  zlib.gzip(data, (ge, gz) => {
+    if (!ge && key) {
+      GZ_CACHE.set(key, gz);
+      if (GZ_CACHE.size > GZ_CACHE_MAX) GZ_CACHE.delete(GZ_CACHE.keys().next().value);
+    }
+    done(ge, gz);
+  });
+}
+
+// Send a body with optional gzip. cacheKey: see GZ_CACHE (omit for bodies that are not stable).
+function respond(req, res, data, headers, type, cacheKey) {
   const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
   const compressible = /text\/|javascript|json|svg|xml/.test(type);
   if (acceptsGzip && compressible && data.length > 1024) {
-    zlib.gzip(data, (ge, gz) => {
+    gzCached(cacheKey, data, (ge, gz) => {
       if (ge) { res.writeHead(200, headers); return res.end(data); }
       res.writeHead(200, Object.assign({ 'Content-Encoding': 'gzip', 'Vary': 'Accept-Encoding' }, headers));
       res.end(gz);
@@ -114,7 +130,7 @@ function sendPage(req, res, body, key, opts) {
     headers.ETag = '"' + pages.version() + '-' + key + '"';
     if (etagMatches(req, headers.ETag)) { res.writeHead(304, headers); return res.end(); }
   }
-  respond(req, res, Buffer.from(body, 'utf8'), headers, type);
+  respond(req, res, Buffer.from(body, 'utf8'), headers, type, headers.ETag && type + headers.ETag);
 }
 
 // Clean URLs, plus 301s from every old address:
@@ -344,7 +360,7 @@ const server = http.createServer(async (req, res) => {
     if (etagMatches(req, etag)) { res.writeHead(304, headers); return res.end(); }
     fs.readFile(served, (e, data) => {
       if (e) { return send404(res); }
-      respond(req, res, data, headers, type);
+      respond(req, res, data, headers, type, served + etag);
     });
   });
 });
