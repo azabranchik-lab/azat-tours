@@ -42,7 +42,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script_stop: true  # abort on first failed command
           script: |
             set -euo pipefail
             cd "${{ secrets.DEPLOY_PATH }}"
