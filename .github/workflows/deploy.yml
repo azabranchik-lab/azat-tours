@@ -71,5 +71,10 @@ jobs:
             echo "→ health check"
             PORT=$(node -e "try{console.log(JSON.parse(require('fs').readFileSync('config.json')).port||5173)}catch(e){console.log(5173)}")
             curl -sfL "http://127.0.0.1:$PORT/" > /dev/null || (echo 'site down after reload'; pm2 logs azat-tours --lines 30 --nostream; exit 1)
+            echo "→ partners bot: deps + restart (its DB migrations run on start)"
+            (cd partners && npm ci --omit=dev)
+            pm2 startOrRestart partners/ecosystem.config.js --update-env
+            sleep 5
+            pm2 describe azat-partners | grep -qE "status\s+│\s+online" || (echo 'partners bot not online after restart'; pm2 logs azat-partners --lines 30 --nostream; exit 1)
             if [ -n "$MIGRATE_FAILED" ]; then echo "site is up, but a content migration failed: see the log above"; exit 1; fi
             echo "✓ deploy done"
