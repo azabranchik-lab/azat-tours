@@ -8,3 +8,8 @@ images/
 logs/
 
 .gstack/
+
+# local tools and source material of the 2026 tour pack (only add-tours.js and tours.json ship)
+scripts/tours-2026/tools/
+# owner's private working notes (not for the public repo)
+docs/PRIVATE-NOTES.md

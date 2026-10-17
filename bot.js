@@ -30,9 +30,9 @@ if (!TOKEN || TOKEN.includes('PASTE-')) {
 const bot = new Bot(TOKEN);
 const sessions = new Map(); // userId -> state
 
-const TOUR_CATS = ['Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
+const TOUR_CATS = ['Day trips', 'Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
 const POST_CATS = ['Travel guide', 'Planning', 'Culture', 'Practical', 'Gear', 'Horse treks', 'Day tours'];
-const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags']];
+const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags'], ['priceFrom', 'Price from $']];
 const POST_FIELDS = [['title', 'Title'], ['category', 'Category'], ['excerpt', 'Excerpt'], ['author', 'Author'], ['body', 'Body text']];
 
 // ---------- auth ----------
@@ -118,7 +118,7 @@ function tourView(id) {
     .text('✏️ Edit text', `t:e:${id}`).text('🖼 Photos', `t:ph:${id}`).row()
     .text('🗺 Itinerary', `t:itin:${id}`).row()
     .text('🗑 Delete', `t:del:${id}`).text('« Back', 't:list').row();
-  const info = `${b(t.name)}\n📂 ${esc((t.cats || []).join(', ') || t.category)}\n⏱ ${esc(t.duration || '—')} · 📷 ${(t.images || []).length} photos\n\n${t.summary ? esc(t.summary.slice(0, 350)) : '<i>no description</i>'}`;
+  const info = `${b(t.name)}\n📂 ${esc((t.cats || []).join(', ') || t.category)}\n⏱ ${esc(t.duration || '—')} · 📷 ${(t.images || []).length} photos · 💵 ${t.priceFrom > 0 ? 'from $' + t.priceFrom + '/person' : 'on request'}\n\n${t.summary ? esc(t.summary.slice(0, 350)) : '<i>no description</i>'}`;
   return { info, kb };
 }
 function tourEditKb(id) {
@@ -692,6 +692,12 @@ bot.on('message:text', async (ctx, next) => {
       const tours = C.loadTours(); const t = tours.find(x => x.id === s.id); if (!t) { sessions.delete(ctx.from.id); return; }
       if (s.field === 'highlights') t.highlights = txt.split(/[,\n]/).map(x => x.trim()).filter(Boolean);
       else if (s.field === 'tags') t.tags = txt.split(/[,\n]/).map(x => x.trim().toLowerCase().replace(/\s+/g, '-')).filter(Boolean);
+      else if (s.field === 'priceFrom') {
+        // USD per person shown as "from $X"; 0 brings back "Price on request"
+        const n = /\d/.test(txt) ? Math.round(Number(txt.replace(/[^\d.]/g, ''))) : NaN;
+        if (!Number.isFinite(n)) return ask(ctx, '⚠️ Send just a number in USD, e.g. <code>550</code> (or <code>0</code> for "price on request"):');
+        t.priceFrom = n;
+      }
       else { t[s.field] = txt.trim(); if (s.field === 'duration') t.days = daysFrom(txt); }
       C.saveTours(tours);
     } else if (s.kind === 'post') {

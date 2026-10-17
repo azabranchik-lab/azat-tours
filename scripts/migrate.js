@@ -80,6 +80,9 @@ const MIGRATIONS = [
   ['2026-10-14-canonical-pairs', [setCanonicals]],
   ['2026-10-15-highlights', [setHighlights]],
   ['2026-10-15-ala-kul-guide', [setPost('./_post-ala-kul.js')]],
+  // The 2026 tour pack: 41 day trips and short tours (scripts/tours-2026/). Published right
+  // away (owner decision 2026-10-17); he edits them in the bot. Existing tours are not touched.
+  ['2026-10-16-new-tours', [() => require('./tours-2026/add-tours').addTours({ publish: true })]],
 ];
 
 function main() {

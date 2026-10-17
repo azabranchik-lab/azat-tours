@@ -29,7 +29,7 @@
     const bar = document.getElementById('filterBar');
 
     // category chips (single-select, top row)
-    const order = ['Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
+    const order = ['Day trips', 'Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];   // 'Day trips' added 2026-10-16 (owner) for the one-day tours
     const present = order.filter(c => catCount(c) > 0);
 
     // tag chips (multi-select, second row), activity / duration / season, in a sensible order

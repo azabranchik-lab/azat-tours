@@ -40,11 +40,18 @@
           ${meta}
           ${body}
           <div class="tour-foot">
-            <span class="tour-tag">${t.tour_speed || 'Small group'}</span>
+            ${tourFootLeft(t)}
             <span class="tour-cta">View details </span>
           </div>
         </div>
       </a>`;
+  }
+  // Card footer, left side: the starting price when the tour has one (priceFrom, USD
+  // per person), otherwise the pace as before.
+  function tourFootLeft(t) {
+    return t.priceFrom > 0
+      ? `<span class="tour-tag tour-price"><b>from $${t.priceFrom}</b> / person</span>`
+      : `<span class="tour-tag">${t.tour_speed || 'Small group'}</span>`;
   }
 
   // Home page pick: a varied six (long combined trips, a horse trip, a short one).
@@ -110,5 +117,5 @@
       </a>`;
   }
 
-  return { esc, asset, tourUrl, postUrl, dateStr, FALLBACK_IMG, tourCard, featuredTours, postFeatured, postCard, carUrl, thumbUrl, seatsText, carFrom, carCard };
+  return { esc, asset, tourUrl, postUrl, dateStr, FALLBACK_IMG, tourCard, tourFootLeft, featuredTours, postFeatured, postCard, carUrl, thumbUrl, seatsText, carFrom, carCard };
 });

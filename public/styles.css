@@ -1518,3 +1518,9 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .car-prices .cp{padding:14px}
   .car-prices .cp b{font-size:1.6rem}
 }
+
+/* Tour starting price in the card footer (priceFrom, owner 2026-10-16). Same look as the car
+   cards; on phones the footer label is normally hidden (pace became a chip), the price stays. */
+.tour-foot .tour-price{font-size:.9rem;color:var(--ink-soft);font-weight:500}
+.tour-foot .tour-price b{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--ink)}
+@media(max-width:680px){ .tour-foot .tour-price{display:inline;font-size:.82rem} .tour-foot .tour-price b{font-size:1rem} }
