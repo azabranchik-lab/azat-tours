@@ -14,10 +14,8 @@ test('an album of 10 delivered all at once: 6 photos kept in order, one message 
   await s.send('Добавить авто');
   await s.send('Kia Rio 2018');
   await specs(s);
-  await s.send('01KG 999 ZZZ'); await s.tap('Готово');
-  await s.send('Экономичный седан для города, свежее ТО, чистый салон.');
-  await s.tap('С водителем'); await s.send('3000');
-  await s.tap('Пропустить'); await insDelivery(s, 'КАСКО', 'Да, бесплатно');
+  await s.send('3000');
+  await s.tap('Пропустить'); await insDelivery(s, 'Страховка КАСКО', 'Доставка бесплатно');
   await s.tap('Пропустить');
 
   const buf = await makeImage();

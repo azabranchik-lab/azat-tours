@@ -16,7 +16,9 @@ function summaryKeyboard(ctx, car) {
 
 function fieldsKeyboard(ctx, car) {
   const kb = new InlineKeyboard();
-  const fields = S.STEPS.filter(s => !S.isCompound(s) && S.applies(s, car));
+  // Fields the wizard dropped stay hidden unless an older car still needs them filled in.
+  const missing = S.missingRequired(car);
+  const fields = S.STEPS.filter(s => !S.isCompound(s) && S.applies(s, car) && (s.editable !== false || missing.includes(s.key)));
   fields.forEach((s, i) => {
     kb.text(ctx.t('f_' + s.key), s.type === 'photos' ? `sum:ph:${car.id}` : `sum:f:${car.id}:${S.step(s.key).index}`);
     if (i % 2 === 1) kb.row();

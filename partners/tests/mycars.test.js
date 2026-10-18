@@ -113,14 +113,14 @@ test('copy from «Мои авто» and continue a draft from the list', async (
   await s.send('Мои авто');
   await s.tap('Toyota Camry 2019 · Опубликовано');
   await s.tap('Сделать копию');
-  assert.match(s.lastText(), /Шаг 1 из 2\nГосномер/);      // a copy asks only the plate and photos
+  assert.match(s.lastText(), /^Фото: выберите/);           // a copy asks only the photos, no step counter
   const copy = s.cars.latestDraft(car.partnerId);
   assert.strictEqual(copy.copiedFromId, car.id);
 
   await s.send('Мои авто');                                // leave the wizard…
   await s.tap('Toyota Camry 2019 · Черновик');
   await s.tap('Продолжить заполнение');                    // …and come back to the same step
-  assert.match(s.lastText(), /Госномер/);
+  assert.match(s.lastText(), /^Фото: выберите/);
 });
 
 test('rejected car shows the reason and «Исправить»; someone else\'s car is not reachable', async () => {

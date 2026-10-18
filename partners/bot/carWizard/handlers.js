@@ -6,6 +6,8 @@ const S = require('./steps');
 const { carTitle, fieldValue } = require('../../lib/format');
 const { mainMenu, tidy } = require('../menus');
 
+const SELF_DRIVE = ['SELF_DRIVE'];
+
 const clearKb = (ctx, msgId) => (msgId
   ? ctx.api.editMessageReplyMarkup(ctx.chat.id, msgId, { reply_markup: { inline_keyboard: [] } }).catch(() => {})
   : Promise.resolve());
@@ -23,6 +25,13 @@ function presetLabel(ctx, s, p) {
   return s.presetsRaw ? String(p) : ctx.t(p);
 }
 
+// In a group with several questions a button names its question: «Доставка бесплатно», «От 2 дней».
+function groupLabel(ctx, f, o) {
+  if (!f.groupLabels) return f.type === 'enum' ? ctx.t('enum_' + o) : presetLabel(ctx, f, o);
+  if (f.type === 'enum') return ctx.t('g_' + o);
+  return ctx.t(o % 10 === 1 && o % 100 !== 11 ? 'g_from_day_one' : 'g_from_day_many', { n: o });
+}
+
 // A group step: one block of buttons per field, the chosen one ticked.
 // callback_data: w:<stepIndex>:g:<fieldNo>:<optionNo>
 function groupButtons(ctx, car, s, kb) {
@@ -32,7 +41,7 @@ function groupButtons(ctx, car, s, kb) {
     const opts = f.type === 'enum' ? f.options : f.presets;
     const perRow = f.perRow || (f.type === 'int' ? 5 : 2);
     opts.forEach((o, i) => {
-      const label = f.type === 'enum' ? ctx.t('enum_' + o) : presetLabel(ctx, f, o);
+      const label = groupLabel(ctx, f, o);
       kb.text(`${car[key] === o ? '✓ ' : ''}${label}`, `${d}:g:${fi}:${i}`);
       if ((i + 1) % perRow === 0) kb.row();
     });
@@ -71,7 +80,7 @@ function counter(ctx, car, key, mode) {
   const basis = car.rentalModes && car.rentalModes.length ? car : { ...car, rentalModes: ['SELF_DRIVE'] };
   const seq = S.sequence(mode).filter(k => S.applies(S.step(k), basis));
   const n = seq.indexOf(key) + 1;
-  return n > 0 ? ctx.t('step_counter', { n, total: seq.length }) + '\n' : '';
+  return n > 0 && seq.length > 1 ? ctx.t('step_counter', { n, total: seq.length }) + '\n' : ''; // a copy has one step: no «Шаг 1 из 1»
 }
 
 function questionText(ctx, car, key, mode) {
@@ -124,9 +133,9 @@ async function offerCopyOrNew(ctx) {
 }
 
 async function createBlank(ctx) {
-  // Not asked (2026-10-17, owner): we blur the plate on photos ourselves, and a car is
-  // available all year unless the partner changes it in the summary.
-  const car = ctx.cars.create(ctx.partner.id, { city: ctx.partner.city, plateOnPhotos: 'BLUR', availabilityNote: ctx.t('avail_year') });
+  // Not asked (owner): a car is available all year unless the partner changes it in the
+  // summary (2026-10-17), and every car is self-drive (2026-10-18).
+  const car = ctx.cars.create(ctx.partner.id, { city: ctx.partner.city, availabilityNote: ctx.t('avail_year'), rentalModes: SELF_DRIVE });
   return ask(ctx, car, S.sequence('full')[0], 'full');
 }
 
@@ -138,15 +147,19 @@ async function onAddCallback(ctx, action, id) {
     const src = ctx.cars.get(id);
     if (!src || src.partnerId !== ctx.partner.id) return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
     await ctx.answerCallbackQuery(); await done();
-    const car = ctx.cars.create(ctx.partner.id, { ...S.copyFields(src), plateOnPhotos: 'BLUR' });
+    const car = ctx.cars.create(ctx.partner.id, S.copyFields(src));
     await ctx.reply(ctx.t('copy_started', { car: carTitle(src, ctx.t) }));
     return ask(ctx, car, S.COPY_STEPS[0], 'copy');
   }
 
-  const draft = ownDraft(ctx, id);
+  let draft = ownDraft(ctx, id);
   if (!draft) return ctx.answerCallbackQuery({ text: ctx.t('stale_button') });
   await ctx.answerCallbackQuery(); await done();
   if (action === 'cont') {
+    // A draft started before 2026-10-18 may have no rental mode or one with a driver: the wizard no longer asks it.
+    if (draft.status === 'DRAFT' && !S.isSelfDriveOnly(draft)) {
+      draft = ctx.cars.update(draft.id, { rentalModes: SELF_DRIVE, ...S.inapplicableFields({ ...draft, rentalModes: SELF_DRIVE }) });
+    }
     const key = S.resumeStep(draft);
     const mode = draft.copiedFromId && S.COPY_STEPS.includes(key) ? 'copy' : 'full';
     if (key === 'summary') return require('./summary').show(ctx, draft, { withPhotos: true });
@@ -256,9 +269,10 @@ async function onCallback(ctx, parts) {
     return save(ctx, car, s.key, sel, st.mode);
   }
   if (action === 's' && !s.required) {
-    await ctx.answerCallbackQuery(); await freeze(ctx.t('not_set'));
+    const value = s.skipValue !== undefined ? s.skipValue : s.type === 'multi' ? [] : null;
+    await ctx.answerCallbackQuery(); await freeze(fieldValue({ [s.key]: value }, s.key, ctx.t));
     ctx.partner.state.qmsg = null;
-    return save(ctx, car, s.key, s.type === 'multi' ? [] : null, st.mode);
+    return save(ctx, car, s.key, value, st.mode);
   }
   if (action === 'b') {
     await ctx.answerCallbackQuery();

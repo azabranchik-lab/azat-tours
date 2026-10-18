@@ -15,12 +15,9 @@ async function toPhotos(s) {
   await s.send('Добавить авто');
   await s.send('Kia Sportage 2020');
   await specs(s, 'Кроссовер');
-  await s.send('01KG 555 BBB');
-  await s.tap('Готово');
-  await s.send('Экономичный кроссовер для города и трассы, всё обслужено.');
-  await s.tap('С водителем'); await s.send('5000');
+  await s.send('5000');
   await s.tap('Пропустить');
-  await insDelivery(s, 'КАСКО', 'Да, бесплатно'); await s.tap('Пропустить');
+  await insDelivery(s, 'Страховка КАСКО', 'Доставка бесплатно'); await s.tap('Пропустить');
   return s.cars.latestDraft(s.store.getByTelegramId(USER).id);
 }
 
@@ -60,8 +57,8 @@ test('processImage: WebP output, resized, no EXIF, real format checked', async (
 test('one by one: «Готово» appears from 4 photos, the 6th goes straight to the summary', async () => {
   const s = setup();
   const car = await toPhotos(s);
-  assert.match(s.lastText(), /^Шаг 11 из 11\nФото: выберите в галерее сразу от 4 до 6 снимков/);
-  assert.match(s.lastText(), /мы замажем его сами/);
+  assert.match(s.lastText(), /^Шаг 7 из 7\nФото: выберите в галерее сразу от 4 до 6 снимков/);
+  assert.match(s.lastText(), /не закрашивайте и не прячьте/);
   assert.ok(!s.hasButton('Готово'));
   await s.sendPhoto();
   assert.match(s.lastText(), /^Принято фото: 1\. Нужно ещё хотя бы 3\.$/);
@@ -194,11 +191,14 @@ test('delete draft removes its photo folder', async () => {
   assert.deepStrictEqual(s.cars.photos(car.id), []);
 });
 
-test('plate on photos is not asked: every new car is blurred by us', async () => {
+test('the plate is not asked: the photo step asks to keep it visible, hiding it on the site is on request', async () => {
   const s = setup();
   const car = await toPhotos(s);
-  assert.strictEqual(s.cars.get(car.id).plateOnPhotos, 'BLUR');
-  assert.ok(!s.texts().some(t => /Госномер на фото/.test(t)));
+  const c = s.cars.get(car.id);
+  assert.strictEqual(c.plateOnPhotos, null);
+  assert.strictEqual(c.plateNumber, null);
+  assert.ok(!s.texts().some(t => /Госномер\?/.test(t)));
+  assert.match(s.lastText(), /Госномер, пожалуйста, не закрашивайте/);
 });
 
 test('low disk: photos refused, partner gets a calm message', async () => {

@@ -26,9 +26,9 @@ test('submit: partner is told, the group gets the album and a full card', async 
   const card = s.groupTexts().at(-1);
   assert.match(card, /^На проверку: Toyota Camry 2019/);
   assert.match(card, /Партнёр: Ош Авто\nТелефон: \+996555111222\nTelegram: @tester/);
-  assert.strictEqual(card.match(/Госномер: 01KG 123 ABC/g).length, 1);
+  assert.doesNotMatch(card, /Госномер|Номер на фото|Описание/);   // read from the photos; not asked since 2026-10-18
   assert.strictEqual(card.match(/Toyota Camry 2019/g).length, 1);
-  assert.match(card, /Номер на фото замазываем мы/);
+  assert.match(card, /Комментарий: от 25 лет/);
   assert.match(card, /Минимальный срок: 2 дня/);
   assert.match(card, new RegExp(`#car ${car.id}$`));
 });

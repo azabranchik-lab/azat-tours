@@ -14,8 +14,8 @@ async function specs(s, body = 'Седан', drive = 'Передний', seats =
   await s.tap('Готово');
 }
 
-// The «Страховка, доставка и срок» screen.
-async function insDelivery(s, insurance = 'ОСАГО (обязательная)', delivery = 'Да, за доплату', days = '2 дня') {
+// The «Страховка, доставка и срок» screen: each button names its question.
+async function insDelivery(s, insurance = 'Страховка ОСАГО (обязательная)', delivery = 'Доставка за доплату', days = 'От 2 дней') {
   await s.tap(insurance); await s.tap(delivery); await s.tap(days); await s.tap('Готово');
 }
 
@@ -25,10 +25,7 @@ async function readyCar(s, nPhotos = 4) {
   await s.send('Добавить авто');
   await s.send('Toyota Camry 2019');
   await specs(s);
-  await s.send('01KG 123 ABC');
-  await s.tap('Кондиционер'); await s.tap('Готово');
-  await s.send('Чистая ухоженная машина, для города и трассы.');
-  await s.tap('Без водителя'); await s.send('3500');
+  await s.send('3500');
   await s.send('10000');
   await insDelivery(s);
   await s.send('от 25 лет');

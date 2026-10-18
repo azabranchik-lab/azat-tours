@@ -3,35 +3,31 @@ const test = require('node:test');
 const assert = require('node:assert');
 const S = require('../bot/carWizard/steps');
 
-test('full sequence: 12 steps; not asked: color, mileage, availability, plate on photos, city', () => {
+test('full sequence: 7 steps; not asked: plate, equipment, description, rental mode, color, mileage, availability, city', () => {
   assert.deepStrictEqual(S.sequence('full'), [
-    'title', 'specs', 'plateNumber', 'features', 'description', 'rentalModes', 'priceSelfDrive', 'priceWithDriver',
-    'deposit', 'insDelivery', 'restrictions', 'photos'
+    'title', 'specs', 'priceSelfDrive', 'deposit', 'insDelivery', 'restrictions', 'photos'
   ]);
   assert.strictEqual(S.step('plateOnPhotos'), null);
+  assert.strictEqual(S.step('plateNumber').required, false);
   assert.strictEqual(S.step('description').required, false);
+  assert.strictEqual(S.step('deposit').skipValue, 0);
   assert.deepStrictEqual(S.step('insDelivery').fields, ['insurance', 'delivery', 'minRentalDays']);
 });
 
-test('price steps depend on rental modes; «Оба варианта» stores both', () => {
-  const withDriver = { rentalModes: ['WITH_DRIVER'] };
-  assert.strictEqual(S.nextStep(withDriver, 'rentalModes'), 'priceWithDriver');
-  assert.strictEqual(S.prevStep(withDriver, 'priceWithDriver'), 'rentalModes');
-
+test('price steps still follow the rental modes of older cars', () => {
   const selfDrive = { rentalModes: ['SELF_DRIVE'] };
-  assert.strictEqual(S.nextStep(selfDrive, 'rentalModes'), 'priceSelfDrive');
+  assert.strictEqual(S.nextStep(selfDrive, 'specs'), 'priceSelfDrive');
   assert.strictEqual(S.nextStep(selfDrive, 'priceSelfDrive'), 'deposit');
-
-  const both = { rentalModes: ['SELF_DRIVE', 'WITH_DRIVER'] };
-  assert.strictEqual(S.nextStep(both, 'priceSelfDrive'), 'priceWithDriver');
-  assert.strictEqual(S.prevStep(both, 'deposit'), 'priceWithDriver');
+  assert.ok(S.isSelfDriveOnly(selfDrive));
+  assert.ok(!S.isSelfDriveOnly({ rentalModes: ['SELF_DRIVE', 'WITH_DRIVER'] }));
+  assert.ok(!S.isSelfDriveOnly({}));
 
   const modes = S.step('rentalModes');
   assert.deepStrictEqual(modes.toValue('BOTH'), ['SELF_DRIVE', 'WITH_DRIVER']);
   assert.deepStrictEqual(modes.toValue('WITH_DRIVER'), ['WITH_DRIVER']);
 });
 
-test('after the rental terms come the photos', () => {
+test('after the comment come the photos', () => {
   assert.strictEqual(S.nextStep({}, 'restrictions'), 'photos');
   assert.strictEqual(S.prevStep({}, 'photos'), 'restrictions');
 });
@@ -42,10 +38,10 @@ test('first and last steps; edit mode goes back to the summary', () => {
   assert.strictEqual(S.nextStep({}, 'color', 'edit'), 'summary');
 });
 
-test('copy mode asks only the plate, then photos', () => {
-  assert.strictEqual(S.nextStep({}, 'plateNumber', 'copy'), 'photos');
+test('copy mode asks only the photos', () => {
+  assert.deepStrictEqual(S.sequence('copy'), ['photos']);
   assert.strictEqual(S.nextStep({}, 'photos', 'copy'), 'summary');
-  assert.strictEqual(S.prevStep({}, 'plateNumber', 'copy'), null);
+  assert.strictEqual(S.prevStep({}, 'photos', 'copy'), null);
 });
 
 test('copyFields drops plate, color, mileage and keeps the rest', () => {
@@ -106,7 +102,8 @@ test('parseText: texts, plate normalisation, buttons-only steps', () => {
   assert.strictEqual(S.parseText(S.step('description'), 'коротко').ok, false);
   assert.strictEqual(S.parseText(S.step('bodyType'), 'Седан').error, 'choose_button');
   assert.strictEqual(S.parseText(S.step('features'), 'AC').error, 'choose_button');
-  assert.strictEqual(S.parseText(S.step('restrictions'), 'x'.repeat(700)).ok, true);
+  assert.strictEqual(S.parseText(S.step('restrictions'), 'x'.repeat(1500)).ok, true);   // the comment holds the description too
+  assert.strictEqual(S.parseText(S.step('restrictions'), 'x'.repeat(1501)).ok, false);
 });
 
 test('missingRequired and inapplicableFields', () => {
@@ -126,12 +123,16 @@ test('resumeStep: saved step (old ones mapped to the new screens), else first mi
   assert.strictEqual(S.resumeStep({ draftStep: 'fuel' }), 'specs');
   assert.strictEqual(S.resumeStep({ draftStep: 'model' }), 'title');
   assert.strictEqual(S.resumeStep({ draftStep: 'insurance' }), 'insDelivery');
-  assert.strictEqual(S.resumeStep({ draftStep: 'color' }), 'plateNumber');
-  assert.strictEqual(S.resumeStep({ draftStep: 'mileageKm' }), 'features');
+  assert.strictEqual(S.resumeStep({ draftStep: 'color' }), 'priceSelfDrive');      // dropped steps: the next asked one
+  assert.strictEqual(S.resumeStep({ draftStep: 'plateNumber' }), 'priceSelfDrive');
+  assert.strictEqual(S.resumeStep({ draftStep: 'features' }), 'priceSelfDrive');
+  assert.strictEqual(S.resumeStep({ draftStep: 'rentalModes' }), 'priceSelfDrive');
+  assert.strictEqual(S.resumeStep({ draftStep: 'priceWithDriver' }), 'deposit');
   assert.strictEqual(S.resumeStep({ draftStep: 'availabilityNote' }), 'photos');
   assert.strictEqual(S.resumeStep({ draftStep: 'plateOnPhotos' }), 'title');      // removed step: first missing field
   assert.strictEqual(S.resumeStep({ draftStep: 'longTermDiscount' }), 'title');  // removed step: first missing field
   assert.strictEqual(S.resumeStep({ make: 'Kia' }), 'title');
-  assert.strictEqual(S.resumeStep({ copiedFromId: 'x', draftStep: 'color' }), 'plateNumber');
+  assert.strictEqual(S.resumeStep({ copiedFromId: 'x', draftStep: 'color' }), 'photos');
+  assert.strictEqual(S.resumeStep({ copiedFromId: 'x', draftStep: 'plateNumber' }), 'photos');
   assert.strictEqual(S.resumeStep({ copiedFromId: 'x', draftStep: 'mileageKm', plateNumber: '01KG' }), 'photos');
 });

@@ -7,13 +7,13 @@ const S = require('../bot/carWizard/steps');
 
 const draftOf = s => s.cars.latestDraft(s.store.getByTelegramId(USER).id);
 
-// Walks the whole wizard for a self-drive car. Returns the draft.
+// Walks the whole wizard (every car is self-drive since 2026-10-18). Returns the draft.
 async function fillFullCar(s) {
   await s.send('Добавить авто');
-  assert.match(s.lastText(), /Шаг 1 из 11\nМарка, модель и год/);   // 12 steps minus priceWithDriver: self-drive assumed until modes are chosen
+  assert.match(s.lastText(), /Шаг 1 из 7\nМарка, модель и год/);
   await s.send('Toyota Land Cruiser 200 2019');
   assert.match(s.texts().at(-2), /Записали: марка Toyota, модель Land Cruiser 200, год 2019/);
-  assert.match(s.lastText(), /Шаг 2 из 11\nХарактеристики/);
+  assert.match(s.lastText(), /Шаг 2 из 7\nХарактеристики/);
   await s.tap('Внедорожник (SUV)');
   await s.tap('Автомат');
   await s.tap('Полный 4x4');
@@ -21,15 +21,16 @@ async function fillFullCar(s) {
   await s.send('7');                              // seats can be typed on the screen
   assert.match(s.lastText(), /Кузов: Внедорожник \(SUV\)\nКоробка: Автомат\nПривод: Полный 4x4\nТопливо: Дизель\nМест: 7/);
   await s.tap('Готово');
-  await s.send('01kg 123 abc');
-  await s.tap('Кондиционер'); await s.tap('Зимняя резина'); await s.tap('Готово');
-  await s.send('Ухоженная машина, подходит для гор и бездорожья, салон кожаный.');
-  await s.tap('Без водителя');                    // one tap, no «Готово»
+  assert.match(s.lastText(), /^Шаг 3 из 7\nЦена аренды за сутки, сом\?/);   // no plate, equipment, description or rental mode
   await s.send('4500');
-  await s.send('0');                              // deposit
-  await insDelivery(s, 'ОСАГО (обязательная)', 'Нет, клиент забирает сам', '1 день');
-  await s.send('от 23 лет, стаж от 3 лет, до 300 км в сутки');
-  assert.match(s.lastText(), /^Шаг 11 из 11\nФото/);
+  assert.match(s.lastText(), /^Шаг 4 из 7\nЗалог.*нажмите «Пропустить»/);
+  await s.tap('Пропустить');                      // «Пропустить» = no deposit
+  assert.match(s.texts().at(-2), /→ без залога$/);
+  assert.match(s.lastText(), /^Шаг 5 из 7\nСтраховка, доставка/);
+  await insDelivery(s, 'Страховка ОСАГО (обязательная)', 'Без доставки, клиент забирает сам', 'От 1 дня');
+  assert.match(s.lastText(), /^Шаг 6 из 7\nКомментарий/);
+  await s.send('Кондиционер, зимняя резина. От 23 лет, стаж от 3 лет, до 300 км в сутки');
+  assert.match(s.lastText(), /^Шаг 7 из 7\nФото/);
   await s.sendPhotos(4);
   await s.tap('Готово');
   return draftOf(s);
@@ -46,17 +47,17 @@ test('full wizard → summary with every field', async () => {
   assert.strictEqual(car.bodyType, 'SUV');
   assert.strictEqual(car.fuel, 'DIESEL');
   assert.strictEqual(car.seats, 7);
-  assert.strictEqual(car.plateNumber, '01KG 123 ABC');
-  assert.deepStrictEqual(car.features, ['AC', 'WINTER_TIRES']);
-  assert.deepStrictEqual(car.rentalModes, ['SELF_DRIVE']);
+  assert.strictEqual(car.plateNumber, null);              // read from the photos
+  assert.deepStrictEqual(car.features, []);
+  assert.deepStrictEqual(car.rentalModes, ['SELF_DRIVE']); // set for every new car, not asked
   assert.strictEqual(car.priceSelfDrive, 4500);
   assert.strictEqual(car.priceWithDriver, null);
   assert.strictEqual(car.deposit, 0);
   assert.strictEqual(car.insurance, 'OSAGO');
   assert.strictEqual(car.delivery, 'NO');
   assert.strictEqual(car.minRentalDays, 1);
-  assert.strictEqual(car.plateOnPhotos, 'BLUR');              // not asked: we blur it ourselves
-  assert.strictEqual(car.restrictions, 'от 23 лет, стаж от 3 лет, до 300 км в сутки');
+  assert.strictEqual(car.plateOnPhotos, null);            // hidden on the site only if the partner asks
+  assert.strictEqual(car.restrictions, 'Кондиционер, зимняя резина. От 23 лет, стаж от 3 лет, до 300 км в сутки');
   assert.strictEqual(car.availabilityNote, 'Круглый год');
   assert.strictEqual(car.city, 'Бишкек');                 // from the profile
   assert.strictEqual(car.color, null);                    // not asked any more
@@ -64,16 +65,21 @@ test('full wizard → summary with every field', async () => {
 
   const summary = s.lastText();
   assert.match(summary, /^Проверьте анкету/);
-  assert.match(summary, /Госномер: 01KG 123 ABC/);
-  assert.match(summary, /Формат аренды: Без водителя/);
+  assert.match(summary, /Цена, сом\/сутки: 4\s500/);
   assert.match(summary, /Залог, сом: без залога/);
-  assert.match(summary, /Условия аренды: от 23 лет/);
-  assert.ok(!/Цвет|Пробег/.test(summary));                // empty optional extras are not shown
+  assert.match(summary, /Комментарий: Кондиционер, зимняя резина/);
+  assert.ok(!/Цвет|Пробег|Госномер|Оснащение|Описание/.test(summary)); // empty optional extras are not shown
   assert.ok(!/С водителем, сом/.test(summary));           // not applicable, not shown
   assert.match(summary, /Минимальный срок: 1 день/);
   assert.match(summary, /Когда свободно: Круглый год/);
   assert.ok(!/Номер на фото/.test(summary));
   assert.match(summary, /Фото: 4, главное первое/);
+
+  // «Изменить» offers neither the dropped questions nor the rental mode.
+  await s.tap('Изменить');
+  for (const b of ['Оснащение', 'Описание', 'Формат аренды', 'С водителем, сом/сутки']) assert.ok(!s.hasButton(b), b);
+  assert.ok(s.hasButton('Комментарий') && s.hasButton('Госномер'));
+  await s.tap('Назад');
 
   await s.tap('Отправить на проверку');
   assert.match(s.lastText(), /отправлено на проверку/);
@@ -90,7 +96,7 @@ test('group screen: «Готово» waits until every row is chosen; the answer
   await s.tap('✓ Седан');                                 // tapping the chosen one again keeps it
   assert.ok(s.hasButton('✓ Механика'));
   await s.tap('Готово');
-  assert.match(s.lastText(), /Госномер/);
+  assert.match(s.lastText(), /Цена аренды/);
   assert.ok(!s.hasButton('✓ Механика'));                  // the screen's buttons are gone
   assert.match(s.texts().at(-2), /Коробка: Механика/);
   const car = draftOf(s);
@@ -137,40 +143,45 @@ test('stale buttons of an old screen do nothing', async () => {
   assert.strictEqual(draftOf(s).bodyType, 'SEDAN');
 });
 
-test('«Оба варианта» asks both prices', async () => {
+test('insurance, delivery and term: every button says which question it answers', async () => {
   const s = setup();
   await s.register();
   await s.send('Добавить авто');
   await s.send('Hyundai Starex 2017');
   await s.tap('Минивэн'); await s.tap('Автомат'); await s.tap('Задний'); await s.tap('Дизель'); await s.tap('8'); await s.tap('Готово');
-  await s.send('01KG 555 XYZ');
-  await s.tap('Пропустить');                              // features
-  await s.tap('Пропустить');                              // description is optional now
-  await s.tap('Оба варианта');
-  assert.match(s.lastText(), /без водителя, сом/);
   await s.send('4000');
-  assert.match(s.lastText(), /с водителем, сом/);
-  await s.send('6000');
+  await s.send('20000');
+  for (const b of ['Страховка ОСАГО (обязательная)', 'Страховка КАСКО', 'Без страховки', 'Доставка бесплатно',
+    'Доставка за доплату', 'Без доставки, клиент забирает сам', 'От 1 дня', 'От 2 дней', 'От 3 дней']) assert.ok(s.hasButton(b), b);
+  await s.tap('Страховка КАСКО'); await s.tap('Доставка бесплатно'); await s.tap('От 3 дней');
+  assert.ok(s.hasButton('✓ Доставка бесплатно'));
+  assert.match(s.lastText(), /Страховка: КАСКО\nДоставка: Да, бесплатно\nМинимальный срок: 3 дня/);
+  await s.tap('Готово');
   const car = draftOf(s);
-  assert.deepStrictEqual(car.rentalModes, ['SELF_DRIVE', 'WITH_DRIVER']);
-  assert.deepStrictEqual([car.priceSelfDrive, car.priceWithDriver], [4000, 6000]);
+  assert.deepStrictEqual([car.deposit, car.insurance, car.delivery, car.minRentalDays], [20000, 'KASKO', 'FREE', 3]);
 });
 
-test('summary edit: switching to "with driver" asks for the new price and clears self-drive data', async () => {
+test('an older draft with a driver is continued as self-drive', async () => {
+  const s = setup();
+  await s.register();
+  await s.send('Добавить авто');
+  await s.send('Hyundai Starex 2017');
+  await s.tap('Отмена');
+  const old = draftOf(s);
+  s.cars.update(old.id, { rentalModes: ['WITH_DRIVER'], priceWithDriver: 6000, draftStep: 'description' });
+  await s.send('Добавить авто');
+  await s.tap('Продолжить');
+  assert.match(s.lastText(), /Цена аренды за сутки/);
+  const car = draftOf(s);
+  assert.deepStrictEqual(car.rentalModes, ['SELF_DRIVE']);
+  assert.strictEqual(car.priceWithDriver, null);
+});
+
+test('summary edit: one field of a screen is edited on its own', async () => {
   const s = setup();
   await s.register();
   await fillFullCar(s);
-  await s.tap('Изменить');
-  await s.tap('Формат аренды');
-  await s.tap('С водителем');
-  assert.match(s.lastText(), /с водителем, сом/);        // made required by the edit
-  await s.send('6000');
-  assert.match(s.lastText(), /^Проверьте анкету/);
-  let car = draftOf(s);
-  assert.deepStrictEqual(car.rentalModes, ['WITH_DRIVER']);
-  assert.strictEqual(car.priceWithDriver, 6000);
-  assert.strictEqual(car.priceSelfDrive, null);
-
+  let car;
   // One field of a screen is edited on its own.
   await s.tap('Изменить');
   await s.tap('Кузов');
@@ -181,7 +192,7 @@ test('summary edit: switching to "with driver" asks for the new price and clears
   assert.strictEqual(car.fuel, 'DIESEL');
 });
 
-test('copy an existing car: only the plate and photos are asked', async () => {
+test('copy an existing car: only the photos are asked', async () => {
   const s = setup();
   await s.register();
   const first = await fillFullCar(s);
@@ -189,10 +200,8 @@ test('copy an existing car: only the plate and photos are asked', async () => {
 
   await s.send('Добавить авто');
   await s.tap('Копия: Toyota Land Cruiser 200 2019');
-  assert.match(s.texts().at(-2), /Скопировали данные .* Осталось указать госномер и фото/);
-  assert.match(s.lastText(), /Шаг 1 из 2\nГосномер/);
-  await s.send('01KG 777 AAA');
-  assert.match(s.lastText(), /^Шаг 2 из 2\nФото/);        // photos are never copied
+  assert.match(s.texts().at(-2), /Скопировали данные .* Осталось добавить фото/);
+  assert.match(s.lastText(), /^Фото/);                   // photos are never copied; one step, no counter
   await s.sendPhotos(4);
   await s.tap('Готово');
   assert.match(s.lastText(), /^Проверьте анкету/);
@@ -200,7 +209,7 @@ test('copy an existing car: only the plate and photos are asked', async () => {
   assert.strictEqual(copy.copiedFromId, first.id);
   assert.strictEqual(copy.priceSelfDrive, 4500);
   assert.strictEqual(copy.restrictions, first.restrictions);
-  assert.strictEqual(copy.plateNumber, '01KG 777 AAA');
+  assert.strictEqual(copy.plateNumber, null);
   assert.strictEqual(copy.color, null);
 });
 

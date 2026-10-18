@@ -10,6 +10,7 @@ const AVAIL_PRESETS = ['avail_year', 'avail_summer']; // i18n keys; the label te
 const { CITIES } = require('../menus');
 
 const hasMode = (car, mode) => Array.isArray(car.rentalModes) && car.rentalModes.includes(mode);
+const isSelfDriveOnly = car => Array.isArray(car.rentalModes) && car.rentalModes.length === 1 && car.rentalModes[0] === 'SELF_DRIVE';
 
 // type:
 //   enum   – one of `options` (buttons only); `toValue` maps the option to the stored value
@@ -22,6 +23,9 @@ const hasMode = (car, mode) => Array.isArray(car.rentalModes) && car.rentalModes
 // title and group steps have no column of their own: they fill `fields`, which
 // stay separate steps (inWizard: false) for the card and for «Изменить».
 // inWizard: false – not asked by the wizard, editable from the summary.
+// editable: false – not offered in the summary's «Изменить» either.
+// groupLabels – inside a group the buttons say which question they answer (g_* keys in i18n).
+// skipValue – what «Пропустить» stores (default null, [] for multi).
 const STEPS = [
   { key: 'title', type: 'title', fields: ['make', 'model', 'year'] },
   { key: 'make', type: 'text', min: 2, max: 40, required: true, presets: MAKES, presetsRaw: true, other: 'make_other', inWizard: false },
@@ -35,26 +39,30 @@ const STEPS = [
   { key: 'seats', type: 'int', min: 1, max: 30, required: true, presets: SEATS, inWizard: false },
   // Color and mileage are visible on the photos (mileage on the dashboard shot): not asked since 2026-10-17 (owner).
   { key: 'color', type: 'text', min: 2, max: 30, required: false, inWizard: false },
-  { key: 'plateNumber', type: 'text', min: 4, max: 12, required: true, normalize: s => s.toUpperCase() },
+  // Not asked since 2026-10-18 (owner): we read the plate from the photos, so partners must not hide it there.
+  { key: 'plateNumber', type: 'text', min: 4, max: 12, required: false, inWizard: false, normalize: s => s.toUpperCase() },
   { key: 'mileageKm', type: 'int', min: 0, max: 2000000, required: false, inWizard: false },
-  { key: 'features', type: 'multi', required: false, options: ['AC', 'SEAT_HEATING', 'REAR_CAMERA', 'NAVIGATION', 'CHILD_SEAT', 'ROOF_RACK', 'WINTER_TIRES'] },
-  // Optional since 2026-10-17 (owner writes the site text himself).
-  { key: 'description', type: 'text', min: 20, max: 1500, required: false },
-  { key: 'rentalModes', type: 'enum', required: true, perRow: 1, options: ['SELF_DRIVE', 'WITH_DRIVER', 'BOTH'],
+  // Equipment and description now go into the one comment step (restrictions), 2026-10-18 (owner).
+  { key: 'features', type: 'multi', required: false, inWizard: false, editable: false, options: ['AC', 'SEAT_HEATING', 'REAR_CAMERA', 'NAVIGATION', 'CHILD_SEAT', 'ROOF_RACK', 'WINTER_TIRES'] },
+  { key: 'description', type: 'text', min: 20, max: 1500, required: false, inWizard: false, editable: false },
+  // Every car is self-drive (2026-10-18, owner): a traveller who needs a driver writes to us.
+  // New drafts start with ['SELF_DRIVE'] (handlers.js); the field stays for older cars.
+  { key: 'rentalModes', type: 'enum', required: true, inWizard: false, editable: false, perRow: 1, options: ['SELF_DRIVE', 'WITH_DRIVER', 'BOTH'],
     toValue: o => (o === 'BOTH' ? ['SELF_DRIVE', 'WITH_DRIVER'] : [o]) },
   { key: 'priceSelfDrive', type: 'int', min: 1, max: 1000000, required: true, when: car => hasMode(car, 'SELF_DRIVE') },
-  { key: 'priceWithDriver', type: 'int', min: 1, max: 1000000, required: true, when: car => hasMode(car, 'WITH_DRIVER') },
-  { key: 'deposit', type: 'int', min: 0, max: 10000000, required: false },
+  { key: 'priceWithDriver', type: 'int', min: 1, max: 1000000, required: true, inWizard: false, editable: false, when: car => hasMode(car, 'WITH_DRIVER') },
+  // «Пропустить» means no deposit.
+  { key: 'deposit', type: 'int', min: 0, max: 10000000, required: false, skipValue: 0 },
   { key: 'insDelivery', type: 'group', fields: ['insurance', 'delivery', 'minRentalDays'] },
-  { key: 'insurance', type: 'enum', required: true, inWizard: false, perRow: 1, options: ['OSAGO', 'KASKO', 'NONE'] },
-  { key: 'delivery', type: 'enum', required: true, inWizard: false, perRow: 1, options: ['FREE', 'PAID', 'NO'] },
-  { key: 'minRentalDays', type: 'int', min: 1, max: 30, required: true, presets: MIN_DAYS, inWizard: false },
-  // «Условия аренды»: driver requirements, limits and long-term discount in one answer (2026-10-17).
-  { key: 'restrictions', type: 'text', min: 1, max: 700, required: false },
+  { key: 'insurance', type: 'enum', required: true, inWizard: false, groupLabels: true, perRow: 1, options: ['OSAGO', 'KASKO', 'NONE'] },
+  { key: 'delivery', type: 'enum', required: true, inWizard: false, groupLabels: true, perRow: 1, options: ['FREE', 'PAID', 'NO'] },
+  { key: 'minRentalDays', type: 'int', min: 1, max: 30, required: true, presets: MIN_DAYS, inWizard: false, groupLabels: true },
+  // «Комментарий», the last question: rules, equipment, description, anything else in one answer (2026-10-18).
+  { key: 'restrictions', type: 'text', min: 1, max: 1500, required: false },
   // A new car starts as «Круглый год»; the partner can change it in the summary (2026-10-17).
   { key: 'availabilityNote', type: 'text', min: 1, max: 100, required: true, presets: AVAIL_PRESETS, other: 'avail_other', inWizard: false },
-  // The plate on photos is no longer asked: we blur it ourselves (plateOnPhotos = BLUR, 2026-10-17).
-  // 4 to 6 photos, the first is the cover; handled by photos.js, minimum checked via lib/photos.
+  // 4 to 6 photos with the plate visible (we hide it on the site only if the partner asks, 2026-10-18),
+  // the first is the cover; handled by photos.js, minimum checked via lib/photos.
   { key: 'photos', type: 'photos', required: true },
   // Not asked by the wizard (copied from the profile), but editable from the summary.
   { key: 'city', type: 'text', min: 2, max: 60, required: true, presets: CITIES, presetsRaw: true, inWizard: false }
@@ -66,7 +74,7 @@ for (const s of STEPS) if (isCompound(s)) for (const f of s.fields) PARENT[f] = 
 
 const BY_KEY = Object.fromEntries(STEPS.map((s, i) => [s.key, { ...s, index: i, parent: PARENT[s.key] || null }]));
 // Copying a car re-asks only what differs between two cars of the same model.
-const COPY_STEPS = ['plateNumber', 'photos'];
+const COPY_STEPS = ['photos'];
 const COPY_EXCLUDED = ['color', 'plateNumber', 'mileageKm'];
 
 const step = key => BY_KEY[key] || null;
@@ -232,10 +240,8 @@ function wizardStep(key) {
 // a step that is now part of a group or no longer asked.
 function resumeStep(car) {
   if (car.draftStep === 'summary') return 'summary';
-  // An old copy draft stopped at color or mileage: the copy now asks only the plate and photos.
-  if (car.copiedFromId && (car.draftStep === 'color' || car.draftStep === 'mileageKm')) {
-    return isEmpty(car.plateNumber) ? 'plateNumber' : 'photos';
-  }
+  // An old copy draft stopped at color, mileage or the plate: a copy now asks only the photos.
+  if (car.copiedFromId && ['color', 'mileageKm', 'plateNumber'].includes(car.draftStep)) return 'photos';
   const saved = car.draftStep && wizardStep(car.draftStep);
   if (saved) return saved;
   const miss = missingRequired(car)[0];
@@ -245,5 +251,5 @@ function resumeStep(car) {
 module.exports = {
   STEPS, FIELD_STEPS, COPY_STEPS, MAKES, SEATS, MIN_DAYS, AVAIL_PRESETS,
   step, stepByIndex, applies, maxOf, sequence, nextStep, prevStep, isCompound, groupMissing, wizardStep,
-  missingRequired, inapplicableFields, parseText, parseTitle, copyFields, resumeStep, isEmpty
+  missingRequired, inapplicableFields, isSelfDriveOnly, parseText, parseTitle, copyFields, resumeStep, isEmpty
 };

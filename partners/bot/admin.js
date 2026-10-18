@@ -123,7 +123,7 @@ async function exportCsv(ctx) {
     ['Пробег', c => c.mileageKm], ['Оснащение', c => c.features], ['Формат аренды', c => c.rentalModes],
     ['Без водителя, сом', c => c.priceSelfDrive], ['С водителем, сом', c => c.priceWithDriver],
     ['Залог, сом', c => c.deposit], ['Страховка', c => c.insurance], ['Доставка', c => c.delivery],
-    ['Условия аренды', c => c.restrictions], ['Когда свободно', c => c.availabilityNote],
+    ['Комментарий', c => c.restrictions], ['Когда свободно', c => c.availabilityNote],
     ['Мин. срок, дней', c => c.minRentalDays], ['Город', c => c.city], ['Свободно', c => c.availability], ['Номер на фото', c => c.plateOnPhotos], ['Описание', c => c.description],
     ['Причина отклонения', c => c.rejectReason], ['Отправлено', c => c.submittedAt], ['Одобрено', c => c.approvedAt],
     ['Фото (файлы на сервере, partners/data/car-photos/)', c => ctx.cars.photos(c.id).map(p => p.path).join(' ')]

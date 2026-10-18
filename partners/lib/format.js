@@ -45,7 +45,8 @@ function carCard(car, t, photos, { title = true } = {}) {
     if (s.inWizard === false && !s.required && isEmpty(car[s.key])) continue;
     lines.push(`${t('f_' + s.key)}: ${fieldValue(car, s.key, t)}`);
   }
-  lines.push('', `${t('f_description')}:`, fieldValue(car, 'description', t));
+  // No longer asked (2026-10-18): only older cars have a description.
+  if (!isEmpty(car.description)) lines.push('', `${t('f_description')}:`, fieldValue(car, 'description', t));
   return lines.join('\n');
 }
 

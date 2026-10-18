@@ -65,7 +65,8 @@ test('export: two CSV files for Excel (BOM, ";"), with plate and photo files', a
   const [partners, cars] = docs.map(d => d.payload.document.fileData.toString('utf8'));
   assert.ok(partners.startsWith('﻿Telegram ID;Username;Имя;Телефон'));
   assert.match(partners, new RegExp(`${USER};@tester;Ош Авто;\\+996555111222;Бишкек;ACTIVE`));
-  assert.match(cars, /;01KG 123 ABC;/);
+  assert.match(cars, /;Госномер;/);   // column kept for older cars; new ones are read from the photos
+  assert.match(cars, /;Комментарий;.*;от 25 лет;/s);
   assert.match(cars, new RegExp(`;${car.id}/EXTRA-[\\w-]+\\.webp `));
   assert.match(cars, /;Мин\. срок, дней;/);
   assert.match(docs[0].payload.document.filename, /^partners-\d{4}-\d{2}-\d{2}\.csv$/);
