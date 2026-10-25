@@ -1,0 +1,5 @@
+{
+  "_comment": "Places shown under 'Sights visited on this tour' that the route never reaches (scripts/check-sights.js, 2026-10-25). Removed by migration 2026-10-25-sights-fix.",
+  "song-kul-horse-trek-3-days": ["Lake Issyk-Kul"],
+  "mai-tor-pastures-horse-trek-5-days": ["Bokonbayevo"]
+}

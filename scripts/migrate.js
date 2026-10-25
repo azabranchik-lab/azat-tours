@@ -72,6 +72,40 @@ const setPost = file => () => {
   console.log('post updated: ' + src.slug);
 };
 
+// Sights that a route never reaches (places[] was generated from old day titles): scripts/_sights-fix.json.
+function fixSights() {
+  const fix = require('./_sights-fix.json');
+  const tours = content.loadTours();
+  let n = 0;
+  for (const [slug, names] of Object.entries(fix)) {
+    if (slug.startsWith('_')) continue;
+    const t = tours.find(x => x.slug === slug);
+    if (!t || !Array.isArray(t.places)) continue;
+    const before = t.places.length;
+    t.places = t.places.filter(p => !names.includes(p.name));
+    n += before - t.places.length;
+  }
+  if (n) content.saveTours(tours);
+  console.log(n + ' stale sight(s) removed');
+}
+
+// Links inside post bodies were written as "tour.html?slug=x" / "post.html?slug=x" / "builder.html";
+// the renderer rewrites them, but the data should carry the canonical addresses (/tours/x/ etc.).
+function cleanPostLinks() {
+  const { cleanHref } = require('../lib/post-page');
+  let renames = {};
+  try { renames = require('./_tour-renames.json').renames || {}; } catch (e) {}
+  const resolve = s => { let x = s; for (let i = 0; i < 6 && renames[x]; i++) x = renames[x].hide ? renames[x].redirect : renames[x].slug; return x; };
+  const posts = content.loadPosts();
+  let n = 0;
+  for (const p of posts) {
+    const body = String(p.body || '').replace(/\]\(([^)\s]+)\)/g, (m, href) => { const c = cleanHref(href, resolve); if (c !== href) n++; return '](' + c + ')'; });
+    if (body !== p.body) p.body = body;
+  }
+  if (n) content.savePosts(posts);
+  console.log(n + ' post link(s) made canonical');
+}
+
 const MIGRATIONS = [
   ['2026-10-13-rename-tours', [run('rename-tours.js')]],
   ['2026-10-13-summaries', [run('merge-summaries.js')]],
@@ -83,6 +117,9 @@ const MIGRATIONS = [
   // The 2026 tour pack: 41 day trips and short tours (scripts/tours-2026/). Published right
   // away (owner decision 2026-10-17); he edits them in the bot. Existing tours are not touched.
   ['2026-10-16-new-tours', [() => require('./tours-2026/add-tours').addTours({ publish: true })]],
+  // SEO phase 1 (2026-10-25): stale sights off two tours; canonical link addresses inside post bodies.
+  ['2026-10-25-sights-fix', [fixSights]],
+  ['2026-10-25-post-links', [cleanPostLinks]],
 ];
 
 function main() {
