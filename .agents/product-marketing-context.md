@@ -98,8 +98,8 @@
 
 ## Proof Points
 *(All ⚠️ PLACEHOLDER until real operator confirms.)*
-**Metrics:** ⚠️ est. 2009; ⚠️ 2,400+ travellers; ⚠️ 40+ countries hosted; 100% local guides; 24/7 support.
-**Customers:** ⚠️ travellers from 40+ countries.
+**Metrics:** Azat has guided travellers since 2019 (site, About page); 79 tours online (2026-10); 100% local guides. No traveller counts, country counts or ratings are published: do not invent them.
+**Customers:** foreign travellers (English-speaking first, Korean pilot planned); no published counts.
 **Testimonials:** ❌ NO real reviews yet. Do NOT cite review counts, star ratings, or fabricated quotes anywhere. Remove/soften the "4.9★ · 128 reviews" badges until real reviews exist.
 **Value themes:**
 | Theme | Proof |

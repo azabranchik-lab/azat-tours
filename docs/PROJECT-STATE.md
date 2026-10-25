@@ -9,6 +9,9 @@
   владелец редактирует его через Telegram-бота вживую. Эти файлы (`content/*.json`, `images/`)
   на сервере новее локальных — поэтому при обновлении сервера их НЕ трогаем.
 
+> **Актуальная архитектура: `docs/ARCHITECTURE.md`. Открытые задачи: `docs/BACKLOG.md`. Сервер (nginx и пр.): `docs/SERVER.md`.**
+> Ниже журнал сессий, свежие сверху; старые разделы исторические, пути в них могли устареть.
+
 ## Как продолжить в НОВОМ чате
 1. Открой новый чат Claude Code на этом же компьютере (доступ к той же папке).
 2. Первое сообщение: «Продолжаем проект Azat Tours, прочитай `PROJECT-STATE.md` в `C:\Users\user\kyrgyzstan-tours`».
@@ -69,7 +72,7 @@
   - Проверено на 375 и 1280, светлая и тёмная тема, консоль чистая, фильтры и deep-link `?cat=` работают.
 - **Пакет C = фаза 1 брифа (SEO-правки), коммиты 526ecb2, 983202e, 1be401c.** Отчёт: `seo-audit/phase-1-report.md`.
   - Данные (миграции в `scripts/migrate.js`, выполнятся при деплое): `2026-10-25-sights-fix` убирает Issyk-Kul у
-    `song-kul-horse-trek-3-days` и Bokonbayevo у `mai-tor-pastures-horse-trek-5-days` (`scripts/_sights-fix.json`);
+    `song-kul-horse-trek-3-days` и Bokonbayevo у `mai-tor-pastures-horse-trek-5-days` (`scripts/migrations/sights-fix.json`);
     `2026-10-25-post-links` переписывает ссылки в телах статей на `/tours/x/`, `/blog/x/`, `/plan-trip.html#…`
     (38 ссылок; `scripts/_post-links.json` тоже обновлён). Проверка: `node scripts/check-sights.js` (0 расхождений,
     177 подсказок «упомянуто, но не показано» в `seo-audit/sights-mismatch.csv`, решение владельца).
@@ -130,7 +133,7 @@
   - Применено: `relatedTours()` в `lib/tour-page.js` (сходство по местам/типу/тегам/длине, без canonical-страниц и
     вариантов серии): ссылку из «Other tours you might like» получают 68 туров вместо 21. Поле `seoTitle` (бот: «SEO title»)
     = `<title>` и og:title, `name`/H1 не трогаем; миграция `2026-10-25-seo-titles` ставит 79 title из
-    `scripts/_tour-seo-titles.json` (источник `seo-audit/tour-titles.csv`). Тесты 31.
+    `scripts/migrations/tour-seo-titles.json` (источник `seo-audit/tour-titles.csv`). Тесты 31.
   - Решено не делать: слияния туров, расширение `series`, title >60, черновики хабов от Claude (риск doorway pages,
     вместо этого анкеты владельцу), посадочные-списки (делаем статьи-гиды).
   - **Рекомендации, требующие «да» владельца:** не переезжать на статический Astro (ломает живые правки из бота;
@@ -175,8 +178,8 @@
 ## Сессия 2026-10-16/17 — пачка 2: 41 новый тур, ускорение, конструктор, ветка `feat/new-tours`
 Ветка поверх `feat/car-rental`. Порядок выкатки: `seo/clean-urls` → `feat/car-rental` → `feat/new-tours`.
 Подробности подготовки туров (тексты, цены, фото) владелец держит в локальном `docs/PRIVATE-NOTES.md`
-(в git не попадает). В git: `scripts/tours-2026/add-tours.js` + `tours.json`; инструменты сборки лежат
-локально в `scripts/tours-2026/tools/` (gitignored).
+(в git не попадает). В git: `scripts/migrations/tours-2026/add-tours.js` + `tours.json`; инструменты сборки лежат
+локально в `scripts/migrations/tours-2026/tools/` (gitignored).
 - **41 тур**: 22 однодневки (3 зимние) и 19 многодневных (3 зимних, 3 трека Ак-Суу / Каракол), ключи
   `importKey: pack2-NN`. Миграция `2026-10-16-new-tours` в `scripts/migrate.js` добавляет их СРАЗУ
   ОПУБЛИКОВАННЫМИ (решение владельца 2026-10-17; по `importKey`, повторно не дублирует, правки из бота не
@@ -287,7 +290,7 @@
   `server.js` buildSlugMeta возвращает null (скорее всего сервер не читает `content/*.json`), срабатывает запасная
   ветка noindex. Проверить на сервере `ls -la content/` и блок `location` в nginx.
 - **Этап 2 сделан (переименование):** 38 туров получили уникальные названия и slug'и (написание Issyk-Kul, Song-Kul,
-  Ala-Kul; длина до 44 символов, на мобильном не больше 2 строк). Карта: `scripts/_tour-renames.json`
+  Ala-Kul; длина до 44 символов, на мобильном не больше 2 строк). Карта: `data/tour-redirects.json`
   (она же источник будущих 301). Скрипт: `scripts/rename-tours.js` (идемпотентный, `--dry`).
 - `elena-tabers-tour-7-days` получил `status: 'hidden'` (почти дубль, имя реального человека). Данные не удалены.
   `publishedOnly` в `lib/content.js` теперь отсекает и `hidden`.
@@ -306,7 +309,7 @@
     `blog.html` остались только как ШАБЛОНЫ, напрямую не отдаются.
   - 301 в `server.js` (`routePage`): `tour.html?slug=СТАРЫЙ|НОВЫЙ`, `tour.html?id=`, `post.html?slug=`, `tours.html`,
     `blog.html`, `index.html`, адрес без слэша, старый slug в `/tours/<slug>/`. Карта старых slug'ов:
-    `scripts/_tour-renames.json` (цепочки переименований поддерживаются). Неизвестный slug отдаёт настоящий 404.
+    `data/tour-redirects.json` (цепочки переименований поддерживаются). Неизвестный slug отдаёт настоящий 404.
   - Предпросмотр черновиков из бота работает по старой ссылке `tour.html?slug=..&preview=KEY` (сервер рендерит
     черновик, noindex, no-store).
   - `public/cards.js`: общая разметка карточек для сервера и браузера (`window.Cards`). `tour-detail.js` теперь

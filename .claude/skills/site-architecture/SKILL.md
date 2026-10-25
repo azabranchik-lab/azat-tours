@@ -1,82 +1,61 @@
 ---
 name: site-architecture
-description: How the Azat Tours codebase works and how not to break it — data flow (content/*.json → *-data.js), bot, merge/seed scripts, UI engine contracts, regression guard, deploy runbook. Use before editing code/data/scripts, adding fields, deploying, or when something "didn't update" or "broke" (сломалось, не обновилось, деплой, архитектура).
+description: How the Azat Tours codebase works and how not to break it — server-rendered pages from content/*.json, the admin bot, content migrations, UI engine contracts, regression guard, deploy via GitHub Actions. Use before editing code/data/scripts, adding fields, deploying, or when something "didn't update" or "broke" (сломалось, не обновилось, деплой, архитектура).
 ---
 
 # Site architecture — change things without breaking things
 
-## When to use
-Before any non-trivial code change, any data/schema change, any deploy, and when debugging
-"why didn't my change show up". This encodes the project's invariants; violating them is the
-#1 source of silent breakage and redone work.
+Full, current map: `docs/ARCHITECTURE.md`. This skill is the short version plus the rules.
 
 ## System map
-- **Static frontend**: HTML pages + `styles.css` + page scripts (`tours-render.js`,
-  `tour-detail.js`, `blog-render.js`, `post-render.js`, `script.js`, `nav.js`, `home-media.js`).
-- **`server.js`**: serves the site + lead/chat API (PORT env, default 5173; per-IP rate limits,
-  body caps, no wildcard CORS). Local preview: `node server.js` ONLY.
-- **`bot.js`**: Telegram admin (grammY). Runs ONLY on the server — starting it locally with the
-  same token breaks polling for the live bot. `start.js` runs site+bot together (hosting).
-- **Two sources of truth**: code/design = this local folder (then redeploy); content (tours, posts,
-  reviews, sights, site media, leads, chats) = the SERVER's `content/*.json`, edited live via bot.
+- **`server.js`** serves everything: redirects, static files (AVIF/WebP by `Accept`, `?w=` resized copies), the
+  lead/chat API. Pages (`/`, `/tours/`, `/tours/<slug>/`, `/blog/…`, `*.html`, `/sitemap.xml`, `/llms.txt`) are rendered
+  by **`lib/pages.js`** from `content/*.json` + `public/*.html` templates, cached in memory by file mtimes.
+- **`bot.js`**: the owner's Telegram admin (grammY). Runs ONLY on the server — starting it locally with the real token
+  breaks polling for the live bot. `start.js` runs site + bot in one process (pm2 `azat-tours`).
+- **Two sources of truth**: code = git (push to `main` deploys); content (tours, posts, reviews, sights, site media,
+  leads, chats) = the SERVER's `content/*.json`, edited live via the bot, backed up daily to the owner's Telegram.
 
 ## Data flow (the core invariant)
 ```
-content/*.json  --(lib/content.js regenerate)-->  *-data.js  --(script tag)-->  window.TOURS/SITE/...
-   (gitignored, server-owned)                     (committed to git, what the site reads)
+bot / migration ──▶ content/*.json ──(lib/content.js regenerate)──▶ public/*-data.js (browser scripts)
+                         └────────────(lib/pages.js render)──────────▶ HTML pages
 ```
-- **NEVER hand-edit `*-data.js`** — always regenerate via `lib/content.js` (`saveTours()` does both).
-- **New/changed content fields** (like `blurb`): reproducible source in `scripts/_*.json` +
-  idempotent merge script (model: `scripts/merge-blurbs.js`, `merge-itineraries.js`, `--dry` flag)
-  + add the field to `blankTour()` in `lib/content.js` + **run the merge/seed ON THE SERVER at
-  deploy** (or upload `content/tours.json`) — otherwise the first bot edit regenerates `*-data.js`
-  from the server's json and silently reverts the feature.
-- The bot loads the whole array, mutates only the edited field, saves all — so unknown fields
-  survive bot edits. Safe to extend the schema.
+- **NEVER hand-edit `public/*-data.js`**; `saveTours()` etc. write the JSON and regenerate.
+- **Changing existing content from code = a migration**: append `[id, steps]` to `MIGRATIONS` in `scripts/migrate.js`,
+  put its input in `scripts/migrations/`. It runs once on the server during deploy, snapshots `content/before-<id>/`
+  first, and is recorded in `content/.migrations.json`. Never edit or reorder old migrations.
+- **New field**: add it to `blankTour()` / `blankReview()` in `lib/content.js`. The bot keeps unknown fields.
+- Redirect map for renamed/retired tours: `data/tour-redirects.json` (read by the server on every request).
 
 ## UI engine contracts (markup can change; contracts must not)
-- **Catalog filter engine** (`tours-render.js`): one delegated click handler listens on container
-  selectors and reacts to `[data-f]` (category, single), `[data-t]` (tag, multi, AND),
-  `[data-clear]`; state in `activeCat`/`activeTags`; `applyFilters()` + `syncUI()` sync every
-  control that carries those attributes. To redesign filter UI: build any markup with those
-  data-attributes and add its container to the delegated selector — do not fork the logic.
-- **`nav.js`** injects header/menu/footer/floating CTAs from `<body data-page>`; loads BEFORE
-  `script.js` (which binds #burger etc. synchronously). Nav changes happen only there.
-- **Shared atoms**: `.tour`, `.chip`, `.btn`, tokens (`--grad-surface`, `--hairline`, `--aurora`)
-  are used across pages (catalog, home featured, blog cats). Touching them = spot-check home,
-  tours, blog. `.chip` has a legacy handler in `script.js` — tour tabs deliberately use their own
-  class (`.tour-tabs .tab`); don't reuse `.chip` for non-filter things.
-- **Viewport separation** (owner's hard rule): base CSS = desktop, mobile overrides live inside
-  `@media(max-width:680px)`; page-scoped rules via `body[data-page="..."]`. A mobile fix must not
-  change desktop and vice versa.
+- **Catalog filters** (`public/tours-render.js` + `Cards.catalogToolbar` in `public/cards.js`): the server renders the
+  toolbar; one delegated click handler reacts to `[data-f]` (category), `[data-t]` (tags, AND), `[data-clear]`,
+  `[data-fsort]`. Redesign = new markup with the same data-attributes, not a fork of the logic.
+- **`nav.js`** markup is put into every page by the server (`withChrome` in `lib/pages.js`).
+- **Tour page** (`lib/tour-page.js`): one `.tour-tabs` block serves phones (tabs) and desktop (stacked sections).
+- **Shared atoms**: `.tour`, `.chip`, `.btn`, tokens (`--grad-surface`, `--hairline`, `--aurora`): touching them =
+  spot-check home, tours, blog.
+- **Viewport separation** (owner's hard rule): base CSS = desktop, mobile overrides inside `@media(max-width:680px)`.
 
 ## Regression guard (before saying "done")
-1. 375px AND 1280px; light AND dark theme (dark via `[data-theme]` toggle).
-2. Console clean; no horizontal overflow (`scrollWidth <= innerWidth`).
+1. `npm test`; `npm run check` against the local server (`node server.js`); for content changes `npm run check:sights`.
+2. 375px AND 1280px; light AND dark theme; console clean; no horizontal overflow.
 3. Touched shared atoms? Check the other pages using them.
-4. Preview renderer is unreliable for color/animation frames — verify structure via DOM
-   (`preview_eval`), judge color/contrast in a real browser.
-5. Commit per stable feature (`/code-review` first on non-trivial diffs). Breakage = `git revert`.
+4. Commit per stable feature. Breakage = `git revert`.
 
-## Deploy runbook (VPS, pm2 name `alatoo`)
-1. `tar --exclude=kyrgyzstan-tours/node_modules --exclude=kyrgyzstan-tours/config.json
-   --exclude=kyrgyzstan-tours/content --exclude=kyrgyzstan-tours/images -czf alatoo-update.tar.gz kyrgyzstan-tours`
-2. Unpack over the server copy (server's `content/` + `images/` stay untouched).
-   ⚠ The tar ships the LOCAL `*-data.js`; unpacking overwrites the server's regenerated copies, so any
-   bot content edits since the last local sync would revert. Therefore ALWAYS regenerate from the
-   server's authoritative `content/*.json` right after unpack (before restart):
-   `node -e "const C=require('./lib/content');['regenerateDataFile','regeneratePostsFile','regenerateReviews','regenerateGuides','regenerateSite','regenerateSights'].forEach(f=>C[f]&&C[f]())"`
-3. `npm install` only if dependencies changed → run any pending seed/merge scripts for NEW content
-   fields (see above) → regenerate (step 2) → `node scripts/build-sitemap.js` (sitemap lists every
-   tour/post URL from the server's content) → `pm2 restart alatoo`.
-4. Pre-prod once: domain is `azattours.com` (real, already used everywhere; no swap needed); rotate the bot token
-   (@BotFather) and move to env `BOT_TOKEN`/`OWNER_ID`; never commit `config.json`.
+## Deploy
+- Push to `main` (only the owner pushes) → GitHub Actions job `test` (site + partners tests) → job `deploy` over SSH:
+  `git reset --hard`, `npm ci --omit=dev`, `node scripts/migrate.js`, `node scripts/regenerate-all.js`, `pm2 reload`.
+- Rehearse risky releases first and follow `seo-audit/deploy-checklist.md`; after deploy run
+  `node scripts/check-site.js https://azattours.com`.
+- Server settings that are not in git (nginx HTTP/2, monitoring): `docs/SERVER.md`.
 
 ## Debugging quick table
 | Symptom | Likely cause |
 |---|---|
-| Change not visible on site | Edited `content/*.json` but didn't regenerate; or looking at stale cache (data files are no-cache, hard-reload) |
-| Bot edit reverted my feature | New field never seeded to the server's `content/*.json` |
-| Filter control does nothing | Missing `data-f`/`data-t` or container not in the delegated selector |
-| Nav/footer wrong on one page | Wrong/missing `data-page`, or page (builder) intentionally excluded |
-| Sticky/position bugs | Check `overflow` on ancestors (body uses `overflow-x:clip` deliberately) |
+| Change not visible on site | template/data cache keys on mtimes: check the file really changed on the server; HTML is `no-cache` |
+| Bot edit reverted my feature | the feature lived only in `public/*-data.js`, not in `content/*.json` (needed a migration) |
+| Old URL gives 404 instead of 301 | slug missing in `data/tour-redirects.json` |
+| Filter control does nothing | missing `data-f`/`data-t` or container not in the delegated selector |
+| Image without a resized copy | `sharp` missing on the server or the source is already narrower than the width asked |
