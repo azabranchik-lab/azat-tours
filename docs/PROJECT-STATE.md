@@ -35,7 +35,7 @@
 
 ---
 
-## Сессия 2026-10-25 — SEO-программа: фаза 0, анализ, пакеты A (скорость), C (фаза 1), D (фаза 2), ветка `seo-fixes` (НЕ в main)
+## Сессия 2026-10-25 — SEO-программа: фаза 0, анализ, пакеты A (скорость), C (фаза 1), D (фаза 2), E (фаза 3, предложения), ветка `seo-fixes` (НЕ в main)
 Бриф владельца: `C:\Users\user\Downloads\azattours-claude-code-prompt.md` (5 фаз: аудит → техправки → доверие →
 архитектура контента → Astro → корейская версия). Правило: после каждой фазы отчёт и стоп до «ок». Все артефакты в
 `seo-audit/`: `phase-0-report.md`, `full-analysis.md` (архитектура, скорость, SEO, план пакетов A–E),
@@ -108,6 +108,21 @@
     Смена на доменный адрес = одна строка + деплой (ждём подтверждения ящика).
   - Проверено: 28 тестов, check-site «All good» с тестовыми отзывами (93 URL) и без (92), 375/1280, консоль чистая.
     Бот живьём не запускался (`node --check`).
+- **Пакет E = фаза 3 брифа (архитектура контента), только документы, код не менялся.** Отчёт: `seo-audit/phase-3-report.md`.
+  - `seo-audit/destination-hubs.md`: адрес (рекомендация `/destinations/<slug>/`), схема `content/destinations.json`
+    (slug, name, spellings, facts, map, tourMatch {patterns, pin, exclude}, relatedPosts, faq), правило автосписка
+    туров (places[] + названия дней; упоминание только в описании не считается), 9 хабов с числом туров по данным
+    (Song-Kul 44, Issyk-Kul 43, Altyn-Arashan 24, Kel-Suu 14, Karakol 14, Chong-Kemin 13, Ala-Kul 9, Ala-Archa 7,
+    Tash Rabat 4), шаблон страницы, перелинковка, TODO(owner).
+  - `seo-audit/tour-consolidation.md`: 13 групп по интенту (A road trip, B best of, C Song-Kul 2–4 дня, D two lakes,
+    E remote, F ride+trek, G Kel-Suu, H Issyk-Kul, I Chong-Kemin, J Talas, K Ala-Kul, L зима, M однодневки), главная
+    страница каждой группы, 8 пар на объединение с 301 (все medium: старые туры «от Kyzart on request» против туров
+    2026 «private from Bishkek с ценой», вопрос владельцу: один продукт или разные), общие `series` для D/E/F/H/I/K,
+    посадочные «Day trips from Bishkek» и «Kyrgyzstan in winter».
+  - `seo-audit/tour-titles.csv`: 79 предложенных H1/title по формуле «[запрос] + [деталь]», все ≤60, уникальны;
+    у 44 title нет слова Kyrgyzstan (не помещается). Техническое: блок «Also available as» читает дни из суффикса
+    «- N Days» в `name`; перед переименованием перевести на поле `days`.
+  - Ждёт решений владельца (8 вопросов в отчёте). Ничего не применено.
 - **Деплой-нюансы:** sharp уже в dependencies (нужен Node ≥ 20.9 на VPS); `.cache/` создаётся сам; после выкатки
   можно запустить `node scripts/warm-images.js` в фоне. nginx менять не нужно (но см. пакет B в full-analysis: http2, бэкап).
 - **Открытые вопросы владельцу** (в `phase-0-report.md` и `full-analysis.md`): неизвестный slug 404 или 301 на каталог,
