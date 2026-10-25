@@ -5,7 +5,8 @@
 
 ## Нужны данные или действия владельца
 - [ ] Оригиналы фото для обложек туров: у 37 туров обложка уже 1000 px, у 14 не больше 600 px (на десктопе она во всю
-      ширину экрана и выглядит мыльной). Список: `node -e` из `docs/TESTING.md` или спросить в сессии.
+      ширину экрана и выглядит мыльной). Хуже всего: issyk-kul-canyons-eagles-yurt-2-days и konorchek-hike-chong-kemin-ride-2-days
+      (450 px), konorchek-canyon-hike-burana-day-trip (564 px), ещё 11 туров по 600 px.
 - [ ] Ссылки на профили TripAdvisor, Google Business, GetYourGuide (бот: Homepage photos → Review profiles).
 - [ ] Настоящие отзывы гостей (бот ⭐ Reviews или `seo-audit/reviews-template.csv`).
 - [ ] Цены «from» для 47 туров (`seo-audit/prices-todo.csv`), хотя бы по одной на Kel-Suu.
