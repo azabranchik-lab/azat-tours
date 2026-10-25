@@ -4,7 +4,9 @@
 // Photos are the owner's own, each matched to the place he labelled it with
 // (scripts/migrations/tours-2026/tools/owner-photos-map.json). No own photo yet for Bishkek,
 // Chon-Kemin, Osh and Sary-Chelek, so those places have none.
-// Added once on the server by scripts/migrate.js as a DRAFT: the owner reviews it in the bot and publishes.
+// Added on the server by scripts/migrate.js as a draft, then published on the owner's word (2026-10-25).
+// THIS FILE IS THE SOURCE OF THE POST: the owner fixes it here, not in the bot. To ship a fix, edit
+// this file and add a new migration id calling syncPost on it (an edit in the bot would be overwritten).
 module.exports = {
   slug: 'kyrgyzstan-travel-guide-2027',
   title: 'Kyrgyzstan Travel Guide 2027: What to Know, Best Places, Routes & Emergency Numbers',

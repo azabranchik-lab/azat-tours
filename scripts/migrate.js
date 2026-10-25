@@ -86,6 +86,21 @@ const addPost = file => () => {
   console.log('draft post added: ' + slug);
 };
 
+// Bring a post in line with its source file and make it public. For posts the owner edits
+// here, in the repository, rather than in the bot (the 2027 guide, owner decision 2026-10-25):
+// each later fix gets a new migration id that calls this again.
+const syncPost = file => () => {
+  const src = require(file);
+  const posts = content.loadPosts();
+  const p = posts.find(x => x.slug === src.slug);
+  if (!p) { console.log('post not found: ' + src.slug); return; }
+  for (const k of ['title', 'seoTitle', 'description', 'excerpt', 'category', 'cover', 'cover_alt', 'body', 'faq']) if (src[k] !== undefined) p[k] = src[k];
+  p.status = 'published';
+  p.updatedAt = new Date().toISOString().slice(0, 10);
+  content.savePosts(posts);
+  console.log('post synced and published: ' + src.slug);
+};
+
 // Sights that a route never reaches (places[] was generated from old day titles): scripts/migrations/sights-fix.json.
 function fixSights() {
   const fix = require('./migrations/sights-fix.json');
@@ -148,6 +163,8 @@ const MIGRATIONS = [
   ['2026-10-25-seo-titles', [setSeoTitles]],
   // Blog pillar page from the owner's draft, added as a draft for his review in the bot.
   ['2026-10-25-guide-2027', [addPost('./migrations/post-kyrgyzstan-guide-2027.js')]],
+  // Owner: «опубликуй, фиксить будем тут» (2026-10-25). The text now lives in the source file.
+  ['2026-10-25-guide-2027-publish', [syncPost('./migrations/post-kyrgyzstan-guide-2027.js')]],
 ];
 
 function main() {
