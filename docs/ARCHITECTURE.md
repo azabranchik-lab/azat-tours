@@ -28,7 +28,7 @@
 | `data/tour-redirects.json` | старые slug туров → текущие (сервер отдаёт 301) | код |
 | `scripts/` | инструменты: `migrate`, `regenerate-all`, `check-site`, `check-sights`, `warm-images`, `restore-backup`, `import-reviews`, `import-prices`, `build-photos`, `build-image-formats` | код |
 | `scripts/migrations/` | входные данные одноразовых миграций контента (уже применены на проде) | код |
-| `tests/` | `node --test`, запускаются в CI перед каждым деплоем | код |
+| `tests/` | `node --test`, запускаются в CI перед каждым деплоем; что покрыто и ручной чек-лист: `docs/TESTING.md` | код |
 | `partners/` | отдельный бот партнёров по аренде авто, свои тесты и данные | код |
 | `seo-audit/` | отчёты SEO-программы, таблицы решений, краулер, эталонный снимок прода | код |
 | `docs/` | `ARCHITECTURE` (этот файл), `PROJECT-STATE` (журнал сессий), `BACKLOG`, `SERVER`, `BRAND`, `REDESIGN-PLAN` | люди |
