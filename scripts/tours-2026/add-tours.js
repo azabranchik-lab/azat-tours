@@ -18,7 +18,7 @@ const content = require('../../lib/content');
 const SRC = path.join(__dirname, 'tours.json');
 // Fields a tour may carry in tours.json; anything else is ignored.
 const FIELDS = ['name', 'cats', 'category', 'duration', 'days', 'season', 'start_from', 'tour_speed', 'accommodations',
-  'activities', 'total_drive', 'summary', 'highlights', 'itinerary', 'images', 'tags', 'places', 'blurb', 'priceFrom', 'series'];
+  'activities', 'total_drive', 'summary', 'highlights', 'itinerary', 'images', 'tags', 'places', 'blurb', 'priceFrom', 'priceNote', 'series'];
 
 function addTours({ dry = false, publish = false } = {}) {
   const src = require(SRC);

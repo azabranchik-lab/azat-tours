@@ -1566,3 +1566,7 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
   .tour-tabs .tabpanel > h2{display:block}
   .tour-tabs .tabpanel + .tabpanel{margin-top:34px;padding-top:34px;border-top:1px solid var(--line)}
 }
+
+/* review badges (lib/reviews.js): GetYourGuide colour, strip under the home carousel */
+.rev-badge.gyg .src{color:#FF5533}
+.rev-track + .badges-strip{margin-top:28px}

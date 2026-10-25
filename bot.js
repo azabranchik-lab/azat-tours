@@ -32,7 +32,7 @@ const sessions = new Map(); // userId -> state
 
 const TOUR_CATS = ['Day trips', 'Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
 const POST_CATS = ['Travel guide', 'Planning', 'Culture', 'Practical', 'Gear', 'Horse treks', 'Day tours'];
-const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags'], ['priceFrom', 'Price from $']];
+const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags'], ['priceFrom', 'Price from $'], ['priceNote', 'Price note']];
 const POST_FIELDS = [['title', 'Title'], ['category', 'Category'], ['excerpt', 'Excerpt'], ['author', 'Author'], ['body', 'Body text']];
 
 // ---------- auth ----------
@@ -681,8 +681,9 @@ bot.on('message:text', async (ctx, next) => {
     // link can't reach the homepage. Session stays set so the owner can resend.
     const val = txt.trim();
     const REQUIRED = ['name', 'title', 'summary', 'text', 'excerpt', 'role', 'country', 'bio', 'duration', 'body'];
-    if (s.field === 'instagram.url') {
-      if (!/^https?:\/\/\S+$/i.test(val)) return ask(ctx, '⚠️ That doesn\'t look like a link. Send a full URL starting with https:// :');
+    if (s.field === 'instagram.url' || s.field.startsWith('profiles.')) {
+      if (s.field.startsWith('profiles.') && val === '-') val = '';   // "-" removes a profile link
+      else if (!/^https?:\/\/\S+$/i.test(val)) return ask(ctx, '⚠️ That doesn\'t look like a link. Send a full URL starting with https:// :');
     } else if (REQUIRED.includes(s.field)) {
       if (!val) return ask(ctx, '⚠️ That can\'t be empty. Send a value:');
       if (val.length > 4000) return ask(ctx, '⚠️ That\'s too long (max 4000 characters). Send a shorter version:');
@@ -712,6 +713,9 @@ bot.on('message:text', async (ctx, next) => {
     } else if (s.kind === 'review') {
       const rs = C.loadReviews(); const r = rs.find(x => x.id === s.id); if (!r) { sessions.delete(ctx.from.id); return; }
       if (s.field === 'rating') r.rating = Math.max(1, Math.min(5, Number(txt.trim()) || 5));
+      else if (s.field === 'source') { const v = txt.trim().toLowerCase().replace(/[^a-z]/g, ''); if (!REVIEW_SOURCES.includes(v)) return ask(ctx, '⚠️ Send one of: ' + REVIEW_SOURCES.join(', ') + ':'); r.source = v; }
+      else if (s.field === 'sourceUrl') { const v = txt.trim(); if (v && v !== '-' && !/^https?:\/\/\S+$/i.test(v)) return ask(ctx, '⚠️ Send the full link to the review (https://...), or <code>-</code> to clear it:'); r.sourceUrl = v === '-' ? '' : v; }
+      else if (s.field === 'tourSlug') { const v = txt.trim().toLowerCase(); if (v && v !== '-' && !C.publishedOnly(C.loadTours()).some(t => t.slug === v)) return ask(ctx, '⚠️ No published tour has that slug (the last part of the tour\'s address). Send it again, or <code>-</code> to clear:'); r.tourSlug = v === '-' ? '' : v; }
       else r[s.field] = txt.trim();
       C.saveReviews(rs);
     } else if (s.kind === 'site') {
@@ -982,7 +986,8 @@ bot.callbackQuery(/^g:delyes:(\d+)$/, async ctx => {
 });
 
 // ================= REVIEWS =================
-const REVIEW_FIELDS = [['name', 'Name'], ['country', 'Country'], ['text', 'Text'], ['rating', 'Rating']];
+const REVIEW_FIELDS = [['name', 'Name'], ['country', 'Country'], ['text', 'Text'], ['rating', 'Rating'], ['date', 'Date'], ['tourSlug', 'Tour (slug)'], ['source', 'Source'], ['sourceUrl', 'Source link']];
+const REVIEW_SOURCES = ['tripadvisor', 'google', 'getyourguide', 'direct'];
 const placeLabel = p => { if (p === 'home') return '🏠 Home'; if (p === 'reviews') return '⭐ Reviews page'; if (p && p.startsWith('guide:')) { const g = C.loadGuides().find(x => x.id === Number(p.slice(6))); return '🧭 ' + (g ? g.name : p); } if (p && p.startsWith('tour:')) return '🏔 ' + p.slice(5); return p; };
 function placementKb(prefix) {
   const kb = new InlineKeyboard();
@@ -1008,7 +1013,8 @@ function reviewListKb() {
 function reviewView(id) {
   const r = C.loadReviews().find(x => x.id === id); if (!r) return null;
   const kb = new InlineKeyboard().text('✏️ Edit', `r:e:${id}`).text('📍 Where shown', `r:place:${id}`).row().text('🗑 Delete', `r:del:${id}`).text('« Back', 'r:list');
-  return { info: `${b(r.name)} (${esc(r.country || '—')})\n${'★'.repeat(r.rating || 5)} · shown on ${esc(placeLabel(r.placement))}\n\n"${esc((r.text || '').slice(0, 350))}"`, kb };
+  const meta = [r.date, r.source, r.tourSlug ? 'about ' + r.tourSlug : ''].filter(Boolean).join(' · ');
+  return { info: `${b(r.name)} (${esc(r.country || '—')})\n${'★'.repeat(r.rating || 5)} · shown on ${esc(placeLabel(r.placement))}${meta ? '\n' + esc(meta) : ''}${r.sourceUrl ? '\n🔗 ' + esc(r.sourceUrl) : ''}\n\n"${esc((r.text || '').slice(0, 350))}"`, kb };
 }
 function reviewEditKb(id) { const kb = new InlineKeyboard(); REVIEW_FIELDS.forEach(([f, l], i) => { kb.text(l, `r:ef:${id}:${f}`); if (i % 2) kb.row(); }); kb.row().text('« Back', `r:v:${id}`); return kb; }
 
@@ -1069,7 +1075,6 @@ async function saveGuideDraft(ctx, s) {
 async function saveReviewDraft(ctx, s) {
   const rs = C.loadReviews(); const d = s.draft;
   d.id = C.nextReviewId(rs);
-  if (!d.avatar) d.avatar = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80';
   rs.unshift(d); C.saveReviews(rs); sessions.delete(ctx.from.id);
   await ctx.reply(`🎉 Review by ${b(d.name)} added, shown on ${esc(placeLabel(d.placement))}. /reviews to manage.`, md);
 }
@@ -1080,8 +1085,25 @@ function homeKb() {
   return new InlineKeyboard()
     .text('📸 Instagram grid', 'h:ig').row()
     .text('🧭 Experience cards', 'h:exp').row()
-    .text('🏔 Hero photo', 'h:heroset').text('🧩 Builder photos', 'h:builder').row();
+    .text('🏔 Hero photo', 'h:heroset').text('🧩 Builder photos', 'h:builder').row()
+    .text('⭐ Review profiles (links)', 'h:profiles').row();
 }
+// Links to the public review profiles: badges under the reviews on the home page and the reviews page.
+const PROFILES = [['tripadvisor', 'Tripadvisor'], ['google', 'Google'], ['getyourguide', 'GetYourGuide']];
+function profilesView() {
+  const p = (C.loadSite().profiles) || {};
+  const kb = new InlineKeyboard();
+  PROFILES.forEach(([k, l]) => kb.text(`${p[k] ? '🔗' : '➕'} ${l}`, `h:profile:${k}`).row());
+  kb.text('« Back', 'h:home').row();
+  const lines = PROFILES.map(([k, l]) => `${l}: ${p[k] ? esc(p[k]) : '<i>(not set)</i>'}`).join('\n');
+  return { text: `⭐ <b>Review profiles</b>\nTap one to set or change the link. Badges appear on the site only for the links that are set.\n\n${lines}`, kb };
+}
+bot.callbackQuery('h:profiles', async ctx => { await ctx.answerCallbackQuery(); const v = profilesView(); await ctx.reply(v.text, { ...md, reply_markup: v.kb }); });
+bot.callbackQuery(/^h:profile:(tripadvisor|google|getyourguide)$/, async ctx => {
+  await ctx.answerCallbackQuery();
+  sessions.set(ctx.from.id, { mode: 'editfield', kind: 'site', field: 'profiles.' + ctx.match[1] });
+  await ask(ctx, `🔗 Send the full link to your ${b((PROFILES.find(x => x[0] === ctx.match[1]) || [])[1])} profile (https://...), or <code>-</code> to remove it:`);
+});
 function builderView() {
   const bp = (C.loadSite().builder) || [];
   const kb = new InlineKeyboard();

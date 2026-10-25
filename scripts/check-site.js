@@ -91,6 +91,8 @@ async function main() {
     }
     // speed contract (2026-10-25): fonts from this domain, versioned stylesheet, first screen visible without JS
     if (/fonts\.(googleapis|gstatic)\.com/.test(html)) bad(pathName, 'still loads Google Fonts');
+    if (/\{\{CONTACT_EMAIL\}\}/.test(html)) bad(pathName, 'contact email placeholder not filled');
+    if (/Demo figures|images\.unsplash\.com/.test(html)) bad(pathName, 'demo content or stock photo in the page');
     if (!/href="\/styles\.css\?v=[a-z0-9]+"/.test(html)) bad(pathName, 'stylesheet URL is not versioned');
     const hero = html.match(/<section class="(?:page-)?hero[^>]*>[\s\S]*?<\/section>/);
     if (hero && /class="[^"]*\breveal\b(?![^"]*\bin\b)[^"]*"/.test(hero[0])) bad(pathName, 'hero element hidden until window.load');

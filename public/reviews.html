@@ -11,6 +11,8 @@
 <meta name="theme-color" content="#103b39" />
 <title>Reviews, What Travellers Say About Azat Tours Kyrgyzstan</title>
 <meta name="description" content="Real reviews from travellers who explored Kyrgyzstan with Azat Tours, and the platforms where you can verify every word." />
+<link rel="canonical" href="https://azattours.com/reviews.html" />
+<meta property="og:url" content="https://azattours.com/reviews.html" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Reviews, Azat Tours Kyrgyzstan" />
 <meta property="og:description" content="Real stories from travellers who explored Kyrgyzstan with Azat Tours." />
@@ -29,45 +31,20 @@
 
 
 <!-- PAGE HERO -->
+<main>
 <section class="page-hero">
   <div class="bg"><img src="/img/page/reviews.jpg" srcset="/img/page/reviews.jpg?w=800 800w, /img/page/reviews.jpg?w=1280 1280w, /img/page/reviews.jpg?w=1600 1600w" sizes="100vw" alt="Travellers at a turquoise mountain lake in Kyrgyzstan" /></div>
   <div class="wrap">
     <p class="crumb reveal"><a href="/">Home</a> / Reviews</p>
     <h1 class="reveal" data-delay="1">Real stories, real travellers</h1>
-    <p class="reveal" data-delay="2">We've hosted over 2,400 travellers from 40+ countries. Here's what they say, and the platforms where you can verify every word.</p>
+    <p class="reveal" data-delay="2">What travellers say after a trip with us, and the platforms where you can verify every word.</p>
   </div>
 </section>
 
-<!-- REVIEW PLATFORM BADGES -->
+<!-- REVIEW PLATFORM BADGES: links to the public profiles from content/site.json "profiles" (lib/reviews.js); nothing is shown until the owner sets them -->
 <section class="pad" style="padding-bottom:0">
   <div class="wrap">
-    <div class="badges-strip">
-      <a href="#" onclick="return false" class="rev-badge ta reveal">
-        <div class="src"><svg class="gicf" viewBox="0 0 24 24" ><circle cx="12" cy="12" r="7" fill="#00AA6C"/></svg> Tripadvisor</div>
-        <div class="score">4.9</div>
-        <div class="stars">★★★★★</div>
-        <div class="count">128 reviews · Travellers' Choice</div>
-      </a>
-      <a href="#" onclick="return false" class="rev-badge go reveal" data-delay="1">
-        <div class="src"><svg class="gicf" viewBox="0 0 24 24" ><circle cx="12" cy="12" r="7" fill="#4285F4"/></svg> Google</div>
-        <div class="score">4.9</div>
-        <div class="stars">★★★★★</div>
-        <div class="count">96 reviews</div>
-      </a>
-      <div class="rev-badge reveal" data-delay="2">
-        <div class="src"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 6.5-12L13 17l3-5 6 8Z"/><path d="m8.5 8 2.2 4"/></svg> Trips run</div>
-        <div class="score">2,400+</div>
-        <div class="stars">since 2009</div>
-        <div class="count">travellers hosted</div>
-      </div>
-      <div class="rev-badge reveal" data-delay="3">
-        <div class="src"><svg class="gico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a8 8 0 0 1 13.5-3L20 8M20 15a8 8 0 0 1-13.5 3L4 16"/><path d="M20 4v4h-4M4 20v-4h4"/></svg> Would return</div>
-        <div class="score">98%</div>
-        <div class="stars">★★★★★</div>
-        <div class="count">recommend us to friends</div>
-      </div>
-    </div>
-    <p style="text-align:center;color:var(--ink-soft);font-size:.85rem;margin-top:16px">ⓘ Demo figures, link these badges to your real Tripadvisor & Google profiles.</p>
+    <div class="badges-strip" id="revBadges"></div>
   </div>
 </section>
 
@@ -82,17 +59,14 @@
   </div>
 </section>
 
-<!-- LEAVE A REVIEW -->
-<section class="pad" style="padding-top:0">
+<!-- LEAVE A REVIEW: buttons to the profiles; the whole block is dropped until a profile link is set -->
+<section class="pad" id="leave-review" style="padding-top:0">
   <div class="wrap">
     <div class="leave-rev reveal">
       <p class="eyebrow">Travelled with us?</p>
       <h2 style="font-family:var(--font-display);font-size:1.7rem;margin:8px 0 6px">We'd love your story</h2>
       <p style="color:var(--ink-soft);max-width:46ch;margin-inline:auto">Your review helps the next nervous first-timer take the leap. It takes two minutes.</p>
-      <div class="btns">
-        <a href="#" onclick="return false" class="btn btn-primary">Review us on Tripadvisor</a>
-        <a href="#" onclick="return false" class="btn btn-dark">Review us on Google</a>
-      </div>
+      <div class="btns" id="reviewButtons"></div>
     </div>
   </div>
 </section>
@@ -138,10 +112,9 @@
 
 
 
+</main>
 <script src="/nav.js"></script>
-<script src="/reviews-data.js"></script>
 <script src="/script.js"></script>
-<script src="/reviews-render.js"></script>
 <script src="/chat.js" defer></script>
 </body>
 </html>

@@ -83,7 +83,7 @@
       '</ul></div>' +
       '<div class="foot-col"><p class="foot-h">Contact</p><ul>' +
         '<li><a href="https://wa.me/996502888001" target="_blank" rel="noopener">WhatsApp</a></li>' +
-        '<li><a href="mailto:azatbeyshenaliev1@gmail.com">azatbeyshenaliev1@gmail.com</a></li>' +
+        '<li><a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a></li>' +
         '<li><a href="/contact.html">Bishkek, Kyrgyzstan</a></li>' +
       '</ul></div>' +
       '<div class="foot-bottom"><span>© 2026 Azat Tours, Bishkek, Kyrgyzstan.</span></div>' +
