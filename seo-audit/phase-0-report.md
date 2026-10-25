@@ -37,7 +37,7 @@
 
 ## 4. Baseline
 
-`seo-audit/baseline/prod/` и `seo-audit/baseline/local/` (скрипт `seo-audit/crawl.js`, без выполнения JS): `pages.csv`/`pages.json` (статус, title, description, canonical, H1, слова, noindex, JSON-LD, og:image, картинки без alt/размеров/lazy), `old-urls.csv`, `links.csv`, `summary.txt`, копия sitemap. Сравнение `node seo-audit/compare.js baseline/prod baseline/local`: **0 отличий**, локальная сборка пригодна как эталон для всех следующих фаз.
+`seo-audit/baseline/prod/` (эталон до работ; обход локальной сборки совпал с ним) (скрипт `seo-audit/crawl.js`, без выполнения JS): `pages.csv`/`pages.json` (статус, title, description, canonical, H1, слова, noindex, JSON-LD, og:image, картинки без alt/размеров/lazy), `old-urls.csv`, `links.csv`, `summary.txt`, копия sitemap. Сравнение `node seo-audit/compare.js baseline/prod baseline/local`: **0 отличий**, локальная сборка пригодна как эталон для всех следующих фаз.
 
 Итог по проду: 92/92 страниц 200, canonical совпадает с URL, по одному H1, title ≤ 60 и description ≤ 158 везде, дублей title/description нет, noindex нет, 749 внутренних ссылок и ассетов отвечают 200 напрямую (ссылок на старые адреса в HTML нет).
 

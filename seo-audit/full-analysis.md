@@ -1,7 +1,6 @@
 # azattours.com: полный анализ (архитектура, скорость, SEO, оптимизация)
 
-Дата: 2026-10-25. Замеры с прода. Исходники: `seo-audit/baseline/`, `seo-audit/lighthouse/*.report.html`
-(открываются в браузере), `seo-audit/phase-0-report.md`.
+Дата: 2026-10-25. Замеры с прода. Исходники: `seo-audit/baseline/`, `seo-audit/lighthouse.md` (цифры до и после), `seo-audit/phase-0-report.md`.
 
 ## 0. Резюме в десяти пунктах
 

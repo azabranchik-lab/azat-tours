@@ -42,10 +42,10 @@ node scripts/check-site.js https://azattours.com
 ```
 3. Сравнение с baseline (должны быть только ожидаемые отличия: 77 title, WebSite на главной, canonical на /reviews.html):
 ```bash
-node seo-audit/crawl.js https://azattours.com seo-audit/after-deploy/prod
+node seo-audit/crawl.js https://azattours.com seo-audit/runs/after-deploy
 ```
 ```bash
-node seo-audit/compare.js seo-audit/baseline/prod seo-audit/after-deploy/prod
+node seo-audit/compare.js seo-audit/baseline/prod seo-audit/runs/after-deploy
 ```
 4. В боте: `/backup` должен прислать архив; в меню появилась команда backup.
 5. Глазами на телефоне: главная, каталог (фильтры, «All filters»), тур (вкладки, форма), статья.

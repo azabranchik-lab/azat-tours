@@ -4,8 +4,8 @@
  * for indexing: pages missing on either side, status, canonical, noindex, title, H1,
  * description, JSON-LD types, and old URLs whose redirect target changed.
  *
- *   node seo-audit/compare.js seo-audit/baseline/prod seo-audit/baseline/local
- *   node seo-audit/compare.js seo-audit/baseline/prod seo-audit/after/local   # after a change
+ *   node seo-audit/compare.js seo-audit/baseline/prod seo-audit/runs/local     # local build vs the reference
+ *   node seo-audit/compare.js seo-audit/baseline/prod seo-audit/runs/prod-...  # production vs the reference
  *
  * Exit code 1 when a page from the first crawl is missing, not 200, or has a different canonical.
  */

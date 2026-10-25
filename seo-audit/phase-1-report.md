@@ -2,7 +2,7 @@
 
 Ветка `seo-fixes`, поверх пакета A. Проверка: `npm test` (24 теста), `node scripts/check-site.js` («All good»,
 92 URL, 747 ссылок), `node scripts/check-sights.js` (0 расхождений), `node seo-audit/compare.js seo-audit/baseline/prod
-seo-audit/after-C/local` (0 жёстких отличий; 1 мягкое: на главной добавился JSON-LD `WebSite`).
+seo-audit/runs/local` (0 жёстких отличий; 1 мягкое: на главной добавился JSON-LD `WebSite`).
 
 ## Что сделано по пунктам брифа
 
