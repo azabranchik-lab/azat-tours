@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Builds seo-audit/redirect-map.csv (old_url, new_url, confidence, comment) from the data the
- * server already uses for its 301s: scripts/_tour-renames.json (old slug -> current slug) and
+ * server already uses for its 301s: data/tour-redirects.json (old slug -> current slug) and
  * content/*.json (current tour and post slugs). Re-run after any rename.
  *
  *   node seo-audit/build-redirect-map.js
@@ -11,7 +11,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const ORIGIN = 'https://azattours.com';
 
-const renames = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', '_tour-renames.json'), 'utf8')).renames;
+const renames = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tour-redirects.json'), 'utf8')).renames;
 const tours = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'tours.json'), 'utf8'));
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'posts.json'), 'utf8'));
 const live = t => t.status !== 'draft' && t.status !== 'hidden';
@@ -34,7 +34,7 @@ add('/tour.html', '/tours/', 'high', 'template without slug: only the catalog ma
 add('/post.html', '/blog/', 'high', 'template without slug: only the blog index makes sense');
 add('/index.html', '/', 'high', 'home');
 
-// renamed / retired tours (scripts/_tour-renames.json, 2026-10-13 rename)
+// renamed / retired tours (data/tour-redirects.json, 2026-10-13 rename)
 for (const [old, r] of Object.entries(renames)) {
   const target = resolve(old);
   if (!liveSlugs.has(target)) { add('/tour.html?slug=' + old, '/tours/', 'LOW', 'target slug "' + target + '" is not live; check'); continue; }

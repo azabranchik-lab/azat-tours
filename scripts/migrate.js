@@ -20,11 +20,12 @@ const { execFileSync } = require('child_process');
 const content = require('../lib/content');
 
 const STATE = path.join(content.ROOT, 'content', '.migrations.json');
-const run = (script, ...args) => () => execFileSync(process.execPath, [path.join(__dirname, script), ...args], { stdio: 'inherit' });
+// migration inputs live in scripts/migrations/
+const run = (script, ...args) => () => execFileSync(process.execPath, [path.join(__dirname, 'migrations', script), ...args], { stdio: 'inherit' });
 
 // Blurbs that named an old tour series; only these three, the rest stay as edited.
 function fixBlurbs() {
-  const src = require('./_blurbs.json');
+  const src = require('./migrations/blurbs.json');
   const tours = content.loadTours();
   let n = 0;
   for (const slug of ['kyrgyzstan-grand-tour-10-days', 'song-kul-kel-suu-altyn-arashan-8-days', 'song-kul-kel-suu-in-a-week-7-days']) {
@@ -53,7 +54,7 @@ function setCanonicals() {
 
 // Highlights written from each tour's own itinerary (the imported ones were copied wording).
 function setHighlights() {
-  const src = require('./_highlights.json');
+  const src = require('./migrations/highlights.json');
   const tours = content.loadTours();
   let n = 0;
   for (const t of tours) if (Array.isArray(src[t.slug]) && JSON.stringify(t.highlights) !== JSON.stringify(src[t.slug])) { t.highlights = src[t.slug]; n++; }
@@ -61,7 +62,7 @@ function setHighlights() {
   console.log(n + ' tour(s) got new highlights');
 }
 
-// Replace one post's text with a reviewed source file (scripts/_post-*.js).
+// Replace one post's text with a reviewed source file (scripts/migrations/post-*.js).
 const setPost = file => () => {
   const src = require(file);
   const posts = content.loadPosts();
@@ -72,9 +73,9 @@ const setPost = file => () => {
   console.log('post updated: ' + src.slug);
 };
 
-// Sights that a route never reaches (places[] was generated from old day titles): scripts/_sights-fix.json.
+// Sights that a route never reaches (places[] was generated from old day titles): scripts/migrations/sights-fix.json.
 function fixSights() {
-  const fix = require('./_sights-fix.json');
+  const fix = require('./migrations/sights-fix.json');
   const tours = content.loadTours();
   let n = 0;
   for (const [slug, names] of Object.entries(fix)) {
@@ -94,7 +95,7 @@ function fixSights() {
 function cleanPostLinks() {
   const { cleanHref } = require('../lib/post-page');
   let renames = {};
-  try { renames = require('./_tour-renames.json').renames || {}; } catch (e) {}
+  try { renames = require('../data/tour-redirects.json').renames || {}; } catch (e) {}
   const resolve = s => { let x = s; for (let i = 0; i < 6 && renames[x]; i++) x = renames[x].hide ? renames[x].redirect : renames[x].slug; return x; };
   const posts = content.loadPosts();
   let n = 0;
@@ -106,9 +107,9 @@ function cleanPostLinks() {
   console.log(n + ' post link(s) made canonical');
 }
 
-// Search titles (seoTitle) from scripts/_tour-seo-titles.json; a title set in the bot since is kept.
+// Search titles (seoTitle) from scripts/migrations/tour-seo-titles.json; a title set in the bot since is kept.
 function setSeoTitles() {
-  const { titles } = require('./_tour-seo-titles.json');
+  const { titles } = require('./migrations/tour-seo-titles.json');
   const tours = content.loadTours();
   let n = 0;
   for (const t of tours) if (titles[t.slug] && !t.seoTitle) { t.seoTitle = titles[t.slug]; n++; }
@@ -123,10 +124,10 @@ const MIGRATIONS = [
   ['2026-10-14-lake-spelling', [run('unify-spelling.js')]],
   ['2026-10-14-canonical-pairs', [setCanonicals]],
   ['2026-10-15-highlights', [setHighlights]],
-  ['2026-10-15-ala-kul-guide', [setPost('./_post-ala-kul.js')]],
-  // The 2026 tour pack: 41 day trips and short tours (scripts/tours-2026/). Published right
+  ['2026-10-15-ala-kul-guide', [setPost('./migrations/post-ala-kul.js')]],
+  // The 2026 tour pack: 41 day trips and short tours (scripts/migrations/tours-2026/). Published right
   // away (owner decision 2026-10-17); he edits them in the bot. Existing tours are not touched.
-  ['2026-10-16-new-tours', [() => require('./tours-2026/add-tours').addTours({ publish: true })]],
+  ['2026-10-16-new-tours', [() => require('./migrations/tours-2026/add-tours').addTours({ publish: true })]],
   // SEO phase 1 (2026-10-25): stale sights off two tours; canonical link addresses inside post bodies.
   ['2026-10-25-sights-fix', [fixSights]],
   ['2026-10-25-post-links', [cleanPostLinks]],

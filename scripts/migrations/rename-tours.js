@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Idempotent tour rename: applies scripts/_tour-renames.json to the content.
+ * Idempotent tour rename: applies data/tour-redirects.json to the content.
  *
  * For every entry "<old slug>": { slug, name } the tour gets its new name and
  * slug (plus optional field fixes like days/duration). "<old slug>": { hide:
@@ -21,8 +21,8 @@
  *
  *   node scripts/rename-tours.js --dry   # preview, write nothing
  */
-const content = require('../lib/content');
-const { renames, anchors } = require('./_tour-renames.json');
+const content = require('../../lib/content');
+const { renames, anchors } = require('../../data/tour-redirects.json');
 
 const dry = process.argv.includes('--dry');
 const seriesKey = name => content.slugify(String(name).replace(/\s*-\s*\d+\s*Days?\s*$/i, ''));

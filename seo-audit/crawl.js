@@ -3,8 +3,10 @@
  * SEO baseline crawler (no JS executed, like a crawler's first pass).
  *
  *   node seo-audit/crawl.js <base-url> <out-dir>
- *   node seo-audit/crawl.js https://azattours.com seo-audit/baseline/prod
- *   node seo-audit/crawl.js http://localhost:5173 seo-audit/baseline/local
+ *   node seo-audit/crawl.js https://azattours.com seo-audit/runs/prod-2026-11-01
+ *   node seo-audit/crawl.js http://localhost:5173 seo-audit/runs/local
+ *
+ * seo-audit/baseline/prod is the reference taken before the 2026-10-25 work; runs/ is gitignored.
  *
  * Writes into <out-dir>:
  *   pages.csv      every URL from sitemap.xml (+ extra known pages): status, title, description,
@@ -21,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE = (process.argv[2] || 'http://localhost:5173').replace(/\/+$/, '');
-const OUT = process.argv[3] || path.join(__dirname, 'baseline', 'run');
+const OUT = process.argv[3] || path.join(__dirname, 'runs', new Date().toISOString().slice(0, 10));
 const ORIGIN = 'https://azattours.com';
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -110,7 +112,7 @@ async function main() {
   console.log('\n' + pages.length + ' pages crawled');
 
   // ---- known old addresses ----
-  const renames = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'scripts', '_tour-renames.json'), 'utf8')).renames;
+  const renames = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'tour-redirects.json'), 'utf8')).renames;
   const tourSlugs = pages.filter(p => /^\/tours\/[^/]+\/$/.test(p.url)).map(p => p.url.split('/')[2]);
   const postSlugs = pages.filter(p => /^\/blog\/[^/]+\/$/.test(p.url)).map(p => p.url.split('/')[2]);
   const old = new Set(['/tour.html', '/post.html', '/tours.html', '/blog.html', '/index.html', '/tours', '/blog']);

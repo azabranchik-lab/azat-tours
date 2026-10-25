@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Adds the 2026 tour pack (scripts/tours-2026/tours.json: day trips and short tours) to
+ * Adds the 2026 tour pack (scripts/migrations/tours-2026/tours.json: day trips and short tours) to
  * content/tours.json. Runs once on the server through scripts/migrate.js; can also
  * be run by hand. Safe to re-run: a tour whose importKey is already in the content
  * is skipped, so edits made in the bot are never overwritten.
@@ -8,12 +8,12 @@
  * New tours arrive as drafts by default: the owner reviews them in the bot
  * (📝 Drafts, "Preview on site") and publishes. Pass --publish to add them live.
  *
- *   node scripts/tours-2026/add-tours.js            # add missing tours as drafts
- *   node scripts/tours-2026/add-tours.js --dry      # show what would be added
- *   node scripts/tours-2026/add-tours.js --publish  # add missing tours as published
+ *   node scripts/migrations/tours-2026/add-tours.js            # add missing tours as drafts
+ *   node scripts/migrations/tours-2026/add-tours.js --dry      # show what would be added
+ *   node scripts/migrations/tours-2026/add-tours.js --publish  # add missing tours as published
  */
 const path = require('path');
-const content = require('../../lib/content');
+const content = require('../../../lib/content');
 
 const SRC = path.join(__dirname, 'tours.json');
 // Fields a tour may carry in tours.json; anything else is ignored.

@@ -1,6 +1,6 @@
 // Merge per-tour summaries into content/tours.json, then rebuild tours-data.js.
 //
-// Source: scripts/_summaries.json: { "<slug>": "summary text", ... }
+// Source: scripts/migrations/summaries.json: { "<slug>": "summary text", ... }
 // The summary is the paragraph under the tour's H1, the lead of the Description
 // tab and the description in the TouristTrip JSON-LD. These are our own texts,
 // written from each tour's itinerary (the imported ones were copied wording).
@@ -9,12 +9,12 @@
 // Idempotent: re-running with the same source reproduces the same result.
 //
 // ⚠ DEPLOY: content/tours.json is server-authoritative, so run this on the
-// server after scripts/rename-tours.js (the keys are the NEW slugs).
+// server after scripts/migrations/rename-tours.js (the keys are the NEW slugs).
 //
 // Usage: node scripts/merge-summaries.js [--dry]
 
-const content = require('../lib/content');
-const summaries = require('./_summaries.json');
+const content = require('../../lib/content');
+const summaries = require('./summaries.json');
 
 const DRY = process.argv.includes('--dry');
 const tours = content.loadTours();

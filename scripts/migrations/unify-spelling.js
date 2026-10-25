@@ -14,7 +14,7 @@
  *
  *   node scripts/unify-spelling.js --dry   # count changes, write nothing
  */
-const content = require('../lib/content');
+const content = require('../../lib/content');
 
 const RULES = [
   [/\bSong[- ]K[oö]l\b/g, 'Song-Kul'],
