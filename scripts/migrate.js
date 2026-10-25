@@ -106,6 +106,16 @@ function cleanPostLinks() {
   console.log(n + ' post link(s) made canonical');
 }
 
+// Search titles (seoTitle) from scripts/_tour-seo-titles.json; a title set in the bot since is kept.
+function setSeoTitles() {
+  const { titles } = require('./_tour-seo-titles.json');
+  const tours = content.loadTours();
+  let n = 0;
+  for (const t of tours) if (titles[t.slug] && !t.seoTitle) { t.seoTitle = titles[t.slug]; n++; }
+  if (n) content.saveTours(tours);
+  console.log(n + ' search title(s) set');
+}
+
 const MIGRATIONS = [
   ['2026-10-13-rename-tours', [run('rename-tours.js')]],
   ['2026-10-13-summaries', [run('merge-summaries.js')]],
@@ -120,6 +130,8 @@ const MIGRATIONS = [
   // SEO phase 1 (2026-10-25): stale sights off two tours; canonical link addresses inside post bodies.
   ['2026-10-25-sights-fix', [fixSights]],
   ['2026-10-25-post-links', [cleanPostLinks]],
+  // Phase 3 (owner delegated the decision, 2026-10-25): query-first <title> per tour, names unchanged.
+  ['2026-10-25-seo-titles', [setSeoTitles]],
 ];
 
 function main() {

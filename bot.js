@@ -32,7 +32,7 @@ const sessions = new Map(); // userId -> state
 
 const TOUR_CATS = ['Day trips', 'Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];
 const POST_CATS = ['Travel guide', 'Planning', 'Culture', 'Practical', 'Gear', 'Horse treks', 'Day tours'];
-const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags'], ['priceFrom', 'Price from $'], ['priceNote', 'Price note']];
+const TOUR_FIELDS = [['name', 'Name'], ['category', 'Category'], ['duration', 'Duration'], ['summary', 'Description'], ['season', 'Best season'], ['start_from', 'Starts in'], ['tour_speed', 'Pace'], ['accommodations', 'Accommodation'], ['activities', 'Activities'], ['total_drive', 'Total drive'], ['highlights', 'Highlights'], ['tags', 'Tags'], ['priceFrom', 'Price from $'], ['priceNote', 'Price note'], ['seoTitle', 'SEO title']];
 const POST_FIELDS = [['title', 'Title'], ['category', 'Category'], ['excerpt', 'Excerpt'], ['author', 'Author'], ['body', 'Body text']];
 
 // ---------- auth ----------
