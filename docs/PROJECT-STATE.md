@@ -67,6 +67,32 @@
     тур 73 → 95, статья 85 → 94; CLS везде 0; вес страницы тура 1075 → 471 КБ, каталога 1150 → 555 КБ.
     Осталось: главная LCP 3,4 с (hero-фото), TBT 190–250 мс из-за rise-in анимации 79 карточек (`tours-render.js`).
   - Проверено на 375 и 1280, светлая и тёмная тема, консоль чистая, фильтры и deep-link `?cat=` работают.
+- **Пакет C = фаза 1 брифа (SEO-правки), коммиты 526ecb2, 983202e, 1be401c.** Отчёт: `seo-audit/phase-1-report.md`.
+  - Данные (миграции в `scripts/migrate.js`, выполнятся при деплое): `2026-10-25-sights-fix` убирает Issyk-Kul у
+    `song-kul-horse-trek-3-days` и Bokonbayevo у `mai-tor-pastures-horse-trek-5-days` (`scripts/_sights-fix.json`);
+    `2026-10-25-post-links` переписывает ссылки в телах статей на `/tours/x/`, `/blog/x/`, `/plan-trip.html#…`
+    (38 ссылок; `scripts/_post-links.json` тоже обновлён). Проверка: `node scripts/check-sights.js` (0 расхождений,
+    177 подсказок «упомянуто, но не показано» в `seo-audit/sights-mismatch.csv`, решение владельца).
+    ⚠️ Первый прогон миграции ссылок локально испортил тела статей из-за ошибки в regex; восстановлено из снимка
+    `content/before-2026-10-25-sights-fix/posts.json`, миграция исправлена и перезапущена. На сервере пойдёт сразу верная.
+  - Страница тура (`lib/tour-page.js`): один блок `.tour-tabs` для обеих раскладок. Телефон: вкладки Description /
+    Additional info / What to pack / Before you go (как было). Десктоп: таббар скрыт CSS (`@media(min-width:681px)`),
+    панели одна под другой с h2 «Why you'll love this tour», «Good to know», «What to pack», «Before you go».
+    Старые `.about-desktop`-секции удалены; summary только в hero; факты pace/season/start только в factbar.
+    Pack/Before: 3–5 пунктов по `tripKind()` (winter → horseback → trekking → road-trip → day → combined) + ссылка на
+    `/blog/easy-from-abroad/`; «Read before you go» с 1–3 статьями по правилам `GUIDES` (Ala-Kul, юрты, сезон,
+    безопасность). Видимые отличия: на десктопе появились pack/before; на телефоне «Additional info» списком, а не
+    плитками; в Description нет повторённого summary. Владелец ещё не подтвердил.
+  - JSON-LD: тур `offers` = `Offer` + `UnitPriceSpecification.minPrice` (цена «от»), статья `author` = `Person` Azat
+    → `/about.html`, publisher с logo; главная `WebSite`. Тест `tests/jsonld.test.js` (все туры/статьи/списки).
+  - Sitemap: только `loc`+`lastmod`; у служебных страниц `lastmod` из `git log -1 --format=%cs` шаблона
+    (`gitDay` в `lib/pages.js`, fallback mtime). `headTags` принимает `m.alternates` (hreflang) и `m.lang`, пока пусто.
+  - Главная: must-see → song-kul-horse-trek-3-days, kel-suu-lake-express-4-days, issyk-kul-altyn-arashan-4-days,
+    complete-kyrgyzstan-adventure-12-days (временно, до хабов фазы 3). `<main>` на index/tours/blog/about/contact/
+    plan-trip; футер `<h4>` → `<p class="foot-h">`; вкладки с ролями `tab`/`tabpanel`.
+  - `check-site.js` дополнительно требует: WebSite на главной, Offer с ценой, автор Person, `<main>`, ссылка тур → блог.
+  - Проверено: 24 теста, check-site «All good», compare с baseline прода 0 жёстких отличий (1 мягкое: WebSite),
+    вкладки работают на 375, консоль чистая. `public/*-data.js` пересобраны миграциями, по-прежнему не закоммичены.
 - **Деплой-нюансы:** sharp уже в dependencies (нужен Node ≥ 20.9 на VPS); `.cache/` создаётся сам; после выкатки
   можно запустить `node scripts/warm-images.js` в фоне. nginx менять не нужно (но см. пакет B в full-analysis: http2, бэкап).
 - **Открытые вопросы владельцу** (в `phase-0-report.md` и `full-analysis.md`): неизвестный slug 404 или 301 на каталог,
