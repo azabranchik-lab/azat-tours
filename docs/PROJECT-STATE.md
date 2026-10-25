@@ -38,6 +38,33 @@
 
 ---
 
+## Сессия 2026-10-25 (вечер) — выкатка, проверка прода, уборка и современная структура
+- **Выкатка** (push по команде владельца): `main` = `cbb61f2`, GitHub Actions Deploy зелёный (run 40196215379).
+  Прод проверен: `check-site` «All good» (92 URL, 745 ссылок), миграции применились (новые title, Issyk-Kul убран из
+  Sights, ссылки в статьях канонические), CSS/JS `?v=` и шрифты с кэшем на год, Google Fonts нет, `?w=` отдаёт AVIF.
+  Lighthouse прод до/после: `seo-audit/lighthouse.md` (вес страниц вдвое меньше, CLS ~0, TBT 0; LCP упирается в сеть:
+  nginx без HTTP/2, сервер в Сингапуре; у тура лабораторный балл не вырос, частично из-за шрифтов на HTTP/1.1).
+- **Уборка (коммиты 0ac6f73…последний, НЕ запушены):**
+  - Удалены 23 одноразовых скрипта импорта и сидинга (`seed-*`, `merge-*`, `build-tours/tags/places/sitemap`, `deemoji`,
+    `localize/download-catalog-images`, `normalize-tour-names`, `strip-transfer-detail`, `add-why-posts`, `_itin/` и их
+    `_*.json`): на сервере они затёрли бы живой контент; два содержали домен первоисточника. `public/sitemap.xml`
+    (устаревший, не отдавался) удалён. Словарь мест: `lib/places.js`.
+  - Новая раскладка: `data/tour-redirects.json` (карта 301, читается сервером), `scripts/migrations/` (входные данные
+    применённых миграций, включая `tours-2026/` и его локальные `tools/`, gitignored), в `scripts/` только инструменты.
+    Все 11 миграций прогнаны с нуля по новым путям на копии (с состояния до 13.10): применились, повтор пустой,
+    check-site «All good».
+  - CI: job `test` (тесты сайта и партнёров) перед `deploy`; в CI-подобной копии без контента 32 pass, 5 skip, 0 fail.
+  - `server.js`: 404 для `*.bak`, `*.tmp` и скрытых файлов в `public/` (раньше `/tours-data.js.bak` отдавался).
+  - `package.json`: имя `azat-tours`, `private`, Node ≥ 20.9, скрипты `check`, `check:sights`, `migrate`, `warm-images`,
+    `restore`; lock синхронизирован, `npm ci` проверен.
+  - Документы: `docs/ARCHITECTURE.md` (актуальная схема), `docs/BACKLOG.md` (только открытое), `docs/SERVER.md`
+    (HTTP/2 в nginx: `listen 443 ssl http2;` для 1.24, мониторинг, Cloudflare). Удалены 8 устаревших (Alatoo-эпоха,
+    tar-деплой, июльский SEO-аудит), `UX-AUDIT.md` → `docs/UX-AUDIT-2026-07-10.md`. Навык `site-architecture`
+    переписан под текущую схему. Из `.agents/product-marketing-context.md` убраны выдуманные цифры.
+  - `seo-audit/`: из git убраны сгенерированные отчёты Lighthouse и промежуточные обходы (~18 МБ), остались отчёты,
+    CSV решений, скрипты и эталон `baseline/prod`; новые обходы пишутся в `seo-audit/runs/` (gitignored).
+- Фото: 19 из 654 в `public/img/catalog` не используются (6 МБ), оставлены: на них могут ссылаться черновики на сервере.
+
 ## Сессия 2026-10-25 — SEO-программа: фаза 0, анализ, пакеты A (скорость), C (фаза 1), D (фаза 2), E (фаза 3: предложения и решения), ветка `seo-fixes` (НЕ в main)
 Бриф владельца: `C:\Users\user\Downloads\azattours-claude-code-prompt.md` (5 фаз: аудит → техправки → доверие →
 архитектура контента → Astro → корейская версия). Правило: после каждой фазы отчёт и стоп до «ок». Все артефакты в
