@@ -17,7 +17,18 @@ const ORIGIN = 'https://azattours.com';
 const problems = [];
 const bad = (url, msg) => problems.push(url + '  ' + msg);
 
-const get = (url, opts) => fetch(url, Object.assign({ redirect: 'manual' }, opts));
+// A slow or flaky link to the server must not abort the whole check: each request gets 30 s
+// and up to four tries; one that never gets through is reported as status 599 and the run goes on.
+let networkErrors = 0;
+async function get(url, opts) {
+  for (let attempt = 1; ; attempt++) {
+    try { return await fetch(url, Object.assign({ redirect: 'manual', signal: AbortSignal.timeout(30000) }, opts)); }
+    catch (e) {
+      if (attempt >= 4) { networkErrors++; return new Response('', { status: 599, statusText: 'network error: ' + (e.cause && e.cause.code || e.name) }); }
+      await new Promise(r => setTimeout(r, 1000 * 2 ** (attempt - 1)));
+    }
+  }
+}
 const pick = (html, re) => { const m = html.match(re); return m ? m[1] : ''; };
 const unescape = s => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 
@@ -112,6 +123,7 @@ async function main() {
   }
 
   console.log(`${entries.length} sitemap URLs (${tours} tours, ${posts} posts, ${cars} cars), ${links.size} internal links and assets checked on ${BASE}`);
+  if (networkErrors) console.log(`${networkErrors} request(s) never got through after 4 tries (status 599 below): check the network before blaming the site.`);
   if (problems.length) { console.log('\n' + problems.length + ' problem(s):\n' + problems.join('\n')); process.exit(1); }
   console.log('All good.');
 }
