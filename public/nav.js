@@ -74,14 +74,14 @@
         '<div class="logo">Azat Tours<small style="letter-spacing:.28em">Kyrgyzstan</small></div>' +
         '<p class="blurb">Azat means &ldquo;free&rdquo;. Small-group adventures in the Kyrgyz mountains, run by locals since 2019.</p>' +
       '</div>' +
-      '<div class="foot-col"><h4>Explore</h4><ul>' +
+      '<div class="foot-col"><p class="foot-h">Explore</p><ul>' +
         (hasCars ? '<li><a href="/cars/">Car rental</a></li>' : '') +
         '<li><a href="/about.html">About us</a></li>' +
         '<li><a href="/blog/">Blog</a></li>' +
         '<li><a href="/plan-trip.html">Plan your trip</a></li>' +
         '<li><a href="/contact.html">Contact</a></li>' +
       '</ul></div>' +
-      '<div class="foot-col"><h4>Contact</h4><ul>' +
+      '<div class="foot-col"><p class="foot-h">Contact</p><ul>' +
         '<li><a href="https://wa.me/996502888001" target="_blank" rel="noopener">WhatsApp</a></li>' +
         '<li><a href="mailto:azatbeyshenaliev1@gmail.com">azatbeyshenaliev1@gmail.com</a></li>' +
         '<li><a href="/contact.html">Bishkek, Kyrgyzstan</a></li>' +

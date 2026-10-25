@@ -42,7 +42,7 @@
   root.querySelectorAll('.tab').forEach(tab => {
     tab.onclick = () => {
       const id = tab.dataset.tab;
-      root.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === tab));
+      root.querySelectorAll('.tab').forEach(x => { x.classList.toggle('active', x === tab); x.setAttribute('aria-selected', x === tab ? 'true' : 'false'); });
       root.querySelectorAll('.tabpanel').forEach(p => p.classList.toggle('open', p.dataset.panel === id));
     };
   });

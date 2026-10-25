@@ -39,6 +39,9 @@
 }
 </script>
 <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://azattours.com/#website", "name": "Azat Tours", "url": "https://azattours.com/", "inLanguage": "en", "publisher": {"@id": "https://azattours.com/#organization"}}
+</script>
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -63,6 +66,7 @@
 <!-- header + mobile menu: put here by the server (lib/pages.js, markup from nav.js) -->
 
 <!-- ============ HERO ============ -->
+<main>
 <section class="hero" id="top">
   <div class="hero-bg">
     <!-- One photo set for every device; srcset lets the browser pick the width.
@@ -167,10 +171,10 @@
       <p>The lakes, valleys and Silk-Road sites our trips are built around, every tour can be tailored to include them.</p>
     </div>
     <div class="exp-grid">
-      <a href="/tours/" class="exp-card reveal"><img loading="lazy" src="/img/places/song-kol.jpg" srcset="/img/places/song-kol.jpg?w=480 480w, /img/places/song-kol.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="Felt yurts at sunset on the shore of Song-Kul Lake" /><div><h3>Song-Kul Lake</h3><span>Naryn region · alpine pastures &amp; yurts</span></div></a>
-      <a href="/tours/" class="exp-card reveal" data-delay="1"><img loading="lazy" src="/img/places/kel-suu.jpg" srcset="/img/places/kel-suu.jpg?w=480 480w, /img/places/kel-suu.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="A boat on the turquoise water of Kel-Suu between sheer canyon walls" /><div><h3>Kel-Suu Lake</h3><span>At-Bashy · hidden canyon lake</span></div></a>
-      <a href="/tours/" class="exp-card reveal" data-delay="2"><img loading="lazy" src="/img/places/issyk-kul.jpg" srcset="/img/places/issyk-kul.jpg?w=480 480w, /img/places/issyk-kul.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="Waves on the sandy shore of Lake Issyk-Kul with the Tian Shan behind" /><div><h3>Lake Issyk-Kul</h3><span>The pearl of the Tian Shan</span></div></a>
-      <a href="/tours/" class="exp-card reveal" data-delay="1"><img loading="lazy" src="/img/places/tash-rabat.jpg" srcset="/img/places/tash-rabat.jpg?w=480 480w, /img/places/tash-rabat.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="The stone Tash Rabat caravanserai in a green Naryn mountain glen" /><div><h3>Tash Rabat</h3><span>Naryn · Silk-Road caravanserai</span></div></a>
+      <a href="/tours/song-kul-horse-trek-3-days/" class="exp-card reveal"><img loading="lazy" src="/img/places/song-kol.jpg" srcset="/img/places/song-kol.jpg?w=480 480w, /img/places/song-kol.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="Felt yurts at sunset on the shore of Song-Kul Lake" /><div><h3>Song-Kul Lake</h3><span>Naryn region · alpine pastures &amp; yurts</span></div></a>
+      <a href="/tours/kel-suu-lake-express-4-days/" class="exp-card reveal" data-delay="1"><img loading="lazy" src="/img/places/kel-suu.jpg" srcset="/img/places/kel-suu.jpg?w=480 480w, /img/places/kel-suu.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="A boat on the turquoise water of Kel-Suu between sheer canyon walls" /><div><h3>Kel-Suu Lake</h3><span>At-Bashy · hidden canyon lake</span></div></a>
+      <a href="/tours/issyk-kul-altyn-arashan-4-days/" class="exp-card reveal" data-delay="2"><img loading="lazy" src="/img/places/issyk-kul.jpg" srcset="/img/places/issyk-kul.jpg?w=480 480w, /img/places/issyk-kul.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="Waves on the sandy shore of Lake Issyk-Kul with the Tian Shan behind" /><div><h3>Lake Issyk-Kul</h3><span>The pearl of the Tian Shan</span></div></a>
+      <a href="/tours/complete-kyrgyzstan-adventure-12-days/" class="exp-card reveal" data-delay="1"><img loading="lazy" src="/img/places/tash-rabat.jpg" srcset="/img/places/tash-rabat.jpg?w=480 480w, /img/places/tash-rabat.jpg?w=800 800w" sizes="(max-width:680px) 74vw, 25vw" alt="The stone Tash Rabat caravanserai in a green Naryn mountain glen" /><div><h3>Tash Rabat</h3><span>Naryn · Silk-Road caravanserai</span></div></a>
     </div>
   </div>
 </section>
@@ -366,6 +370,7 @@
 
 <script src="/reviews-data.js"></script>
 <script src="/site-data.js"></script>
+</main>
 <script src="/nav.js"></script>
 <script src="/script.js"></script>
 <script src="/tours-render.js"></script>

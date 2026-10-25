@@ -386,7 +386,7 @@ footer{background:var(--panel);color:var(--panel-text-soft);padding:48px 0 30px}
 /* slim footer: brand + two link columns */
 .foot-slim{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:32px 40px;align-items:start}
 .foot-slim .foot-bottom{grid-column:1/-1;margin-top:6px}
-footer h4{color:#fff;font-family:var(--font-display);font-size:1.05rem;margin-bottom:16px;font-weight:600}
+footer h4,footer .foot-h{color:#fff;font-family:var(--font-display);font-size:1.05rem;margin-bottom:16px;font-weight:600}
 footer .logo{color:#fff;margin-bottom:16px}
 footer ul{list-style:none;display:flex;flex-direction:column;gap:10px}
 footer ul a{font-size:.92rem;transition:color .2s}
@@ -1552,3 +1552,17 @@ header.scrolled .nav-links .theme-toggle,header.solid .nav-links .theme-toggle{c
 .tour-foot .tour-price{font-size:.9rem;color:var(--ink-soft);font-weight:500}
 .tour-foot .tour-price b{font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--ink)}
 @media(max-width:680px){ .tour-foot .tour-price{display:inline;font-size:.82rem} .tour-foot .tour-price b{font-size:1rem} }
+
+/* About this tour (lib/tour-page.js .tour-tabs): one block of markup for both layouts.
+   Phones: tab bar + one open panel (rules above). Desktop: the tab bar is hidden and the
+   panels are stacked as sections with their own headings, as the old separate sections were. */
+.tour-tabs .tabpanel > h2{display:none}
+.tour-tabs .guide-links{margin-top:16px}
+.tour-tabs .guide-links a{color:var(--lake);font-weight:600}
+.tour-tabs .guide-links a:hover{text-decoration:underline}
+@media(min-width:681px){
+  .tour-tabs .tabbar{display:none}
+  .tour-tabs .tabpanel{display:block}
+  .tour-tabs .tabpanel > h2{display:block}
+  .tour-tabs .tabpanel + .tabpanel{margin-top:34px;padding-top:34px;border-top:1px solid var(--line)}
+}
