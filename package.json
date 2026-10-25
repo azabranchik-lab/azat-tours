@@ -1,21 +1,25 @@
 {
-  "name": "alatoo-kyrgyzstan",
+  "name": "azat-tours",
   "version": "1.0.0",
-  "description": "Alatoo Kyrgyzstan tours website + Telegram admin bot",
+  "private": true,
+  "description": "Azat Tours website (server-rendered from content/*.json) and the Telegram admin bot",
   "type": "commonjs",
   "scripts": {
     "start": "node start.js",
     "serve": "node server.js",
     "bot": "node bot.js",
-    "seed": "node scripts/seed-content.js",
+    "test": "node --test \"tests/*.test.js\"",
+    "check": "node scripts/check-site.js",
+    "check:sights": "node scripts/check-sights.js",
+    "migrate": "node scripts/migrate.js",
     "regen": "node scripts/regenerate-all.js",
-    "build-tours": "node scripts/build-tours.js",
+    "warm-images": "node scripts/warm-images.js",
+    "restore": "node scripts/restore-backup.js",
     "build-photos": "node scripts/build-photos.js",
-    "build-image-formats": "node scripts/build-image-formats.js",
-    "test": "node --test \"tests/*.test.js\""
+    "build-image-formats": "node scripts/build-image-formats.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.9"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",

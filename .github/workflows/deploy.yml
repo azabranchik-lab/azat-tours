@@ -32,7 +32,23 @@ concurrency:
   cancel-in-progress: false  # queue runs; don't cancel a live deploy
 
 jobs:
+  # Nothing reaches the server unless the tests pass (site and partners bot).
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: site tests
+        run: npm ci && npm test
+      - name: partners bot tests
+        working-directory: partners
+        run: npm ci && npm test
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: SSH → pull → regen → pm2 reload

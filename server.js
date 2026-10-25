@@ -335,6 +335,8 @@ const server = http.createServer(async (req, res) => {
 
   const filePath = path.join(PUBLIC, urlPath);
   if (!filePath.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
+  // never serve working copies: lib/fsx.js keeps <file>.bak next to every data file it rewrites
+  if (/\.(bak|tmp)$/i.test(filePath) || /[\\/]\./.test(path.relative(PUBLIC, filePath))) return send404(res);
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) { return send404(res); }
     const ext0 = path.extname(filePath).toLowerCase();
