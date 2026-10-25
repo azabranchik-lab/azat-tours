@@ -231,7 +231,8 @@ bot.command('help', ctx => ctx.reply(
   '/reviews — reviews · /addreview\n' +
   '/sights — places on tour pages: add, rename, photo, delete\n' +
   '/cars — rental cars: prices, photos, available/booked · /addcar\n' +
-  '/home — homepage photos (hero, Instagram, experience cards)\n\n' +
+  '/home — homepage photos (hero, Instagram, experience cards)\n' +
+  '/backup — a backup of all content now (/backup full adds the photos; one also arrives every day by itself)\n\n' +
   'ENQUIRIES\n' +
   '/leads — website enquiries: reply on WhatsApp, mark handled\n' +
   '/chats — website chats: reply with "/reply <id> <text>"\n\n' +
@@ -1240,14 +1241,56 @@ const BOT_COMMANDS = [
   { command: 'drafts', description: 'Content waiting to publish' },
   { command: 'leads', description: 'Recent enquiries' },
   { command: 'chats', description: 'Website chats' },
+  { command: 'backup', description: 'Send a backup of the content now' },
   { command: 'help', description: 'Help' },
   { command: 'cancel', description: 'Cancel current action' },
 ];
+// ================= BACKUPS (lib/backup.js) =================
+// The server is the only copy of the content, so every day at 10:00 Bishkek time (night in
+// Europe and America) the bot sends the owner a silent .tar.gz of content/*.json (tours, posts,
+// reviews, leads, chats, settings); on Sundays the photos in public/images/ go with it when the
+// archive fits Telegram's 50 MB.
+// /backup sends one now, /backup full includes the photos. Restore: scripts/restore-backup.js.
+const Backup = require('./lib/backup');
+const BACKUP_STATE = path.join(C.ROOT, 'content', '.backup-state.json');
+const BACKUP_HOUR = 10;
+async function sendBackup(chatId, { images = false, reason = '', silent = false } = {}) {
+  let a = await Backup.makeArchive(C.ROOT, { images });
+  let note = '';
+  if (a.tooBig && images) { a = await Backup.makeArchive(C.ROOT, { images: false }); note = '\n⚠️ With photos the archive is over 50 MB, so this one has the content only. Copy public/images/ from the server another way.'; }
+  if (a.tooBig) throw new Error('content archive is over 50 MB');
+  await bot.api.sendDocument(chatId, new InputFile(a.buffer, a.name), {
+    caption: `🗄 Backup ${reason ? esc(reason) + ' ' : ''}· ${a.files} file(s) · ${Math.round(a.bytes / 1024)} KB${note}\nKeep this file. To restore: node scripts/restore-backup.js ${a.name}`,
+    parse_mode: 'HTML', disable_notification: silent
+  });
+  return a;
+}
+bot.command('backup', async ctx => {
+  const full = /\bfull\b/i.test(ctx.message.text || '');
+  await ctx.reply(full ? '⏳ Packing content and photos…' : '⏳ Packing the content…');
+  try { await sendBackup(ctx.chat.id, { images: full, reason: full ? '(content + photos)' : '(content)' }); }
+  catch (e) { console.error('backup failed:', e.message); await ctx.reply('⚠️ Backup failed: ' + esc(e.message), md); }
+});
+function backupTick() {
+  if (!OWNER_ID) return;
+  let state = {};
+  try { state = JSON.parse(fs.readFileSync(BACKUP_STATE, 'utf8')); } catch (e) {}
+  const job = Backup.due(state, new Date(), BACKUP_HOUR);
+  if (!job) return;
+  // remember the day first: a failed send is reported, not retried every ten minutes all night
+  try { fs.writeFileSync(BACKUP_STATE, JSON.stringify({ lastDay: job.day }, null, 2)); } catch (e) { console.error('backup state not saved:', e.message); }
+  sendBackup(OWNER_ID, { images: job.images, silent: true, reason: job.images ? '(weekly, with photos)' : '(daily)' })
+    .catch(e => { console.error('daily backup failed:', e.message); bot.api.sendMessage(OWNER_ID, '⚠️ Daily backup failed: ' + esc(e.message) + '\nSend /backup to try again.', md).catch(() => {}); });
+}
+
 bot.start({
   drop_pending_updates: true, // skip backlog so /start answers instantly after a restart
   onStart: async info => {
     try { await bot.api.setMyCommands(BOT_COMMANDS); } catch (e) { console.error('setMyCommands failed:', e.message); }
     if (!OWNER_ID) console.warn('⚠️  OWNER_ID is not set — the FIRST person to /start will become admin. Set ownerId in config.json (or OWNER_ID env) before exposing the bot.');
     console.log(`✅ Azat Tours admin bot running as @${info.username}. Owner: ${OWNER_ID || '(unclaimed)'}`);
+    // daily backup to the owner (runs only where the bot runs, i.e. on the server)
+    setInterval(backupTick, 10 * 60 * 1000).unref();
+    backupTick();
   }
 });
