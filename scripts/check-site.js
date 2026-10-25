@@ -30,7 +30,10 @@ function ldTypes(html, url) {
       if (node['@context'] !== 'https://schema.org') bad(url, 'JSON-LD without schema.org @context');
       types.push(node['@type']);
       if (node['@type'] === 'TouristTrip' && !(node.name && node.description && node.itinerary && node.provider)) bad(url, 'TouristTrip misses name/description/itinerary/provider');
+      if (node['@type'] === 'TouristTrip' && node.offers && !(node.offers.price > 0 && node.offers.priceCurrency && node.offers.priceSpecification && node.offers.priceSpecification.minPrice > 0)) bad(url, 'TouristTrip offer without a starting price');
+      if (node['@type'] === 'TouristTrip' && node.aggregateRating) bad(url, 'TouristTrip carries a rating (no real reviews yet)');
       if (node['@type'] === 'BlogPosting' && !(node.headline && node.description && node.image && node.datePublished && node.dateModified && node.author && node.publisher)) bad(url, 'BlogPosting misses a required field');
+      if (node['@type'] === 'BlogPosting' && !(node.author && node.author['@type'] === 'Person' && node.author.url)) bad(url, 'BlogPosting author is not a Person with a page');
       if (node['@type'] === 'Product' && !(node.name && node.image && node.offers && [].concat(node.offers).every(o => o.price > 0 && o.priceCurrency))) bad(url, 'Product misses name/image/offers with a price');
       if (node['@type'] === 'BreadcrumbList' && !(node.itemListElement || []).every(i => i.name && i.item)) bad(url, 'BreadcrumbList item without name/item');
       if (node['@type'] === 'FAQPage' && !(node.mainEntity || []).every(q => q.name && q.acceptedAnswer && q.acceptedAnswer.text)) bad(url, 'FAQPage question without answer');
@@ -75,6 +78,9 @@ async function main() {
     if (isTour) { tours++; ['TouristTrip', 'BreadcrumbList'].forEach(t => types.includes(t) || bad(pathName, 'no ' + t + ' JSON-LD')); if (!/class="timeline"/.test(html)) bad(pathName, 'itinerary missing from HTML'); }
     if (isPost) { posts++; ['BlogPosting', 'BreadcrumbList'].forEach(t => types.includes(t) || bad(pathName, 'no ' + t + ' JSON-LD')); if (!/<article class="article">\s*<[a-z]/.test(html)) bad(pathName, 'article text missing from HTML'); }
     if (pathName === '/' && !types.includes('TravelAgency')) bad(pathName, 'no TravelAgency JSON-LD');
+    if (pathName === '/' && !types.includes('WebSite')) bad(pathName, 'no WebSite JSON-LD');
+    if (isTour && !/href="\/blog\/[a-z0-9-]+\/"/.test(html)) bad(pathName, 'tour page links to no article');
+    if (!/<main[\s>]/.test(html)) bad(pathName, 'no <main> landmark');
     if (pathName === '/tours/' && (html.match(/<a class="tour" href="\/tours\//g) || []).length < 1) bad(pathName, 'tour list missing from HTML');
     if (pathName === '/blog/' && !/href="\/blog\/[a-z0-9-]+\/"/.test(html)) bad(pathName, 'post list missing from HTML');
     if (!/<header id="header"/.test(html) || !/<footer>/.test(html)) bad(pathName, 'navigation or footer missing from HTML');
