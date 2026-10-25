@@ -35,6 +35,43 @@
 
 ---
 
+## Сессия 2026-10-25 — SEO-программа: фаза 0, полный анализ, пакет A (скорость), ветка `seo-fixes` (НЕ в main)
+Бриф владельца: `C:\Users\user\Downloads\azattours-claude-code-prompt.md` (5 фаз: аудит → техправки → доверие →
+архитектура контента → Astro → корейская версия). Правило: после каждой фазы отчёт и стоп до «ок». Все артефакты в
+`seo-audit/`: `phase-0-report.md`, `full-analysis.md` (архитектура, скорость, SEO, план пакетов A–E),
+`crawl.js` (краулер baseline), `compare.js` (сравнение двух обходов), `build-redirect-map.js` → `redirect-map.csv`,
+`baseline/prod` и `baseline/local` (идентичны), `lighthouse/` (до: прод) и `lighthouse/after-A/` (после: локально).
+- **Локальный контент доведён до прода:** применена миграция `2026-10-16-new-tours` (79 туров), снимок до неё в
+  `content/before-2026-10-16-new-tours/`. `public/tours-data.js` и `builder-data.js` пересобрались и пока НЕ закоммичены.
+- **Пакет A (скорость, без изменения дизайна), коммиты 46ab047, a95ff42, 5269137:**
+  - Шрифты свои: `public/fonts/*.woff2` (те же variable-сабсеты latin/latin-ext, что отдавал Google; Fraunces только
+    ASCII для логотипа), `@font-face` в начале `styles.css`, в шаблонах `preload` двух текстовых шрифтов, Google Fonts нет.
+  - Первый экран виден сразу: `lib/pages.js finalize()` ставит `in` элементам `.reveal` внутри `.hero/.page-hero`
+    прямо в HTML; `script.js` больше не ждёт `window.load`. Единственное видимое отличие: hero не «всплывает», а
+    появляется сразу (ради LCP).
+  - `analytics.js` грузит gtag (177 КБ) после load+idle или по первому касанию; хиты копятся в dataLayer. Визиты короче
+    ~2 с теперь не попадают в GA. `chat.js` с `defer`.
+  - Версии ассетов: `/styles.css?v=<mtime>`, `/*.js?v=…` (подставляет `finalize`), сервер отдаёт их с кэшем на год
+    (`cacheHeader` в `server.js`), шрифты тоже год, картинки неделя, HTML no-cache. Версия меняется с mtime файла,
+    то есть при каждом деплое.
+  - `width/height` у всех локальных `<img>` (из заголовков файлов, `lib/imgsize.js`), в CSS `img{height:auto}`.
+  - `srcset`: карточки, hero тура/статьи, галереи, sights, must-see, exp-карточки, page-hero. Сервер отдаёт
+    `foo.jpg?w=480|800|1280|1600` как AVIF/WebP/JPEG нужной ширины (`lib/imgvariants.js`, sharp, кэш в `.cache/img/`,
+    gitignored, ширины только из списка; исходник уже меньше → отдаётся как есть). Прогрев: `node scripts/warm-images.js`
+    (необязательно, иначе первый запрос ждёт ~0,3 с на картинку).
+  - Тулбар фильтров каталога рендерит сервер (`Cards.catalogToolbar` в `cards.js`, единая разметка для сервера и
+    `tours-render.js`; шторка `Cards.filterSheet` по-прежнему из JS). CLS каталога 0,134 → 0. Логика фильтров та же.
+  - `check-site.js` теперь требует: шрифты свои, `styles.css?v=`, hero без скрытых элементов, `width/height` у картинок.
+  - Тесты: 20 (+3 `tests/imgsize.test.js`). `check-site` «All good», `compare.js` с baseline прода: 0 отличий.
+  - Lighthouse mobile до (прод) → после (локально, без сетевой задержки): главная 86 → 88, каталог 65 → 86,
+    тур 73 → 95, статья 85 → 94; CLS везде 0; вес страницы тура 1075 → 471 КБ, каталога 1150 → 555 КБ.
+    Осталось: главная LCP 3,4 с (hero-фото), TBT 190–250 мс из-за rise-in анимации 79 карточек (`tours-render.js`).
+  - Проверено на 375 и 1280, светлая и тёмная тема, консоль чистая, фильтры и deep-link `?cat=` работают.
+- **Деплой-нюансы:** sharp уже в dependencies (нужен Node ≥ 20.9 на VPS); `.cache/` создаётся сам; после выкатки
+  можно запустить `node scripts/warm-images.js` в фоне. nginx менять не нужно (но см. пакет B в full-analysis: http2, бэкап).
+- **Открытые вопросы владельцу** (в `phase-0-report.md` и `full-analysis.md`): неизвестный slug 404 или 301 на каталог,
+  редирект elena → kyzyl-oi, 11-дневные с canonical, ссылки для sameAs, доступ к серверу для пакета B, куки-баннер.
+
 ## Сессия 2026-10-17 — CI/CD заработал, контент на сервере создан
 - **Деплой по push в `main` работает** (до этого все запуски с августа падали: не были заданы секреты).
   Схема и секреты — в разделе «Как выкатить» выше.
