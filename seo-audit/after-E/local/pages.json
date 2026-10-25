@@ -1,0 +1,4216 @@
+{
+ "base": "http://localhost:5173",
+ "crawledAt": "2026-10-25T12:48:53.471Z",
+ "pages": [
+  {
+   "url": "/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Azat Tours, Small-Group & Tailor-Made Tours in Kyrgyzstan",
+   "description": "Trek the Tian Shan, sleep in yurts by Song-Kul, ride with nomads. Local Kyrgyz experts craft your custom adventure. Free quote, no prepayment to enquire.",
+   "canonical": "https://azattours.com/",
+   "h1": [
+    "Trek the Tian Shan.Sleep in yurts.Ride with nomads."
+   ],
+   "words": 1247,
+   "noindex": false,
+   "ldTypes": "TravelAgency|WebSite|FAQPage",
+   "ogImage": "https://azattours.com/img/hero/hero-1-reflection-1400.jpg",
+   "bytes": 43297,
+   "imgCount": 27,
+   "imgNoAlt": 0,
+   "imgNoLazy": 10,
+   "imgNoSize": 4,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Tours: Treks, Horse Treks, Day Trips | Azat Tours",
+   "description": "Browse Kyrgyzstan tours: high-altitude treks, nomad horse treks, Issyk-Kul culture trips and day tours from Bishkek. Free quote, no prepayment.",
+   "canonical": "https://azattours.com/tours/",
+   "h1": [
+    "All Kyrgyzstan tours"
+   ],
+   "words": 4695,
+   "noindex": false,
+   "ldTypes": "ItemList",
+   "ogImage": "https://azattours.com/img/page/tours.jpg",
+   "bytes": 133577,
+   "imgCount": 80,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/plan-trip.html",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Travel Guide: Visas, Safety, Seasons | Azat Tours",
+   "description": "Plan a Kyrgyzstan trip: visa rules, how to get there, best time to visit, safety, money, what to pack and altitude, all answered by local experts.",
+   "canonical": "https://azattours.com/plan-trip.html",
+   "h1": [
+    "Plan your trip to Kyrgyzstan"
+   ],
+   "words": 1119,
+   "noindex": false,
+   "ldTypes": "FAQPage",
+   "ogImage": "https://azattours.com/img/page/plan-home.jpg",
+   "bytes": 20914,
+   "imgCount": 0,
+   "imgNoAlt": 0,
+   "imgNoLazy": 0,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Travel Blog, Guides, Tips & Stories | Azat Tours",
+   "description": "Practical guides and stories for travelling Kyrgyzstan: trekking routes, when to visit, yurt-stay etiquette, visa tips and Silk Road history.",
+   "canonical": "https://azattours.com/blog/",
+   "h1": [
+    "Stories from the Kyrgyz mountains"
+   ],
+   "words": 266,
+   "noindex": false,
+   "ldTypes": "ItemList",
+   "ogImage": "https://azattours.com/img/blog/local-guide-eagle.jpg",
+   "bytes": 15351,
+   "imgCount": 9,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/about.html",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "About Azat Tours, A Local Kyrgyz Team of Mountain Guides",
+   "description": "Meet the local Kyrgyz team behind Azat Tours: guides from Karakol, Naryn and Bishkek who grew up in these mountains, running small-group, tailor-made trips.",
+   "canonical": "https://azattours.com/about.html",
+   "h1": [
+    "Azat means &ldquo;free.&rdquo;"
+   ],
+   "words": 485,
+   "noindex": false,
+   "ldTypes": "",
+   "ogImage": "https://azattours.com/img/page/about.jpg",
+   "bytes": 12424,
+   "imgCount": 2,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/contact.html",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Contact Azat Tours, Talk to a Local Kyrgyzstan Expert",
+   "description": "Get in touch with the Azat Tours team in Bishkek. WhatsApp, email or the contact form, a real local expert replies within 24 hours. Free quote, no prepayment.",
+   "canonical": "https://azattours.com/contact.html",
+   "h1": [
+    "Let's talk"
+   ],
+   "words": 221,
+   "noindex": false,
+   "ldTypes": "",
+   "ogImage": "https://azattours.com/img/page/contact.jpg",
+   "bytes": 11545,
+   "imgCount": 1,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/complete-kyrgyzstan-adventure-12-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Tour 12 Days: Song-Kul, Kel-Suu & Ala-Kul",
+   "description": "Three days on horseback over the Song-Kul jailoo, three on foot to the Ala-Kul pass, and a rough drive to the hidden lake at Kel-Suu.",
+   "canonical": "https://azattours.com/tours/complete-kyrgyzstan-adventure-12-days/",
+   "h1": [
+    "Complete Kyrgyzstan Adventure - 12 Days"
+   ],
+   "words": 2202,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/f9b4535e77b69427.jpg",
+   "bytes": 53120,
+   "imgCount": 23,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/grand-kyrgyzstan-road-trip-12-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Road Trip 12 Days: Song-Kul to Kel-Suu",
+   "description": "Twelve relaxed days by car and 4x4, from Song-Kul and Kel-Suu to Karakol, Chong-Kemin, and the Burana tower.",
+   "canonical": "https://azattours.com/tours/grand-kyrgyzstan-road-trip-12-days/",
+   "h1": [
+    "Grand Kyrgyzstan Road Trip - 12 Days"
+   ],
+   "words": 2189,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/f78b0c967b5cd9f7.jpg",
+   "bytes": 53424,
+   "imgCount": 24,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kyrgyzstan-grand-tour-10-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Best of Kyrgyzstan Tour 10 Days: Horses, Kel-Suu & Ala-Kul",
+   "description": "Our first and most-loved grand loop: ride to Song-Kul, off-road to Kel-Suu, then trek the Altyn-Arashan and Ala-Kul high country.",
+   "canonical": "https://azattours.com/tours/kyrgyzstan-grand-tour-10-days/",
+   "h1": [
+    "Kyrgyzstan Grand Tour - 10 Days"
+   ],
+   "words": 1993,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/54d7dc85c3eb4f15.jpg",
+   "bytes": 48948,
+   "imgCount": 20,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-to-ala-kul-on-horseback-10-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Horse Riding Tour 10 Days: Song-Kul to Ala-Kul",
+   "description": "Ten days riding from the Song-Kul pastures to Issyk-Kul and up the Altyn-Arashan valley to Ala-Kul, with fresh horses along the way.",
+   "canonical": "https://azattours.com/tours/song-kul-to-ala-kul-on-horseback-10-days/",
+   "h1": [
+    "Song-Kul to Ala-Kul on Horseback - 10 Days"
+   ],
+   "words": 2023,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/6477f9ea6e5e6fe8.jpg",
+   "bytes": 48179,
+   "imgCount": 21,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/slow-ride-trek-to-ala-kul-10-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Ride & Trek 10 Days: Slow Road to Ala-Kul",
+   "description": "Four riding days to Song-Kul and three trekking days to Ala-Kul, with the shortest drives of any ten-day trip.",
+   "canonical": "https://azattours.com/tours/slow-ride-trek-to-ala-kul-10-days/",
+   "h1": [
+    "Slow Ride & Trek to Ala-Kul - 10 Days"
+   ],
+   "words": 1976,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/de890b1f5239f79f.jpg",
+   "bytes": 48628,
+   "imgCount": 21,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kel-suu-chong-kemin-road-trip-10-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Road Trip 10 Days: Kel-Suu to Chong-Kemin",
+   "description": "Song-Kul, Kel-Suu, and the south shore of Issyk-Kul, linked by easy drives and one rough off-road run to Altyn-Arashan.",
+   "canonical": "https://azattours.com/tours/kel-suu-chong-kemin-road-trip-10-days/",
+   "h1": [
+    "Kel-Suu to Chong-Kemin Road Trip - 10 Days"
+   ],
+   "words": 1967,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/1db3634b109eef76.jpg",
+   "bytes": 48855,
+   "imgCount": 21,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-kok-kiya-kel-suu-9-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Tour 9 Days: Song-Kul Ride & Kel-Suu by 4x4",
+   "description": "Song-Kul on horseback, Kel-Suu by 4x4, and the Altyn-Arashan hot springs, minus the hardest trek.",
+   "canonical": "https://azattours.com/tours/song-kul-kok-kiya-kel-suu-9-days/",
+   "h1": [
+    "Song-Kul, Kok-Kiya & Kel-Suu - 9 Days"
+   ],
+   "words": 1913,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/fd89b2db7063621e.jpg",
+   "bytes": 47856,
+   "imgCount": 21,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-kel-suu-road-trip-9-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Road Trip 9 Days: Song-Kul, Kel-Suu & Yurt Night",
+   "description": "Song-Kul, remote Kel-Suu, and the Altyn-Arashan gorge in nine driving days, with a yurt night and an off-road push to the hidden lake.",
+   "canonical": "https://azattours.com/tours/song-kul-kel-suu-road-trip-9-days/",
+   "h1": [
+    "Song-Kul & Kel-Suu Road Trip - 9 Days"
+   ],
+   "words": 1876,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/e6e49c2e5547f991.jpg",
+   "bytes": 46468,
+   "imgCount": 19,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kok-kiya-kel-suu-road-trip-8-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Road Trip 8 Days: Song-Kul, Kel-Suu & Hot Springs",
+   "description": "A faster run at Song-Kul, Kel-Suu, and Altyn-Arashan, with a yurt stay and hot springs along the way. Most of the long road trip, packed tighter.",
+   "canonical": "https://azattours.com/tours/kok-kiya-kel-suu-road-trip-8-days/",
+   "h1": [
+    "Kok-Kiya & Kel-Suu Road Trip - 8 Days"
+   ],
+   "words": 1726,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/358a92796bf52344.jpg",
+   "bytes": 44858,
+   "imgCount": 19,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/talas-to-issyk-kul-backroads-8-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Off the Beaten Path 8 Days: Talas to Issyk-Kul",
+   "description": "Through the quiet Talas region, Besh-Tash lake, and villages most tours never reach, sleeping in family homes and yurts.",
+   "canonical": "https://azattours.com/tours/talas-to-issyk-kul-backroads-8-days/",
+   "h1": [
+    "Talas to Issyk-Kul Backroads - 8 Days"
+   ],
+   "words": 1729,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/903c612c8c63115e.jpg",
+   "bytes": 44542,
+   "imgCount": 20,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-kel-suu-altyn-arashan-8-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Tour 8 Days: Horses, Kel-Suu & Altyn-Arashan",
+   "description": "Ride to Song-Kul, drive out to Kel-Suu, and walk the easy valley up to the Altyn-Arashan hot springs.",
+   "canonical": "https://azattours.com/tours/song-kul-kel-suu-altyn-arashan-8-days/",
+   "h1": [
+    "Song-Kul, Kel-Suu & Altyn-Arashan - 8 Days"
+   ],
+   "words": 1747,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/87f86e99ada681c7.jpg",
+   "bytes": 45518,
+   "imgCount": 20,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Active Tour 8 Days: Kyzyl-Oi, Song-Kul & Trek",
+   "description": "Two days riding to Song-Kul, the south shore of Issyk-Kul, then a two-day trek into Altyn-Arashan.",
+   "canonical": "https://azattours.com/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "h1": [
+    "Kyzyl-Oi, Song-Kul & Chong-Kemin - 8 Days"
+   ],
+   "words": 1634,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/0365add382ab7635.jpg",
+   "bytes": 44628,
+   "imgCount": 20,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Horse Trek 7 Days: Kol-Ukok to Song-Kul",
+   "description": "Seven demanding days between Song-Kul and Kol-Ukok, over high passes and rugged trails few groups ever take.",
+   "canonical": "https://azattours.com/tours/kol-ukok-to-song-kul-horse-trek-7-days/",
+   "h1": [
+    "Kol-Ukok to Song-Kul Horse Trek - 7 Days"
+   ],
+   "words": 1554,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/9c6d7d02622e4e35.jpg",
+   "bytes": 39960,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kyrgyzstan-overland-road-trip-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Road Trip 7 Days: Song-Kul, Kel-Suu & Issyk-Kul",
+   "description": "Song-Kul, Kel-Suu, and Altyn-Arashan in seven days, with thrilling off-road stretches and a yurt night. The quick road trip for travellers short on time.",
+   "canonical": "https://azattours.com/tours/kyrgyzstan-overland-road-trip-7-days/",
+   "h1": [
+    "Kyrgyzstan Overland Road Trip - 7 Days"
+   ],
+   "words": 1502,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/3c1d78627774066d.jpg",
+   "bytes": 42091,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/two-lakes-kok-bulak-horse-trek-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Horse Riding Kyrgyzstan 7 Days: Song-Kul to Issyk-Kul",
+   "description": "Four riding days up to Song-Kul, a guesthouse rest, then the saddle again along Issyk-Kul's south shore.",
+   "canonical": "https://azattours.com/tours/two-lakes-kok-bulak-horse-trek-7-days/",
+   "h1": [
+    "Two Lakes & Kok-Bulak Horse Trek - 7 Days"
+   ],
+   "words": 1539,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/453ba7c4c571ee08.jpg",
+   "bytes": 40909,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Horse Trek & Hike 7 Days: Song-Kul to Ala-Kul",
+   "description": "Our two signature trips back to back: three days in the saddle on the high pastures, three days on foot to the glacier lake at Ala-Kul.",
+   "canonical": "https://azattours.com/tours/song-kul-horse-trek-ala-kul-hike-7-days/",
+   "h1": [
+    "Song-Kul Horse Trek & Ala-Kul Hike - 7 Days"
+   ],
+   "words": 1662,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/8c97d7e559187f95.jpg",
+   "bytes": 42539,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/easy-week-song-kul-issyk-kul-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Easy Kyrgyzstan Tour 7 Days: Song-Kul & Issyk-Kul by Road",
+   "description": "A week by road between Song-Kul and Issyk-Kul, with the Altyn-Arashan gorge, Chong-Kemin park, and easy walks only.",
+   "canonical": "https://azattours.com/tours/easy-week-song-kul-issyk-kul-7-days/",
+   "h1": [
+    "Easy Week: Song-Kul & Issyk-Kul - 7 Days"
+   ],
+   "words": 1601,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/674c65950c139911.jpg",
+   "bytes": 42034,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/talas-to-song-kul-backroads-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Off the Beaten Path 7 Days: Talas to Song-Kul",
+   "description": "Seven days through hidden valleys, Besh-Tash lake, and nomad camps near Song-Kul, far from the usual crowds.",
+   "canonical": "https://azattours.com/tours/talas-to-song-kul-backroads-7-days/",
+   "h1": [
+    "Talas to Song-Kul Backroads - 7 Days"
+   ],
+   "words": 1538,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/f8f1880e30a8b0a2.jpg",
+   "bytes": 42289,
+   "imgCount": 20,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-kel-suu-in-a-week-7-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan in a Week: Song-Kul Horse Ride & Kel-Suu, 7 Days",
+   "description": "Ride to Song-Kul, then road-trip to Kel-Suu and Issyk-Kul across high passes and canyons. Fast, full, and seven days flat.",
+   "canonical": "https://azattours.com/tours/song-kul-kel-suu-in-a-week-7-days/",
+   "h1": [
+    "Song-Kul & Kel-Suu in a Week - 7 Days"
+   ],
+   "words": 1543,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/9925797aa38ea84a.jpg",
+   "bytes": 41650,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/ichke-tor-lake-horse-trek-6-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Horse Trek 6 Days: Ichke-Tor Lake & High Pastures",
+   "description": "Six days across remote valleys and hidden passes to Song-Kul, sleeping in yurts and a shepherd's house.",
+   "canonical": "https://azattours.com/tours/ichke-tor-lake-horse-trek-6-days/",
+   "h1": [
+    "Ichke-Tor Lake Horse Trek - 6 Days"
+   ],
+   "words": 1545,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/28c5ef66113e9368.jpg",
+   "bytes": 38457,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kilemche-song-kul-altyn-arashan-6-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Ride & Trek 6 Days: Song-Kul & Altyn-Arashan",
+   "description": "Three days on horseback to Song-Kul, the south shore of Issyk-Kul, then a two-day walk into the Altyn-Arashan valley.",
+   "canonical": "https://azattours.com/tours/kilemche-song-kul-altyn-arashan-6-days/",
+   "h1": [
+    "Kilemche, Song-Kul & Altyn-Arashan - 6 Days"
+   ],
+   "words": 1596,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/af6b02f6aae47571.jpg",
+   "bytes": 41405,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/two-lakes-west-shore-horse-trek-6-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Horse Riding Kyrgyzstan 6 Days: Song-Kul & Issyk-Kul Shore",
+   "description": "Four days in the saddle to Song-Kul, a night in a warm guesthouse, then a ride along the south shore of Issyk-Kul.",
+   "canonical": "https://azattours.com/tours/two-lakes-west-shore-horse-trek-6-days/",
+   "h1": [
+    "Two Lakes & West Shore Horse Trek - 6 Days"
+   ],
+   "words": 1475,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/24cd4b12b9031e26.jpg",
+   "bytes": 39434,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-ride-altyn-arashan-trek-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Ride & Trek 5 Days: Song-Kul & Altyn-Arashan",
+   "description": "Two saddle days up to Song-Kul and a two-day trek to Altyn-Arashan, with Issyk-Kul in between. The shortest way to do horseback and hiking in one trip.",
+   "canonical": "https://azattours.com/tours/song-kul-ride-altyn-arashan-trek-5-days/",
+   "h1": [
+    "Song-Kul Ride & Altyn-Arashan Trek - 5 Days"
+   ],
+   "words": 1431,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/0f80ba1aad56c8e0.jpg",
+   "bytes": 39741,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kel-suu-issyk-kul-express-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kel-Suu Lake Tour 5 Days: Song-Kul, Kel-Suu & Issyk-Kul",
+   "description": "A night in a Song-Kul yurt, a trek to the remote lake at Kel-Suu, and Issyk-Kul views on the way home.",
+   "canonical": "https://azattours.com/tours/kel-suu-issyk-kul-express-5-days/",
+   "h1": [
+    "Kel-Suu & Issyk-Kul Express - 5 Days"
+   ],
+   "words": 1365,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/5c6607f1c28620bb.jpg",
+   "bytes": 37854,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/mai-tor-pastures-horse-trek-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Horse Trek 5 Days: Mai-Tor Pastures to Song-Kul",
+   "description": "Five riding days to Song-Kul, staying in yurts and a shepherd's house and sharing the daily rhythm of herder life.",
+   "canonical": "https://azattours.com/tours/mai-tor-pastures-horse-trek-5-days/",
+   "h1": [
+    "Mai-Tor Pastures Horse Trek - 5 Days"
+   ],
+   "words": 1356,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/20321ac4b51fe301.jpg",
+   "bytes": 36306,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/two-lakes-horse-trek-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Horse Riding Kyrgyzstan 5 Days: Song-Kul & Issyk-Kul",
+   "description": "Three days on horseback up to Song-Kul, then the saddle along Issyk-Kul's south shore after a guesthouse night.",
+   "canonical": "https://azattours.com/tours/two-lakes-horse-trek-5-days/",
+   "h1": [
+    "Two Lakes Horse Trek - 5 Days"
+   ],
+   "words": 1333,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/90548e44c73be0e6.jpg",
+   "bytes": 37548,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-issyk-kul-road-trip-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Road Trip 5 Days: Song-Kul & Issyk-Kul",
+   "description": "Song-Kul, the south shore of Issyk-Kul, and the Altyn-Arashan gorge in five gentle days, with a yurt night and light walking.",
+   "canonical": "https://azattours.com/tours/song-kul-issyk-kul-road-trip-5-days/",
+   "h1": [
+    "Song-Kul & Issyk-Kul Road Trip - 5 Days"
+   ],
+   "words": 1279,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/3ebaabfa880373b1.jpg",
+   "bytes": 37244,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kel-suu-lake-express-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kel-Suu Lake Tour 4 Days: Song-Kul Yurt & the Hidden Lake",
+   "description": "A yurt night above Song-Kul, a short trek to the hidden lake at Kel-Suu, and Issyk-Kul on the drive back.",
+   "canonical": "https://azattours.com/tours/kel-suu-lake-express-4-days/",
+   "h1": [
+    "Kel-Suu Lake Express - 4 Days"
+   ],
+   "words": 1211,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/63029081cb378dc0.jpg",
+   "bytes": 35663,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-altyn-arashan-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Tour 4 Days: Canyons, Jety-Oguz & Altyn-Arashan",
+   "description": "The Fairy-Tale canyons, Barskoon waterfalls, Jety-Oguz red rocks, and the Altyn-Arashan hot springs, all around the great lake.",
+   "canonical": "https://azattours.com/tours/issyk-kul-altyn-arashan-4-days/",
+   "h1": [
+    "Issyk-Kul & Altyn-Arashan - 4 Days"
+   ],
+   "words": 1151,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/2aee0b6fbbb4cdfd.jpg",
+   "bytes": 35187,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-shoreline-horse-trek-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek 4 Days: Two Nights by the Lake",
+   "description": "Four days in the saddle from Kyzart through the Kilemche valley to the lake and back, with zero driving in between.",
+   "canonical": "https://azattours.com/tours/song-kul-shoreline-horse-trek-4-days/",
+   "h1": [
+    "Song-Kul Shoreline Horse Trek - 4 Days"
+   ],
+   "words": 1302,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/995617dea3d0813b.jpg",
+   "bytes": 34620,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/family-tour-lakes-eagles-yurts-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Family Tour 4 Days: Lakes, Eagles & Yurts",
+   "description": "Chong-Kemin park, the shore of Issyk-Kul, and a yurt night at Song-Kul, all on smooth driving with optional activities.",
+   "canonical": "https://azattours.com/tours/family-tour-lakes-eagles-yurts-4-days/",
+   "h1": [
+    "Family Tour: Lakes, Eagles & Yurts - 4 Days"
+   ],
+   "words": 1295,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/5c87b69a70492243.jpg",
+   "bytes": 36328,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-karakol-canyons-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Tour 3 Days: Karakol, Canyons & a Yurt Night",
+   "description": "Both shores of the lake, the south-shore canyons, and a cozy yurt night, with a stop in Karakol town. The rare trip that runs all year round, snow or sun.",
+   "canonical": "https://azattours.com/tours/issyk-kul-karakol-canyons-3-days/",
+   "h1": [
+    "Issyk-Kul, Karakol & Canyons - 3 Days"
+   ],
+   "words": 1192,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/6d6abbeba28476bd.jpg",
+   "bytes": 34340,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/winter-horse-trek-to-song-kul-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Winter Horse Trek 3 Days: Frozen Song-Kul",
+   "description": "Three days through snowy passes to the iced-over lake, with nights in a warm homestay and yurt.",
+   "canonical": "https://azattours.com/tours/winter-horse-trek-to-song-kul-3-days/",
+   "h1": [
+    "Winter Horse Trek to Song-Kul - 3 Days"
+   ],
+   "words": 1162,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/571bc68912a16a5d.jpg",
+   "bytes": 32647,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-song-kul-weekend-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul & Issyk-Kul Weekend Tour 3 Days from Bishkek",
+   "description": "The south shore of Issyk-Kul and a nomad night at Song-Kul, with an eagle hunter visit along the way.",
+   "canonical": "https://azattours.com/tours/issyk-kul-song-kul-weekend-3-days/",
+   "h1": [
+    "Issyk-Kul & Song-Kul Weekend - 3 Days"
+   ],
+   "words": 1169,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/65750d97a354f57c.jpg",
+   "bytes": 33564,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-horse-trek-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek 3 Days: the Classic Ride from Kyzart",
+   "description": "Up from Kyzart over the Jalgyz-Karagai pass to the lake, a night with herders, and back over Tuz-Ashuu. Our most popular short horseback trip.",
+   "canonical": "https://azattours.com/tours/song-kul-horse-trek-3-days/",
+   "h1": [
+    "Song-Kul Horse Trek - 3 Days"
+   ],
+   "words": 1165,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/8991c00e3bbc3d8f.jpg",
+   "bytes": 32947,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-overnight-horse-trek-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek 2 Days: Overnight in a Yurt, Kyrgyzstan",
+   "description": "A two-day ride from Kyzart up to Song-Kul and back, with a single yurt night on the high pasture. The quickest way to sleep under nomad skies.",
+   "canonical": "https://azattours.com/tours/song-kul-overnight-horse-trek-2-days/",
+   "h1": [
+    "Song-Kul Overnight Horse Trek - 2 Days"
+   ],
+   "words": 1034,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/ccec63962195fc2d.jpg",
+   "bytes": 31277,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/bishkek-soviet-heritage-city-tour-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Bishkek City Tour: Soviet Heritage Walk (Day Trip)",
+   "description": "A private half-day with a local guide: Osh Bazaar, Ala-Too Square, the History Museum and the Soviet landmarks that shaped the capital.",
+   "canonical": "https://azattours.com/tours/bishkek-soviet-heritage-city-tour-day-trip/",
+   "h1": [
+    "Bishkek Soviet Heritage City Tour - Day Trip"
+   ],
+   "words": 1022,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/dd44e87f4cb03735.jpg",
+   "bytes": 30843,
+   "imgCount": 13,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/bishkek-3-stop-food-tasting-tour-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Bishkek Food Tour: Osh Bazaar & Three Tastings (Day Trip)",
+   "description": "A private four-hour food tour: kattama and samovar tea, a big lunch at Faiza, dessert with green tea, and the main Bishkek sights between tastings.",
+   "canonical": "https://azattours.com/tours/bishkek-3-stop-food-tasting-tour-day-trip/",
+   "h1": [
+    "Bishkek 3-Stop Food Tasting Tour - Day Trip"
+   ],
+   "words": 1013,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-2a4c86342ce3.jpg",
+   "bytes": 30739,
+   "imgCount": 13,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyz Home Dinner in Bishkek: Boorsok & Family Cooking",
+   "description": "Spend an evening in a local home: help fry boorsok, share a homemade Kyrgyz dinner and ask the family anything. One of them speaks English.",
+   "canonical": "https://azattours.com/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip/",
+   "h1": [
+    "Dinner & Boorsok in a Kyrgyz Home - Day Trip"
+   ],
+   "words": 966,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-07c9006f3837.jpg",
+   "bytes": 30509,
+   "imgCount": 13,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/ala-archa-gorge-hike-at-your-pace-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Ala-Archa Day Trip from Bishkek: Gorge Hike at Your Pace",
+   "description": "A guided day in Ala-Archa Gorge: river walks, viewpoints or a push toward Ak-Sai Waterfall, hand-fed squirrels and a Kyrgyz lunch included.",
+   "canonical": "https://azattours.com/tours/ala-archa-gorge-hike-at-your-pace-day-trip/",
+   "h1": [
+    "Ala-Archa Gorge Hike at Your Pace - Day Trip"
+   ],
+   "words": 985,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-6d23e4fe4f21.jpg",
+   "bytes": 30950,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/bishkek-ala-archa-in-one-day-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Bishkek & Ala-Archa in One Day: City Walk & Mountain Hike",
+   "description": "Walk or hike in Ala-Archa Gorge, sit down to a Kyrgyz lunch, then explore Osh Bazaar, Ala-Too Square and Soviet Bishkek with your guide.",
+   "canonical": "https://azattours.com/tours/bishkek-ala-archa-in-one-day-day-trip/",
+   "h1": [
+    "Bishkek & Ala-Archa in One Day - Day Trip"
+   ],
+   "words": 1055,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-ed2f6b3d0d59.jpg",
+   "bytes": 31343,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/ala-archa-chunkurchak-gorges-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Ala-Archa & Chunkurchak Day Trip from Bishkek: Two Gorges",
+   "description": "River walks and hand-fed squirrels in Ala-Archa, then Chunkurchak for the Sky Bridge, Pigeon Waterfall and optional horse rides or a zipline.",
+   "canonical": "https://azattours.com/tours/ala-archa-chunkurchak-gorges-day-trip/",
+   "h1": [
+    "Ala-Archa & Chunkurchak Gorges - Day Trip"
+   ],
+   "words": 1007,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-9639689c0951.jpg",
+   "bytes": 31076,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/silk-road-burana-tower-bishkek-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Burana Tower Day Trip from Bishkek: Silk Road & City Tour",
+   "description": "Explore Burana Tower and the ruins of Balasagun in the Chui Valley, stop for a Kyrgyz lunch, then tour Osh Bazaar and Ala-Too Square with your guide.",
+   "canonical": "https://azattours.com/tours/silk-road-burana-tower-bishkek-day-trip/",
+   "h1": [
+    "Silk Road Burana Tower & Bishkek - Day Trip"
+   ],
+   "words": 1039,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-92c3796c991b.jpg",
+   "bytes": 31375,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/konorchek-canyon-hike-burana-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Konorchek Canyon Hike & Burana Tower: Day Trip from Bishkek",
+   "description": "Burana Tower and its museum, then an easy to moderate hike through Konorchek Canyon to the Eolian Castles. Kyrgyz lunch at a local cafe on the way home.",
+   "canonical": "https://azattours.com/tours/konorchek-canyon-hike-burana-day-trip/",
+   "h1": [
+    "Konorchek Canyon Hike & Burana - Day Trip"
+   ],
+   "words": 1046,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-836b79e76dd8.jpg",
+   "bytes": 31248,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kol-tor-lake-hike-burana-tower-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kol-Tor Lake Hike & Burana Tower: Day Trip from Bishkek",
+   "description": "Morning at Burana Tower, then a moderate 4 to 5 hour hike through pine forest to Kol-Tor Lake. Lunch box by the water, poles provided, a horse on request.",
+   "canonical": "https://azattours.com/tours/kol-tor-lake-hike-burana-tower-day-trip/",
+   "h1": [
+    "Kol-Tor Lake Hike & Burana Tower - Day Trip"
+   ],
+   "words": 1025,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-9486cdfecf79.jpg",
+   "bytes": 31099,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/first-horse-ride-in-ala-archa-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Horse Riding Day Trip from Bishkek: First Ride in Ala-Archa",
+   "description": "A 2-hour beginner-friendly ride with a local horseman in Ala-Archa National Park, then a gentle riverside walk and lunch your way.",
+   "canonical": "https://azattours.com/tours/first-horse-ride-in-ala-archa-day-trip/",
+   "h1": [
+    "First Horse Ride in Ala-Archa - Day Trip"
+   ],
+   "words": 1027,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-f7c1a3f621d0.jpg",
+   "bytes": 31512,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/chunkurchak-sky-bridge-archery-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Chunkurchak Day Trip from Bishkek: Sky Bridge & Archery",
+   "description": "Sky Bridge and Pigeon Waterfall in Chunkurchak Gorge, then horse riding, archery or a zipline as you like. A slow, flexible day close to Bishkek.",
+   "canonical": "https://azattours.com/tours/chunkurchak-sky-bridge-archery-day-trip/",
+   "h1": [
+    "Chunkurchak Sky Bridge & Archery - Day Trip"
+   ],
+   "words": 991,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-408751cef6e8.jpg",
+   "bytes": 30589,
+   "imgCount": 13,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/chong-kemin-national-park-ride-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Chong-Kemin Day Trip from Bishkek: National Park Horse Ride",
+   "description": "Burana Tower, a tea stop in Boom Gorge, then a 3 to 4 hour ride in Chong-Kemin National Park and a homemade meal with a Kyrgyz family.",
+   "canonical": "https://azattours.com/tours/chong-kemin-national-park-ride-day-trip/",
+   "h1": [
+    "Chong-Kemin National Park Ride - Day Trip"
+   ],
+   "words": 1042,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-c8b0eecc90b8.jpg",
+   "bytes": 31989,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-shore-hot-springs-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Day Trip from Bishkek: Lake Shore & Hot Springs",
+   "description": "Burana Tower, kattama in Boom Gorge, then petroglyphs, Ruh Ordo, a lakeside lunch and hot springs near Cholpon-Ata. A long, full day at the lake.",
+   "canonical": "https://azattours.com/tours/issyk-kul-shore-hot-springs-day-trip/",
+   "h1": [
+    "Issyk-Kul Shore & Hot Springs - Day Trip"
+   ],
+   "words": 1035,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-0864471b7cbc.jpg",
+   "bytes": 31139,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/burana-konorchek-issyk-kul-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Burana, Konorchek & Issyk-Kul: Day Trip from Bishkek",
+   "description": "Burana Tower, a 2.5 to 3 hour hike in Konorchek Canyon, then lunch and beach time on Issyk-Kul near Balykchy. History, hiking and the lake in one go.",
+   "canonical": "https://azattours.com/tours/burana-konorchek-issyk-kul-day-trip/",
+   "h1": [
+    "Burana, Konorchek & Issyk-Kul - Day Trip"
+   ],
+   "words": 1044,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-3f533e267157.jpg",
+   "bytes": 31598,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/ak-say-canyons-barskoon-falls-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Ak-Say Canyons & Barskoon Waterfall: Issyk-Kul Day Trip",
+   "description": "One long day from Bishkek: the Ak-Say Canyons, the Barskoon waterfalls and lunch by the lake, with a local guide the whole way.",
+   "canonical": "https://azattours.com/tours/ak-say-canyons-barskoon-falls-day-trip/",
+   "h1": [
+    "Ak-Say Canyons & Barskoon Falls - Day Trip"
+   ],
+   "words": 1000,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-64f5964527b0.jpg",
+   "bytes": 30203,
+   "imgCount": 13,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/arashan-gorge-ride-sky-bridge-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Arashan Gorge Horse Ride & Sky Bridge: Day Trip from Bishkek",
+   "description": "A two-hour ride in Arashan Gorge close to Bishkek, then the Sky Bridge over the Pigeon Waterfall. Beginners welcome, morning or afternoon.",
+   "canonical": "https://azattours.com/tours/arashan-gorge-ride-sky-bridge-day-trip/",
+   "h1": [
+    "Arashan Gorge Ride & Sky Bridge - Day Trip"
+   ],
+   "words": 980,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-ce0993f1fe84.jpg",
+   "bytes": 29655,
+   "imgCount": 12,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/winter-ala-archa-snow-walk-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Ala-Archa Winter Day Trip from Bishkek: Snow Walk",
+   "description": "An easy winter walk in Ala-Archa National Park with an eco bus ride, birds and squirrels to feed and hot tea at the A-Frame.",
+   "canonical": "https://azattours.com/tours/winter-ala-archa-snow-walk-day-trip/",
+   "h1": [
+    "Winter Ala-Archa Snow Walk - Day Trip"
+   ],
+   "words": 1015,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/cfcf7848dae0957e.jpg",
+   "bytes": 30937,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/chunkurchak-snow-hot-springs-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Chunkurchak Winter Day Trip: Snow & Hot Springs, Kyrgyzstan",
+   "description": "A winter day in Chunkurchak: the frozen Pigeon Waterfall, the Sky Bridge, skiing or tubing at the resort and a soak in a hot spring.",
+   "canonical": "https://azattours.com/tours/chunkurchak-snow-hot-springs-day-trip/",
+   "h1": [
+    "Chunkurchak Snow & Hot Springs - Day Trip"
+   ],
+   "words": 1042,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-1e1997cffe3a.jpg",
+   "bytes": 30899,
+   "imgCount": 13,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/winter-ala-archa-chunkurchak-day-trip/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Winter Day Trip from Bishkek: Ala-Archa & Chunkurchak",
+   "description": "A full winter day: an eco bus ride and a walk in Ala-Archa, then the frozen waterfall, the Sky Bridge and a chair lift in Chunkurchak.",
+   "canonical": "https://azattours.com/tours/winter-ala-archa-chunkurchak-day-trip/",
+   "h1": [
+    "Winter Ala-Archa & Chunkurchak - Day Trip"
+   ],
+   "words": 1029,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-8657386c4a79.jpg",
+   "bytes": 31243,
+   "imgCount": 14,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-winter-yurt-canyons-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Winter Tour 2 Days: Canyons & a Yurt Night",
+   "description": "Burana Tower, the Konorchek and Skazka canyons, the frozen Barskoon waterfall and a night in a heated yurt by Issyk-Kul.",
+   "canonical": "https://azattours.com/tours/issyk-kul-winter-yurt-canyons-2-days/",
+   "h1": [
+    "Issyk-Kul Winter Yurt & Canyons - 2 Days"
+   ],
+   "words": 1202,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-7a9039efec30.jpg",
+   "bytes": 34016,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/chong-kemin-issyk-kul-in-winter-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Winter Tour 3 Days: Chong-Kemin & Issyk-Kul",
+   "description": "Ala-Archa, Burana Tower, a winter ride in Chong-Kemin, the Kok-Moinok and Skazka canyons, an eagle show and the frozen Barskoon waterfall.",
+   "canonical": "https://azattours.com/tours/chong-kemin-issyk-kul-in-winter-3-days/",
+   "h1": [
+    "Chong-Kemin & Issyk-Kul in Winter - 3 Days"
+   ],
+   "words": 1273,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-9a349e5e74ea.jpg",
+   "bytes": 36303,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/winter-issyk-kul-karakol-skiing-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Ski & Winter Tour 4 Days: Karakol & Issyk-Kul",
+   "description": "Four winter days around Issyk-Kul: Burana Tower, frozen Barskoon falls, a yurt night, Karakol skiing and hot springs, then home along the north shore.",
+   "canonical": "https://azattours.com/tours/winter-issyk-kul-karakol-skiing-4-days/",
+   "h1": [
+    "Winter Issyk-Kul & Karakol Skiing - 4 Days"
+   ],
+   "words": 1507,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-1db8704d8893.jpg",
+   "bytes": 38586,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-canyons-eagles-yurt-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Tour 2 Days: Canyons, Eagle Show & Yurt Night",
+   "description": "A private two-day loop from Bishkek: Burana Tower, Konorchek and Skazka canyons, an eagle show, a lakeside ride and the Barskoon waterfall.",
+   "canonical": "https://azattours.com/tours/issyk-kul-canyons-eagles-yurt-2-days/",
+   "h1": [
+    "Issyk-Kul Canyons, Eagles & Yurt - 2 Days"
+   ],
+   "words": 1274,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-7bf44ffff859.jpg",
+   "bytes": 34800,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-yurt-night-by-car-horse-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Tour 2 Days from Bishkek: Yurt Night & Short Ride",
+   "description": "A private two-day trip: Burana Tower, the Kalmak-Ashuu climb, a yurt by the lake, a morning ride, then 33 Parrots Pass and an Issyk-Kul beach.",
+   "canonical": "https://azattours.com/tours/song-kul-yurt-night-by-car-horse-2-days/",
+   "h1": [
+    "Song-Kul Yurt Night by Car & Horse - 2 Days"
+   ],
+   "words": 1263,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-a38f836dd44a.jpg",
+   "bytes": 35508,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/kara-kiya-pass-ride-to-song-kul-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek 2 Days from Bishkek: Kara-Kiya Pass",
+   "description": "For confident riders short on time: 4 to 5 hours in the saddle over the Kara-Kiya Pass to a lakeside yurt, then a new route back to Kyzart.",
+   "canonical": "https://azattours.com/tours/kara-kiya-pass-ride-to-song-kul-2-days/",
+   "h1": [
+    "Kara-Kiya Pass Ride to Song-Kul - 2 Days"
+   ],
+   "words": 1188,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-611ea9d0836a.jpg",
+   "bytes": 34156,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-two-pass-loop-on-horseback-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek 3 Days from Bishkek: Two-Pass Loop",
+   "description": "Ride from Kyzart to a shepherd's house in Kilemche, over Jalgyz-Karagai to a lakeside yurt, and home via the Kara-Kiya Pass. Any level, any season.",
+   "canonical": "https://azattours.com/tours/song-kul-two-pass-loop-on-horseback-3-days/",
+   "h1": [
+    "Song-Kul Two-Pass Loop on Horseback - 3 Days"
+   ],
+   "words": 1301,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-f4e80f686eab.jpg",
+   "bytes": 35751,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/two-nights-at-song-kul-on-horseback-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek 4 Days from Bishkek: Two Lake Nights",
+   "description": "Four days in the saddle at an easy pace: a shepherd's house in Kilemche, two lakeside yurt camps, a free afternoon by the water and two high passes.",
+   "canonical": "https://azattours.com/tours/two-nights-at-song-kul-on-horseback-4-days/",
+   "h1": [
+    "Two Nights at Song-Kul on Horseback - 4 Days"
+   ],
+   "words": 1312,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-07dcbf8de386.jpg",
+   "bytes": 35730,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-on-horseback-issyk-kul-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Horse Trek & Issyk-Kul 4 Days from Bishkek",
+   "description": "Ride over two high passes to a Song-Kul yurt, sleep by Issyk-Kul, then meet a berkutchi and walk Skazka Canyon and Barskoon Gorge on the way home.",
+   "canonical": "https://azattours.com/tours/song-kul-on-horseback-issyk-kul-4-days/",
+   "h1": [
+    "Song-Kul on Horseback & Issyk-Kul - 4 Days"
+   ],
+   "words": 1464,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-09e21f76fae2.jpg",
+   "bytes": 37814,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-ride-issyk-kul-circle-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul Ride & Issyk-Kul Circle 5 Days: Horses to Karakol",
+   "description": "Ride from Kyzart to Song-Kul over two high passes and sleep in a yurt by the water. Then drive both shores of Issyk-Kul, from an eagle show to hot springs.",
+   "canonical": "https://azattours.com/tours/song-kul-ride-issyk-kul-circle-5-days/",
+   "h1": [
+    "Song-Kul Ride & Issyk-Kul Circle - 5 Days"
+   ],
+   "words": 1611,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-2e3ed077df1a.jpg",
+   "bytes": 39047,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/burana-chong-kemin-cholpon-ata-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Chong-Kemin Tour 2 Days: Burana, Horse Ride & Cholpon-Ata",
+   "description": "Ride or hike in Chong-Kemin and sleep at a family guesthouse. Then walk Kok-Moynok Canyons and spend the afternoon at Cholpon-Ata on Issyk-Kul.",
+   "canonical": "https://azattours.com/tours/burana-chong-kemin-cholpon-ata-2-days/",
+   "h1": [
+    "Burana, Chong-Kemin & Cholpon-Ata - 2 Days"
+   ],
+   "words": 1198,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-0502741a5ad0.jpg",
+   "bytes": 34202,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/konorchek-hike-chong-kemin-ride-2-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Chong-Kemin & Konorchek 2 Days: Horse Ride & Canyon Hike",
+   "description": "Ride in Chong-Kemin and sleep at a family guesthouse, then hike Konorchek Canyon. Finish with a lake stop at Balykchy or head straight back to Bishkek.",
+   "canonical": "https://azattours.com/tours/konorchek-hike-chong-kemin-ride-2-days/",
+   "h1": [
+    "Konorchek Hike & Chong-Kemin Ride - 2 Days"
+   ],
+   "words": 1192,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-5ac231516292.jpg",
+   "bytes": 33702,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/chong-kemin-eagle-show-lake-yurt-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Chong-Kemin & Issyk-Kul 3 Days: Ride, Eagle Show & Yurt",
+   "description": "Burana Tower and a ride in Chong-Kemin, then a canyon hike, a private eagle show with archery and a yurt by Issyk-Kul. Skazka and Barskoon on the way home.",
+   "canonical": "https://azattours.com/tours/chong-kemin-eagle-show-lake-yurt-3-days/",
+   "h1": [
+    "Chong-Kemin, Eagle Show & Lake Yurt - 3 Days"
+   ],
+   "words": 1424,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-f17f912fb5d2.jpg",
+   "bytes": 36982,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-33-parrots-pass-express-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul & Issyk-Kul 3 Days: Kalmak-Ashuu & 33 Parrots Pass",
+   "description": "Climb to Song-Kul via Kalmak-Ashuu, ride at 3,000 m, then take 33 Parrots Pass down to an eagle show and a yurt by Issyk-Kul. Summer only.",
+   "canonical": "https://azattours.com/tours/song-kul-33-parrots-pass-express-3-days/",
+   "h1": [
+    "Song-Kul & 33 Parrots Pass Express - 3 Days"
+   ],
+   "words": 1410,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-4d9d74493573.jpg",
+   "bytes": 37171,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-shore-ride-eagles-boat-3-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Tour 3 Days: Shore Ride, Eagles & Boat Trip",
+   "description": "Three days that circle Issyk-Kul, from Konorchek and Skazka to Jeti-Oguz and Karakol, with a yurt night, a short ride and hot springs.",
+   "canonical": "https://azattours.com/tours/issyk-kul-shore-ride-eagles-boat-3-days/",
+   "h1": [
+    "Issyk-Kul Shore Ride, Eagles & Boat - 3 Days"
+   ],
+   "words": 1418,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-0b3e4fbbcced.jpg",
+   "bytes": 38046,
+   "imgCount": 18,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/karakol-cholpon-ata-chong-kemin-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Tour 4 Days: Karakol, Cholpon-Ata & Chong-Kemin",
+   "description": "An eagle and a yurt in Bokonbayevo, canyons and red cliffs on the way to Karakol, a boat on the lake, then a quiet last night in Chong-Kemin.",
+   "canonical": "https://azattours.com/tours/karakol-cholpon-ata-chong-kemin-4-days/",
+   "h1": [
+    "Karakol, Cholpon-Ata & Chong-Kemin - 4 Days"
+   ],
+   "words": 1517,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-6d3391e48002.jpg",
+   "bytes": 39414,
+   "imgCount": 17,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-full-circle-boat-ride-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Full Circle 4 Days: Canyons, Altyn-Arashan & Boat",
+   "description": "Eagles near Bokonbayevo, a yurt by the water, red canyons, Altyn-Arashan by army truck and the north shore on the way home. Private and run all year.",
+   "canonical": "https://azattours.com/tours/issyk-kul-full-circle-boat-ride-4-days/",
+   "h1": [
+    "Issyk-Kul Full Circle & Boat Ride - 4 Days"
+   ],
+   "words": 1497,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-965068e8428f.jpg",
+   "bytes": 39556,
+   "imgCount": 19,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/song-kul-yurts-eagles-karakol-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Song-Kul & Karakol Tour 4 Days: Yurts, Eagles & Hot Springs",
+   "description": "Song-Kul over Kalmak-Ashuu Pass, then eagles in Bokonbayevo, Jeti-Oguz, hot springs and a swim from a boat on Issyk-Kul. Private, May to September.",
+   "canonical": "https://azattours.com/tours/song-kul-yurts-eagles-karakol-4-days/",
+   "h1": [
+    "Song-Kul Yurts, Eagles & Karakol - 4 Days"
+   ],
+   "words": 1612,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-ea720344bfb4.jpg",
+   "bytes": 40704,
+   "imgCount": 19,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/issyk-kul-loop-via-chong-kemin-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Issyk-Kul Tour 5 Days: Chong-Kemin, Karakol & Boat Trip",
+   "description": "Horses in Chong-Kemin and Kok-Jaiyk, boorsok with a local family, a boat on the lake, hot springs, Ak-Sai Canyon and a yurt by the water.",
+   "canonical": "https://azattours.com/tours/issyk-kul-loop-via-chong-kemin-5-days/",
+   "h1": [
+    "Issyk-Kul Loop via Chong-Kemin - 5 Days"
+   ],
+   "words": 1635,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-c1b87584628d.jpg",
+   "bytes": 39961,
+   "imgCount": 19,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/ak-suu-three-pass-trek-to-ala-kul-5-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Ala-Kul Trek 5 Days: Three Passes from Karakol via Ak-Suu",
+   "description": "The core of the Ak-Suu Traverse: Jergez Gorge, Ailanysh and Ortok passes, hot springs at Altyn-Arashan and a night by Ala-Kul. Yurts most nights.",
+   "canonical": "https://azattours.com/tours/ak-suu-three-pass-trek-to-ala-kul-5-days/",
+   "h1": [
+    "Ak-Suu Three-Pass Trek to Ala-Kul - 5 Days"
+   ],
+   "words": 1462,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-fb294b877406.jpg",
+   "bytes": 36512,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/full-ak-suu-traverse-from-jyrgalan-9-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Kyrgyzstan Trek 9 Days: Jyrgalan to Ala-Kul Traverse",
+   "description": "Jyrgalan to Jeti-Oguz on foot: the Boz-Uchuk lakes, Ailanysh Pass, a rest day in the Altyn-Arashan springs, Ala-Kul and Telety Valley. For seasoned trekkers.",
+   "canonical": "https://azattours.com/tours/full-ak-suu-traverse-from-jyrgalan-9-days/",
+   "h1": [
+    "Full Ak-Suu Traverse from Jyrgalan - 9 Days"
+   ],
+   "words": 1764,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-39dde7aae0d9.jpg",
+   "bytes": 41753,
+   "imgCount": 16,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/tours/karakol-peak-base-ala-kul-trek-4-days/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Ala-Kul Trek 4 Days: Karakol Peak Base Camp & Altyn-Arashan",
+   "description": "Karakol Gorge, the glaciers at the foot of Karakol Peak, a night by Ala-Kul and the pass down to the Altyn-Arashan hot springs.",
+   "canonical": "https://azattours.com/tours/karakol-peak-base-ala-kul-trek-4-days/",
+   "h1": [
+    "Karakol Peak Base & Ala-Kul Trek - 4 Days"
+   ],
+   "words": 1262,
+   "noindex": false,
+   "ldTypes": "TouristTrip|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/catalog/own-bfe0e84cd85e.jpg",
+   "bytes": 34680,
+   "imgCount": 15,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/ala-kol-trek-guide/",
+   "inSitemap": true,
+   "lastmod": "2026-10-13",
+   "status": 200,
+   "title": "The complete guide to the Ala-Kul trek | Azat Tours",
+   "description": "Route day by day, the easier and the harder direction, season, costs, where to sleep and what to pack for the Ala-Kul trek, by local guides.",
+   "canonical": "https://azattours.com/blog/ala-kol-trek-guide/",
+   "h1": [
+    "The complete guide to the Ala-Kul trek"
+   ],
+   "words": 1337,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList|FAQPage",
+   "ogImage": "https://azattours.com/img/blog/ala-kol-trek-guide.jpg",
+   "bytes": 18809,
+   "imgCount": 3,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/best-time-to-visit-kyrgyzstan/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "When is the best time to visit Kyrgyzstan? | Azat Tours",
+   "description": "Month-by-month: when to trek, ride, see the lakes or ski in Kyrgyzstan.",
+   "canonical": "https://azattours.com/blog/best-time-to-visit-kyrgyzstan/",
+   "h1": [
+    "When is the best time to visit Kyrgyzstan?"
+   ],
+   "words": 369,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/best-time-summer.jpg",
+   "bytes": 11546,
+   "imgCount": 3,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/yurt-culture-etiquette/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Staying in a yurt: nomad culture & etiquette | Azat Tours",
+   "description": "The culture behind the Kyrgyz yurt, what to expect, and how to be a respectful guest.",
+   "canonical": "https://azattours.com/blog/yurt-culture-etiquette/",
+   "h1": [
+    "Staying in a yurt: nomad culture & etiquette"
+   ],
+   "words": 401,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/yurt-camp.jpg",
+   "bytes": 11607,
+   "imgCount": 3,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/real-local-guides/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Why a real local guide changes the whole trip | Azat Tours",
+   "description": "Not a script-reading rep, a Kyrgyz guide who knows the passes, the families and the safe river crossings.",
+   "canonical": "https://azattours.com/blog/real-local-guides/",
+   "h1": [
+    "Why a real local guide changes the whole trip"
+   ],
+   "words": 874,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/local-guide-eagle.jpg",
+   "bytes": 14324,
+   "imgCount": 3,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/tailor-made-trips/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Tailor-made by default: your trip, your pace | Azat Tours",
+   "description": "Tell us your dates, pace and budget. We design an itinerary that fits you, not rigid package tourism.",
+   "canonical": "https://azattours.com/blog/tailor-made-trips/",
+   "h1": [
+    "Tailor-made by default: your trip, your pace"
+   ],
+   "words": 883,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/tailor-made-trips.jpg",
+   "bytes": 14039,
+   "imgCount": 2,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/safety-in-the-mountains/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Safety first: how we look after you in the mountains",
+   "description": "Vetted vehicles, first-aid-trained guides, satellite comms in remote areas and a 24/7 team back in Bishkek.",
+   "canonical": "https://azattours.com/blog/safety-in-the-mountains/",
+   "h1": [
+    "Safety first: how we look after you in the mountains"
+   ],
+   "words": 874,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/safety-in-the-mountains.jpg",
+   "bytes": 14393,
+   "imgCount": 2,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/community-tourism/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Community tourism: where your money stays | Azat Tours",
+   "description": "We partner with herder families and village hosts, so your money stays in the mountains it came from.",
+   "canonical": "https://azattours.com/blog/community-tourism/",
+   "h1": [
+    "Community tourism: where your money stays"
+   ],
+   "words": 838,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/community-tourism.jpg",
+   "bytes": 14337,
+   "imgCount": 3,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/easy-from-abroad/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Easy from abroad: visas, arrival and logistics | Azat Tours",
+   "description": "Visa-free for most Western and East-Asian passports. We help with airport pickup, SIM cards, logistics and everything in between.",
+   "canonical": "https://azattours.com/blog/easy-from-abroad/",
+   "h1": [
+    "Easy from abroad: visas, arrival and logistics"
+   ],
+   "words": 842,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/easy-arrival.jpg",
+   "bytes": 14204,
+   "imgCount": 2,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/blog/fair-honest-pricing/",
+   "inSitemap": true,
+   "lastmod": "2026-10-25",
+   "status": 200,
+   "title": "Fair, honest pricing, no hidden extras | Azat Tours",
+   "description": "Transparent quotes, no hidden extras, and a best-price promise. Enquire free, pay only when you are ready.",
+   "canonical": "https://azattours.com/blog/fair-honest-pricing/",
+   "h1": [
+    "Fair, honest pricing, no hidden extras"
+   ],
+   "words": 827,
+   "noindex": false,
+   "ldTypes": "BlogPosting|BreadcrumbList",
+   "ogImage": "https://azattours.com/img/blog/fair-honest-pricing.jpg",
+   "bytes": 13847,
+   "imgCount": 2,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/builder.html",
+   "inSitemap": false,
+   "lastmod": "",
+   "status": 200,
+   "title": "Build Your Trip, Design Your Own Kyrgyzstan Adventure | Azat Tours",
+   "description": "Design your perfect Kyrgyzstan trip in 4 easy steps. Tell us your style, dates and how you like to travel, we'll match you with tours and send a tailored plan within 24 hours. Free, no prepayment.",
+   "canonical": "",
+   "h1": [],
+   "words": 65,
+   "noindex": true,
+   "ldTypes": "",
+   "ogImage": "",
+   "bytes": 5846,
+   "imgCount": 0,
+   "imgNoAlt": 0,
+   "imgNoLazy": 0,
+   "imgNoSize": 0,
+   "canonicalOk": false
+  },
+  {
+   "url": "/reviews.html",
+   "inSitemap": false,
+   "lastmod": "",
+   "status": 200,
+   "title": "Reviews, What Travellers Say About Azat Tours Kyrgyzstan",
+   "description": "Real reviews from travellers who explored Kyrgyzstan with Azat Tours, and the platforms where you can verify every word.",
+   "canonical": "https://azattours.com/reviews.html",
+   "h1": [
+    "Real stories, real travellers"
+   ],
+   "words": 156,
+   "noindex": true,
+   "ldTypes": "",
+   "ogImage": "https://azattours.com/img/page/reviews.jpg",
+   "bytes": 12039,
+   "imgCount": 7,
+   "imgNoAlt": 0,
+   "imgNoLazy": 1,
+   "imgNoSize": 0,
+   "canonicalOk": true
+  },
+  {
+   "url": "/404.html",
+   "inSitemap": false,
+   "lastmod": "",
+   "status": 200,
+   "title": "Page not found | Azat Tours",
+   "description": "",
+   "canonical": "",
+   "h1": [
+    "This trail doesn't exist"
+   ],
+   "words": 97,
+   "noindex": true,
+   "ldTypes": "",
+   "ogImage": "",
+   "bytes": 5901,
+   "imgCount": 0,
+   "imgNoAlt": 0,
+   "imgNoLazy": 0,
+   "imgNoSize": 0,
+   "canonicalOk": false
+  },
+  {
+   "url": "/llms.txt",
+   "inSitemap": false,
+   "lastmod": "",
+   "status": 200,
+   "title": "",
+   "description": "",
+   "canonical": "",
+   "h1": [],
+   "words": 3824,
+   "noindex": false,
+   "ldTypes": "",
+   "ogImage": "",
+   "bytes": 28451,
+   "imgCount": 0,
+   "imgNoAlt": 0,
+   "imgNoLazy": 0,
+   "imgNoSize": 0,
+   "canonicalOk": false
+  },
+  {
+   "url": "/llms-full.txt",
+   "inSitemap": false,
+   "lastmod": "",
+   "status": 200,
+   "title": "",
+   "description": "",
+   "canonical": "",
+   "h1": [],
+   "words": 74994,
+   "noindex": false,
+   "ldTypes": "",
+   "ogImage": "",
+   "bytes": 434839,
+   "imgCount": 0,
+   "imgNoAlt": 0,
+   "imgNoLazy": 0,
+   "imgNoSize": 0,
+   "canonicalOk": false
+  }
+ ],
+ "oldUrls": [
+  {
+   "old": "/blog",
+   "first": 301,
+   "location": "/blog/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/"
+  },
+  {
+   "old": "/blog.html",
+   "first": 301,
+   "location": "/blog/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/"
+  },
+  {
+   "old": "/blog/ala-kol-trek-guide",
+   "first": 301,
+   "location": "/blog/ala-kol-trek-guide/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/ala-kol-trek-guide/"
+  },
+  {
+   "old": "/blog/best-time-to-visit-kyrgyzstan",
+   "first": 301,
+   "location": "/blog/best-time-to-visit-kyrgyzstan/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/best-time-to-visit-kyrgyzstan/"
+  },
+  {
+   "old": "/blog/community-tourism",
+   "first": 301,
+   "location": "/blog/community-tourism/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/community-tourism/"
+  },
+  {
+   "old": "/blog/easy-from-abroad",
+   "first": 301,
+   "location": "/blog/easy-from-abroad/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/easy-from-abroad/"
+  },
+  {
+   "old": "/blog/fair-honest-pricing",
+   "first": 301,
+   "location": "/blog/fair-honest-pricing/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/fair-honest-pricing/"
+  },
+  {
+   "old": "/blog/real-local-guides",
+   "first": 301,
+   "location": "/blog/real-local-guides/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/real-local-guides/"
+  },
+  {
+   "old": "/blog/safety-in-the-mountains",
+   "first": 301,
+   "location": "/blog/safety-in-the-mountains/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/safety-in-the-mountains/"
+  },
+  {
+   "old": "/blog/tailor-made-trips",
+   "first": 301,
+   "location": "/blog/tailor-made-trips/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/tailor-made-trips/"
+  },
+  {
+   "old": "/blog/yurt-culture-etiquette",
+   "first": 301,
+   "location": "/blog/yurt-culture-etiquette/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/yurt-culture-etiquette/"
+  },
+  {
+   "old": "/index.html",
+   "first": 301,
+   "location": "/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/"
+  },
+  {
+   "old": "/post.html",
+   "first": 301,
+   "location": "/blog/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/"
+  },
+  {
+   "old": "/post.html?slug=ala-kol-trek-guide",
+   "first": 301,
+   "location": "/blog/ala-kol-trek-guide/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/ala-kol-trek-guide/"
+  },
+  {
+   "old": "/post.html?slug=best-time-to-visit-kyrgyzstan",
+   "first": 301,
+   "location": "/blog/best-time-to-visit-kyrgyzstan/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/best-time-to-visit-kyrgyzstan/"
+  },
+  {
+   "old": "/post.html?slug=community-tourism",
+   "first": 301,
+   "location": "/blog/community-tourism/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/community-tourism/"
+  },
+  {
+   "old": "/post.html?slug=does-not-exist",
+   "first": 404,
+   "location": "",
+   "hops": 0,
+   "final": 404,
+   "finalUrl": ""
+  },
+  {
+   "old": "/post.html?slug=easy-from-abroad",
+   "first": 301,
+   "location": "/blog/easy-from-abroad/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/easy-from-abroad/"
+  },
+  {
+   "old": "/post.html?slug=fair-honest-pricing",
+   "first": 301,
+   "location": "/blog/fair-honest-pricing/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/fair-honest-pricing/"
+  },
+  {
+   "old": "/post.html?slug=real-local-guides",
+   "first": 301,
+   "location": "/blog/real-local-guides/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/real-local-guides/"
+  },
+  {
+   "old": "/post.html?slug=safety-in-the-mountains",
+   "first": 301,
+   "location": "/blog/safety-in-the-mountains/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/safety-in-the-mountains/"
+  },
+  {
+   "old": "/post.html?slug=tailor-made-trips",
+   "first": 301,
+   "location": "/blog/tailor-made-trips/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/tailor-made-trips/"
+  },
+  {
+   "old": "/post.html?slug=yurt-culture-etiquette",
+   "first": 301,
+   "location": "/blog/yurt-culture-etiquette/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/blog/yurt-culture-etiquette/"
+  },
+  {
+   "old": "/tour.html",
+   "first": 301,
+   "location": "/tours/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/"
+  },
+  {
+   "old": "/tour.html?slug=active-kyrgyzstan-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-ride-altyn-arashan-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-ride-altyn-arashan-trek-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=active-kyrgyzstan-6-days",
+   "first": 301,
+   "location": "/tours/kilemche-song-kul-altyn-arashan-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kilemche-song-kul-altyn-arashan-6-days/"
+  },
+  {
+   "old": "/tour.html?slug=active-kyrgyzstan-tour-8-days",
+   "first": 301,
+   "location": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=ak-say-canyons-barskoon-falls-day-trip",
+   "first": 301,
+   "location": "/tours/ak-say-canyons-barskoon-falls-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ak-say-canyons-barskoon-falls-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=ak-suu-three-pass-trek-to-ala-kul-5-days",
+   "first": 301,
+   "location": "/tours/ak-suu-three-pass-trek-to-ala-kul-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ak-suu-three-pass-trek-to-ala-kul-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=ala-archa-chunkurchak-gorges-day-trip",
+   "first": 301,
+   "location": "/tours/ala-archa-chunkurchak-gorges-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ala-archa-chunkurchak-gorges-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=ala-archa-gorge-hike-at-your-pace-day-trip",
+   "first": 301,
+   "location": "/tours/ala-archa-gorge-hike-at-your-pace-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ala-archa-gorge-hike-at-your-pace-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=arashan-gorge-ride-sky-bridge-day-trip",
+   "first": 301,
+   "location": "/tours/arashan-gorge-ride-sky-bridge-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/arashan-gorge-ride-sky-bridge-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=authentic-horseback-riding-tour-5-days",
+   "first": 301,
+   "location": "/tours/mai-tor-pastures-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/mai-tor-pastures-horse-trek-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=authentic-kyrgyzstan-road-trip-7-days",
+   "first": 301,
+   "location": "/tours/talas-to-song-kul-backroads-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-song-kul-backroads-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=authentic-road-trip-tour-8-days",
+   "first": 301,
+   "location": "/tours/talas-to-issyk-kul-backroads-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-issyk-kul-backroads-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=best-of-kyrgyzstan-10-days",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-grand-tour-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-grand-tour-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=best-of-kyrgyzstan-11-days",
+   "first": 301,
+   "location": "/tours/tash-rabat-kel-suu-ala-kul-11-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/tash-rabat-kel-suu-ala-kul-11-days/"
+  },
+  {
+   "old": "/tour.html?slug=best-of-kyrgyzstan-12-days",
+   "first": 301,
+   "location": "/tours/complete-kyrgyzstan-adventure-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/complete-kyrgyzstan-adventure-12-days/"
+  },
+  {
+   "old": "/tour.html?slug=best-of-kyrgyzstan-9-days",
+   "first": 301,
+   "location": "/tours/song-kul-kok-kiya-kel-suu-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kok-kiya-kel-suu-9-days/"
+  },
+  {
+   "old": "/tour.html?slug=best-of-kyrgyzstan-tour-8-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-altyn-arashan-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-altyn-arashan-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=bishkek-3-stop-food-tasting-tour-day-trip",
+   "first": 301,
+   "location": "/tours/bishkek-3-stop-food-tasting-tour-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/bishkek-3-stop-food-tasting-tour-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=bishkek-ala-archa-in-one-day-day-trip",
+   "first": 301,
+   "location": "/tours/bishkek-ala-archa-in-one-day-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/bishkek-ala-archa-in-one-day-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=bishkek-soviet-heritage-city-tour-day-trip",
+   "first": 301,
+   "location": "/tours/bishkek-soviet-heritage-city-tour-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/bishkek-soviet-heritage-city-tour-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=burana-chong-kemin-cholpon-ata-2-days",
+   "first": 301,
+   "location": "/tours/burana-chong-kemin-cholpon-ata-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/burana-chong-kemin-cholpon-ata-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=burana-konorchek-issyk-kul-day-trip",
+   "first": 301,
+   "location": "/tours/burana-konorchek-issyk-kul-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/burana-konorchek-issyk-kul-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=chong-kemin-eagle-show-lake-yurt-3-days",
+   "first": 301,
+   "location": "/tours/chong-kemin-eagle-show-lake-yurt-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chong-kemin-eagle-show-lake-yurt-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=chong-kemin-issyk-kul-in-winter-3-days",
+   "first": 301,
+   "location": "/tours/chong-kemin-issyk-kul-in-winter-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chong-kemin-issyk-kul-in-winter-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=chong-kemin-national-park-ride-day-trip",
+   "first": 301,
+   "location": "/tours/chong-kemin-national-park-ride-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chong-kemin-national-park-ride-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=chunkurchak-sky-bridge-archery-day-trip",
+   "first": 301,
+   "location": "/tours/chunkurchak-sky-bridge-archery-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chunkurchak-sky-bridge-archery-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=chunkurchak-snow-hot-springs-day-trip",
+   "first": 301,
+   "location": "/tours/chunkurchak-snow-hot-springs-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chunkurchak-snow-hot-springs-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=complete-kyrgyzstan-adventure-12-days",
+   "first": 301,
+   "location": "/tours/complete-kyrgyzstan-adventure-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/complete-kyrgyzstan-adventure-12-days/"
+  },
+  {
+   "old": "/tour.html?slug=dinner-boorsok-in-a-kyrgyz-home-day-trip",
+   "first": 301,
+   "location": "/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=discover-kyrgyzstan-5days",
+   "first": 301,
+   "location": "/tours/song-kul-issyk-kul-road-trip-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-issyk-kul-road-trip-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=discover-kyrgyzstan-7-days",
+   "first": 301,
+   "location": "/tours/easy-week-song-kul-issyk-kul-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/easy-week-song-kul-issyk-kul-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=does-not-exist",
+   "first": 404,
+   "location": "",
+   "hops": 0,
+   "final": 404,
+   "finalUrl": ""
+  },
+  {
+   "old": "/tour.html?slug=easy-week-song-kul-issyk-kul-7-days",
+   "first": 301,
+   "location": "/tours/easy-week-song-kul-issyk-kul-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/easy-week-song-kul-issyk-kul-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=elena-tabers-tour-7-days",
+   "first": 301,
+   "location": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=family-tour-lakes-eagles-yurts-4-days",
+   "first": 301,
+   "location": "/tours/family-tour-lakes-eagles-yurts-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/family-tour-lakes-eagles-yurts-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=first-horse-ride-in-ala-archa-day-trip",
+   "first": 301,
+   "location": "/tours/first-horse-ride-in-ala-archa-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/first-horse-ride-in-ala-archa-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=full-ak-suu-traverse-from-jyrgalan-9-days",
+   "first": 301,
+   "location": "/tours/full-ak-suu-traverse-from-jyrgalan-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/full-ak-suu-traverse-from-jyrgalan-9-days/"
+  },
+  {
+   "old": "/tour.html?slug=grand-kyrgyzstan-road-trip-12-days",
+   "first": 301,
+   "location": "/tours/grand-kyrgyzstan-road-trip-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/grand-kyrgyzstan-road-trip-12-days/"
+  },
+  {
+   "old": "/tour.html?slug=hidden-trails-horseback-riding-tour-7-days",
+   "first": 301,
+   "location": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=ichke-tor-lake-horse-trek-6-days",
+   "first": 301,
+   "location": "/tours/ichke-tor-lake-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ichke-tor-lake-horse-trek-6-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-altyn-arashan-4-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-altyn-arashan-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-altyn-arashan-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-canyons-eagles-yurt-2-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-canyons-eagles-yurt-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-canyons-eagles-yurt-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-full-circle-boat-ride-4-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-full-circle-boat-ride-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-full-circle-boat-ride-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-karakol-canyons-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-karakol-canyons-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-karakol-canyons-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-loop-via-chong-kemin-5-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-loop-via-chong-kemin-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-loop-via-chong-kemin-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-shore-hot-springs-day-trip",
+   "first": 301,
+   "location": "/tours/issyk-kul-shore-hot-springs-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-shore-hot-springs-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-shore-ride-eagles-boat-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-shore-ride-eagles-boat-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-shore-ride-eagles-boat-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-song-kul-weekend-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-song-kul-weekend-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-song-kul-weekend-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=issyk-kul-winter-yurt-canyons-2-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-winter-yurt-canyons-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-winter-yurt-canyons-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=kara-kiya-pass-ride-to-song-kul-2-days",
+   "first": 301,
+   "location": "/tours/kara-kiya-pass-ride-to-song-kul-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kara-kiya-pass-ride-to-song-kul-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=karakol-cholpon-ata-chong-kemin-4-days",
+   "first": 301,
+   "location": "/tours/karakol-cholpon-ata-chong-kemin-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/karakol-cholpon-ata-chong-kemin-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=karakol-peak-base-ala-kul-trek-4-days",
+   "first": 301,
+   "location": "/tours/karakol-peak-base-ala-kul-trek-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/karakol-peak-base-ala-kul-trek-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=kel-suu-chong-kemin-road-trip-10-days",
+   "first": 301,
+   "location": "/tours/kel-suu-chong-kemin-road-trip-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-chong-kemin-road-trip-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=kel-suu-issyk-kul-express-5-days",
+   "first": 301,
+   "location": "/tours/kel-suu-issyk-kul-express-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-issyk-kul-express-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=kel-suu-lake-express-4-days",
+   "first": 301,
+   "location": "/tours/kel-suu-lake-express-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-lake-express-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=kilemche-song-kul-altyn-arashan-6-days",
+   "first": 301,
+   "location": "/tours/kilemche-song-kul-altyn-arashan-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kilemche-song-kul-altyn-arashan-6-days/"
+  },
+  {
+   "old": "/tour.html?slug=kok-kiya-kel-suu-road-trip-8-days",
+   "first": 301,
+   "location": "/tours/kok-kiya-kel-suu-road-trip-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kok-kiya-kel-suu-road-trip-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=kol-tor-lake-hike-burana-tower-day-trip",
+   "first": 301,
+   "location": "/tours/kol-tor-lake-hike-burana-tower-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kol-tor-lake-hike-burana-tower-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=kol-ukok-to-song-kul-horse-trek-7-days",
+   "first": 301,
+   "location": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=konorchek-canyon-hike-burana-day-trip",
+   "first": 301,
+   "location": "/tours/konorchek-canyon-hike-burana-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/konorchek-canyon-hike-burana-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=konorchek-hike-chong-kemin-ride-2-days",
+   "first": 301,
+   "location": "/tours/konorchek-hike-chong-kemin-ride-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/konorchek-hike-chong-kemin-ride-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-active-tour-10-days",
+   "first": 301,
+   "location": "/tours/slow-ride-trek-to-ala-kul-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/slow-ride-trek-to-ala-kul-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-express-tour-4-days",
+   "first": 301,
+   "location": "/tours/kel-suu-lake-express-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-lake-express-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-express-tour-5-days",
+   "first": 301,
+   "location": "/tours/kel-suu-issyk-kul-express-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-issyk-kul-express-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-family-tour-4-days",
+   "first": 301,
+   "location": "/tours/family-tour-lakes-eagles-yurts-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/family-tour-lakes-eagles-yurts-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-grand-tour-10-days",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-grand-tour-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-grand-tour-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-horseback-riding-tour-10-days",
+   "first": 301,
+   "location": "/tours/song-kul-to-ala-kul-on-horseback-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-to-ala-kul-on-horseback-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-horseback-riding-tour-5-days",
+   "first": 301,
+   "location": "/tours/two-lakes-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-horse-trek-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-horseback-riding-tour-6-days",
+   "first": 301,
+   "location": "/tours/two-lakes-west-shore-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-west-shore-horse-trek-6-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-horseback-riding-tour-7-days",
+   "first": 301,
+   "location": "/tours/two-lakes-kok-bulak-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-kok-bulak-horse-trek-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-in-a-week-7-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-in-a-week-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-in-a-week-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-overland-road-trip-7-days",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-overland-road-trip-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-overland-road-trip-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-ultimate-road-trip-10-days",
+   "first": 301,
+   "location": "/tours/kel-suu-chong-kemin-road-trip-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-chong-kemin-road-trip-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-ultimate-road-trip-11-days",
+   "first": 301,
+   "location": "/tours/tash-rabat-kel-suu-road-trip-11-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/tash-rabat-kel-suu-road-trip-11-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-ultimate-road-trip-12-days",
+   "first": 301,
+   "location": "/tours/grand-kyrgyzstan-road-trip-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/grand-kyrgyzstan-road-trip-12-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-ultimate-road-trip-7-days",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-overland-road-trip-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-overland-road-trip-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-ultimate-road-trip-8-days",
+   "first": 301,
+   "location": "/tours/kok-kiya-kel-suu-road-trip-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kok-kiya-kel-suu-road-trip-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyrgyzstan-ultimate-road-trip-9-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-road-trip-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-road-trip-9-days/"
+  },
+  {
+   "old": "/tour.html?slug=kyzyl-oi-song-kul-chong-kemin-8-days",
+   "first": 301,
+   "location": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=mai-tor-pastures-horse-trek-5-days",
+   "first": 301,
+   "location": "/tours/mai-tor-pastures-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/mai-tor-pastures-horse-trek-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=silk-road-burana-tower-bishkek-day-trip",
+   "first": 301,
+   "location": "/tours/silk-road-burana-tower-bishkek-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/silk-road-burana-tower-bishkek-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=slow-ride-trek-to-ala-kul-10-days",
+   "first": 301,
+   "location": "/tours/slow-ride-trek-to-ala-kul-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/slow-ride-trek-to-ala-kul-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kol-lake-on-horseback-2-days",
+   "first": 301,
+   "location": "/tours/song-kul-overnight-horse-trek-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-overnight-horse-trek-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kol-lake-on-horseback-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kol-lake-on-horseback-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-shoreline-horse-trek-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-shoreline-horse-trek-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kol-to-ala-kol-horse-riding-trekking-7-days",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-33-parrots-pass-express-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-33-parrots-pass-express-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-33-parrots-pass-express-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-horse-trek-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-horse-trek-ala-kul-hike-7-days",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-issyk-kul-road-trip-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-issyk-kul-road-trip-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-issyk-kul-road-trip-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-kel-suu-altyn-arashan-8-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-altyn-arashan-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-altyn-arashan-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-kel-suu-in-a-week-7-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-in-a-week-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-in-a-week-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-kel-suu-road-trip-9-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-road-trip-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-road-trip-9-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-kok-kiya-kel-suu-9-days",
+   "first": 301,
+   "location": "/tours/song-kul-kok-kiya-kel-suu-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kok-kiya-kel-suu-9-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-on-horseback-issyk-kul-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-on-horseback-issyk-kul-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-on-horseback-issyk-kul-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-overnight-horse-trek-2-days",
+   "first": 301,
+   "location": "/tours/song-kul-overnight-horse-trek-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-overnight-horse-trek-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-ride-altyn-arashan-trek-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-ride-altyn-arashan-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-ride-altyn-arashan-trek-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-ride-issyk-kul-circle-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-ride-issyk-kul-circle-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-ride-issyk-kul-circle-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-shoreline-horse-trek-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-shoreline-horse-trek-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-shoreline-horse-trek-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-to-ala-kul-on-horseback-10-days",
+   "first": 301,
+   "location": "/tours/song-kul-to-ala-kul-on-horseback-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-to-ala-kul-on-horseback-10-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-two-pass-loop-on-horseback-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-two-pass-loop-on-horseback-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-two-pass-loop-on-horseback-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-yurt-night-by-car-horse-2-days",
+   "first": 301,
+   "location": "/tours/song-kul-yurt-night-by-car-horse-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-yurt-night-by-car-horse-2-days/"
+  },
+  {
+   "old": "/tour.html?slug=song-kul-yurts-eagles-karakol-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-yurts-eagles-karakol-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-yurts-eagles-karakol-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=talas-to-issyk-kul-backroads-8-days",
+   "first": 301,
+   "location": "/tours/talas-to-issyk-kul-backroads-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-issyk-kul-backroads-8-days/"
+  },
+  {
+   "old": "/tour.html?slug=talas-to-song-kul-backroads-7-days",
+   "first": 301,
+   "location": "/tours/talas-to-song-kul-backroads-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-song-kul-backroads-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=two-lakes-horse-trek-5-days",
+   "first": 301,
+   "location": "/tours/two-lakes-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-horse-trek-5-days/"
+  },
+  {
+   "old": "/tour.html?slug=two-lakes-kok-bulak-horse-trek-7-days",
+   "first": 301,
+   "location": "/tours/two-lakes-kok-bulak-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-kok-bulak-horse-trek-7-days/"
+  },
+  {
+   "old": "/tour.html?slug=two-lakes-west-shore-horse-trek-6-days",
+   "first": 301,
+   "location": "/tours/two-lakes-west-shore-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-west-shore-horse-trek-6-days/"
+  },
+  {
+   "old": "/tour.html?slug=two-nights-at-song-kul-on-horseback-4-days",
+   "first": 301,
+   "location": "/tours/two-nights-at-song-kul-on-horseback-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-nights-at-song-kul-on-horseback-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=untouched-mountain-horse-riding-tour-6-days",
+   "first": 301,
+   "location": "/tours/ichke-tor-lake-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ichke-tor-lake-horse-trek-6-days/"
+  },
+  {
+   "old": "/tour.html?slug=winter-ala-archa-chunkurchak-day-trip",
+   "first": 301,
+   "location": "/tours/winter-ala-archa-chunkurchak-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-ala-archa-chunkurchak-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=winter-ala-archa-snow-walk-day-trip",
+   "first": 301,
+   "location": "/tours/winter-ala-archa-snow-walk-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-ala-archa-snow-walk-day-trip/"
+  },
+  {
+   "old": "/tour.html?slug=winter-horse-back-riding-to-song-kol-lake-3-days",
+   "first": 301,
+   "location": "/tours/winter-horse-trek-to-song-kul-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-horse-trek-to-song-kul-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=winter-horse-trek-to-song-kul-3-days",
+   "first": 301,
+   "location": "/tours/winter-horse-trek-to-song-kul-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-horse-trek-to-song-kul-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=winter-issyk-kul-karakol-skiing-4-days",
+   "first": 301,
+   "location": "/tours/winter-issyk-kul-karakol-skiing-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-issyk-kul-karakol-skiing-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=ysyk-kol-lake-lake-road-trip-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-karakol-canyons-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-karakol-canyons-3-days/"
+  },
+  {
+   "old": "/tour.html?slug=ysyk-kol-lake-road-trip-4-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-altyn-arashan-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-altyn-arashan-4-days/"
+  },
+  {
+   "old": "/tour.html?slug=ysyk-kol-lakesong-kol-lake-road-trip-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-song-kul-weekend-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-song-kul-weekend-3-days/"
+  },
+  {
+   "old": "/tours",
+   "first": 301,
+   "location": "/tours/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/"
+  },
+  {
+   "old": "/tours.html",
+   "first": 301,
+   "location": "/tours/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/"
+  },
+  {
+   "old": "/tours/active-kyrgyzstan-5-days/",
+   "first": 301,
+   "location": "/tours/song-kul-ride-altyn-arashan-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-ride-altyn-arashan-trek-5-days/"
+  },
+  {
+   "old": "/tours/active-kyrgyzstan-6-days/",
+   "first": 301,
+   "location": "/tours/kilemche-song-kul-altyn-arashan-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kilemche-song-kul-altyn-arashan-6-days/"
+  },
+  {
+   "old": "/tours/active-kyrgyzstan-tour-8-days/",
+   "first": 301,
+   "location": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/"
+  },
+  {
+   "old": "/tours/ak-say-canyons-barskoon-falls-day-trip",
+   "first": 301,
+   "location": "/tours/ak-say-canyons-barskoon-falls-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ak-say-canyons-barskoon-falls-day-trip/"
+  },
+  {
+   "old": "/tours/ak-suu-three-pass-trek-to-ala-kul-5-days",
+   "first": 301,
+   "location": "/tours/ak-suu-three-pass-trek-to-ala-kul-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ak-suu-three-pass-trek-to-ala-kul-5-days/"
+  },
+  {
+   "old": "/tours/ala-archa-chunkurchak-gorges-day-trip",
+   "first": 301,
+   "location": "/tours/ala-archa-chunkurchak-gorges-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ala-archa-chunkurchak-gorges-day-trip/"
+  },
+  {
+   "old": "/tours/ala-archa-gorge-hike-at-your-pace-day-trip",
+   "first": 301,
+   "location": "/tours/ala-archa-gorge-hike-at-your-pace-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ala-archa-gorge-hike-at-your-pace-day-trip/"
+  },
+  {
+   "old": "/tours/arashan-gorge-ride-sky-bridge-day-trip",
+   "first": 301,
+   "location": "/tours/arashan-gorge-ride-sky-bridge-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/arashan-gorge-ride-sky-bridge-day-trip/"
+  },
+  {
+   "old": "/tours/authentic-horseback-riding-tour-5-days/",
+   "first": 301,
+   "location": "/tours/mai-tor-pastures-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/mai-tor-pastures-horse-trek-5-days/"
+  },
+  {
+   "old": "/tours/authentic-kyrgyzstan-road-trip-7-days/",
+   "first": 301,
+   "location": "/tours/talas-to-song-kul-backroads-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-song-kul-backroads-7-days/"
+  },
+  {
+   "old": "/tours/authentic-road-trip-tour-8-days/",
+   "first": 301,
+   "location": "/tours/talas-to-issyk-kul-backroads-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-issyk-kul-backroads-8-days/"
+  },
+  {
+   "old": "/tours/best-of-kyrgyzstan-10-days/",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-grand-tour-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-grand-tour-10-days/"
+  },
+  {
+   "old": "/tours/best-of-kyrgyzstan-11-days/",
+   "first": 301,
+   "location": "/tours/tash-rabat-kel-suu-ala-kul-11-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/tash-rabat-kel-suu-ala-kul-11-days/"
+  },
+  {
+   "old": "/tours/best-of-kyrgyzstan-12-days/",
+   "first": 301,
+   "location": "/tours/complete-kyrgyzstan-adventure-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/complete-kyrgyzstan-adventure-12-days/"
+  },
+  {
+   "old": "/tours/best-of-kyrgyzstan-9-days/",
+   "first": 301,
+   "location": "/tours/song-kul-kok-kiya-kel-suu-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kok-kiya-kel-suu-9-days/"
+  },
+  {
+   "old": "/tours/best-of-kyrgyzstan-tour-8-days/",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-altyn-arashan-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-altyn-arashan-8-days/"
+  },
+  {
+   "old": "/tours/bishkek-3-stop-food-tasting-tour-day-trip",
+   "first": 301,
+   "location": "/tours/bishkek-3-stop-food-tasting-tour-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/bishkek-3-stop-food-tasting-tour-day-trip/"
+  },
+  {
+   "old": "/tours/bishkek-ala-archa-in-one-day-day-trip",
+   "first": 301,
+   "location": "/tours/bishkek-ala-archa-in-one-day-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/bishkek-ala-archa-in-one-day-day-trip/"
+  },
+  {
+   "old": "/tours/bishkek-soviet-heritage-city-tour-day-trip",
+   "first": 301,
+   "location": "/tours/bishkek-soviet-heritage-city-tour-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/bishkek-soviet-heritage-city-tour-day-trip/"
+  },
+  {
+   "old": "/tours/burana-chong-kemin-cholpon-ata-2-days",
+   "first": 301,
+   "location": "/tours/burana-chong-kemin-cholpon-ata-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/burana-chong-kemin-cholpon-ata-2-days/"
+  },
+  {
+   "old": "/tours/burana-konorchek-issyk-kul-day-trip",
+   "first": 301,
+   "location": "/tours/burana-konorchek-issyk-kul-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/burana-konorchek-issyk-kul-day-trip/"
+  },
+  {
+   "old": "/tours/chong-kemin-eagle-show-lake-yurt-3-days",
+   "first": 301,
+   "location": "/tours/chong-kemin-eagle-show-lake-yurt-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chong-kemin-eagle-show-lake-yurt-3-days/"
+  },
+  {
+   "old": "/tours/chong-kemin-issyk-kul-in-winter-3-days",
+   "first": 301,
+   "location": "/tours/chong-kemin-issyk-kul-in-winter-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chong-kemin-issyk-kul-in-winter-3-days/"
+  },
+  {
+   "old": "/tours/chong-kemin-national-park-ride-day-trip",
+   "first": 301,
+   "location": "/tours/chong-kemin-national-park-ride-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chong-kemin-national-park-ride-day-trip/"
+  },
+  {
+   "old": "/tours/chunkurchak-sky-bridge-archery-day-trip",
+   "first": 301,
+   "location": "/tours/chunkurchak-sky-bridge-archery-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chunkurchak-sky-bridge-archery-day-trip/"
+  },
+  {
+   "old": "/tours/chunkurchak-snow-hot-springs-day-trip",
+   "first": 301,
+   "location": "/tours/chunkurchak-snow-hot-springs-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/chunkurchak-snow-hot-springs-day-trip/"
+  },
+  {
+   "old": "/tours/complete-kyrgyzstan-adventure-12-days",
+   "first": 301,
+   "location": "/tours/complete-kyrgyzstan-adventure-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/complete-kyrgyzstan-adventure-12-days/"
+  },
+  {
+   "old": "/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip",
+   "first": 301,
+   "location": "/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/dinner-boorsok-in-a-kyrgyz-home-day-trip/"
+  },
+  {
+   "old": "/tours/discover-kyrgyzstan-5days/",
+   "first": 301,
+   "location": "/tours/song-kul-issyk-kul-road-trip-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-issyk-kul-road-trip-5-days/"
+  },
+  {
+   "old": "/tours/discover-kyrgyzstan-7-days/",
+   "first": 301,
+   "location": "/tours/easy-week-song-kul-issyk-kul-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/easy-week-song-kul-issyk-kul-7-days/"
+  },
+  {
+   "old": "/tours/does-not-exist/",
+   "first": 404,
+   "location": "",
+   "hops": 0,
+   "final": 404,
+   "finalUrl": ""
+  },
+  {
+   "old": "/tours/easy-week-song-kul-issyk-kul-7-days",
+   "first": 301,
+   "location": "/tours/easy-week-song-kul-issyk-kul-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/easy-week-song-kul-issyk-kul-7-days/"
+  },
+  {
+   "old": "/tours/elena-tabers-tour-7-days/",
+   "first": 301,
+   "location": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/"
+  },
+  {
+   "old": "/tours/family-tour-lakes-eagles-yurts-4-days",
+   "first": 301,
+   "location": "/tours/family-tour-lakes-eagles-yurts-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/family-tour-lakes-eagles-yurts-4-days/"
+  },
+  {
+   "old": "/tours/first-horse-ride-in-ala-archa-day-trip",
+   "first": 301,
+   "location": "/tours/first-horse-ride-in-ala-archa-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/first-horse-ride-in-ala-archa-day-trip/"
+  },
+  {
+   "old": "/tours/full-ak-suu-traverse-from-jyrgalan-9-days",
+   "first": 301,
+   "location": "/tours/full-ak-suu-traverse-from-jyrgalan-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/full-ak-suu-traverse-from-jyrgalan-9-days/"
+  },
+  {
+   "old": "/tours/grand-kyrgyzstan-road-trip-12-days",
+   "first": 301,
+   "location": "/tours/grand-kyrgyzstan-road-trip-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/grand-kyrgyzstan-road-trip-12-days/"
+  },
+  {
+   "old": "/tours/hidden-trails-horseback-riding-tour-7-days/",
+   "first": 301,
+   "location": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/"
+  },
+  {
+   "old": "/tours/ichke-tor-lake-horse-trek-6-days",
+   "first": 301,
+   "location": "/tours/ichke-tor-lake-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ichke-tor-lake-horse-trek-6-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-altyn-arashan-4-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-altyn-arashan-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-altyn-arashan-4-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-canyons-eagles-yurt-2-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-canyons-eagles-yurt-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-canyons-eagles-yurt-2-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-full-circle-boat-ride-4-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-full-circle-boat-ride-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-full-circle-boat-ride-4-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-karakol-canyons-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-karakol-canyons-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-karakol-canyons-3-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-loop-via-chong-kemin-5-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-loop-via-chong-kemin-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-loop-via-chong-kemin-5-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-shore-hot-springs-day-trip",
+   "first": 301,
+   "location": "/tours/issyk-kul-shore-hot-springs-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-shore-hot-springs-day-trip/"
+  },
+  {
+   "old": "/tours/issyk-kul-shore-ride-eagles-boat-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-shore-ride-eagles-boat-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-shore-ride-eagles-boat-3-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-song-kul-weekend-3-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-song-kul-weekend-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-song-kul-weekend-3-days/"
+  },
+  {
+   "old": "/tours/issyk-kul-winter-yurt-canyons-2-days",
+   "first": 301,
+   "location": "/tours/issyk-kul-winter-yurt-canyons-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-winter-yurt-canyons-2-days/"
+  },
+  {
+   "old": "/tours/kara-kiya-pass-ride-to-song-kul-2-days",
+   "first": 301,
+   "location": "/tours/kara-kiya-pass-ride-to-song-kul-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kara-kiya-pass-ride-to-song-kul-2-days/"
+  },
+  {
+   "old": "/tours/karakol-cholpon-ata-chong-kemin-4-days",
+   "first": 301,
+   "location": "/tours/karakol-cholpon-ata-chong-kemin-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/karakol-cholpon-ata-chong-kemin-4-days/"
+  },
+  {
+   "old": "/tours/karakol-peak-base-ala-kul-trek-4-days",
+   "first": 301,
+   "location": "/tours/karakol-peak-base-ala-kul-trek-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/karakol-peak-base-ala-kul-trek-4-days/"
+  },
+  {
+   "old": "/tours/kel-suu-chong-kemin-road-trip-10-days",
+   "first": 301,
+   "location": "/tours/kel-suu-chong-kemin-road-trip-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-chong-kemin-road-trip-10-days/"
+  },
+  {
+   "old": "/tours/kel-suu-issyk-kul-express-5-days",
+   "first": 301,
+   "location": "/tours/kel-suu-issyk-kul-express-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-issyk-kul-express-5-days/"
+  },
+  {
+   "old": "/tours/kel-suu-lake-express-4-days",
+   "first": 301,
+   "location": "/tours/kel-suu-lake-express-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-lake-express-4-days/"
+  },
+  {
+   "old": "/tours/kilemche-song-kul-altyn-arashan-6-days",
+   "first": 301,
+   "location": "/tours/kilemche-song-kul-altyn-arashan-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kilemche-song-kul-altyn-arashan-6-days/"
+  },
+  {
+   "old": "/tours/kok-kiya-kel-suu-road-trip-8-days",
+   "first": 301,
+   "location": "/tours/kok-kiya-kel-suu-road-trip-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kok-kiya-kel-suu-road-trip-8-days/"
+  },
+  {
+   "old": "/tours/kol-tor-lake-hike-burana-tower-day-trip",
+   "first": 301,
+   "location": "/tours/kol-tor-lake-hike-burana-tower-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kol-tor-lake-hike-burana-tower-day-trip/"
+  },
+  {
+   "old": "/tours/kol-ukok-to-song-kul-horse-trek-7-days",
+   "first": 301,
+   "location": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kol-ukok-to-song-kul-horse-trek-7-days/"
+  },
+  {
+   "old": "/tours/konorchek-canyon-hike-burana-day-trip",
+   "first": 301,
+   "location": "/tours/konorchek-canyon-hike-burana-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/konorchek-canyon-hike-burana-day-trip/"
+  },
+  {
+   "old": "/tours/konorchek-hike-chong-kemin-ride-2-days",
+   "first": 301,
+   "location": "/tours/konorchek-hike-chong-kemin-ride-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/konorchek-hike-chong-kemin-ride-2-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-active-tour-10-days/",
+   "first": 301,
+   "location": "/tours/slow-ride-trek-to-ala-kul-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/slow-ride-trek-to-ala-kul-10-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-express-tour-4-days/",
+   "first": 301,
+   "location": "/tours/kel-suu-lake-express-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-lake-express-4-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-express-tour-5-days/",
+   "first": 301,
+   "location": "/tours/kel-suu-issyk-kul-express-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-issyk-kul-express-5-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-family-tour-4-days/",
+   "first": 301,
+   "location": "/tours/family-tour-lakes-eagles-yurts-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/family-tour-lakes-eagles-yurts-4-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-grand-tour-10-days",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-grand-tour-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-grand-tour-10-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-horseback-riding-tour-10-days/",
+   "first": 301,
+   "location": "/tours/song-kul-to-ala-kul-on-horseback-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-to-ala-kul-on-horseback-10-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-horseback-riding-tour-5-days/",
+   "first": 301,
+   "location": "/tours/two-lakes-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-horse-trek-5-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-horseback-riding-tour-6-days/",
+   "first": 301,
+   "location": "/tours/two-lakes-west-shore-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-west-shore-horse-trek-6-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-horseback-riding-tour-7-days/",
+   "first": 301,
+   "location": "/tours/two-lakes-kok-bulak-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-kok-bulak-horse-trek-7-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-in-a-week-7-days/",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-in-a-week-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-in-a-week-7-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-overland-road-trip-7-days",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-overland-road-trip-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-overland-road-trip-7-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-ultimate-road-trip-10-days/",
+   "first": 301,
+   "location": "/tours/kel-suu-chong-kemin-road-trip-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kel-suu-chong-kemin-road-trip-10-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-ultimate-road-trip-11-days/",
+   "first": 301,
+   "location": "/tours/tash-rabat-kel-suu-road-trip-11-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/tash-rabat-kel-suu-road-trip-11-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-ultimate-road-trip-12-days/",
+   "first": 301,
+   "location": "/tours/grand-kyrgyzstan-road-trip-12-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/grand-kyrgyzstan-road-trip-12-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-ultimate-road-trip-7-days/",
+   "first": 301,
+   "location": "/tours/kyrgyzstan-overland-road-trip-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyrgyzstan-overland-road-trip-7-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-ultimate-road-trip-8-days/",
+   "first": 301,
+   "location": "/tours/kok-kiya-kel-suu-road-trip-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kok-kiya-kel-suu-road-trip-8-days/"
+  },
+  {
+   "old": "/tours/kyrgyzstan-ultimate-road-trip-9-days/",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-road-trip-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-road-trip-9-days/"
+  },
+  {
+   "old": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days",
+   "first": 301,
+   "location": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/kyzyl-oi-song-kul-chong-kemin-8-days/"
+  },
+  {
+   "old": "/tours/mai-tor-pastures-horse-trek-5-days",
+   "first": 301,
+   "location": "/tours/mai-tor-pastures-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/mai-tor-pastures-horse-trek-5-days/"
+  },
+  {
+   "old": "/tours/silk-road-burana-tower-bishkek-day-trip",
+   "first": 301,
+   "location": "/tours/silk-road-burana-tower-bishkek-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/silk-road-burana-tower-bishkek-day-trip/"
+  },
+  {
+   "old": "/tours/slow-ride-trek-to-ala-kul-10-days",
+   "first": 301,
+   "location": "/tours/slow-ride-trek-to-ala-kul-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/slow-ride-trek-to-ala-kul-10-days/"
+  },
+  {
+   "old": "/tours/song-kol-lake-on-horseback-2-days/",
+   "first": 301,
+   "location": "/tours/song-kul-overnight-horse-trek-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-overnight-horse-trek-2-days/"
+  },
+  {
+   "old": "/tours/song-kol-lake-on-horseback-3-days/",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-3-days/"
+  },
+  {
+   "old": "/tours/song-kol-lake-on-horseback-4-days/",
+   "first": 301,
+   "location": "/tours/song-kul-shoreline-horse-trek-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-shoreline-horse-trek-4-days/"
+  },
+  {
+   "old": "/tours/song-kol-to-ala-kol-horse-riding-trekking-7-days/",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/"
+  },
+  {
+   "old": "/tours/song-kul-33-parrots-pass-express-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-33-parrots-pass-express-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-33-parrots-pass-express-3-days/"
+  },
+  {
+   "old": "/tours/song-kul-horse-trek-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-3-days/"
+  },
+  {
+   "old": "/tours/song-kul-horse-trek-ala-kul-hike-7-days",
+   "first": 301,
+   "location": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-horse-trek-ala-kul-hike-7-days/"
+  },
+  {
+   "old": "/tours/song-kul-issyk-kul-road-trip-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-issyk-kul-road-trip-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-issyk-kul-road-trip-5-days/"
+  },
+  {
+   "old": "/tours/song-kul-kel-suu-altyn-arashan-8-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-altyn-arashan-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-altyn-arashan-8-days/"
+  },
+  {
+   "old": "/tours/song-kul-kel-suu-in-a-week-7-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-in-a-week-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-in-a-week-7-days/"
+  },
+  {
+   "old": "/tours/song-kul-kel-suu-road-trip-9-days",
+   "first": 301,
+   "location": "/tours/song-kul-kel-suu-road-trip-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kel-suu-road-trip-9-days/"
+  },
+  {
+   "old": "/tours/song-kul-kok-kiya-kel-suu-9-days",
+   "first": 301,
+   "location": "/tours/song-kul-kok-kiya-kel-suu-9-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-kok-kiya-kel-suu-9-days/"
+  },
+  {
+   "old": "/tours/song-kul-on-horseback-issyk-kul-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-on-horseback-issyk-kul-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-on-horseback-issyk-kul-4-days/"
+  },
+  {
+   "old": "/tours/song-kul-overnight-horse-trek-2-days",
+   "first": 301,
+   "location": "/tours/song-kul-overnight-horse-trek-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-overnight-horse-trek-2-days/"
+  },
+  {
+   "old": "/tours/song-kul-ride-altyn-arashan-trek-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-ride-altyn-arashan-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-ride-altyn-arashan-trek-5-days/"
+  },
+  {
+   "old": "/tours/song-kul-ride-issyk-kul-circle-5-days",
+   "first": 301,
+   "location": "/tours/song-kul-ride-issyk-kul-circle-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-ride-issyk-kul-circle-5-days/"
+  },
+  {
+   "old": "/tours/song-kul-shoreline-horse-trek-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-shoreline-horse-trek-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-shoreline-horse-trek-4-days/"
+  },
+  {
+   "old": "/tours/song-kul-to-ala-kul-on-horseback-10-days",
+   "first": 301,
+   "location": "/tours/song-kul-to-ala-kul-on-horseback-10-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-to-ala-kul-on-horseback-10-days/"
+  },
+  {
+   "old": "/tours/song-kul-two-pass-loop-on-horseback-3-days",
+   "first": 301,
+   "location": "/tours/song-kul-two-pass-loop-on-horseback-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-two-pass-loop-on-horseback-3-days/"
+  },
+  {
+   "old": "/tours/song-kul-yurt-night-by-car-horse-2-days",
+   "first": 301,
+   "location": "/tours/song-kul-yurt-night-by-car-horse-2-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-yurt-night-by-car-horse-2-days/"
+  },
+  {
+   "old": "/tours/song-kul-yurts-eagles-karakol-4-days",
+   "first": 301,
+   "location": "/tours/song-kul-yurts-eagles-karakol-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/song-kul-yurts-eagles-karakol-4-days/"
+  },
+  {
+   "old": "/tours/talas-to-issyk-kul-backroads-8-days",
+   "first": 301,
+   "location": "/tours/talas-to-issyk-kul-backroads-8-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-issyk-kul-backroads-8-days/"
+  },
+  {
+   "old": "/tours/talas-to-song-kul-backroads-7-days",
+   "first": 301,
+   "location": "/tours/talas-to-song-kul-backroads-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/talas-to-song-kul-backroads-7-days/"
+  },
+  {
+   "old": "/tours/two-lakes-horse-trek-5-days",
+   "first": 301,
+   "location": "/tours/two-lakes-horse-trek-5-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-horse-trek-5-days/"
+  },
+  {
+   "old": "/tours/two-lakes-kok-bulak-horse-trek-7-days",
+   "first": 301,
+   "location": "/tours/two-lakes-kok-bulak-horse-trek-7-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-kok-bulak-horse-trek-7-days/"
+  },
+  {
+   "old": "/tours/two-lakes-west-shore-horse-trek-6-days",
+   "first": 301,
+   "location": "/tours/two-lakes-west-shore-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-lakes-west-shore-horse-trek-6-days/"
+  },
+  {
+   "old": "/tours/two-nights-at-song-kul-on-horseback-4-days",
+   "first": 301,
+   "location": "/tours/two-nights-at-song-kul-on-horseback-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/two-nights-at-song-kul-on-horseback-4-days/"
+  },
+  {
+   "old": "/tours/untouched-mountain-horse-riding-tour-6-days/",
+   "first": 301,
+   "location": "/tours/ichke-tor-lake-horse-trek-6-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/ichke-tor-lake-horse-trek-6-days/"
+  },
+  {
+   "old": "/tours/winter-ala-archa-chunkurchak-day-trip",
+   "first": 301,
+   "location": "/tours/winter-ala-archa-chunkurchak-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-ala-archa-chunkurchak-day-trip/"
+  },
+  {
+   "old": "/tours/winter-ala-archa-snow-walk-day-trip",
+   "first": 301,
+   "location": "/tours/winter-ala-archa-snow-walk-day-trip/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-ala-archa-snow-walk-day-trip/"
+  },
+  {
+   "old": "/tours/winter-horse-back-riding-to-song-kol-lake-3-days/",
+   "first": 301,
+   "location": "/tours/winter-horse-trek-to-song-kul-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-horse-trek-to-song-kul-3-days/"
+  },
+  {
+   "old": "/tours/winter-horse-trek-to-song-kul-3-days",
+   "first": 301,
+   "location": "/tours/winter-horse-trek-to-song-kul-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-horse-trek-to-song-kul-3-days/"
+  },
+  {
+   "old": "/tours/winter-issyk-kul-karakol-skiing-4-days",
+   "first": 301,
+   "location": "/tours/winter-issyk-kul-karakol-skiing-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/winter-issyk-kul-karakol-skiing-4-days/"
+  },
+  {
+   "old": "/tours/ysyk-kol-lake-lake-road-trip-3-days/",
+   "first": 301,
+   "location": "/tours/issyk-kul-karakol-canyons-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-karakol-canyons-3-days/"
+  },
+  {
+   "old": "/tours/ysyk-kol-lake-road-trip-4-days/",
+   "first": 301,
+   "location": "/tours/issyk-kul-altyn-arashan-4-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-altyn-arashan-4-days/"
+  },
+  {
+   "old": "/tours/ysyk-kol-lakesong-kol-lake-road-trip-3-days/",
+   "first": 301,
+   "location": "/tours/issyk-kul-song-kul-weekend-3-days/",
+   "hops": 1,
+   "final": 200,
+   "finalUrl": "/tours/issyk-kul-song-kul-weekend-3-days/"
+  }
+ ]
+}
