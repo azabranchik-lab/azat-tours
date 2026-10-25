@@ -13,3 +13,6 @@ logs/
 scripts/tours-2026/tools/
 # owner's private working notes (not for the public repo)
 docs/PRIVATE-NOTES.md
+
+# resized image copies made on demand by the server (lib/imgvariants.js)
+.cache/
