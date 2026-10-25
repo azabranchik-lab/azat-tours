@@ -79,7 +79,15 @@ async function main() {
     if (pathName === '/blog/' && !/href="\/blog\/[a-z0-9-]+\/"/.test(html)) bad(pathName, 'post list missing from HTML');
     if (!/<header id="header"/.test(html) || !/<footer>/.test(html)) bad(pathName, 'navigation or footer missing from HTML');
     if (isTour || isPost || isCar) { const md = await get(BASE + pathName.replace(/\/$/, '.md')); if (md.status !== 200 || !/^# /.test(await md.text())) bad(pathName, 'no Markdown version'); }
-    for (const m of html.matchAll(/<img\b[^>]*>/g)) if (!/\salt="/.test(m[0])) bad(pathName, 'img without alt: ' + m[0].slice(0, 80));
+    for (const m of html.matchAll(/<img\b[^>]*>/g)) {
+      if (!/\salt="/.test(m[0])) bad(pathName, 'img without alt: ' + m[0].slice(0, 80));
+      if (/\ssrc="\/?(img|images)\//.test(m[0]) && !(/\swidth="\d+"/.test(m[0]) && /\sheight="\d+"/.test(m[0]))) bad(pathName, 'img without width/height: ' + m[0].slice(0, 80));
+    }
+    // speed contract (2026-10-25): fonts from this domain, versioned stylesheet, first screen visible without JS
+    if (/fonts\.(googleapis|gstatic)\.com/.test(html)) bad(pathName, 'still loads Google Fonts');
+    if (!/href="\/styles\.css\?v=[a-z0-9]+"/.test(html)) bad(pathName, 'stylesheet URL is not versioned');
+    const hero = html.match(/<section class="(?:page-)?hero[^>]*>[\s\S]*?<\/section>/);
+    if (hero && /class="[^"]*\breveal\b(?![^"]*\bin\b)[^"]*"/.test(hero[0])) bad(pathName, 'hero element hidden until window.load');
     for (const m of html.matchAll(/\s(?:href|src)="([^"]+)"/g)) {
       let h = unescape(m[1]);
       if (h.startsWith(ORIGIN)) h = h.slice(ORIGIN.length) || '/';

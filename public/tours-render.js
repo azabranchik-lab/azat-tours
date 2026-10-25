@@ -3,6 +3,9 @@
 // Everything is read from the cards themselves (data-cats / data-tags / data-days),
 // so the page does not need the tours data file.
 // Used on /tours/ (full catalog + filters) and the home page (featured grid).
+// The filter toolbar markup lives in cards.js (Cards.catalogToolbar): the server puts
+// it in the HTML so nothing jumps on load; this script only wires it up, and builds
+// it itself when a page arrives without it.
 (function () {
   const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   // soft rise-in for a set of cards (stagger capped so long lists don't crawl)
@@ -21,25 +24,9 @@
   const grid = document.getElementById('toursGrid');
   if (grid) {
     const cards = [...grid.querySelectorAll('.tour')];
-    const TOTAL = cards.length;
-    const catsOf = c => (c.dataset.cats || '').split('|');
-    const tagsOf = c => (c.dataset.tags || '').split('|');
-    const catCount = cat => cards.filter(c => catsOf(c).includes(cat)).length;
     const noRes = document.querySelector('.no-result');
     const bar = document.getElementById('filterBar');
-
-    // category chips (single-select, top row)
-    const order = ['Day trips', 'Combined', 'Horse riding', 'Road trip', 'Off-the-beaten-path', 'Winter tours'];   // 'Day trips' added 2026-10-16 (owner) for the one-day tours
-    const present = order.filter(c => catCount(c) > 0);
-
-    // tag chips (multi-select, second row), activity / duration / season, in a sensible order
-    const TAG_ORDER = [
-      ['trekking', 'Trekking'], ['horseback', 'Horseback'], ['road-trip', 'Road trip'], ['off-road', 'Off-road'],
-      ['short', 'Up to 4 days'], ['week', '1 week'], ['long', '9+ days'],
-      ['summer', 'Summer'], ['winter', 'Winter'], ['all-year', 'All year'],
-    ];
-    const tagCount = tag => cards.filter(c => tagsOf(c).includes(tag)).length;
-    const presentTags = TAG_ORDER.filter(([k]) => tagCount(k) > 0);
+    const C = window.Cards;
 
     let activeCat = 'all';
     const activeTags = new Set();
@@ -58,80 +45,27 @@
       if (noRes) noRes.classList.toggle('show', shown === 0);
     }
 
-    if (bar) {
-      const tagLabel = k => (TAG_ORDER.find(x => x[0] === k) || [k, k])[1];
+    if (bar && C) {
+      const items = cards.map(c => ({ cats: (c.dataset.cats || '').split('|'), tags: (c.dataset.tags || '').split('|') }));
+      const main = grid.closest('.catalog-main');
+      const el = html => { const d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; };
 
-      // category chips (desktop row + mobile swipe row)
-      bar.innerHTML =
-        `<button class="chip active" data-f="all">All <span style="opacity:.6">${TOTAL}</span></button>` +
-        present.map(c => `<button class="chip" data-f="${c}">${c} <span style="opacity:.6">${catCount(c)}</span></button>`).join('');
-
-      // shared "filters" icon (same on the desktop All-filters button, below)
-      const FIC = '<svg class="dfb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="8" x2="20" y2="8"/><circle cx="10" cy="8" r="2.4" fill="var(--surface)"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="15" cy="16" r="2.4" fill="var(--surface)"/></svg>';
-      // mobile "All filters" button (one big touch target; opens the sheet). Keeps a hidden
-      // badge span so the .has active-state hook still works; count shown in the toolbar line.
-      const mBtn = document.createElement('button');
-      mBtn.id = 'mFilterBtn'; mBtn.className = 'mfilter-btn'; mBtn.type = 'button';
-      mBtn.innerHTML = `${FIC}<span>All filters</span><span class="mfilter-badge" hidden>${TOTAL}</span>`;
+      // toolbar: normally already in the HTML (server); otherwise build the same markup here
+      if (!main.querySelector('.dfilters')) {
+        const tb = C.catalogToolbar(items);
+        bar.innerHTML = tb.bar;
+        main.insertBefore(el(tb.dfilters), bar);   // above the mobile #filterBar, i.e. above the grid
+        main.insertBefore(el(tb.mtoolbar), grid);
+      }
+      const mBtn = document.getElementById('mFilterBtn');
 
       // mobile bottom-sheet: Type (categories, single-select) + tag filters, grouped
-      const GROUPS = [['Activity', ['trekking', 'horseback', 'road-trip', 'off-road']], ['Duration', ['short', 'week', 'long']], ['Season', ['summer', 'winter', 'all-year']]];
-      const sheetCats = `<button class="chip chip-tag" type="button" data-f="all">All <span class="chip-n">${TOTAL}</span></button>` +
-        present.map(c => `<button class="chip chip-tag" type="button" data-f="${c}">${c} <span class="chip-n">${catCount(c)}</span></button>`).join('');
       const sheet = document.createElement('div');
       sheet.id = 'filterSheet'; sheet.className = 'filter-sheet';
-      // Sort now lives in a visible segment in the mobile toolbar (below), not in the sheet.
-      sheet.innerHTML =
-        '<div class="fs-backdrop" data-close></div>' +
-        '<div class="fs-panel">' +
-          '<div class="fs-head"><b>All filters</b><button class="fs-x" type="button" data-close aria-label="Close">&times;</button></div>' +
-          '<div class="fs-body">' +
-          `<div class="fs-group"><div class="fs-gtitle">Type</div><div class="fs-chips">${sheetCats}</div></div>` +
-          GROUPS.map(([g, keys]) => {
-            const ks = keys.filter(k => tagCount(k) > 0);
-            return ks.length ? `<div class="fs-group"><div class="fs-gtitle">${g}</div><div class="fs-chips">` +
-              ks.map(k => `<button class="chip chip-tag" type="button" data-t="${k}">${tagLabel(k)} <span class="chip-n">${tagCount(k)}</span></button>`).join('') + '</div></div>' : '';
-          }).join('') +
-          '</div>' +
-          '<div class="fs-foot"><button class="fs-clear" type="button" data-clear>Clear</button><button class="fs-show btn btn-primary" type="button" data-close>Show tours</button></div>' +
-        '</div>';
+      sheet.innerHTML = C.filterSheet(items);
       document.body.appendChild(sheet);
 
-      // ---- desktop toolbar: Filters button (left, opens a popover) + category pills ----
-      // Own markup; reuses only the shared data-f/data-t engine, so syncUI keeps it in sync.
-      const catBtns = `<button class="chip active" data-f="all">All <span class="chip-n">${TOTAL}</span></button>` +
-        present.map(c => `<button class="chip" data-f="${c}">${c} <span class="chip-n">${catCount(c)}</span></button>`).join('');
-      const popGroups = GROUPS.map(([g, keys]) => {
-        const ks = keys.filter(k => tagCount(k) > 0);
-        return ks.length ? `<div class="dpop-group"><div class="dpop-gtitle">${g}</div><div class="dpop-chips">` +
-          ks.map(k => `<button class="chip chip-tag" type="button" data-t="${k}">${tagLabel(k)} <span class="chip-n">${tagCount(k)}</span></button>`).join('') + '</div></div>' : '';
-      }).join('');
-      const dfilters = document.createElement('div');
-      dfilters.className = 'dfilters';
-      dfilters.innerHTML =
-        '<div class="dfilters-act">' +
-          `<button class="dfilter-btn" id="dFilterBtn" type="button">${FIC}<span>All filters</span><span class="dfilter-badge" hidden>0</span></button>` +
-          '<div class="dpop" id="dFilterPop">' +
-            '<div class="dpop-head"><b>All filters</b><button class="dpop-clear" type="button" data-clear>Clear all</button></div>' +
-            `<div class="dpop-body">${popGroups}</div>` +
-          '</div>' +
-        '</div>' +
-        `<div class="dcats" id="dCatBar">${catBtns}</div>`;
-      const main = grid.closest('.catalog-main');
-      main.insertBefore(dfilters, bar);   // above the mobile #filterBar, i.e. above the grid
-
-      // ---- mobile toolbar: one big "Filters & sort" button + live count (sort moved into the sheet) ----
-      const mtb = document.createElement('div');
-      mtb.className = 'mtoolbar';
-      const mCount = document.createElement('span');
-      mCount.className = 'mcount'; mCount.textContent = TOTAL + ' tours';
-      // visible sort segment (Recommended / Shortest / Longest) — same data-fsort engine as before
-      const mSort = document.createElement('div');
-      mSort.className = 'msort-seg'; mSort.id = 'mSortSeg';
-      mSort.innerHTML = [['rec', 'Recommended'], ['short', 'Shortest'], ['long', 'Longest']]
-        .map(([k, l]) => `<button type="button" data-fsort="${k}"${k === 'rec' ? ' class="sel"' : ''}>${l}</button>`).join('');
-      mtb.append(mCount, mSort, mBtn);
-      main.insertBefore(mtb, grid);
+      const present = C.CAT_ORDER.filter(c => items.some(i => i.cats.includes(c)));
 
       // ---- shared state (one source of truth for both desktop chips and the sheet) ----
       function syncUI() {
