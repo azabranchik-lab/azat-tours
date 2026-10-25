@@ -2,22 +2,20 @@
 /**
  * "Sights visited on this tour" must match the tour: every place in a tour's places[] has to be
  * named somewhere in its text (name, summary, highlights, day titles and descriptions, overnight,
- * transfer, activity). places[] was generated once from old day titles (scripts/build-places.js)
+ * transfer, activity). places[] was generated once from old day titles
  * and routes were rewritten since, so a stale entry shows a lake the tour never reaches.
  *
  *   node scripts/check-sights.js             # table on stdout, exit 1 when a shown place is unmentioned
  *   node scripts/check-sights.js --csv out.csv
  *
- * Spellings come from the gazetteer patterns in build-places.js plus a few places only the 2026
+ * Spellings come from the gazetteer in lib/places.js plus a few places only the 2026
  * tour pack visits. "Mentioned but not shown" rows are suggestions for the owner, never applied.
  */
 const fs = require('fs');
 const path = require('path');
 const content = require('../lib/content');
 
-const src = fs.readFileSync(path.join(__dirname, 'build-places.js'), 'utf8');
-const GAZ = [...src.matchAll(/\{ key: '([^']+)',\s*name: '([^']+)'.*?pat: (\/.+?\/i) \}/g)]
-  .map(m => ({ key: m[1], name: m[2], pat: new RegExp(m[3].slice(1, -2), 'i') }));
+const { GAZ } = require('../lib/places');
 const EXTRA = {
   'ala-archa': /Ala[-\s]?Archa/i, burana: /Burana/i, chunkurchak: /Chunkurchak/i, konorchek: /Konorch[eo]k/i,
   barskoon: /Barskoon/i, jyrgalan: /Jyrgalan/i, 'kol-tor': /Kol[-\s]?Tor/i, kilemche: /Kilemche/i, 'mai-tor': /Mai[-\s]?Tor/i,
