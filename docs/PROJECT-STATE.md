@@ -44,7 +44,11 @@
   Sights, ссылки в статьях канонические), CSS/JS `?v=` и шрифты с кэшем на год, Google Fonts нет, `?w=` отдаёт AVIF.
   Lighthouse прод до/после: `seo-audit/lighthouse.md` (вес страниц вдвое меньше, CLS ~0, TBT 0; LCP упирается в сеть:
   nginx без HTTP/2, сервер в Сингапуре; у тура лабораторный балл не вырос, частично из-за шрифтов на HTTP/1.1).
-- **Уборка (коммиты 0ac6f73…последний, НЕ запушены):**
+- **Уборка (коммиты 0ac6f73…97939ae) выкачена 2026-10-25 по команде владельца:** CI run 40198935329 зелёный
+  (job test: тесты сайта и партнёров, 22 с; job deploy, 24 с). Прод проверен: страницы 200, 301 по `data/tour-redirects.json`,
+  `*.bak` → 404, title и sitemap (92 URL) на месте; независимая проверка WebFetch подтвердила. Полный `check-site` после
+  этой выкатки не дошёл до конца из-за сбоя сети на машине разработчика (таймауты и к Google/GitHub), повторить:
+  `node scripts/check-site.js https://azattours.com`.
   - Удалены 23 одноразовых скрипта импорта и сидинга (`seed-*`, `merge-*`, `build-tours/tags/places/sitemap`, `deemoji`,
     `localize/download-catalog-images`, `normalize-tour-names`, `strip-transfer-detail`, `add-why-posts`, `_itin/` и их
     `_*.json`): на сервере они затёрли бы живой контент; два содержали домен первоисточника. `public/sitemap.xml`
