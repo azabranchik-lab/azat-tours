@@ -137,6 +137,22 @@
     делать хабы и `/ko/` на текущем стеке); для Кореи сразу Naver Search Advisor + Naver-блог/KakaoTalk; выкатить
     пакеты A, C, D до новых работ; пакет B (бэкап content/ и public/images/) как самый важный риск; внешние
     профили и отзывы как главный рычаг трафика.
+- **Astro не трогаем (решение владельца 2026-10-25).** Хабы и корейскую версию, когда до них дойдёт, делаем на текущем стеке.
+- **Репетиция деплоя пройдена** (`seo-audit/deploy-checklist.md`): `git archive` ветки + контент в состоянии сервера →
+  `migrate.js` (3 миграции, повтор = nothing pending) → `regenerate-all.js` → сервер на другом порту: check-site
+  «All good», обход совпал с локальной сборкой без отличий, тесты проходят, бот грузится. В чек-листе: проверки
+  перед push (Node ≥ 20.9, ≥500 МБ диска), push, проверки после, Search Console, откат.
+- **Ежедневный бэкап в Telegram владельца** (`lib/backup.js`, блок BACKUPS в `bot.js`): беззвучный `.tar.gz`
+  `content/*.json` каждый день в 10:00 по Бишкеку (ночь в Европе/США), по воскресеньям с `public/images/`, если влезает
+  в 50 МБ. `/backup`, `/backup full`. Состояние: `content/.backup-state.json`. Сжатие асинхронное (сайт в том же
+  процессе). Восстановление: `node scripts/restore-backup.js <файл> [--dry]` (пишет только content/ и public/images/,
+  делает снимок `content/before-restore-*`, регенерирует data-файлы, затем `pm2 restart azat-tours`). Проверено на
+  копии: «потеря» tours.json → восстановлено 80 туров. Тесты 37. Бэкап `partners/` не включён (у него свой
+  `npm run backup` в `partners/`).
+- `seo-audit/hub-questionnaires.md`: анкеты владельцу для Song-Kul, Issyk-Kul, Kel-Suu + проверка данных: 3 тура 2026
+  на Song-Kul помечены «All year round» (kara-kiya-pass-ride-2, song-kul-two-pass-loop-3, song-kul-on-horseback-issyk-kul-4),
+  похоже на ошибку импорта; у Kel-Suu нет ни одной цены.
+- `public/*-data.js` закоммичены из мигрированного контента (запасная копия; сервер всё равно регенерирует).
 - **Деплой-нюансы:** sharp уже в dependencies (нужен Node ≥ 20.9 на VPS); `.cache/` создаётся сам; после выкатки
   можно запустить `node scripts/warm-images.js` в фоне. nginx менять не нужно (но см. пакет B в full-analysis: http2, бэкап).
 - **Открытые вопросы владельцу** (в `phase-0-report.md` и `full-analysis.md`): неизвестный slug 404 или 301 на каталог,
