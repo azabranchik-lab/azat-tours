@@ -33,20 +33,40 @@ const read = (root, f) => JSON.parse(fs.readFileSync(path.join(root, 'content', 
 test('pending migrations: stale sight removed, post links canonical, search titles set but the owner\'s kept', () => {
   const root = fixture();
   const out = run(root);
-  assert.match(out, /migrations: 3 applied/);
+  assert.match(out, /migrations: 4 applied/);
   const tours = read(root, 'tours.json'), posts = read(root, 'posts.json');
   assert.deepStrictEqual(tours[0].places.map(p => p.name), ['Song-Kul Lake', 'Kyzart'], 'Issyk-Kul removed from the 3-day ride');
   assert.strictEqual(tours[0].seoTitle, 'Song-Kul Horse Trek 3 Days: the Classic Ride from Kyzart');
   assert.strictEqual(tours[1].seoTitle, 'Set by the owner in the bot', 'a title set in the bot is not overwritten');
   assert.ok(!tours[2].seoTitle, 'a tour without a proposed title stays without one');
-  const body = posts[0].body;
+  const body = posts.find(p => p.slug === 'p').body;
   assert.match(body, /\]\(\/tours\/song-kul-horse-trek-3-days\/\)/, 'old tour link -> current tour address (via the redirect map)');
   assert.match(body, /\]\(\/blog\/yurt-culture-etiquette\/\)/);
   assert.match(body, /\]\(\/plan-trip\.html#packing\)/);
   assert.match(body, /\]\(\/builder\.html\)/);
   assert.match(body, /\]\(https:\/\/example\.com\/x\)/, 'external links untouched');
   assert.ok(fs.existsSync(path.join(root, 'content', 'before-2026-10-25-sights-fix', 'tours.json')), 'snapshot taken before the batch');
-  assert.deepStrictEqual(read(root, '.migrations.json').slice(-3), ['2026-10-25-sights-fix', '2026-10-25-post-links', '2026-10-25-seo-titles']);
+  assert.deepStrictEqual(read(root, '.migrations.json').slice(-4), ['2026-10-25-sights-fix', '2026-10-25-post-links', '2026-10-25-seo-titles', '2026-10-25-guide-2027']);
+});
+
+test('the 2027 guide arrives as a draft with its own id, and an existing post with that address is left alone', () => {
+  const root = fixture();
+  run(root);
+  const guide = read(root, 'posts.json').find(p => p.slug === 'kyrgyzstan-travel-guide-2027');
+  assert.strictEqual(guide.status, 'draft', 'not public until the owner publishes it in the bot');
+  assert.ok(guide.id > 1, 'a new id');
+  assert.ok(guide.seoTitle && guide.seoTitle.length <= 60);
+  assert.strictEqual(guide.faq.length, 8);
+  assert.ok(!/[—–]/.test(guide.body + guide.title + guide.excerpt + guide.description), 'no long dashes');
+
+  const root2 = fixture();
+  const posts = read(root2, 'posts.json');
+  posts.push({ id: 9, slug: 'kyrgyzstan-travel-guide-2027', title: 'Edited in the bot', body: 'x', status: 'published' });
+  fs.writeFileSync(path.join(root2, 'content', 'posts.json'), JSON.stringify(posts));
+  run(root2);
+  const kept = read(root2, 'posts.json').filter(p => p.slug === 'kyrgyzstan-travel-guide-2027');
+  assert.strictEqual(kept.length, 1);
+  assert.strictEqual(kept[0].title, 'Edited in the bot');
 });
 
 test('a second deploy changes nothing', () => {

@@ -73,6 +73,19 @@ const setPost = file => () => {
   console.log('post updated: ' + src.slug);
 };
 
+// Add a new post from a source file as a DRAFT (the owner reviews it in the bot and publishes).
+// A post with the same address is left alone, so nothing edited in the bot is overwritten.
+const addPost = file => () => {
+  const src = require(file);
+  const posts = content.loadPosts();
+  if (posts.some(x => x.slug === src.slug)) { console.log('post already there: ' + src.slug); return; }
+  const id = Math.max(1000, ...posts.map(x => Number(x.id) || 0)) + 1;
+  const { slug, title, seoTitle, description, excerpt, category, date, cover, cover_alt, body, faq } = src;
+  posts.unshift({ id, slug, title, seoTitle, description, category, excerpt, author: 'Azat, founder & guide', authorImg: '', date, cover, cover_alt, images: [], body, faq, status: 'draft', updatedAt: date });
+  content.savePosts(posts);
+  console.log('draft post added: ' + slug);
+};
+
 // Sights that a route never reaches (places[] was generated from old day titles): scripts/migrations/sights-fix.json.
 function fixSights() {
   const fix = require('./migrations/sights-fix.json');
@@ -133,6 +146,8 @@ const MIGRATIONS = [
   ['2026-10-25-post-links', [cleanPostLinks]],
   // Phase 3 (owner delegated the decision, 2026-10-25): query-first <title> per tour, names unchanged.
   ['2026-10-25-seo-titles', [setSeoTitles]],
+  // Blog pillar page from the owner's draft, added as a draft for his review in the bot.
+  ['2026-10-25-guide-2027', [addPost('./migrations/post-kyrgyzstan-guide-2027.js')]],
 ];
 
 function main() {

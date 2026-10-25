@@ -1033,6 +1033,27 @@ body[data-page="plan"] .plan-faq .faq-a .season-legend{margin-bottom:4px}
 .article .tipbox{background:var(--paper-2);border-radius:14px;padding:20px 24px;margin:26px 0}
 .article .tipbox b{display:block;margin-bottom:4px;color:var(--lake-deep)}
 .article .tipbox p{margin:0;font-size:.98rem}
+/* portrait photos: a narrower frame instead of a full-screen-tall picture */
+.article figure.tall img{max-width:460px;display:block;margin:0 auto}
+/* tables (guides): soft rows on paper, no hard rules; on phones each row becomes a small card */
+.article .table-wrap{margin:26px 0 32px;background:var(--paper-2);border-radius:16px;overflow-x:auto}
+.article table{width:100%;border-collapse:collapse;font-size:.97rem;line-height:1.55}
+.article th{text-align:left;vertical-align:bottom;padding:16px 16px 10px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.article td{padding:12px 16px;vertical-align:top;color:var(--body-text)}
+.article td:first-child{font-weight:600;color:var(--ink)}
+.article tbody tr:nth-child(odd){background:color-mix(in srgb,var(--paper) 70%,transparent)}
+.article td a{color:var(--lake);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:600px){
+  .article .table-wrap{background:none;border-radius:0;overflow:visible}
+  .article table{font-size:1rem}
+  .article table,.article tbody,.article tr,.article td{display:block;width:auto}
+  .article thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .article tbody tr,.article tbody tr:nth-child(odd){background:var(--paper-2);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+  .article td{padding:3px 0}
+  .article td:first-child{padding-bottom:6px}
+  .article td[data-label]:not(:first-child)::before{content:attr(data-label) ": ";font-weight:600;color:var(--ink-soft)}
+  .article table.cols-2 td::before{content:none!important}
+}
 
 /* sell box at article end */
 .sell-box{max-width:740px;margin:50px auto 0;background:var(--panel);color:var(--panel-text);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
