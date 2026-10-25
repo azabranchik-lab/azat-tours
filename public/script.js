@@ -11,9 +11,9 @@ const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-window.addEventListener('load', () => {
-  document.querySelectorAll('.hero .reveal, .page-hero .reveal').forEach(el => el.classList.add('in'));
-});
+// The first screen is shown at once (the server also marks it in the HTML): waiting for
+// window.load kept the headline invisible until every image and script had arrived.
+document.querySelectorAll('.hero .reveal, .page-hero .reveal').forEach(el => el.classList.add('in'));
 
 // ---------- mobile menu ----------
 const mm = document.getElementById('mobileMenu');
