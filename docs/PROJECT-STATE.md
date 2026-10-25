@@ -35,7 +35,7 @@
 
 ---
 
-## Сессия 2026-10-25 — SEO-программа: фаза 0, полный анализ, пакет A (скорость), ветка `seo-fixes` (НЕ в main)
+## Сессия 2026-10-25 — SEO-программа: фаза 0, анализ, пакеты A (скорость), C (фаза 1), D (фаза 2), ветка `seo-fixes` (НЕ в main)
 Бриф владельца: `C:\Users\user\Downloads\azattours-claude-code-prompt.md` (5 фаз: аудит → техправки → доверие →
 архитектура контента → Astro → корейская версия). Правило: после каждой фазы отчёт и стоп до «ок». Все артефакты в
 `seo-audit/`: `phase-0-report.md`, `full-analysis.md` (архитектура, скорость, SEO, план пакетов A–E),
@@ -93,6 +93,21 @@
   - `check-site.js` дополнительно требует: WebSite на главной, Offer с ценой, автор Person, `<main>`, ссылка тур → блог.
   - Проверено: 24 теста, check-site «All good», compare с baseline прода 0 жёстких отличий (1 мягкое: WebSite),
     вкладки работают на 375, консоль чистая. `public/*-data.js` пересобраны миграциями, по-прежнему не закоммичены.
+- **Пакет D = фаза 2 брифа (доверие и конверсия), инфраструктура без контента.** Отчёт: `seo-audit/phase-2-report.md`.
+  - Отзывы: `content/reviews.json` (бот + `scripts/import-reviews.js` из `seo-audit/reviews-template.csv`), новые
+    поля `date`, `tourSlug`, `source`, `sourceUrl`. Рендер сервером (`lib/reviews.js`): главная (`placement: home`,
+    секция удаляется без отзывов), тур (секция «What guests say about this tour» перед FAQ по `tourSlug`/`tour:<slug>`),
+    `/reviews.html` (все отзывы; noindex и вне sitemap, пока их нет; с первым отзывом индексируется, добавлены
+    canonical и `<main>`). Бейджи профилей из `content/site.json` → `profiles.{tripadvisor,google,getyourguide}`,
+    в боте «🏠 Homepage photos → ⭐ Review profiles». Стоковый аватар Unsplash из бота убран; фото гостя только локальное.
+    `public/reviews-render.js` удалён, `reviews-data.js` страницами не подключается.
+  - Выдуманные цифры на `/reviews.html` («4.9 · 128 reviews», «2,400+ travellers», «98%») убраны.
+  - Цены: поле `priceNote` (тур-страница, FAQ, `.md`, JSON-LD), в боте «Price note»; `seo-audit/prices-todo.csv`
+    (47 туров без цены) + `scripts/import-prices.js <csv> [--dry]`. Цены не придуманы.
+  - Email: `lib/contact.js` единственное место; шаблоны/футер содержат `{{CONTACT_EMAIL}}`, `finalize()` подставляет.
+    Смена на доменный адрес = одна строка + деплой (ждём подтверждения ящика).
+  - Проверено: 28 тестов, check-site «All good» с тестовыми отзывами (93 URL) и без (92), 375/1280, консоль чистая.
+    Бот живьём не запускался (`node --check`).
 - **Деплой-нюансы:** sharp уже в dependencies (нужен Node ≥ 20.9 на VPS); `.cache/` создаётся сам; после выкатки
   можно запустить `node scripts/warm-images.js` в фоне. nginx менять не нужно (но см. пакет B в full-analysis: http2, бэкап).
 - **Открытые вопросы владельцу** (в `phase-0-report.md` и `full-analysis.md`): неизвестный slug 404 или 301 на каталог,
