@@ -9,17 +9,29 @@ const content = require('./lib/content'); // read-only here: draft-inclusive dat
 const pages = require('./lib/pages');     // server-rendered tour/post/list pages + sitemap
 const { waLink } = require('./lib/lead'); // "Reply on WhatsApp" button on the lead notification
 const PREVIEW_KEY = require('./lib/previewkey'); // secret gate for previewing drafts on the live site
+const Variants = require('./lib/imgvariants'); // resized image copies for srcset (?w=480 etc.)
 
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public'); // website assets are served from here
+const IMG_CACHE = path.join(ROOT, '.cache', 'img'); // resized copies live here (gitignored, rebuilt on demand)
 const PORT = process.env.PORT || 5173;
+
+// How long browsers may keep a static file without asking again.
+const YEAR = 'public, max-age=31536000, immutable';
+const WEEK = 'public, max-age=604800';
+function cacheHeader(type, ext, versioned) {
+  if (/^image\//.test(type)) return WEEK;                 // images have unique/stable names
+  if (ext === '.woff2') return YEAR;                      // a font changes only with a new file name
+  if (versioned && /css|javascript/.test(type)) return YEAR;   // /styles.css?v=<mtime> from lib/pages.js
+  return 'no-cache';                                      // HTML, data files, unversioned assets: revalidate every time
+}
 
 let cfg = {};
 try { cfg = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8')); } catch (e) {}
 const TOKEN = process.env.BOT_TOKEN || cfg.token;
 const OWNER_ID = Number(process.env.OWNER_ID || cfg.ownerId) || 0;
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2', '.woff': 'font/woff' };
 
 // ---- Telegram helper ----
 async function tg(method, payload) {
@@ -326,42 +338,59 @@ const server = http.createServer(async (req, res) => {
   fs.stat(filePath, (err, st) => {
     if (err || !st.isFile()) { return send404(res); }
     const ext0 = path.extname(filePath).toLowerCase();
+    const type0 = TYPES[ext0] || 'application/octet-stream';
+    const negotiable = ext0 === '.jpg' || ext0 === '.jpeg' || ext0 === '.png';
+    const accept = req.headers.accept || '';
+
+    function sendFile(served, servedStat, type) {
+      const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + '"';
+      const headers = {
+        'Content-Type': type,
+        'ETag': etag,
+        'Last-Modified': servedStat.mtime.toUTCString(),
+        'Cache-Control': cacheHeader(type, ext0, u.searchParams.has('v'))
+      };
+      // Negotiable image URLs vary by Accept so shared caches key avif/webp/jpeg apart.
+      if (negotiable) headers['Vary'] = 'Accept';
+      if (etagMatches(req, etag)) { res.writeHead(304, headers); return res.end(); }
+      fs.readFile(served, (e, data) => {
+        if (e) { return send404(res); }
+        respond(req, res, data, headers, type, served + etag);
+      });
+    }
 
     // Transparent AVIF/WebP negotiation: the DOM keeps requesting foo.jpg, but
     // when the browser advertises a modern format via Accept and a committed
     // `<file>.avif`/`.webp` sibling exists (built by scripts/build-image-formats.js),
     // serve that lighter file instead. No markup changes anywhere — only the
     // bytes on the wire differ, so layout/flow are untouched.
-    let served = filePath, servedStat = st, type = TYPES[ext0] || 'application/octet-stream';
-    const negotiable = ext0 === '.jpg' || ext0 === '.jpeg' || ext0 === '.png';
-    if (negotiable) {
-      const accept = req.headers.accept || '';
-      const cand = [];
-      if (/image\/avif/.test(accept)) cand.push(['.avif', 'image/avif']);
-      if (/image\/webp/.test(accept)) cand.push(['.webp', 'image/webp']);
-      for (const [vext, vtype] of cand) {
-        try {
-          const vs = fs.statSync(filePath + vext);
-          if (vs.isFile()) { served = filePath + vext; servedStat = vs; type = vtype; break; }
-        } catch {}
+    function sendOriginal() {
+      let served = filePath, servedStat = st, type = type0;
+      if (negotiable) {
+        const cand = [];
+        if (/image\/avif/.test(accept)) cand.push(['.avif', 'image/avif']);
+        if (/image\/webp/.test(accept)) cand.push(['.webp', 'image/webp']);
+        for (const [vext, vtype] of cand) {
+          try {
+            const vs = fs.statSync(filePath + vext);
+            if (vs.isFile()) { served = filePath + vext; servedStat = vs; type = vtype; break; }
+          } catch {}
+        }
       }
+      sendFile(served, servedStat, type);
     }
 
-    const etag = '"' + servedStat.size.toString(36) + '-' + Math.round(servedStat.mtimeMs).toString(36) + '"';
-    const headers = {
-      'Content-Type': type,
-      'ETag': etag,
-      'Last-Modified': servedStat.mtime.toUTCString(),
-      // images have unique/stable names → cache long; HTML/JS/CSS/data revalidate so deploys & bot edits show immediately
-      'Cache-Control': /^image\//.test(type) ? 'public, max-age=604800' : 'no-cache'
-    };
-    // Negotiable image URLs vary by Accept so shared caches key avif/webp/jpeg apart.
-    if (negotiable) headers['Vary'] = 'Accept';
-    if (etagMatches(req, etag)) { res.writeHead(304, headers); return res.end(); }
-    fs.readFile(served, (e, data) => {
-      if (e) { return send404(res); }
-      respond(req, res, data, headers, type, served + etag);
-    });
+    // Resized copy for srcset: foo.jpg?w=480 (widths fixed in lib/imgvariants.js). Built
+    // with sharp on first request and kept in .cache/img; the original is served when the
+    // photo is already that small or the copy cannot be made.
+    const w = Number(u.searchParams.get('w'));
+    if (negotiable && w) {
+      Variants.variant(IMG_CACHE, PUBLIC, path.relative(PUBLIC, filePath), w, accept)
+        .then(v => { if (!v) return sendOriginal(); fs.stat(v.path, (e, vs) => e ? sendOriginal() : sendFile(v.path, vs, v.type)); })
+        .catch(() => sendOriginal());
+      return;
+    }
+    sendOriginal();
   });
 });
 
