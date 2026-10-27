@@ -101,6 +101,24 @@ const syncPost = file => () => {
   console.log('post synced and published: ' + src.slug);
 };
 
+// One sentence linking an older post to a newer one, placed after the paragraph that holds
+// `after` (or at the end when that paragraph is gone). Skipped when the post already links
+// there, so nothing the owner edited in the bot is written twice or undone.
+const linkFrom = (slug, after, sentence) => () => {
+  const posts = content.loadPosts();
+  const p = posts.find(x => x.slug === slug);
+  const href = (sentence.match(/\]\(([^)]+)\)/) || [])[1];
+  if (!p || !href) { console.log('post not found: ' + slug); return; }
+  const body = String(p.body || '').replace(/\r\n/g, '\n');
+  if (body.includes(href)) { console.log('link already there: ' + slug); return; }
+  const at = after ? body.indexOf(after) : -1;
+  const end = at < 0 ? -1 : body.indexOf('\n', at);
+  p.body = end < 0 ? body.trimEnd() + '\n\n' + sentence : body.slice(0, end) + '\n\n' + sentence + body.slice(end);
+  p.updatedAt = new Date().toISOString().slice(0, 10);
+  content.savePosts(posts);
+  console.log('link added: ' + slug);
+};
+
 // Sights that a route never reaches (places[] was generated from old day titles): scripts/migrations/sights-fix.json.
 function fixSights() {
   const fix = require('./migrations/sights-fix.json');
@@ -165,6 +183,17 @@ const MIGRATIONS = [
   ['2026-10-25-guide-2027', [addPost('./migrations/post-kyrgyzstan-guide-2027.js')]],
   // Owner: «опубликуй, фиксить будем тут» (2026-10-25). The text now lives in the source file.
   ['2026-10-25-guide-2027-publish', [syncPost('./migrations/post-kyrgyzstan-guide-2027.js')]],
+  // The solo / DIY itinerary from the owner's draft (2026-10-27), published straight away like the
+  // 2027 guide and kept in its source file. Three older posts get one sentence pointing at it.
+  ['2026-10-27-solo-itinerary', [
+    addPost('./migrations/post-kyrgyzstan-itinerary-solo-travel.js'),
+    syncPost('./migrations/post-kyrgyzstan-itinerary-solo-travel.js'),
+    linkFrom('best-time-to-visit-kyrgyzstan', 'runs from April right into November.',
+      'Travelling on your own? Our [solo Kyrgyzstan itinerary](/blog/kyrgyzstan-itinerary-solo-travel/) runs the same summer season by marshrutka and shared taxi, in 10 or 14 days.'),
+    linkFrom('easy-from-abroad', 'That is our job.',
+      'Prefer to do it yourself? We wrote a [10 and 14-day solo itinerary for Kyrgyzstan](/blog/kyrgyzstan-itinerary-solo-travel/) for exactly that, marshrutkas and all.'),
+    syncPost('./migrations/post-kyrgyzstan-guide-2027.js'),   // its source gained the same link
+  ]],
 ];
 
 function main() {

@@ -1030,7 +1030,7 @@ body[data-page="plan"] .plan-faq .faq-a .season-legend{margin-bottom:4px}
 .article figure img{width:100%;border-radius:16px}
 .article figcaption{font-size:.84rem;color:var(--ink-soft);text-align:center;margin-top:10px}
 .article blockquote{margin:30px 0;padding:6px 0 6px 24px;border-left:4px solid var(--lake);font-family:var(--font-display);font-size:1.35rem;line-height:1.45;color:var(--ink)}
-.article .tipbox{background:var(--paper-2);border-radius:14px;padding:20px 24px;margin:26px 0}
+.article .tipbox{background:var(--paper-2);border-radius:14px;padding:20px 24px;margin:26px 0;scroll-margin-top:100px}
 .article .tipbox b{display:block;margin-bottom:4px;color:var(--lake-deep)}
 .article .tipbox p{margin:0;font-size:.98rem}
 /* portrait photos: a narrower frame instead of a full-screen-tall picture */

@@ -38,3 +38,10 @@ test('seoTitle replaces the <title> only; the H1 and the article headline stay t
   assert.strictEqual(meta.title, 'Short search title | Azat Tours');
   assert.strictEqual(meta.jsonld[0].headline, p.title);
 });
+
+test('a tip can be a link target and carry links of its own', () => {
+  const html = mdToHtml('[tip#need-a-contact:Need a contact?|Write on [WhatsApp](https://wa.me/1) or [email](mailto:a@b.c).]');
+  assert.match(html, /^<div class="tipbox" id="need-a-contact"><b>Need a contact\?<\/b><p>Write on <a href="https:\/\/wa\.me\/1">WhatsApp<\/a> or <a href="mailto:a@b\.c">email<\/a>\.<\/p><\/div>$/);
+  assert.match(mdToHtml('[tip:Local tip|Plain text.]'), /^<div class="tipbox"><b>Local tip<\/b><p>Plain text\.<\/p><\/div>$/, 'the old form is unchanged');
+  assert.ok(!/id=/.test(mdToHtml('[tip#Bad Id:T|x]')), 'an id with spaces is not an id');
+});

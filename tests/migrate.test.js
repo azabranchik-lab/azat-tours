@@ -21,7 +21,10 @@ function fixture() {
     { id: 2, slug: 'kok-kiya-kel-suu-road-trip-8-days', name: 'Kok-Kiya & Kel-Suu Road Trip - 8 Days', seoTitle: 'Set by the owner in the bot', places: [], itinerary: [day(1)], status: 'published' },
     { id: 3, slug: 'a-tour-nobody-renamed', name: 'Other - 2 Days', places: [], itinerary: [day(1)], status: 'published' },
   ];
-  const posts = [{ id: 1, slug: 'p', title: 'P', body: 'Ride [Song-Kul](tour.html?slug=song-kol-lake-on-horseback-3-days) and read [this](post.html?slug=yurt-culture-etiquette), then [plan](plan-trip.html#packing) or [build](builder.html). [Away](https://example.com/x)', status: 'published' }];
+  const posts = [
+    { id: 2, slug: 'best-time-to-visit-kyrgyzstan', title: 'B', body: 'Intro.\n\n## Match the season to a trip\nThe road trip runs from April right into November.', status: 'published' },
+    { id: 3, slug: 'easy-from-abroad', title: 'E', body: 'Intro.\n\n## Everything in between\n\nGuessing which marshrutka goes. That is our job.\n\n## Timing your trip\n\nJune to September.', status: 'published' },
+    { id: 1, slug: 'p', title: 'P', body: 'Ride [Song-Kul](tour.html?slug=song-kol-lake-on-horseback-3-days) and read [this](post.html?slug=yurt-culture-etiquette), then [plan](plan-trip.html#packing) or [build](builder.html). [Away](https://example.com/x)', status: 'published' }];
   fs.writeFileSync(path.join(root, 'content', 'tours.json'), JSON.stringify(tours));
   fs.writeFileSync(path.join(root, 'content', 'posts.json'), JSON.stringify(posts));
   fs.writeFileSync(path.join(root, 'content', '.migrations.json'), JSON.stringify(DONE_BEFORE));
@@ -33,7 +36,7 @@ const read = (root, f) => JSON.parse(fs.readFileSync(path.join(root, 'content', 
 test('pending migrations: stale sight removed, post links canonical, search titles set but the owner\'s kept', () => {
   const root = fixture();
   const out = run(root);
-  assert.match(out, /migrations: 5 applied/);
+  assert.match(out, /migrations: 6 applied/);
   const tours = read(root, 'tours.json'), posts = read(root, 'posts.json');
   assert.deepStrictEqual(tours[0].places.map(p => p.name), ['Song-Kul Lake', 'Kyzart'], 'Issyk-Kul removed from the 3-day ride');
   assert.strictEqual(tours[0].seoTitle, 'Song-Kul Horse Trek 3 Days: the Classic Ride from Kyzart');
@@ -46,7 +49,7 @@ test('pending migrations: stale sight removed, post links canonical, search titl
   assert.match(body, /\]\(\/builder\.html\)/);
   assert.match(body, /\]\(https:\/\/example\.com\/x\)/, 'external links untouched');
   assert.ok(fs.existsSync(path.join(root, 'content', 'before-2026-10-25-sights-fix', 'tours.json')), 'snapshot taken before the batch');
-  assert.deepStrictEqual(read(root, '.migrations.json').slice(-5), ['2026-10-25-sights-fix', '2026-10-25-post-links', '2026-10-25-seo-titles', '2026-10-25-guide-2027', '2026-10-25-guide-2027-publish']);
+  assert.deepStrictEqual(read(root, '.migrations.json').slice(-6), ['2026-10-25-sights-fix', '2026-10-25-post-links', '2026-10-25-seo-titles', '2026-10-25-guide-2027', '2026-10-25-guide-2027-publish', '2026-10-27-solo-itinerary']);
 });
 
 test('the 2027 guide is added once with its own id, then published with the text of its source file', () => {
@@ -86,4 +89,38 @@ test('an empty or missing content folder stops the deploy instead of publishing 
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'azat-migrate-empty-'));
   fs.mkdirSync(path.join(root, 'content'));
   assert.throws(() => run(root), /missing or empty|Command failed/);
+});
+
+test('the solo itinerary (2026-10-27) is added and published from its source file; three older posts link to it once', () => {
+  const src = require('../scripts/migrations/post-kyrgyzstan-itinerary-solo-travel.js');
+  const guide = require('../scripts/migrations/post-kyrgyzstan-guide-2027.js');
+  const root = fixture();
+  run(root);
+  const all = read(root, 'posts.json');
+  const post = all.find(p => p.slug === src.slug);
+  assert.ok(post, 'post added');
+  assert.strictEqual(all.filter(p => p.slug === src.slug).length, 1);
+  assert.strictEqual(post.status, 'published');
+  assert.strictEqual(post.body, src.body);
+  assert.strictEqual(post.faq.length, 7);
+  assert.ok(!/[—–]/.test(post.body + post.title + post.excerpt + post.description + post.faq.map(f => f.q + f.a).join('')), 'no long dashes');
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'public', src.cover)), 'cover photo exists');
+  for (const m of src.body.matchAll(/\[img:([^|\]]+)/g)) assert.ok(fs.existsSync(path.join(__dirname, '..', 'public', m[1])), 'photo exists: ' + m[1]);
+  assert.match(src.body, /\[tip#need-a-contact:/, 'the contact callout is a link target');
+  assert.ok(!src.body.includes('{{WHATSAPP') && !src.body.includes('{{EMAIL}}'), 'draft placeholders replaced');
+  const link = '/blog/' + src.slug + '/';
+  const best = all.find(p => p.slug === 'best-time-to-visit-kyrgyzstan').body;
+  assert.match(best, /into November\.\n\nTravelling on your own\? Our \[solo Kyrgyzstan itinerary\]\(\/blog\/kyrgyzstan-itinerary-solo-travel\/\)/, 'sentence after the anchor paragraph, at the end');
+  const easy = all.find(p => p.slug === 'easy-from-abroad').body;
+  assert.match(easy, /That is our job\.\n\nPrefer to do it yourself\? [^\n]+\n\n## Timing your trip/, 'sentence after the anchor paragraph, before the next heading');
+  assert.strictEqual((best + easy).split(link).length - 1, 2, 'one link per post');
+  assert.ok(guide.body.includes(link), 'the 2027 guide source links to it');
+
+  // run again from a state where the older posts already link (an edit in the bot): nothing doubled
+  const root2 = fixture();
+  const posts = read(root2, 'posts.json');
+  posts.find(p => p.slug === 'easy-from-abroad').body = 'See [this](' + link + ').';
+  fs.writeFileSync(path.join(root2, 'content', 'posts.json'), JSON.stringify(posts));
+  run(root2);
+  assert.strictEqual(read(root2, 'posts.json').find(p => p.slug === 'easy-from-abroad').body, 'See [this](' + link + ').');
 });

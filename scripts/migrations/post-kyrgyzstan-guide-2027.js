@@ -190,7 +190,7 @@ module.exports = {
     '',
     '## Best Kyrgyzstan routes for 2027: 5 to 14 days',
     '',
-    'All four routes start and end in Bishkek, fit inside the 30-day visa-free stay and run best from mid-June to mid-September. Driving times assume a private car.',
+    'All four routes start and end in Bishkek, fit inside the 30-day visa-free stay and run best from mid-June to mid-September. Driving times assume a private car. Going without one? Our [solo itinerary by marshrutka and shared taxi](/blog/kyrgyzstan-itinerary-solo-travel/) covers the 10 and 14-day versions with public transport, real costs and where it gets hard.',
     '',
     '### 5 days: Issyk-Kul loop',
     '',
