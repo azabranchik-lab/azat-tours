@@ -38,7 +38,7 @@
 
 ---
 
-## Сессия 2026-10-27 — статья «Kyrgyzstan Itinerary Without a Tour» (solo / DIY), локально, НЕ запушена
+## Сессия 2026-10-27 — статья «Kyrgyzstan Itinerary Without a Tour» (solo / DIY), задеплоена (push d3a2afb в main, владелец: «пушь»)
 - Источник текста: `scripts/migrations/post-kyrgyzstan-itinerary-solo-travel.js` (slug `kyrgyzstan-itinerary-solo-travel`,
   `seoTitle` из брифа владельца (67 знаков, оставлен как дал), `description`, 7 FAQ в `faq`). Как у гайда 2027: правка = файл +
   новый id миграции с `syncPost`. Текст владельца не переписан: заменены только длинные тире (запятая/двоеточие/точка) и
