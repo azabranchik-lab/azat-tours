@@ -71,7 +71,7 @@ Download before you go:
 
 ### When to go
 
-For these routes, go **between mid-June and mid-September**. Song-Kol is only accessible in summer (roads are snowed in roughly from October to May), and the high passes around Karakol are often still snowy in early June. Our [best time to visit Kyrgyzstan](/blog/best-time-to-visit-kyrgyzstan/) guide breaks this down month by month.
+For these routes, go **between mid-June and mid-September**. Song-Kol is only accessible in summer (roads are snowed in roughly from October to May), and the high passes around Karakol are often still snowy in early June. Our [best time to visit Kyrgyzstan](/blog/best-time-to-visit-kyrgyzstan/) guide breaks this down month by month. Coming between December and March instead? That's a different trip, and we wrote [Kyrgyzstan in winter](/blog/kyrgyzstan-in-winter/) for it.
 
 ## Getting around Kyrgyzstan on your own
 

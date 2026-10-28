@@ -22,7 +22,7 @@ function fixture() {
     { id: 3, slug: 'a-tour-nobody-renamed', name: 'Other - 2 Days', places: [], itinerary: [day(1)], status: 'published' },
   ];
   const posts = [
-    { id: 2, slug: 'best-time-to-visit-kyrgyzstan', title: 'B', body: 'Intro.\n\n## Match the season to a trip\nThe road trip runs from April right into November.', status: 'published' },
+    { id: 2, slug: 'best-time-to-visit-kyrgyzstan', title: 'B', body: 'Intro.\n\n## Winter\n\nYou can ski and ride horses to a frozen Song-Kul.\n\n- Best for: skiing\n\n## Match the season to a trip\nThe road trip runs from April right into November.', status: 'published' },
     { id: 3, slug: 'easy-from-abroad', title: 'E', body: 'Intro.\n\n## Everything in between\n\nGuessing which marshrutka goes. That is our job.\n\n## Timing your trip\n\nJune to September.', status: 'published' },
     { id: 1, slug: 'p', title: 'P', body: 'Ride [Song-Kul](tour.html?slug=song-kol-lake-on-horseback-3-days) and read [this](post.html?slug=yurt-culture-etiquette), then [plan](plan-trip.html#packing) or [build](builder.html). [Away](https://example.com/x)', status: 'published' }];
   fs.writeFileSync(path.join(root, 'content', 'tours.json'), JSON.stringify(tours));
@@ -36,7 +36,7 @@ const read = (root, f) => JSON.parse(fs.readFileSync(path.join(root, 'content', 
 test('pending migrations: stale sight removed, post links canonical, search titles set but the owner\'s kept', () => {
   const root = fixture();
   const out = run(root);
-  assert.match(out, /migrations: 6 applied/);
+  assert.match(out, /migrations: 7 applied/);
   const tours = read(root, 'tours.json'), posts = read(root, 'posts.json');
   assert.deepStrictEqual(tours[0].places.map(p => p.name), ['Song-Kul Lake', 'Kyzart'], 'Issyk-Kul removed from the 3-day ride');
   assert.strictEqual(tours[0].seoTitle, 'Song-Kul Horse Trek 3 Days: the Classic Ride from Kyzart');
@@ -49,7 +49,7 @@ test('pending migrations: stale sight removed, post links canonical, search titl
   assert.match(body, /\]\(\/builder\.html\)/);
   assert.match(body, /\]\(https:\/\/example\.com\/x\)/, 'external links untouched');
   assert.ok(fs.existsSync(path.join(root, 'content', 'before-2026-10-25-sights-fix', 'tours.json')), 'snapshot taken before the batch');
-  assert.deepStrictEqual(read(root, '.migrations.json').slice(-6), ['2026-10-25-sights-fix', '2026-10-25-post-links', '2026-10-25-seo-titles', '2026-10-25-guide-2027', '2026-10-25-guide-2027-publish', '2026-10-27-solo-itinerary']);
+  assert.deepStrictEqual(read(root, '.migrations.json').slice(-7), ['2026-10-25-sights-fix', '2026-10-25-post-links', '2026-10-25-seo-titles', '2026-10-25-guide-2027', '2026-10-25-guide-2027-publish', '2026-10-27-solo-itinerary', '2026-10-28-winter-guide']);
 });
 
 test('the 2027 guide is added once with its own id, then published with the text of its source file', () => {
@@ -123,4 +123,31 @@ test('the solo itinerary (2026-10-27) is added and published from its source fil
   fs.writeFileSync(path.join(root2, 'content', 'posts.json'), JSON.stringify(posts));
   run(root2);
   assert.strictEqual(read(root2, 'posts.json').find(p => p.slug === 'easy-from-abroad').body, 'See [this](' + link + ').');
+});
+
+test('the winter guide (2026-10-28) is added and published from its source file; the season post and the solo itinerary link to it', () => {
+  const src = require('../scripts/migrations/post-kyrgyzstan-in-winter.js');
+  const solo = require('../scripts/migrations/post-kyrgyzstan-itinerary-solo-travel.js');
+  const root = fixture();
+  run(root);
+  const all = read(root, 'posts.json');
+  const post = all.find(p => p.slug === src.slug);
+  assert.ok(post, 'post added');
+  assert.strictEqual(all.filter(p => p.slug === src.slug).length, 1);
+  assert.strictEqual(post.status, 'published');
+  assert.strictEqual(post.body, src.body);
+  assert.strictEqual(post.faq.length, 7);
+  assert.ok(!/[—–]/.test(post.body + post.title + post.seoTitle + post.excerpt + post.description + post.faq.map(f => f.q + f.a).join('')), 'no long dashes');
+  assert.ok(!/\]\(https?:\/\/(?!wa\.me\/)/.test(post.body), 'no external links in the winter guide apart from WhatsApp (owner rule)');
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'public', src.cover)), 'cover photo exists');
+  for (const m of src.body.matchAll(/\[img:([^|\]]+)/g)) assert.ok(fs.existsSync(path.join(__dirname, '..', 'public', m[1])), 'photo exists: ' + m[1]);
+  const photos = [src.cover, ...[...src.body.matchAll(/\[img:([^|\]]+)/g)].map(m => m[1])];
+  assert.strictEqual(new Set(photos).size, photos.length, 'no photo twice');
+  assert.match(src.body, /\[tip#need-a-contact:/);
+  const link = '/blog/' + src.slug + '/';
+  const best = all.find(p => p.slug === 'best-time-to-visit-kyrgyzstan').body;
+  assert.match(best, /frozen Song-Kul\.\n\nOur \[Kyrgyzstan in winter guide\]\(\/blog\/kyrgyzstan-in-winter\/\)[^\n]+\n\n- Best for: skiing/, 'sentence after the winter paragraph, before its list');
+  assert.strictEqual(best.split(link).length - 1, 1);
+  assert.ok(solo.body.includes(link), 'the solo itinerary source links to it');
+  assert.strictEqual(all.find(p => p.slug === solo.slug).body, solo.body, 'the solo itinerary on the server is synced to its source');
 });

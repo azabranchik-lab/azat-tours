@@ -194,6 +194,15 @@ const MIGRATIONS = [
       'Prefer to do it yourself? We wrote a [10 and 14-day solo itinerary for Kyrgyzstan](/blog/kyrgyzstan-itinerary-solo-travel/) for exactly that, marshrutkas and all.'),
     syncPost('./migrations/post-kyrgyzstan-guide-2027.js'),   // its source gained the same link
   ]],
+  // The winter guide from the owner's draft (2026-10-27), same scheme; the season post and the solo
+  // itinerary (its source gained the sentence) point at it.
+  ['2026-10-28-winter-guide', [
+    addPost('./migrations/post-kyrgyzstan-in-winter.js'),
+    syncPost('./migrations/post-kyrgyzstan-in-winter.js'),
+    linkFrom('best-time-to-visit-kyrgyzstan', 'ride horses to a frozen Song-Kul.',
+      'Our [Kyrgyzstan in winter guide](/blog/kyrgyzstan-in-winter/) has the Karakol ski prices, the hot springs, the eagle hunters and a 7-day winter route.'),
+    syncPost('./migrations/post-kyrgyzstan-itinerary-solo-travel.js'),
+  ]],
 ];
 
 function main() {
